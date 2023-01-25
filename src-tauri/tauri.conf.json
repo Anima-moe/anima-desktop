@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "anima-desktop",
-    "version": "0.0.0"
+    "version": "0.0.1"
   },
   "tauri": {
     "allowlist": {
@@ -20,7 +20,7 @@
     },
     "bundle": {
       "active": true,
-      "category": "DeveloperTool",
+      "category": "Entertainment",
       "copyright": "",
       "deb": {
         "depends": []
@@ -35,7 +35,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.anima.moe",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -57,15 +57,34 @@
       "csp": null
     },
     "updater": {
-      "active": false
+      "active": false,
+      "endpoints": [
+        "https://api.anima.moe/app/{{target}}/{{current_version}}"
+      ],
+      "dialog": true,
+      "pubkey": ""
     },
     "windows": [
       {
+        "label": "main",
         "fullscreen": false,
-        "height": 600,
+        "height": 900,
+        "width": 1600,
+        "minWidth": 1360,
+        "minHeight": 720,
         "resizable": true,
-        "title": "anima-desktop",
-        "width": 800
+        "title": "Λ ＮＩＭ Λ",
+        "visible": false
+      },
+      {
+        "width": 900,
+        "height": 450,
+        "decorations": false,
+        "url": "/splashscreen",
+        "transparent": true,
+        "resizable": false,
+        "center": true,
+        "label": "splashscreen"
       }
     ]
   }
