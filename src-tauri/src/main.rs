@@ -23,6 +23,7 @@ fn main() {
         .expect("failed to spawn `proxy` command");
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_store::Builder::default().build())
         .plugin(tauri_plugin_window_state::Builder::default().build())
         .invoke_handler(tauri::generate_handler![close_splashscreen])
         .run(tauri::generate_context!())
