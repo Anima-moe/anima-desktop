@@ -16,11 +16,25 @@
       "http": {
         "all": true,
         "request": true,
-        "scope": ["http://localhost:5000/*", "https://*.anima.moe*"]
+        "scope": ["http://localhost:5000/*", "https://*.anima.moe/*"]
       },
       "shell": {
         "all": false,
         "open": true
+      },
+      "window": {
+        "create": true,
+        "center": true,
+        "setResizable": true,
+        "show": true,
+        "hide": true,
+        "close": true,
+        "setDecorations": true,
+        "setAlwaysOnTop": true,
+        "setSize": true,
+        "setMinSize": true,
+        "setMaxSize": true,
+        "setFocus": true
       }
     },
     "bundle": {
@@ -72,17 +86,6 @@
     "windows": [
       {
         "label": "main",
-        "fullscreen": false,
-        "height": 900,
-        "width": 1600,
-        "minWidth": 1360,
-        "minHeight": 720,
-        "resizable": true,
-        "title": "Λ ＮＩＭ Λ - [あーにま • Alpha]",
-        "visible": false,
-        "transparent": true
-      },
-      {
         "width": 1200,
         "height": 650,
         "maxWidth": 1200,
@@ -93,8 +96,7 @@
         "url": "/splashscreen",
         "transparent": true,
         "resizable": true,
-        "label": "splashscreen",
-        "title": "Λ ＮＩＭ Λ - Login"
+        "title": "Λ ＮＩＭ Λ"
       }
     ]
   }
