@@ -13,6 +13,11 @@
   "tauri": {
     "allowlist": {
       "all": false,
+      "http": {
+        "all": true,
+        "request": true,
+        "scope": ["http://localhost:5000/*", "https://*.anima.moe*"]
+      },
       "shell": {
         "all": false,
         "open": true
@@ -73,18 +78,23 @@
         "minWidth": 1360,
         "minHeight": 720,
         "resizable": true,
-        "title": "Λ ＮＩＭ Λ",
-        "visible": false
+        "title": "Λ ＮＩＭ Λ - [あーにま • Alpha]",
+        "visible": false,
+        "transparent": true
       },
       {
-        "width": 900,
-        "height": 450,
+        "width": 1200,
+        "height": 650,
+        "maxWidth": 1200,
+        "maxHeight": 650,
+        "minWidth": 920,
+        "minHeight": 500,
         "decorations": false,
         "url": "/splashscreen",
         "transparent": true,
-        "resizable": false,
-        "center": true,
-        "label": "splashscreen"
+        "resizable": true,
+        "label": "splashscreen",
+        "title": "Λ ＮＩＭ Λ - Login"
       }
     ]
   }
