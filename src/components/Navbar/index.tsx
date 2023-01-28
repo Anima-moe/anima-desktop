@@ -8,7 +8,7 @@ import UserApplet from '@/components/Applets/User/Navbar'
 function Index() {
  
   return <motion.nav 
-    className='w-full py-3 px-6 flex flex-row select-none h-16 fixed z-[99]'
+    className='w-full py-3 px-8 flex flex-row select-none h-16 fixed z-[99]'
   >
     {/* LOGO */}
     <div className='flex w-3/12 items-center'>
