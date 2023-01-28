@@ -17,7 +17,7 @@ async fn close_splashscreen(window: tauri::Window) {
 }
 
 fn main() {
-    let (mut rx, mut child) = Command::new_sidecar("main")
+    let (_rx, _child) = Command::new_sidecar("main")
         .expect("failed to create `proxy` command")
         .spawn()
         .expect("failed to spawn `proxy` command");
