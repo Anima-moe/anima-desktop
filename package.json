@@ -28,6 +28,7 @@
     "react-portal": "^4.2.2",
     "react-query": "^3.39.2",
     "swr": "^2.0.1",
+    "tauri-plugin-store-api": "https://github.com/tauri-apps/tauri-plugin-store",
     "ts-debounce": "^4.0.0"
   },
   "devDependencies": {
