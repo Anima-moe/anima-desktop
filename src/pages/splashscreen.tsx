@@ -1,5 +1,6 @@
 import { invoke } from '@tauri-apps/api/tauri'
 import { open } from '@tauri-apps/api/shell'
+import { WebviewWindow, appWindow } from '@tauri-apps/api/window'
 
 import { FaDiscord } from 'react-icons/fa'
 
@@ -8,9 +9,11 @@ import { Shield, User, ArrowRight, ArrowSquareOut } from 'phosphor-react'
 import IconInput from '@/components/splashscreen/IconTextInput'
 import EmojiOptionsInput from '@/components/splashscreen/EmojiSelectionInput'
 import Button from '@/components/General/Button'
-
+import { useState } from 'react'
 
 function SplashScreen() {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState< { field: string, message: string } | undefined >()
   const bannerList = ['/splash_image_bocchi.png', '/splash_image.png']
   const randomBannerIndex = Math.floor(Math.random() * bannerList.length)
   const randomBanner = bannerList[randomBannerIndex]
@@ -27,7 +30,7 @@ function SplashScreen() {
             { value: 'es-149', label: 'Español', emoji: '🇪🇸'}
           ]} 
         />
-        <IconInput Icon={User} placeholder={'Usuário'}/>
+        <IconInput Icon={User} placeholder={'Usuário'} error={error?.field === 'username' && error.message}/>
         <IconInput Icon={Shield} placeholder={'Senha'} type='password'/>
         <div className='flex flex-row w-full'>
           <Button 
@@ -38,6 +41,8 @@ function SplashScreen() {
             border 
             md 
             fluid 
+            disabled={loading}
+            loading={loading}
             className='mr-1.5 mt-1.5' 
             onClick={()=>{
               invoke('close_splashscreen')
@@ -50,7 +55,36 @@ function SplashScreen() {
             iconRight 
             md
             className='ml-1.5 mt-1.5' 
+            disabled={loading}
+            loading={loading}
             semibold 
+            onClick={async ()=>{
+              // TODO: Login to anima, save token to localstorage
+              setLoading(true)
+              const { setConfigValue } =  await import('@/services/tauri/configValue')
+              await setConfigValue('token', '1234567890')
+              // TODO: If error:
+              setLoading(false)
+              setError({ field: 'username', message: 'Usuário ou senha incorretos' })
+              const animaWindow = new WebviewWindow('Anima',{
+                fullscreen: false,
+                height: 900,
+                width: 1600,
+                minWidth: 1360,
+                minHeight: 720,
+                resizable: true,
+                title: "Λ ＮＩＭ Λ - [あーにま • Alpha]",
+                visible: false,
+                transparent: true
+              })
+              animaWindow.once('tauri://created', () => {
+                // invoke('close_splashscreen')
+                appWindow.close()
+              })
+              animaWindow.once('tauri://error', () => {
+                setError({ field: 'tauri', message: 'Eror creating Anima window, report on our discord!' })
+              })
+            }}
           /> 
         </div>
       </div>
