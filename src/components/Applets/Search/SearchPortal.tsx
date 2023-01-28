@@ -1,4 +1,3 @@
-import usePreventBodyScroll from '@/hooks/usePreventBodyScroll'
 import useSWR from 'swr'
 import AnimeScroll from '@/components/Anime/AnimeScroll'
 
@@ -42,7 +41,6 @@ type Props = {
 }
 
 function SearchPortal({query = ''}: Props) {
-  const { disableScroll, enableScroll } = usePreventBodyScroll();
   const {data, error, isLoading} = useSWR<Anima.API.SearchAnime>(`/api/search/${query}`, ()=>{return fetcher(query)})
 
   if (!query || query.length < 3) { return (
@@ -65,13 +63,7 @@ function SearchPortal({query = ''}: Props) {
   )}
 
   return <div className='fixed left-0 top-0 w-full h-screen bg-primary bg-opacity-95 z-[1] flex px-32 py-52'>
-      <div className='flex w-full relative h-min' onMouseEnter={()=>{
-        console.log("Disabling scroll")
-        disableScroll()
-      }} onMouseLeave={()=>{
-        console.log("Enabling scroll")
-        enableScroll()
-      }}>
+      <div className='flex w-full relative h-min'>
         <AnimeScroll animes={data.data} animesPerScreen={7} alwaysShowInfo/>
       </div>
   </div>

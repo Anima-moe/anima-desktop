@@ -4,24 +4,7 @@ import { PagedScroller } from 'react-paged-scroller'
 import { CaretDoubleLeft, CaretLeft, CaretRight } from 'phosphor-react'
 
 import { getLocaleMetadata } from '../../services/anima/getMetadataFromMedia';
-
-
-function onWheel(ev: React.WheelEvent): void {
-  ev.preventDefault();
-  const isThouchpad = Math.abs(ev.deltaX) !== 0 || Math.abs(ev.deltaY) < 15;
-
-  if (isThouchpad) {
-    ev.stopPropagation();
-    return;
-  }
-
-  if (ev.deltaY < 0) {
-    ev.currentTarget
-  } else if (ev.deltaY > 0) {
-    ev.currentTarget.scrollLeft += 100;
-  }
-}
-
+import { useRef, useCallback, useEffect } from 'react';
 
 type Props = {
   animesPerScreen: number
@@ -30,6 +13,18 @@ type Props = {
 }
 
 function AnimeScroll({animes, animesPerScreen, alwaysShowInfo}: Props) {
+    const scrollerRef = useRef<HTMLDivElement>(null)
+
+    const attachScroll = useCallback(()=>{
+      const scroller = scrollerRef.current
+      if (!scroller) { return }
+      scroller.addEventListener('wheel', (e) => {
+        scroller.scrollLeft += e.deltaY;
+      })
+    }, [scrollerRef])
+    
+    useEffect(attachScroll, [attachScroll])
+
     // @ts-expect-error
     return <PagedScroller 
       enableDrag 
@@ -56,6 +51,7 @@ function AnimeScroll({animes, animesPerScreen, alwaysShowInfo}: Props) {
           </div>
         </div>
       }
+      scrollContainerRef={scrollerRef}
     >
     {animes.map(anime => { 
         return <div 
@@ -65,7 +61,6 @@ function AnimeScroll({animes, animesPerScreen, alwaysShowInfo}: Props) {
             width: `calc(calc(100vw - calc(1vw + 48px) - 16px) / ${animesPerScreen})`,
             minWidth: `calc(calc(100vw - calc(1vw + 48px) - 16px) / ${animesPerScreen})`
           }}
-          onWheel={onWheel}
           itemID={anime.external_id}
         >
           <AnimeCard 
