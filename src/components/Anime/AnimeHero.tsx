@@ -36,14 +36,14 @@ function AnimeHero({anime}: Props) {
 
   return (
     <div className='flex w-full h-[60vh] px-8 items-center pt-16 relative mb-9 -my-32'>
-      <div className={'absolute top-0 left-0 w-full h-full cover z-[-1]'}>
+      <div className={'absolute top-0 left-0 w-full h-full cover z-[-1] overflow-hidden'}>
         {(background) && (
           (background.endsWith('.mp4') || background.endsWith('.webm')) && (
             <video autoPlay loop muted className='w-full h-full object-cover' src={background} />
             )
             )}
       </div>
-      <div className={'absolute top-0 left-0 w-full h-full bg-tertiary mix-blend-multiply z-[-1]'} />     
+      <div className={'absolute top-0 left-0 w-full h-full bg-tertiary mix-blend-multiply z-[-1] '} />     
       <div className='flex w-full flex-col absolute -bottom-9 z-0'>
         <div className='w-1/3'>
           <h1 className='font-bold text-5xl'>{title ? title : <></>}</h1>
@@ -101,21 +101,7 @@ function AnimeHero({anime}: Props) {
             background-size: cover;
             background-position: center;
             background-repeate: no-repeat;
-            filter: blur(2px);
             overflow: hidden;
-          }
-          .blurme {
-
-          }
-          .blurme:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(2px);
           }
         `}
       </style>
