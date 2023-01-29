@@ -2,9 +2,9 @@ import { Store } from "tauri-plugin-store-api"
 const store = new Store(".anima.confg")
 
 export async function setConfigValue(key: string, value: any) {
-  await store.set(key, value)
+  return await store.set(key, value)
 }
 
-export async function getConfigValue(key: string) {
-  return await store.get(key)
+export async function getConfigValue<T>(key: string) {
+  return await store.get(key) as T
 }

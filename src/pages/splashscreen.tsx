@@ -1,7 +1,4 @@
 import { invoke } from '@tauri-apps/api/tauri'
-import { open } from '@tauri-apps/api/shell'
-import { WebviewWindow, appWindow } from '@tauri-apps/api/window'
-
 import { FaDiscord } from 'react-icons/fa'
 
 import { Shield, User, ArrowRight, ArrowSquareOut } from 'phosphor-react'
@@ -9,34 +6,57 @@ import { Shield, User, ArrowRight, ArrowSquareOut } from 'phosphor-react'
 import IconInput from '@/components/splashscreen/IconTextInput'
 import EmojiOptionsInput from '@/components/splashscreen/EmojiSelectionInput'
 import Button from '@/components/General/Button'
-import { useState } from 'react'
+import { useState, useEffect } from 'react';
+import i18next from 'i18next'
+import { useTranslation } from 'react-i18next'
+
+const bannerList = ['/splash_image_bocchi.png', '/splash_image.png']
+const randomBannerIndex = Math.floor(Math.random() * bannerList.length)
+const randomBanner = bannerList[randomBannerIndex]
 
 function SplashScreen() {
+  const { t } = useTranslation()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState< { field: string, message: string } | undefined >()
-  const bannerList = ['/splash_image_bocchi.png', '/splash_image.png']
-  const randomBannerIndex = Math.floor(Math.random() * bannerList.length)
-  const randomBanner = bannerList[randomBannerIndex]
+
+  useEffect(()=>{
+    (async()=>{
+      // Check if the user is already logged in, if so, redirect to the main page
+      const { getConfigValue } =  await import('@/services/tauri/configValue')
+      const userToken = await getConfigValue<string>('token')
+      if (userToken && userToken) {
+        invoke('close_splashscreen')
+      }
+    })()
+  }, [])
 
   return <main className='bg-primary w-full h-screen flex rounded-lg overflow-hidden items-center'>
-    <span className='absolute top-4 left-4 font-bold'>Λ ＮＩＭ Λ</span>
+    <img src='/anima.svg' className='absolute top-4 left-4'/>
     <div className='w-1/2 h-screen items-center justify-center px-4 py-4 flex flex-col relative'>
       <div className='flex w-full flex-col h-min mt-auto'>
-        <h1 className='w-full text-subtle mb-1.5'>Vamos começar.</h1>
+        <h1 className='w-full text-subtle mb-1.5'>{t('splash_welcome')}</h1>
         <EmojiOptionsInput 
           options={[
             { value: 'pt-BR', label: 'Português', emoji: '🇧🇷' },
             { value: 'en-US', label: 'English', emoji: '🇺🇸' },
             { value: 'es-149', label: 'Español', emoji: '🇪🇸'}
-          ]} 
+          ]}
+          onChange={async (value)=>{
+            const { setConfigValue } = await import('@/services/tauri/configValue');
+
+            setConfigValue('language', value)
+            .then(()=>{
+              i18next.changeLanguage(value)
+            })
+          }} 
         />
-        <IconInput Icon={User} placeholder={'Usuário'} error={error?.field === 'username' && error.message}/>
-        <IconInput Icon={Shield} placeholder={'Senha'} type='password'/>
+        <IconInput Icon={User} placeholder={t('splash_user')} error={error?.field === 'username' && error.message}/>
+        <IconInput Icon={Shield} placeholder={t('splash_password')} type='password' error={error?.field === 'password' && error.message}/>
         <div className='flex flex-row w-full'>
           <Button 
             Icon={<ArrowRight />} 
             iconSubtle 
-            text='Continuar sem uma conta' 
+            text={t('splash_continueAsGuest')}
             tertiary 
             border 
             md 
@@ -50,7 +70,7 @@ function SplashScreen() {
           />
           <Button 
             Icon={<ArrowRight />} 
-            text='Login/Registro' 
+            text={t('splash_loginOrRegister')} 
             accent 
             iconRight 
             md
@@ -61,6 +81,7 @@ function SplashScreen() {
             onClick={async ()=>{
               // TODO: Login to anima, save token to localstorage
               setLoading(true)
+              const { WebviewWindow, appWindow } = await import('@tauri-apps/api/window')
               const { setConfigValue } =  await import('@/services/tauri/configValue')
               await setConfigValue('token', '1234567890')
               // TODO: If error:
@@ -82,7 +103,7 @@ function SplashScreen() {
                 appWindow.close()
               })
               animaWindow.once('tauri://error', () => {
-                setError({ field: 'tauri', message: 'Eror creating Anima window, report on our discord!' })
+                setError({ field: 'tauri', message: 'Error creating Anima window, report on our discord!' })
               })
             }}
           /> 
@@ -90,7 +111,7 @@ function SplashScreen() {
       </div>
       <Button 
         Icon={<ArrowSquareOut />}
-        text='Junte-se ao nosso servidor do discord'
+        text={t('splash_joinDiscord')}
         iconRight
         sm
         secondary
@@ -106,7 +127,9 @@ function SplashScreen() {
       </Button>
     </div>
     
-    <div data-tauri-drag-region className='w-1/2 flex h-full' style={{background:`url('${randomBanner}')`, backgroundPosition: 'center', backgroundSize: 'cover'}} />
+    <div data-tauri-drag-region className='w-1/2 flex h-full !bg-center !bg-cover' style={{
+      background:`url('${randomBanner}')`, 
+    }}/>
 
     <style>
       {`body { background: transparent }`}
