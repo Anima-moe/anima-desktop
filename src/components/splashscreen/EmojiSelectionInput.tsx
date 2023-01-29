@@ -4,14 +4,16 @@ import { FiChevronDown, FiChevronRight } from 'react-icons/fi'
 
 type Props = {
   options: { value: string, label: string, emoji: string }[]
+  onChange: (value: string) => void
 }
 
-function EmojiOptionsInput({options}: Props) {
+function EmojiOptionsInput({options, onChange}: Props) {
   const [activeItem, setActiveItem] = useState<typeof options[0]>(options[0])
 
   return <>
   <Listbox value={activeItem.value} onChange={(d)=>{ 
     setActiveItem(options[options.findIndex(o=>o.value===d)] || options[0] )
+    onChange?.(options[options.findIndex(o=>o.value===d)].value || options[0].value )
   }} >
         <div className="flex items-center justify-start w-full relative my-1.5">
           <Listbox.Button className="w-full rounded-md bg-secondary text-lg px-3 py-2.5 border border-tertiary active:text-white placeholder-shown:text-subtle text-white flex flex-row items-center justify-between relative">
@@ -27,7 +29,9 @@ function EmojiOptionsInput({options}: Props) {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Listbox.Options className="absolute mt-52 max-h-60 w-full overflow-auto rounded-md bg-tertiary py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-10">
+            <Listbox.Options 
+              className="absolute mt-52 max-h-60 w-full overflow-auto rounded-md bg-tertiary py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-10"              
+            >
               {options.map((option, optionIdx) => (
                 <Listbox.Option
                   key={optionIdx}
