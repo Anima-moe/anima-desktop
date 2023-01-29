@@ -18,3 +18,8 @@ body {
 .font-noto {
   font-family: 'Noto Color Emoji', sans-serif;
 }
+
+::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  transition: all .3s ease;
+}
