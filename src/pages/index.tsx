@@ -1,6 +1,8 @@
 import { useState } from "react"
 import GeneralLayout from '@/components/Layout/General'
 import AnimeHero from "../components/Anime/AnimeHero"
+import DonationReminder from "@/components/General/DonationReminder"
+import ContentContainer from '../components/Layout/ContentContainer';
 
 function App() {
   const [greetMsg, setGreetMsg] = useState("")
@@ -32,7 +34,22 @@ function App() {
       seasons: [],
       slug: 'teste'
     }} />
-    aaaaaaa
+
+    <ContentContainer>
+     <DonationReminder />
+    </ContentContainer>
+
+    <ContentContainer>
+      <h3>Continue watching</h3>
+      {/* TODO: LOAD RECENTLY WATCHED EPISODES/ANIMES */}
+    </ContentContainer>
+    <ContentContainer>
+      <h3>Popular this season</h3>
+    </ContentContainer>
+
+    <ContentContainer>
+      <h3>Popular all time</h3>
+    </ContentContainer>
   </GeneralLayout>
 }
 
