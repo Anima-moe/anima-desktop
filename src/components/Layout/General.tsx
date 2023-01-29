@@ -8,7 +8,7 @@ type Props = {
 function General({children, fluid}: Props) {
   return <>
     <Navbar />
-    <main className={`pt-16 flex flex-col ${fluid ? 'px-0 w-full' : 'px-4'}`}>
+    <main className={`pt-16 flex flex-col ${fluid ? 'px-0 w-full' : 'px-8'}`}>
       {children}
     </main>
   </>
