@@ -25,7 +25,26 @@ function SplashScreen() {
       const { getConfigValue } =  await import('@/services/tauri/configValue')
       const userToken = await getConfigValue<string>('token')
       if (userToken && userToken) {
-        invoke('close_splashscreen')
+        const { WebviewWindow, appWindow } = await import('@tauri-apps/api/window')
+        const { setConfigValue } =  await import('@/services/tauri/configValue')
+        await setConfigValue('token', '1234567890') // TODO: SET REAL TOKEN HERE!
+        const animaWindow = new WebviewWindow('Anima',{
+          fullscreen: false,
+          height: 900,
+          width: 1600,
+          minWidth: 1360,
+          minHeight: 720,
+          resizable: true,
+          title: "Λ ＮＩＭ Λ - [あーにま • Alpha]",
+          visible: false,
+          transparent: true
+        })
+        animaWindow.once('tauri://created', () => {
+          appWindow.close()
+        })
+        animaWindow.once('tauri://error', () => {
+          setError({ field: 'tauri', message: 'Error creating Anima window, report on our discord!' })
+        })
       }
     })()
   }, [])
@@ -127,9 +146,26 @@ function SplashScreen() {
       </Button>
     </div>
     
-    <div data-tauri-drag-region className='w-1/2 flex h-full !bg-center !bg-cover' style={{
-      background:`url('${randomBanner}')`, 
-    }}/>
+    <div 
+      className='w-1/2 flex h-full !bg-center !bg-cover' 
+      style={{
+        background:`url('${randomBanner}')`, 
+      }}
+      onMouseDown={(e)=>{
+        //@ts-expect-error - this is tauri exclusive shit
+        window.__TAURI_INVOKE__('tauri', {
+          __tauriModule: 'Window',
+          message: {
+            cmd: 'manage',
+            data: {
+              cmd: {
+                type: e.detail === 2 ? '__toggleMaximize' : 'startDragging'
+              }
+            }
+          }
+        })
+      }}
+    />
 
     <style>
       {`body { background: transparent }`}
