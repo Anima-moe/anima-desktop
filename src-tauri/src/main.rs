@@ -3,17 +3,53 @@
     windows_subsystem = "windows"
 )]
 
-use tauri::{api::process::Command, Manager};
+use tauri::{ api::process::Command,  Manager };
+use tauri::State;
+use declarative_discord_rich_presence::{
+  activity::{
+    Activity, 
+    Assets, 
+    Timestamps,
+    Button
+  }, 
+  DeclarativeDiscordIpcClient
+};
 
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-#[tauri::command]
-async fn close_splashscreen(window: tauri::Window) {
-  // Close splashscreen
-  if let Some(splashscreen) = window.get_window("splashscreen") {
-    splashscreen.close().unwrap();
-  }
-  // Show main window
-  window.get_window("main").unwrap().show().unwrap();
+
+#[tauri::command(async)]
+fn discord_set_activity(
+  details: &str,
+  state: &str,
+  timestamp: i64,
+  image: &str,
+  client: State<'_, DeclarativeDiscordIpcClient>
+) -> Result<(), ()> {
+  
+  let buttons = vec![
+    Button::new("Assistir".into(), "https://anima.moe".into())
+  ];
+
+  client.set_activity(Activity::new()
+    .state(state)
+    .details(details)
+    .timestamps(Timestamps::new().start(timestamp))
+    .assets(Assets::new().large_image(image))
+    .buttons(buttons)
+  ).ok();
+
+  // println!("{:?}", res);
+
+  Ok(())
+
+}
+
+#[tauri::command(async)]
+fn discord_clear_activity(client: State<'_, DeclarativeDiscordIpcClient>) -> Result<(), ()> {
+
+  client.clear_activity().ok();
+
+  Ok(())
+
 }
 
 fn main() {
@@ -25,7 +61,14 @@ fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_store::Builder::default().build())
         .plugin(tauri_plugin_window_state::Builder::default().build())
-        .invoke_handler(tauri::generate_handler![close_splashscreen])
+        .invoke_handler(tauri::generate_handler![discord_set_activity, discord_clear_activity])
+        .setup(|app| {
+          app.manage(DeclarativeDiscordIpcClient::new("1069047547282325534"));
+          let client = app.state::<DeclarativeDiscordIpcClient>();
+          client.enable();
+
+          Ok(())
+        })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
