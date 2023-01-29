@@ -14,10 +14,10 @@ function Index() {
     className='w-full py-3 px-8 flex flex-row select-none h-16 fixed z-[99]'
   >
     {/* LOGO */}
-    <div className='flex w-3/12 items-center cursor-pointer' onClick={()=>{
+    <div className='flex w-3/12 items-center cursor-pointer'>
+      <img src='/anima.svg' className='w-22' onClick={()=>{
       router.push('/')
-    }}>
-      <img src='/anima.svg' className='w-22' />
+      }}/>
     </div>
     {/* SEARCH BAR */}
     <div className='flex items-center justify-center focus-within:text-white w-6/12 h-full'>
