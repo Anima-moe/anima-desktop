@@ -18,7 +18,7 @@ function EmojiOptionsInput({options, onChange}: Props) {
         <div className="flex items-center justify-start w-full relative my-1.5">
           <Listbox.Button className="w-full rounded-md bg-secondary text-lg px-3 py-2.5 border border-tertiary active:text-white placeholder-shown:text-subtle text-white flex flex-row items-center justify-between relative">
             <p className='flex flex-row'>
-              <span className='mr-4'>{activeItem.emoji}</span>
+              <span className='mr-4 font-noto'>{activeItem.emoji}</span>
               {activeItem.label}
             </p>
             <FiChevronDown className='text-subtle' size={24} />
@@ -50,7 +50,7 @@ function EmojiOptionsInput({options, onChange}: Props) {
                           selected ? 'font-medium' : 'font-normal'
                         }`}
                       >
-                        <span className='mr-4'>{option.emoji}</span>
+                        <span className='mr-4 font-noto'>{option.emoji}</span>
                         {option.label}
                       </span>
                     </>
