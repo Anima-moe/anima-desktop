@@ -1,7 +1,10 @@
 import { useRouter } from 'next/router'
 import React from 'react'
-import GeneralLayout from '@/components/Layout/General';
-import AnimeCard from '@/components/Anime/AnimeCard';
+import GeneralLayout from '@/components/Layout/General'
+import AnimeCard from '@/components/Anime/AnimeCard'
+
+import { UnmountClosed } from 'react-collapse'
+import Season from '@/components/Anime/Season'
 
 type Props = {}
 
@@ -45,10 +48,21 @@ function Anime({}: Props) {
         />
       </div>
       <div className='ml-4 w-4/5 flex flex-col'>
+        {/* TITLE METADATA */}
         <div className='w-full h-[20vh] items-start justify-end flex flex-col overflow-hidden pb-4'>
           <h6 className='text-xs text-white text-opacity-40'>2023</h6>
           <h1 className='text-4xl font-bold'>Don’t Toy with me, miss nagatoro</h1>
           <h3 className='text-lg'>イジらないで、長瀞さん</h3>
+        </div>
+        {/* SYNOPSIS */}
+        <div className='mt-4 w-1/2'>
+          <p className='text-sm text-white text-opacity-70'>
+            “Uma garota mais nova que eu me fez chorar!“ Certo dia, ao visitar a biblioteca do colégio, Senpai vira o alvo de uma novata super-sádica! O nome da garota que provoca, atormenta e bulina o Senpai é Nagatoro! Ela é pentelha, mas adorável. Estar ao lado dela é agonizante, mas irresistível. Esta é a história de uma garota extremamente sádica e temperamental que vai despertar algo dentro de você. 
+          </p>
+        </div>
+        {/* SEASONS */}
+        <div className='w-full mt-4'>
+            <Season />
         </div>
       </div>
     </div>
