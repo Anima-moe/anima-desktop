@@ -3,10 +3,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Noto Color Emoji';
+  src: url(https://raw.githack.com/googlefonts/noto-emoji/main/fonts/NotoColorEmoji.ttf);
+}
 
 body {
   background-color: #161616;
   color: #fff;
   font-family: 'Rubik', sans-serif;
   overflow-x: hidden;
+}
+
+.font-noto {
+  font-family: 'Noto Color Emoji', sans-serif;
 }
