@@ -19,5 +19,12 @@ export function getLocaleMetadata(media: Anima.RAW.Anime | Anima.RAW.Episode) {
     return media.AnimeEpisodeMetadata.find(metadata => metadata.locale_key === locale)
   }
 
+  //@ts-expect-error -- Yes, skibbid dab
+  if (media.EpisodeMetadata) {
+    //@ts-expect-error -- Yes, skibbid dab
+    return media.EpisodeMetadata.find(metadata => metadata.locale_key === locale)
+  }
+
+
   return {}
 }
