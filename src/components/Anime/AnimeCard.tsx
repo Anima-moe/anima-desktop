@@ -1,6 +1,7 @@
 import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 type Props = {
   anime: Anima.RAW.Anime
@@ -59,49 +60,61 @@ const shadeVariants = {
   }
 }
 
+function AnimeWrapper({disabled, children, url}: {disabled?: boolean, children?: React.ReactNode, url?: string}) {
+  return <>
+  {(disabled || !url)? (
+    <div>
+      {children}
+    </div>
+  ): (
+    <Link href={url} >
+        {children}
+    </Link>
+  )}
+</>
+}
+
+
 function AnimeCard({anime, disabled, noHover, onClick}: Props) {
-  const router = useRouter()
-  console.log(anime)
   return (
-    <motion.div 
-      className='aspect-[2/3] w-full bg-red-600 overflow-hidden rounded-md select-none' 
-      style={{
-        backgroundColor: '#1a1a1a',
-        background: `url('${anime.cover}')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        cursor: disabled ? 'initial' : 'pointer'
-      }}
-      whileHover={disabled ? 'initial' : 'hover'}
-      animate="initial"
-      variants={cardVariants}
-      onClick={()=>{
-        onClick?.()
-        if (!onClick) {
-          router.push(`/anime/${anime.id}`)
-        }
-      }}
-    >
-        {noHover ?? <motion.div 
-          className='flex flex-col w-full overflow-hidden text-left whitespace-nowrap absolute left-0 bottom-0 p-4 bg-gradient-to-t from-[rgba(16,16,16,.9)] to-transparent h-full items-start justify-end pointer-events-none opacity-0'
-          variants={shadeVariants}
-        >
-          <motion.h6 
-            className='text-sm font-semibold text-ellipsis w-full overflow-hidden translate-y-10'
-            variants={contentVariants}
-          >
-            {getLocaleMetadata(anime).title}
-          </motion.h6>
-          <motion.span 
-            className='w-full flex text-xs text-subtle'
-            variants={contentVariants}
-          >
-            {/* {getLocaleMetadata(anime)..split('-')[0]} • { t(qntd_temporadas > 1 ? 'anime_generic_seasons' : 'anime_generic_season', {n: qntd_temporadas}) } */}
-          </motion.span>
-          {/* { episodes_count ? <span className={`text-md text-gray-500 flex items-center`}>
-          {t('anime_generic_seasons', { n: launchDate || 0 })} • {episodes_count || '?'} Episódio(s)</span> : <> </> } */}
-        </motion.div> }
-    </motion.div>
+    <AnimeWrapper url={`/anime/${anime.id}`} disabled={(onClick !== undefined) || disabled} >
+      <motion.div 
+        className='aspect-[2/3] w-full bg-red-600 overflow-hidden rounded-md select-none' 
+        style={{
+          backgroundColor: '#1a1a1a',
+          background: `url('${anime.cover}')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          cursor: disabled ? 'initial' : 'pointer'
+        }}
+        whileHover={disabled ? 'initial' : 'hover'}
+        animate="initial"
+        variants={cardVariants}
+        onClick={onClick}
+      >
+          {noHover ?? (
+            <motion.div 
+              className='flex flex-col w-full overflow-hidden text-left whitespace-nowrap absolute left-0 bottom-0 p-4 bg-gradient-to-t from-[rgba(16,16,16,.9)] to-transparent h-full items-start justify-end pointer-events-none opacity-0'
+              variants={shadeVariants}
+            >
+              <motion.h6 
+                className='text-sm font-semibold text-ellipsis w-full overflow-hidden translate-y-10'
+                variants={contentVariants}
+              >
+                {getLocaleMetadata(anime).title}
+              </motion.h6>
+              <motion.span 
+                className='w-full flex text-xs text-subtle'
+                variants={contentVariants}
+              >
+                {/* {getLocaleMetadata(anime)..split('-')[0]} • { t(qntd_temporadas > 1 ? 'anime_generic_seasons' : 'anime_generic_season', {n: qntd_temporadas}) } */}
+              </motion.span>
+              {/* { episodes_count ? <span className={`text-md text-gray-500 flex items-center`}>
+              {t('anime_generic_seasons', { n: launchDate || 0 })} • {episodes_count || '?'} Episódio(s)</span> : <> </> } */}
+            </motion.div> 
+          )}
+      </motion.div>
+    </AnimeWrapper>
   )
 }
 
