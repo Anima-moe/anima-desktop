@@ -2,6 +2,7 @@ import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { useTranslation } from 'react-i18next'
 
 type Props = {
   anime: Anima.RAW.Anime
@@ -76,6 +77,8 @@ function AnimeWrapper({disabled, children, url}: {disabled?: boolean, children?:
 
 
 function AnimeCard({anime, disabled, noHover, onClick}: Props) {
+  const { t } = useTranslation()
+
   return (
     <AnimeWrapper url={`/anime/${anime.id}`} disabled={(onClick !== undefined) || disabled} >
       <motion.div 
@@ -107,10 +110,8 @@ function AnimeCard({anime, disabled, noHover, onClick}: Props) {
                 className='w-full flex text-xs text-subtle'
                 variants={contentVariants}
               >
-                {/* {getLocaleMetadata(anime)..split('-')[0]} • { t(qntd_temporadas > 1 ? 'anime_generic_seasons' : 'anime_generic_season', {n: qntd_temporadas}) } */}
+                {`2023 • ${ t(anime.AnimeSeason.length > 1 ? 'anime_generic_seasons' : 'anime_generic_season', {n: anime.AnimeSeason.length})}`}
               </motion.span>
-              {/* { episodes_count ? <span className={`text-md text-gray-500 flex items-center`}>
-              {t('anime_generic_seasons', { n: launchDate || 0 })} • {episodes_count || '?'} Episódio(s)</span> : <> </> } */}
             </motion.div> 
           )}
       </motion.div>
