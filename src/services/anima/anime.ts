@@ -23,6 +23,12 @@ export const Anime = {
     return data as Anima.API.GetCategoryAnimes
   },
 
+  getSeasons: async function (id: number) {
+    const { data } = await client.get(`/anime/${id}/seasons`)
+
+    return data as Anima.API.GetAnimeSeasons
+  },
+
   search: async function (query: string) {
     const { data } = await client.get(`/anime/search`, {
       params: {
