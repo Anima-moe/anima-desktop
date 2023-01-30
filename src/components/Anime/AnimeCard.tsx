@@ -1,5 +1,6 @@
 import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
 import { motion } from 'framer-motion'
+import { useRouter } from 'next/router'
 
 type Props = {
   anime: Anima.RAW.Anime
@@ -59,6 +60,8 @@ const shadeVariants = {
 }
 
 function AnimeCard({anime, disabled, noHover, onClick}: Props) {
+  const router = useRouter()
+  console.log(anime)
   return (
     <motion.div 
       className='aspect-[2/3] w-full bg-red-600 overflow-hidden rounded-md select-none' 
@@ -72,6 +75,12 @@ function AnimeCard({anime, disabled, noHover, onClick}: Props) {
       whileHover={disabled ? 'initial' : 'hover'}
       animate="initial"
       variants={cardVariants}
+      onClick={()=>{
+        onClick?.()
+        if (!onClick) {
+          router.push(`/anime/${anime.id}`)
+        }
+      }}
     >
         {noHover ?? <motion.div 
           className='flex flex-col w-full overflow-hidden text-left whitespace-nowrap absolute left-0 bottom-0 p-4 bg-gradient-to-t from-[rgba(16,16,16,.9)] to-transparent h-full items-start justify-end pointer-events-none opacity-0'
