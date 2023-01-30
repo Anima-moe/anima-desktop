@@ -18,27 +18,20 @@ function App() {
       const fetchSimulcast = await Anime.getByCategory(16)
       if (fetchSimulcast.count && fetchSimulcast.count > 0 ) { 
         setSimulcastAnimes(fetchSimulcast.data)
+        setHeroAnime(fetchSimulcast.data[Math.floor(Math.random() * fetchSimulcast.count)])
       }
 
       const fetchPopulat = await Anime.getByCategory(26)
       if (fetchPopulat.count && fetchPopulat.count > 0 ) {
         setPopularAnimes(fetchPopulat.data)
       }
-
     })()
   }, [])
 
   useEffect(fetchAnimeData, [fetchAnimeData])
 
   return <GeneralLayout fluid>
-    {/* <AnimeHero anime={{
-      background: 'https://64.media.tumblr.com/47c4c55d145d06345b6ead8965805379/0c5a054892d75f30-e2/s540x810/8b4fe1ad19e63c9559f40cf82ff0979529368999.gifv',
-      cover: 'https://www.crunchyroll.com/imgsrv/display/thumbnail/1560x2340/catalog/crunchyroll/d48d4a62b0ac6381c87bd040b69b0a89.jpe',
-      external_id: '',
-      AnimeMetadata: [],
-      seasons: [],
-      slug: 'teste'
-    }} /> */}
+    <AnimeHero anime={heroAnime} /> 
 
     <ContentContainer>
      <DonationReminder />
