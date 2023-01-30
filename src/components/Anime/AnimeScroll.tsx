@@ -15,15 +15,15 @@ type Props = {
 function AnimeScroll({animes, animesPerScreen, alwaysShowInfo}: Props) {
     const scrollerRef = useRef<HTMLDivElement>(null)
 
-    const attachScroll = useCallback(()=>{
-      const scroller = scrollerRef.current
-      if (!scroller) { return }
-      scroller.addEventListener('wheel', (e) => {
-        scroller.scrollLeft += e.deltaY;
-      })
-    }, [scrollerRef])
+    // const attachScroll = useCallback(()=>{
+    //   const scroller = scrollerRef.current
+    //   if (!scroller) { return }
+    //   scroller.addEventListener('wheel', (e) => {
+    //     scroller.scrollLeft += e.deltaY;
+    //   })
+    // }, [scrollerRef])
     
-    useEffect(attachScroll, [attachScroll])
+    // useEffect(attachScroll, [attachScroll])
 
     // @ts-expect-error
     return <PagedScroller 
