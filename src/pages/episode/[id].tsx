@@ -30,48 +30,49 @@ function Episode({episodes}: Props) {
         <Scrollbars autoHide hideTracksWhenNotNeeded universal>
           <EpisodeFatCard episode={{
               id: 1,
-              metadata: {
-                ['en-US']: {
+              EpisodeMetadata: [
+                {
                   title: 'Senpai, você é meio... / Senpai, você não fica bravo?',
                   episode_id: 1,
-                  locale_key: 'en-US',
-                  synopsis: 'Nagatoro, uma aluna de primeiro ano, descobre que seu Senpai é um mangaká de mão cheia, e decide lhe dar uma aula de caracterização de personagem. / Nagatoro invade a sala de artes onde o Senpai pratica suas habilidades e o força a fazer um retrato seu.'
+                  locale_key: 'pt-BR',
+                  synopsis: 'Nagatoro, uma aluna de primeiro ano, descobre que seu Senpai é um mangaká de mão cheia, e decide lhe dar uma aula de caracterização de personagem. / Nagatoro invade a sala de artes onde o Senpai pratica suas habilidades e o força a fazer um retrato seu.',
+
                 }
-              },
+              ],
               number: 1,
               season_id: 1,
-              source: {
-                ['en-US']: {
+              source: [
+                {
                   external_id: 'a',
                   id: 1,
-                  locale_key: 'en-US',
+                  locale_key: 'pt-BR',
                   source_id: 1,
                 }
-              },
+              ],
               source_id: 1
             }} cover='https://www.crunchyroll.com/imgsrv/display/thumbnail/1920x1080/catalog/crunchyroll/5aae52d96baf22d1b4e55296d135a54c.jpe'
           />
           <EpisodeFatCard 
             episode={{
               id: 1,
-              metadata: {
-                ['en-US']: {
+              EpisodeMetadata: [
+                {
+                  locale_key: 'pt-BR',
                   title: 'Senpai, seu desejo foi realizado! / E aí, Senpai?!',
                   episode_id: 1,
-                  locale_key: 'en-US',
                   synopsis: 'Nagatoro descobre o tipo de literatura alternativa que o Senpai anda consumindo, e decide experimentar por conta própria. // Senpai acaba vendo Nagatoro em um encontro com outros garotos, e fica à espreita para assistir ao sofrimento deles nas mãos da megera.'
                 }
-              },
+              ],
               number: 2,
               season_id: 1,
-              source: {
-                ['en-US']: {
+              source: [
+                {
+                  locale_key: 'pt-BR',
                   external_id: 'a',
                   id: 1,
-                  locale_key: 'en-US',
                   source_id: 1,
                 }
-              },
+              ],
               source_id: 1
             }} 
             cover='https://www.crunchyroll.com/imgsrv/display/thumbnail/1920x1080/catalog/crunchyroll/db08edf0440be39b37d8330ff7fdae72.jpe'
@@ -79,47 +80,47 @@ function Episode({episodes}: Props) {
           />
           <EpisodeFatCard episode={{
               id: 1,
-              metadata: {
-                ['en-US']: {
+              EpisodeMetadata: [
+                {
+                  locale_key: 'pt-BR',
                   title: 'Vamos de novo, Senpai / Senpai, vem cá!',
                   episode_id: 1,
-                  locale_key: 'en-US',
                   synopsis: 'Quando são pegos por uma chuva repentina, Nagatoro convida o Senpai a se abrigar na casa dela até a chuva passar, o que dá a ela inúmeras chances de pegar no pé dele. / Na hora do almoço, Nagatoro chama o Senpai a se sentar à mesa com ela e suas amigas, que não ficam atrás em matéria de implicância.'
                 }
-              },
+              ],
               number: 3,
               season_id: 1,
-              source: {
-                ['en-US']: {
+              source: [
+                {
+                  locale_key: 'pt-BR',
                   external_id: 'a',
                   id: 1,
-                  locale_key: 'en-US',
                   source_id: 1,
                 }
-              },
+              ],
               source_id: 1
             }} cover='https://www.crunchyroll.com/imgsrv/display/thumbnail/1920x1080/catalog/crunchyroll/1d219877661fad883bb11ac80a46253e.jpe'
           />
           <EpisodeFatCard episode={{
               id: 1,
-              metadata: {
-                ['en-US']: {
+              EpisodeMetadata: [
+                {
+                  locale_key: 'pt-BR',
                   title: 'Senpai, seu rosto ficou vermelho? / Senpai, podia ser um pouco mais...',
                   episode_id: 1,
-                  locale_key: 'en-US',
                   synopsis: 'As amigas da Nagatoro decidem pregar uma peça das brabas no pobre Senpai, e Nagatoro não fica nem um pouco contente. / Nagatoro ensina ao Senpai uma importantíssima lição de vida sobre elogios.'
                 }
-              },
+              ],
               number: 4,
               season_id: 1,
-              source: {
-                ['en-US']: {
+              source: [
+                {
+                  locale_key: 'pt-BR',
                   external_id: 'a',
                   id: 1,
-                  locale_key: 'en-US',
                   source_id: 1,
                 }
-              },
+              ],
               source_id: 1
             }} cover='https://www.crunchyroll.com/imgsrv/display/thumbnail/1920x1080/catalog/crunchyroll/4fb00ca9ec76435fd22e7997de26cc61.jpe'
           />
