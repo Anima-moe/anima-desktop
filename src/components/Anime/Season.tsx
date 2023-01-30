@@ -28,7 +28,7 @@ function Season({season}: Props) {
       role="button"
       tabIndex={0}
     >
-      {t('anime_generic_season', {n: season.number})}
+      {t('anime_generic_season', {n: season.number})} - {season.title}
       { expanded ? <CaretDown size={24} /> : <CaretUp size={24} /> }
     </div>
     <UnmountClosed  
