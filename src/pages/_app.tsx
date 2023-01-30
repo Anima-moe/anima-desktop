@@ -29,7 +29,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       const { appWindow } = await import('@tauri-apps/api/window')
 
       if (!await appWindow.isVisible()) { return }
-      console.log("Setting activity")
       await invoke('discord_set_activity', {
         details: 'Assistindo',
         state: 'S1 E1 - Anima test episode',
