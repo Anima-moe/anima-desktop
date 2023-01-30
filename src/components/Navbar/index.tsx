@@ -5,6 +5,7 @@ import NotificationApplet from '@/components/Applets/Notifications/Navbar'
 import UserApplet from '@/components/Applets/User/Navbar'
 import ConfigApplet from '@/components/Applets/Settings/Navbar'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 
 function Index() {
@@ -15,9 +16,7 @@ function Index() {
   >
     {/* LOGO */}
     <div className='flex w-3/12 items-center cursor-pointer'>
-      <img src='/anima.svg' className='w-22' onClick={()=>{
-      router.push('/')
-      }}/>
+      <Link href='/'><img src='/anima.svg' className='w-22' /></Link>
     </div>
     {/* SEARCH BAR */}
     <div className='flex items-center justify-center focus-within:text-white w-6/12 h-full'>
