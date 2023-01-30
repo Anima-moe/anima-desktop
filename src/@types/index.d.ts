@@ -39,6 +39,7 @@ namespace Anima {
       title: string
       number: number
       anime_id: number
+      AnimeEpisode: Anima.RAW.Episode[]
     }
 
     type Anime = {
@@ -47,7 +48,7 @@ namespace Anima {
       background: string
       slug: string
       external_id: string
-      seasons: Season[]
+      AnimeSeason: Season[]
       AnimeMetadata: Anima.RAW.AnimeMetadata[]
     }
 
@@ -56,6 +57,7 @@ namespace Anima {
       number: number
       season_id: number
       source_id: number
+      thumbnail?: string
       EpisodeMetadata: EpisodeMetadata[]
       source: EpisodeSource[]
     }
@@ -95,8 +97,8 @@ namespace Anima {
 
     type GetAnimeByID = {
       counter: 1
-      data: Anima.RAW.Anime[]
-    } | Error // Returns Error if anime not found
+      data: Anima.RAW.Anime
+    } // Returns Error if anime not found
 
     type GetAnimes = {
       count: number
@@ -106,38 +108,38 @@ namespace Anima {
     type GetAnimeSeasons = {
       count: number
       data: Anima.RAW.Season[]
-    } | Error // Returns empty array if no season | Returns Error if anime not found
+    } // Returns empty array if no season | Returns Error if anime not found
 
     type GetEpisodeByID = {
       count: 1
       data: [Anima.RAW.Episode]
-    } | Error // Returns Error if episode not found
+    } // Returns Error if episode not found
 
     type GetSeasonByID = {
       count: 1
       data: [Anima.RAW.Season]
-    } | Error // Returns Error if season not found
+    } // Returns Error if season not found
 
     type GetSeasonEpisodes = {
       count: number
       data: Anima.RAW.Episode[]
-    } | Error // Returns empty array if no episode | Returns Error if season not found
+    } // Returns empty array if no episode | Returns Error if season not found
 
     type GetUserByID = {
       count: 1,
       data: [Anima.RAW.User]
-    } | Error // Returns Error if user not found
+    } // Returns Error if user not found
 
     type GetUserPlayerHead = {
       head?: number
       episode_id: number
       user_id: number
-    } | Error // Returns Error if user not found or episode not found
+    } // Returns Error if user not found or episode not found
 
     type GetEpisodeMedia = {
       count: 1,
       data: [Anima.RAW.EpisodeMedia]
-    } | Error // Returns Error if unable to get episode media from source crawler
+    } // Returns Error if unable to get episode media from source crawler
 
     type GetCategory = {
 
