@@ -1,9 +1,24 @@
+import i18next from "i18next"
+import { is } from 'typescript-is'
+
 export type AnimaMediaMetadata = {
   [key: string]: Anima.RAW.AnimeMetadata
 }
 
-export function getLocaleMetadata(media: Anima.RAW.Anime) {
-  // NOTE: Implement i18n here and get the locale from the current session. 
-  let locale = 'en-US'
-  return media.metadata[locale] || media.metadata['en-US'] || media.metadata[Object.keys(media.metadata)[0]]
+export function getLocaleMetadata(media: Anima.RAW.Anime | Anima.RAW.Episode) {
+  const locale = i18next.language
+
+  //@ts-expect-error -- Yes, skibbid dab
+  if (media.AnimeMetadata) {
+    //@ts-expect-error -- Yes, skibbid dab
+    return media.AnimeMetadata.find(metadata => metadata.locale_key === locale)
+  }
+
+  //@ts-expect-error -- Yes, skibbid dab
+  if (media.EpisodeMetadata) {
+    //@ts-expect-error -- Yes, skibbid dab
+    return media.EpisodeMetadata.find(metadata => metadata.locale_key === locale)
+  }
+
+  return {}
 }
