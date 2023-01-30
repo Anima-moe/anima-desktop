@@ -1,8 +1,8 @@
-import { Store } from "tauri-plugin-store-api"
-import axiosTauriApiAdapter from 'axios-tauri-api-adapter'
-
 import axios from 'axios'
-// @ts-ignore
-const client = axios.create({ adapter: axiosTauriApiAdapter, baseURL: 'https://anima.moe' })
 
-
+export default axios.create({
+  baseURL: 'http://localhost:3000',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+})
