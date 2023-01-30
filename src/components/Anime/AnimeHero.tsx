@@ -1,8 +1,6 @@
 // import anilistService from '@/services/anilist/anilistService';
 import { useState, useEffect, useCallback } from 'react';
-// import { useTranslation } from 'react-i18next'
-import { IoStar, IoCalendar, IoLibrary, IoPlay } from 'react-icons/io5'
-import { Play, FilmStrip } from 'phosphor-react'
+import { Play, FilmStrip, Books, Star, Calendar } from 'phosphor-react'
 // import Skeleton from 'react-loading-skeleton'
 
 import Pill from '@/components/General/Pill'
@@ -10,8 +8,7 @@ import Pill from '@/components/General/Pill'
 import { useRouter } from 'next/router'
 import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia';
 import Button from '@/components/General/Button';
-
-// import ModalVideo from 'react-modal-video'
+import { useTranslation } from 'react-i18next';
 
 type Props = {
  anime: Anima.RAW.Anime
@@ -20,10 +17,10 @@ type Props = {
 function AnimeHero({anime}: Props) {
   const [showTrailer, setShowTrailer] = useState(false)
   const [anilistData, setAnilistData] = useState<any | undefined>()
-  // const { t } = useTranslation()
+  const { t } = useTranslation()
   const router = useRouter()
 
-  const { background, cover, external_id, seasons, slug } = anime || {}
+  const { background, cover, external_id, AnimeSeason, slug } = anime || {}
   const { title, synopsis, anime_id } = getLocaleMetadata(anime)
   
   // useEffect(()=>{
@@ -35,7 +32,7 @@ function AnimeHero({anime}: Props) {
   // }, [title])
 
   return (
-    <div className='flex w-full h-[60vh] px-8 items-center pt-16 relative mb-9 -my-32'>
+    <div className='flex w-full h-[70vh] px-8 items-center pt-16 relative mb-9 -my-32'>
       <div className={'absolute top-0 left-0 w-full h-full cover z-[-1] overflow-hidden'}>
         {(background) && (
           (background.endsWith('.mp4') || background.endsWith('.webm')) && (
@@ -45,13 +42,13 @@ function AnimeHero({anime}: Props) {
       </div>
       <div className={'absolute top-0 left-0 w-full h-full bg-tertiary mix-blend-multiply z-[-1] '} />     
       <div className='flex w-full flex-col absolute -bottom-9 z-0'>
-        <div className='w-1/3'>
+        <div className='w-3/4'>
           <h1 className='font-bold text-5xl'>{title ? title : <></>}</h1>
         </div>
         <div className='flex my-4'>
-          { anilistData?.averageScore && <Pill Icon={IoStar} color='#FF922D'> {anilistData.averageScore/10}  </Pill> }
-          { anilistData?.lanch_date ? <Pill Icon={IoCalendar} color='#ABABAB'> 2019 </Pill> : <></>}
-          { anime.seasons.length ? <Pill Icon={IoLibrary} color='#ABABAB'>{'anime_generic_seasons'} </Pill> : <></> }
+          { anilistData?.averageScore && <Pill Icon={Star} color='#FF922D'> {anilistData.averageScore/10}  </Pill> }
+          { anilistData?.lanch_date ? <Pill Icon={Calendar} color='#ABABAB'> 2019 </Pill> : <></>}
+          { AnimeSeason?.length ? <Pill Icon={Books} color='#ABABAB'>{t('anime_generic_seasons', {n: AnimeSeason?.length})} </Pill> : <></> }
         </div>
         <div className='w-1/2 flex items-start text-subtle flex-col'>
           <p className='text-sm'>
