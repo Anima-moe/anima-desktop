@@ -1,5 +1,4 @@
 import i18next from "i18next"
-import { is } from 'typescript-is'
 
 export type AnimaMediaMetadata = {
   [key: string]: Anima.RAW.AnimeMetadata
@@ -15,9 +14,9 @@ export function getLocaleMetadata(media: Anima.RAW.Anime | Anima.RAW.Episode) {
   }
 
   //@ts-expect-error -- Yes, skibbid dab
-  if (media.EpisodeMetadata) {
+  if (media.AnimeEpisodeMetadata) {
     //@ts-expect-error -- Yes, skibbid dab
-    return media.EpisodeMetadata.find(metadata => metadata.locale_key === locale)
+    return media.AnimeEpisodeMetadata.find(metadata => metadata.locale_key === locale)
   }
 
   return {}
