@@ -37,7 +37,7 @@ function SplashScreen() {
           resizable: true,
           title: "Λ ＮＩＭ Λ - [あーにま • Alpha]",
           visible: false,
-          transparent: true
+          transparent: false
         })
         animaWindow.once('tauri://created', () => {
           appWindow.close()
