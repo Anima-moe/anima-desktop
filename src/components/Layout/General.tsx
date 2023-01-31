@@ -1,4 +1,5 @@
 import Navbar from '@/components/Navbar'
+import { Scrollbars } from 'react-custom-scrollbars'
 
 type Props = {
   children: React.ReactNode | React.ReactNode[]
@@ -8,8 +9,10 @@ type Props = {
 function General({children, fluid}: Props) {
   return <>
     <Navbar />
-    <main className={`pt-16 flex flex-col ${fluid ? 'px-0 w-full' : 'px-8'}`}>
-      {children}
+    <main className={`h-screen flex flex-col ${fluid ? 'px-0 w-full' : 'px-8'}`}>
+      <Scrollbars autoHide hideTracksWhenNotNeeded universal>
+        {children}
+      </Scrollbars>
     </main>
   </>
 }
