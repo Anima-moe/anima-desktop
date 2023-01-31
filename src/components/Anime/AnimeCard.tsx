@@ -82,12 +82,10 @@ function AnimeCard({anime, disabled, noHover, onClick}: Props) {
   return (
     <AnimeWrapper url={`/anime/${anime.id}`} disabled={(onClick !== undefined) || disabled} >
       <motion.div 
-        className='aspect-[2/3] w-full bg-red-600 overflow-hidden rounded-md select-none' 
+        className='aspect-[2/3] overflow-hidden rounded-md select-none bg-cover bg-center' 
         style={{
-          backgroundColor: '#1a1a1a',
-          background: `url('${anime.cover}')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundColor: '#212121',
+          backgroundImage: `url('${anime.cover}')`,
           cursor: disabled ? 'initial' : 'pointer'
         }}
         whileHover={disabled ? 'initial' : 'hover'}
@@ -104,7 +102,7 @@ function AnimeCard({anime, disabled, noHover, onClick}: Props) {
                 className='text-sm font-semibold text-ellipsis w-full overflow-hidden translate-y-10'
                 variants={contentVariants}
               >
-                {getLocaleMetadata(anime).title}
+                {getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(anime).title}
               </motion.h6>
               <motion.span 
                 className='w-full flex text-xs text-subtle'
