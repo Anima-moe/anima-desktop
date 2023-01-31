@@ -21,7 +21,7 @@ function AnimeHero({anime}: Props) {
   const router = useRouter()
 
   const { background, cover, external_id, AnimeSeason, slug } = anime || {}
-  const { title, synopsis, anime_id } = getLocaleMetadata(anime)
+  const { title, synopsis, anime_id } = getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(anime)
   
   // useEffect(()=>{
   //   if (!title) { return };
@@ -32,7 +32,7 @@ function AnimeHero({anime}: Props) {
   // }, [title])
 
   return (
-    <div className='flex w-full h-[70vh] px-8 items-center pt-16 relative mb-9 -my-32'>
+    <div className='flex w-full h-[80vh] px-8 items-center pt-16 relative mb-9 -my-32'>
       <div className={'absolute top-0 left-0 w-full h-full cover z-[-1] overflow-hidden'}>
         {(background) && (
           (background.endsWith('.mp4') || background.endsWith('.webm')) && (
@@ -45,10 +45,10 @@ function AnimeHero({anime}: Props) {
         <div className='w-3/4'>
           <h1 className='font-bold text-5xl'>{title ? title : <></>}</h1>
         </div>
-        <div className='flex my-4'>
+        <div className='flex mt-4 mb-12'>
           { anilistData?.averageScore && <Pill Icon={Star} color='#FF922D'> {anilistData.averageScore/10}  </Pill> }
           { anilistData?.lanch_date ? <Pill Icon={Calendar} color='#ABABAB'> 2019 </Pill> : <></>}
-          { AnimeSeason?.length ? <Pill Icon={Books} color='#ABABAB'>{t('anime_generic_seasons', {n: AnimeSeason?.length})} </Pill> : <></> }
+          { AnimeSeason?.length ? <Pill Icon={Books} color='#ABABAB'>{t( AnimeSeason?.length > 1 ? 'anime_generic_seasons' : 'anime_generic_season', {n: AnimeSeason?.length})} </Pill> : <></> }
         </div>
         <div className='w-1/2 flex items-start text-subtle flex-col'>
           <p className='text-sm'>
