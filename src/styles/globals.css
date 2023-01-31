@@ -23,3 +23,40 @@ body {
   border-radius: 6px;
   transition: all .3s ease;
 }
+
+.swiper-button-next {
+  -webkit-mask: url(/icons/caret-right.svg) no-repeat 50% 50%;
+  mask: url(/icons/caret-right.svg) no-repeat 50% 50%;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  @apply right-0 !important;
+}
+
+.swiper-button-prev {
+  -webkit-mask: url(/icons/caret-left.svg) no-repeat 50% 50%;
+  mask: url(/icons/caret-left.svg) no-repeat 50% 50%;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  @apply left-0 !important;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  @apply hidden !important;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  @apply bg-white transition-all duration-300 w-10 h-10 rounded-md !important;
+  
+  background-size: 100% auto !important;
+}
+
+.swiper-button-disabled {
+  @apply pointer-events-auto opacity-0 !important;
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  @apply bg-accent text-white !important;
+}
