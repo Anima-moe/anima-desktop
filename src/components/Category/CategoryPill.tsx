@@ -1,5 +1,4 @@
 import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
-import React from 'react'
 
 type Props = {
   selected?: boolean
