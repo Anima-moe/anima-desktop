@@ -4,33 +4,35 @@ import AnimeHero from "@/components/Anime/AnimeHero"
 import DonationReminder from "@/components/General/DonationReminder"
 import ContentContainer from '@/components/Layout/ContentContainer'
 import { Anime } from '@/services/anima/anime'
-import { useTranslation } from 'react-i18next';
-import AnimeScroll from '@/components/Anime/AnimeScroll';
+import { useTranslation } from 'react-i18next'
+import AnimeScroll from '@/components/Anime/AnimeScroll'
+import AnimeSwiper from '@/components/Anime/AnimeSwiper'
+import useSWR from 'swr'
+import Loading from '@/components/General/Loading'
+
+const fetchPopularAnimes = () =>{ return Anime.getByCategory(26) }
+const fetchSimulcastAnimes = () =>{ return Anime.getByCategory(16) }
 
 function App() {
-  const [simulcastAnimes, setSimulcastAnimes] = useState<Anima.RAW.Anime[]>([])
-  const [popularAnimes, setPopularAnimes] = useState<Anima.RAW.Anime[]>([])
-  const [popularAllTimeAnimes, setPopularAllTimeAnimes] = useState<Anima.RAW.Anime[]>([])
+  const { data: simulcastAnimes, error: simulcastError, isLoading: loadingSimulcast } = useSWR<Anima.API.GetAnimes>(`/api/getSimulcast`, fetchSimulcastAnimes)
+  const { data: popularAnimes, error: popularError, isLoading: loadingPopular } = useSWR<Anima.API.GetAnimes>(`/api/getPopular`, fetchPopularAnimes)
   const [heroAnime, setHeroAnime] = useState<Anima.RAW.Anime>({} as Anima.RAW.Anime)
   const { t } = useTranslation()
-  const fetchAnimeData = useCallback(()=>{
-    (async ()=>{
-      const fetchSimulcast = await Anime.getByCategory(16)
-      if (fetchSimulcast.count && fetchSimulcast.count > 0 ) { 
-        setSimulcastAnimes(fetchSimulcast.data)
-        setHeroAnime(fetchSimulcast.data[Math.floor(Math.random() * fetchSimulcast.count)])
-      }
 
-      const fetchPopulat = await Anime.getByCategory(26)
-      if (fetchPopulat.count && fetchPopulat.count > 0 ) {
-        setPopularAnimes(fetchPopulat.data)
-      }
-    })()
-  }, [])
+  const decideHeroAnime = useCallback(()=>{
+    if (simulcastAnimes) setHeroAnime(simulcastAnimes.data[Math.floor(Math.random() * simulcastAnimes.data.length)])
+    else if (popularAnimes) setHeroAnime(popularAnimes.data[Math.floor(Math.random() * popularAnimes.data.length)])
+    else return
+  }, [simulcastAnimes])
 
-  useEffect(fetchAnimeData, [fetchAnimeData])
+  useEffect(decideHeroAnime, [decideHeroAnime])
+
+  if (simulcastError || popularError) return <GeneralLayout fluid><div className='flex justify-center items-center h-screen'><h1 className='text-2xl'>Error</h1></div></GeneralLayout>
+
+  if (loadingSimulcast || loadingPopular) return <GeneralLayout fluid><div className='flex justify-center items-center h-screen'><Loading /></div></GeneralLayout>
 
   return <GeneralLayout fluid>
+    
     <AnimeHero anime={heroAnime} /> 
 
     <ContentContainer>
@@ -43,12 +45,12 @@ function App() {
     </ContentContainer>
     <ContentContainer>
       <h3>{t('section_simulcast')}</h3>
-      <AnimeScroll animes={simulcastAnimes} animesPerScreen={7}/>
+      <AnimeSwiper loading={loadingSimulcast} animes={simulcastAnimes?.data} animesPerScreen={7}/>
     </ContentContainer>
 
     <ContentContainer>
       <h3>{t('section_popular')}</h3>
-      <AnimeScroll animes={popularAnimes} animesPerScreen={7}/>
+      <AnimeSwiper loading={loadingSimulcast} animes={popularAnimes?.data} animesPerScreen={7}/>
     </ContentContainer>
   </GeneralLayout>
 }
