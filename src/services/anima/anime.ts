@@ -23,6 +23,17 @@ export const Anime = {
     return data as Anima.API.GetCategoryAnimes
   },
 
+  getByCategories: async function (slugs: string[], skip: number = 0) {
+    const { data } = await client.get(`/category/animes`, {
+      params: {
+        slugs: slugs.join(','),
+        skip
+      }
+    })
+
+    return data as Anima.API.GetAnimes
+  },
+
   getSeasons: async function (id: number) {
     const { data } = await client.get(`/anime/${id}/seasons`)
 
@@ -32,7 +43,9 @@ export const Anime = {
   search: async function (query: string) {
     const { data } = await client.get(`/anime/search`, {
       params: {
-        q: query
+        q: query,
+        count: 20,
+        start: 0
       }
     })
     return data as Anima.API.SearchAnimes
