@@ -5,7 +5,6 @@ import languageTable from '@/services/i18n/languageTable'
 
 import "@/styles/globals.css"
 import { useEffect } from "react"
-import { getConfigValue } from '@/services/tauri/configValue'
 import { invoke } from "@tauri-apps/api/tauri"
 
 i18n
