@@ -92,7 +92,7 @@ function SearchPortal({query = ''}: Props) {
         )}
 
         {/* LOADING ANIMES */}
-        {searchLoading || categoriesLoading && <div className='w-full h-full items-center justify-center'>
+        {searchLoading || categoriesLoading && <div className='w-full flex items-center justify-center mt-32'>
           <Loading/>
         </div>}
 
