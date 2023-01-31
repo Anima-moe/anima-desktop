@@ -7,6 +7,7 @@ import i18next, { t } from 'i18next'
 import { useState, useCallback, useEffect } from 'react'
 import CategoryPill from '@/components/Category/CategoryPill'
 import AnimeGrid from '@/components/Anime/AnimeGrid'
+import { AnimatePresence, motion } from 'framer-motion'
 
 // With those functions we avoid re-fetching the data when the requires inputs are either invalid or doesn't meet the criteria.
 async function getCategoryAnimes(categories: Anima.RAW.Category[], start: number = 0) {  
@@ -51,29 +52,43 @@ function SearchPortal({query = ''}: Props) {
       <div className='flex w-full relative h-full flex-col'>
         {/* DISPLAY AVAILABLE CATEGORIES FOR THIS LOCALE */}
         {categories?.data.length > 0 && (
-          <div className='flex flex-row flex-wrap mb-4'>
-            {categories?.data.map((category, index) => (
-              <CategoryPill 
-                category={category} 
-                key={`category.${i18next.language}.${category.slug}`} 
-                selected={
-                  selectedCategory.some((c)=> c.slug === category.slug)
-                }
-                onClick={() => {
-                  if(selectedCategory.length === 1 && selectedCategory[0].slug === category.slug) {
-                    setSelectedCategory([])
-                    return
-                  }
+        <AnimatePresence>
+            <motion.div 
+              initial={{opacity: 0, y: -20}}
+              animate={{opacity: 1, y: 0}}
+              transition={{
+                delay: .25,
+                duration: .15,
+                type: 'spring',
+                stiffness: 500,
+                damping: 60,
+                mass: 1
+              }}
+              className='flex flex-row flex-wrap mb-4'
+            >
+                {categories?.data.map((category, index) => (
+                  <CategoryPill 
+                    category={category} 
+                    key={`category.${i18next.language}.${category.slug}`} 
+                    selected={
+                      selectedCategory.some((c)=> c.slug === category.slug)
+                    }
+                    onClick={() => {
+                      if(selectedCategory.length === 1 && selectedCategory[0].slug === category.slug) {
+                        setSelectedCategory([])
+                        return
+                      }
 
-                  if (selectedCategory.some((c)=> c.slug === category.slug)) {
-                    setSelectedCategory(selectedCategory.filter((c)=> c.slug !== category.slug))
-                  } else {
-                    setSelectedCategory([...selectedCategory, category])
-                  }
-                }}
-              />
-            ))}
-          </div>
+                      if (selectedCategory.some((c)=> c.slug === category.slug)) {
+                        setSelectedCategory(selectedCategory.filter((c)=> c.slug !== category.slug))
+                      } else {
+                        setSelectedCategory([...selectedCategory, category])
+                      }
+                    }}
+                  />
+                ))}
+            </motion.div>
+          </AnimatePresence>
         )}
 
         {/* LOADING ANIMES */}
