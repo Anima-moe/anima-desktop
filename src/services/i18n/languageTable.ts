@@ -55,6 +55,15 @@ const languageTable = {
       anilist_status_TBA: 'TBA',
       anilist_status_UNRELEASED: 'Unreleased',
       anilist_status_UPCOMING: 'Upcoming',
+
+      search_placeholder: 'Search',
+      search_prompt: 'Search for anime titles',
+      search_moredata: 'The search query must contain 3 or more characters OR one category',
+
+
+      api_fetchError: 'Oops! Something went wrong. Please try again later.',
+
+      loading_moreData: 'Loading more ...',
     },
   },
   'pt-BR': {
@@ -112,6 +121,13 @@ const languageTable = {
       anilist_status_UNRELEASED: 'Não Lançado',
       anilist_status_UPCOMING: 'Em Breve',
 
+      search_placeholder: 'Pesquisar',
+      search_prompt: 'Busque por título de animes',
+      search_moredata: 'A busca deve conter 3 ou mais caracteres OU uma categoria',
+
+      api_fetchError: 'Oops! Algo deu errado ao obter os dados do servidor. Tente novamente mais tarde.',
+
+      loading_moreData: 'Carregando mais...',
     },
   },
   'es-149': {

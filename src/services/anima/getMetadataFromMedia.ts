@@ -4,27 +4,33 @@ export type AnimaMediaMetadata = {
   [key: string]: Anima.RAW.AnimeMetadata
 }
 
-export function getLocaleMetadata(media: Anima.RAW.Anime | Anima.RAW.Episode) {
+export function getLocaleMetadata<T, TM>(media: T): TM {
   const locale = i18next.language
 
-  //@ts-expect-error -- Yes, skibbid dab
+  //@ts-expect-error
   if (media.AnimeMetadata) {
-    //@ts-expect-error -- Yes, skibbid dab
-    return media.AnimeMetadata.find(metadata => metadata.locale_key === locale)
+    //@ts-expect-error
+    return media.AnimeMetadata.find(metadata => metadata.locale_key === locale) as TM
   }
 
-  //@ts-expect-error -- Yes, skibbid dab
+  //@ts-expect-error
   if (media.AnimeEpisodeMetadata) {
-    //@ts-expect-error -- Yes, skibbid dab
-    return media.AnimeEpisodeMetadata.find(metadata => metadata.locale_key === locale)
+    //@ts-expect-error
+    return media.AnimeEpisodeMetadata.find(metadata => metadata.locale_key === locale) as TM
   }
 
-  //@ts-expect-error -- Yes, skibbid dab
+  //@ts-expect-error
   if (media.EpisodeMetadata) {
-    //@ts-expect-error -- Yes, skibbid dab
-    return media.EpisodeMetadata.find(metadata => metadata.locale_key === locale)
+    //@ts-expect-error
+    return media.EpisodeMetadata.find(metadata => metadata.locale_key === locale) as TM
+  }
+
+  //@ts-expect-error
+  if (media.categoryMetadata) {
+    //@ts-expect-error
+    return media.categoryMetadata.find(metadata => metadata.locale === locale) as TM
   }
 
 
-  return {}
+  return {} as TM
 }

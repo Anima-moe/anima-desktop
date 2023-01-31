@@ -1,39 +1,22 @@
 import useSWR from 'swr'
 import AnimeScroll from '@/components/Anime/AnimeScroll'
+import { Anime } from '@/services/anima/anime'
+import { Category } from '@/services/anima/category'
+import Loading from '@/components/General/Loading'
+import i18next, { t } from 'i18next'
+import { useState, useCallback, useEffect } from 'react'
+import CategoryPill from '@/components/Category/CategoryPill'
+import AnimeGrid from '@/components/Anime/AnimeGrid'
 
-async function fetcher(url: string) {
- // Fetch search info
- return {
-  count: 1,
-  data: Array(20)
-  .fill(0)
-  .map((_, ind) => (    {
-    cover: 'https://www.crunchyroll.com/imgsrv/display/thumbnail/1560x2340/catalog/crunchyroll/7e023c55c6cb63b2ecbb31b6aae9bf12.jpe',
-    background: '',
-    slug: '',
-    external_id: '',
-    metadata: {
-      'pt-BR': {
-        id: 0,
-        title: 'My Hero Academia',
-        synopsis: '',
-        type: 'anime',
-        locale_key: 'pt-BR',
-        anime_id: 0,
-      }
-    },
-    seasons: [
-      {
-        id: 0,
-        title: '',
-        number: 0,
-        anime_id: 0,
-      }
-    ]
-  }))
+// With those functions we avoid re-fetching the data when the requires inputs are either invalid or doesn't meet the criteria.
+async function getCategoryAnimes(categories: Anima.RAW.Category[], skip: number =0) {  
+  if (categories.length === 0) return  {data:[], count:0} as Anima.API.GetAnimes
+  return await Anime.getByCategories(categories.map((c)=>c.slug), skip)
+}
 
-
- } as Anima.API.SearchAnime
+async function getSearchResult(query: string) {
+  if (!query || query.length < 3) return {data:[], count:0} as Anima.API.SearchAnimes
+  return await Anime.search(query)
 }
 
 type Props = {
@@ -41,30 +24,96 @@ type Props = {
 }
 
 function SearchPortal({query = ''}: Props) {
-  const {data, error, isLoading} = useSWR<Anima.API.SearchAnime>(`/api/search/${query}`, ()=>{return fetcher(query)})
+  const [categoryAnimes, setCategoryAnimes] = useState<Anima.API.GetAnimes>({data:[], count:0})
+  const [selectedCategory, setSelectedCategory] = useState<Anima.RAW.Category[]>([])
+  const {data: searchResult, error: searchError, isLoading: searchLoading} = useSWR<Anima.API.SearchAnimes>(`/api/search/${query}`, ()=>{return getSearchResult(query)})
+  const {data: categories, error: categoriesError, isLoading: categoriesLoading} = useSWR<Anima.API.GetCategories>(`/api/categories`, ()=>{return Category.getAll(i18next.language)})
 
-  if (!query || query.length < 3) { return (
-    <div className='fixed left-0 top-0 w-full h-screen bg-primary bg-opacity-90 z-[1] flex px-32 py-52 items-center justify-center'>
-      <span className='text-xs text-subtle'>The search query must contain at least 3 characters</span>
-    </div>
-  )}
+  const fetchCategoryAnimes = useCallback(()=>{
+    if (query.length > 1) { return }
+    setCategoryAnimes({data:[], count:0})
+    if (selectedCategory.length === 0) { return }
+    
+    getCategoryAnimes(selectedCategory).then((data)=>setCategoryAnimes(data))
+  },[selectedCategory.join(',')])
+  useEffect(fetchCategoryAnimes, [fetchCategoryAnimes])
 
+  const appendCategoryAnimes = ()=>{
+    getCategoryAnimes(selectedCategory, categoryAnimes.data.length)
+    .then((data)=>{
+      setCategoryAnimes({
+        data: [...categoryAnimes.data, ...data.data],
+        count: data.count
+      })
+    })
+  }
 
-  if (error) { return(
-    <div className='fixed left-0 top-0 w-full h-screen bg-primary bg-opacity-90 z-[1] flex px-32 py-52'>
-      <span></span>
-    </div>
-  )}
+  return <div className='fixed left-0 top-0 w-full h-full bg-primary bg-opacity-95 z-[1] flex px-32 pt-[11rem] pb-8 flex-col backdrop-blur-md'>
+      <div className='flex w-full relative h-full flex-col'>
+        {/* DISPLAY AVAILABLE CATEGORIES FOR THIS LOCALE */}
+        {categories?.data.length > 0 && (
+          <div className='flex flex-row flex-wrap mb-4'>
+            {categories?.data.map((category, index) => (
+              <CategoryPill 
+                category={category} 
+                key={`category.${i18next.language}.${category.slug}`} 
+                selected={
+                  selectedCategory.some((c)=> c.slug === category.slug)
+                }
+                onClick={() => {
+                  if(selectedCategory.length === 1 && selectedCategory[0].slug === category.slug) {
+                    setSelectedCategory([])
+                    return
+                  }
 
-  if (isLoading) { return (
-    <div className='fixed left-0 top-0 w-full h-screen bg-primary bg-opacity-90 z-[1] flex px-32 py-52'>
-      loading
-    </div>
-  )}
+                  if (selectedCategory.some((c)=> c.slug === category.slug)) {
+                    setSelectedCategory(selectedCategory.filter((c)=> c.slug !== category.slug))
+                  } else {
+                    setSelectedCategory([...selectedCategory, category])
+                  }
+                }}
+              />
+            ))}
+          </div>
+        )}
 
-  return <div className='fixed left-0 top-0 w-full h-screen bg-primary bg-opacity-95 z-[1] flex px-32 py-52'>
-      <div className='flex w-full relative h-min'>
-        <AnimeScroll animes={data.data} animesPerScreen={7} alwaysShowInfo/>
+        {/* LOADING ANIMES */}
+        {searchLoading || categoriesLoading && <div className='w-full flex items-center justify-center mt-32'>
+          <Loading/>
+        </div>}
+
+        {/* DISPLAY SEARCH RESULTS */}
+        {(searchResult?.data?.length > 0) && (
+          <AnimeScroll 
+            animes={searchResult.data.filter((anime)=> {
+              if (selectedCategory.length < 1) return true
+              return anime.Category.some((category) => selectedCategory.map((c) => c.slug).includes(category.slug))
+            })} 
+            animesPerScreen={7} 
+            alwaysShowInfo
+          /> 
+        )}
+
+        {/* DISPLAY CATEGORY ANIMES */}
+        {(selectedCategory.length > 0 && categoryAnimes?.data?.length > 0) && (query.length < 1) && (
+          <AnimeGrid  
+            animes={categoryAnimes.data} 
+            onHitBottom={appendCategoryAnimes} 
+            hasMore={categoryAnimes.count === 20} 
+            alwaysShowInfo animesPerRow={7} 
+          />
+        )}
+
+        {/* DISPLAY NO QUERY */}
+        {(!query && selectedCategory.length < 1) && (
+          <span className='text-xs text-subtle w-full flex items-center justify-center mt-32'>{t('search_moredata')}</span> 
+        )}
+
+        {/* DISPLAY ERROR */}
+        {(categoriesError || searchError) && (
+          <span className='text-xs text-red-400 font-semibold w-full flex items-center justify-center mt-32'>{t('api_fetchError')}</span>
+        )}
+
       </div>
   </div>
 }
