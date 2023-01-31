@@ -68,7 +68,7 @@ function AnimePage({}: Props) {
         {/* SEASONS */}
         <div className='w-full mt-4'>
             {seasonsData.map(season => {
-              return <SeasonDisplay season={season}/>
+              return <SeasonDisplay season={season} key={`season.${season.number}.${season.title}`}/>
             })}
         </div>
       </div>
