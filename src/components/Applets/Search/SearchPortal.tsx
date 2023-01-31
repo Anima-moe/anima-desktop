@@ -9,9 +9,9 @@ import CategoryPill from '@/components/Category/CategoryPill'
 import AnimeGrid from '@/components/Anime/AnimeGrid'
 
 // With those functions we avoid re-fetching the data when the requires inputs are either invalid or doesn't meet the criteria.
-async function getCategoryAnimes(categories: Anima.RAW.Category[], skip: number =0) {  
+async function getCategoryAnimes(categories: Anima.RAW.Category[], start: number = 0) {  
   if (categories.length === 0) return  {data:[], count:0} as Anima.API.GetAnimes
-  return await Anime.getByCategories(categories.map((c)=>c.slug), skip)
+  return await Anime.getByCategories(categories.map((c)=>c.slug), start)
 }
 
 async function getSearchResult(query: string) {
@@ -31,9 +31,8 @@ function SearchPortal({query = ''}: Props) {
 
   const fetchCategoryAnimes = useCallback(()=>{
     if (query.length > 1) { return }
+
     setCategoryAnimes({data:[], count:0})
-    if (selectedCategory.length === 0) { return }
-    
     getCategoryAnimes(selectedCategory).then((data)=>setCategoryAnimes(data))
   },[selectedCategory.join(',')])
   useEffect(fetchCategoryAnimes, [fetchCategoryAnimes])
@@ -78,7 +77,7 @@ function SearchPortal({query = ''}: Props) {
         )}
 
         {/* LOADING ANIMES */}
-        {searchLoading || categoriesLoading && <div className='w-full flex items-center justify-center mt-32'>
+        {searchLoading || categoriesLoading && <div className='w-full h-full items-center justify-center'>
           <Loading/>
         </div>}
 

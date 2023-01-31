@@ -23,11 +23,11 @@ export const Anime = {
     return data as Anima.API.GetCategoryAnimes
   },
 
-  getByCategories: async function (slugs: string[], skip: number = 0) {
+  getByCategories: async function (slugs: string[], start: number = 0) {
     const { data } = await client.get(`/category/animes`, {
       params: {
         slugs: slugs.join(','),
-        skip
+        start
       }
     })
 
