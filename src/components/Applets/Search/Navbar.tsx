@@ -1,11 +1,13 @@
 import { motion } from 'framer-motion'
-import { MagnifyingGlass, Backspace } from 'phosphor-react'
+import { MagnifyingGlass, X } from 'phosphor-react'
 import { useRef, useState } from 'react'
 
 import SearchPortal from '@/components/Applets/Search/SearchPortal'
 import { Portal } from 'react-portal'
 import resolveConfig from 'tailwindcss/resolveConfig'
+import { debounce } from 'ts-debounce'
 import tailwindConfig from '@/../tailwind.config.js'
+import { t } from 'i18next'
 const twConfig = resolveConfig(tailwindConfig)
 
 const typebarVariants = {
@@ -99,16 +101,14 @@ function Navbar({}: Props) {
   const [focused, setFocused] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
+  const debouncedSetQuery = debounce(setQuery, 300)
+
   return <>
   <motion.div 
     initial='initial'
     animate={focused ? 'animate' : 'initial'} 
     variants={typebarVariants}
     onFocus={()=>{setFocused(true)}} 
-    onBlur={()=>{
-      if (query && query.length > 0) return
-      setFocused(false)
-    }} 
     onKeyUp={(e)=>{
       if (e.key === 'Escape') {
         if (!inputRef.current) { return }
@@ -135,16 +135,17 @@ function Navbar({}: Props) {
         if (!inputRef?.current) return
         inputRef.current.value = ''
         setQuery('')
-        inputRef.current.focus()
+        inputRef.current.blur()
+        setFocused(false)
       }}
     >
-      <Backspace size={32} />
+      <X size={32} />
     </motion.div>
     <input 
       className='py-2 bg-transparent text-subtle placeholder:text-subtle w-full focus:text-white focus:ring-0 focus:ring-offset-0 outline-none focus:font-medium' 
-      placeholder={focused ? 'Search for anime titles' : 'Search'} 
+      placeholder={focused ? t('search_prompt') : t('search_placeholder') } 
       onChange={(e)=>{
-        setQuery(e.target.value)
+        debouncedSetQuery(e.target.value)
       }} 
       ref={inputRef}
     />
