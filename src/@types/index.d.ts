@@ -11,6 +11,20 @@ namespace Anima {
 
     type Locales = 'en-US' | 'pt-BR' | 'es-149' | 'de-DE' | 'ja-JP'
 
+    type CategoryMetadata = {
+      title: string,
+      description: string,
+      category_id: number,
+      locale_key: Locales
+    }
+
+    type Category = {
+      id: number,
+      slug: string,
+      locale: string,
+      CategoryMetadata: CategoryMetadata
+    }
+
     type AnimeMetadata = {
       id: number
       title: string
@@ -50,6 +64,7 @@ namespace Anima {
       external_id: string
       AnimeSeason: Season[]
       AnimeMetadata: Anima.RAW.AnimeMetadata[]
+      Category: Anima.RAW.Category[]
     }
 
     type Episode = {
@@ -142,7 +157,13 @@ namespace Anima {
     } // Returns Error if unable to get episode media from source crawler
 
     type GetCategory = {
+      count: 1,
+      data: Anima.RAW.Category
+    }
 
+    type GetCategories = {
+      count: 1,
+      data: Anima.RAW.Category[]
     }
 
     type GetCategoryAnimes = Anima.API.GetAnimes
