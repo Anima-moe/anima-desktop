@@ -8,22 +8,13 @@ import { useRef, useCallback, useEffect } from 'react';
 
 type Props = {
   animesPerScreen: number
-  animes: Anima.RAW.Anime[]
+  animes?: Anima.RAW.Anime[]
+  loading?: boolean
   alwaysShowInfo?: boolean
 }
 
 function AnimeScroll({animes, animesPerScreen, alwaysShowInfo}: Props) {
     const scrollerRef = useRef<HTMLDivElement>(null)
-
-    // const attachScroll = useCallback(()=>{
-    //   const scroller = scrollerRef.current
-    //   if (!scroller) { return }
-    //   scroller.addEventListener('wheel', (e) => {
-    //     scroller.scrollLeft += e.deltaY;
-    //   })
-    // }, [scrollerRef])
-    
-    // useEffect(attachScroll, [attachScroll])
 
     // @ts-expect-error
     return <PagedScroller 
@@ -53,7 +44,7 @@ function AnimeScroll({animes, animesPerScreen, alwaysShowInfo}: Props) {
       }
       scrollContainerRef={scrollerRef}
     >
-    {animes.map(anime => { 
+    {animes?.map(anime => { 
         return <div 
           key={anime.external_id} 
           className='aspect-[3/2] group py-2.5 mx-2 flex flex-col select-none'
@@ -68,7 +59,7 @@ function AnimeScroll({animes, animesPerScreen, alwaysShowInfo}: Props) {
             noHover={alwaysShowInfo}
           />
           {alwaysShowInfo && <span className='pt-1 text-sm font-medium'>
-            {getLocaleMetadata(anime)?.title || 'No title'}
+            {getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(anime)?.title || 'No title'}
           </span>}
         </div>
       })}
