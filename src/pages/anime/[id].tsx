@@ -37,7 +37,7 @@ function AnimePage({}: Props) {
   return <GeneralLayout fluid> 
   { animeData && <>
     <div 
-      className='w-full h-[50vh] bg-center bg-cover bg-no-repeat relative -mt-16' 
+      className='w-full h-[50vh] bg-center bg-cover bg-no-repeat relative -mt-16 z-0' 
       style={{backgroundImage: `url('${animeData.background}')`}}
     >
       {(animeData.background) && (
@@ -47,7 +47,7 @@ function AnimePage({}: Props) {
       )}
       <div className='w-full h-full absolute top-0 left-0 bg-secondary backdrop-blur-sm mix-blend-multiply bg-opacity-70' />
     </div>
-    <div className='w-full flex flex-row -mt-[20vh] z-[1] px-8'>
+    <div className='w-full flex flex-row -mt-[20vh] z-[1] px-8 relative'>
       <div className='w-1/5 mr-4'>
         <AnimeCard disabled noHover anime={animeData} 
         />
@@ -56,13 +56,13 @@ function AnimePage({}: Props) {
         {/* TITLE METADATA */}
         <div className='w-full h-[20vh] items-start justify-end flex flex-col overflow-hidden pb-4'>
           <h6 className='text-xs text-white text-opacity-40'>2023</h6>
-          <h1 className='text-4xl font-bold line-clamp-2'>{getLocaleMetadata(animeData)?.title || 'Unknown title'}</h1>
+          <h1 className='text-4xl font-bold line-clamp-2'>{getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(animeData)?.title || 'Unknown title'}</h1>
           <h3 className='text-lg'>イジらないで、長瀞さん</h3>
         </div>
         {/* SYNOPSIS */}
         <div className='mt-4 w-3/4'>
           <p className='text-sm text-white text-opacity-70'>
-            {getLocaleMetadata(animeData)?.synopsis || 'Missing synopsis'}
+            {getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(animeData)?.synopsis || 'Missing synopsis'}
           </p>
         </div>
         {/* SEASONS */}
