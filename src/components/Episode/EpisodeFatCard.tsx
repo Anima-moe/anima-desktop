@@ -5,7 +5,6 @@ import React from 'react'
 
 type Props = {
   episode: Anima.RAW.Episode
-  cover: string
   playerHead?: number
   duration?: number
   active?: boolean
@@ -79,7 +78,7 @@ const shadeVariants = {
 }
 
 
-function EpisodeFatCard({episode, cover, active}: Props) {
+function EpisodeFatCard({episode, active}: Props) {
   const beautyNumber = (number: number) => {
     if (number < 10) return `0${number}`
     return number
@@ -92,11 +91,12 @@ function EpisodeFatCard({episode, cover, active}: Props) {
   })
   return <motion.div 
     className={className} 
-    style={{backgroundImage: `url('${cover}')`}}
+    style={{backgroundImage: `url('${episode.thumbnail}')`}}
     variants={active ? activeCardVariants : cardVariants}
     initial={ active ? 'hover' : 'initial'}
     whileHover='hover'
   >
+    
     <motion.div 
       variants={shadeVariants}
       className='bg-gradient-to-t from-primary to-transparent absolute top-0 left-0 w-[100%] h-[100%] bg-opacity-40 z[-1]' 
@@ -107,10 +107,11 @@ function EpisodeFatCard({episode, cover, active}: Props) {
     >
       <div className='flex flex-row mb-1.5'>
         <span className='bg-primary text-accent px-2 rounded-md mr-1.5 flex items-center justify-center'>{beautyNumber(episode.number) || '?'}</span>
-        <h1 className='font-semibold text-lg overflow-hidden w-full line-clamp-1 text-ellipsis'>{getLocaleMetadata(episode).title}</h1>
+        <h1 className='font-semibold text-lg overflow-hidden w-full line-clamp-1 text-ellipsis'>{getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(episode).title}</h1>
       </div>
-      <p className='text-xs text-white text-opacity-60 overflow-hidden w-full text-ellipsis line-clamp-2'>{getLocaleMetadata(episode).synopsis}</p>
+      <p className='text-xs text-white text-opacity-60 overflow-hidden w-full text-ellipsis line-clamp-2'>{getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(episode).synopsis}</p>
     </motion.div>
+
   </motion.div>
 }
 

@@ -88,7 +88,7 @@ const languageTable = {
       section_popular: 'Popular',
       section_latest: 'Mais recented',
       section_categories: 'Categorias',
-      section_simulcast: 'Lançamentos',
+      section_simulcast: 'Temporada atual',
 
       anime_heading_characters: 'Personagens',
       anime_heading_casting: 'Elenco',
