@@ -1,5 +1,9 @@
-import { Popover } from "@headlessui/react"
-import { ArrowDown } from "phosphor-react"
+import { Popover, Transition } from "@headlessui/react"
+import { ArrowDown, MonitorPlay } from "phosphor-react"
+import EpisodeFatCard from "../Episode/EpisodeFatCard"
+import Scrollbars from 'react-custom-scrollbars'
+import { useTranslation } from 'react-i18next';
+
 
 type Props = {
   season: Anima.RAW.Season
@@ -7,18 +11,38 @@ type Props = {
 }
 
 export default function SeasonBrowser({season, episode}: Props) {
-  return <Popover className="relative cursor-pointer pointer-events-auto w-full bg-red-600">
-  <Popover.Button className='ml-auto bg-blue-400'>Solutions</Popover.Button>
+  const { t } = useTranslation()
 
-  <Popover.Panel className="absolute z-10">
-    <div className="grid grid-cols-2">
-      <a href="/analytics">Analytics</a>
-      <a href="/engagement">Engagement</a>
-      <a href="/security">Security</a>
-      <a href="/integrations">Integrations</a>
-    </div>
-
-    <img src="/solutions.jpg" alt="" />
-  </Popover.Panel>
+  return <Popover className="relative pointer-events-auto ml-auto">
+    {({ open }) => (
+      <>
+        <Popover.Button 
+          className={`
+          cursor-pointer border hover:text-accent hover:bg-black duration-300 px-3 py-3 rounded-md
+          ${open ? 'bg-accent text-primary border-accent' : 'bg-transparent border-transparent text-white'}`}
+        >
+          <MonitorPlay weight="fill" size={24} />
+        </Popover.Button>
+        <Transition
+          enter="transition duration-300 ease-out"
+          enterFrom="transform opacity-0 -translate-y-6"
+          enterTo="transform opacity-300"
+          leave="transition ease-out"
+          leaveFrom="transform scale-300 opacity-100"
+          leaveTo="transform  opacity-0"
+        >
+          <Popover.Panel className="absolute mt-4 -translate-x-[21rem] h-96 w-96 rounded-md p-2 bg-primary aspect-video overflow-hidden">
+            <div className="w-full h-full flex overflow-hidden flex-col rounded-md">
+              <h3 className="text-xs my-1 mb-2 px-1.5 font-semibold">{t('anime_generic_season', {n: season.number})} • {season.title}</h3>
+              <Scrollbars>
+                  {season.AnimeEpisode.sort((a,b) => a.number-b.number).map((seasonEpisode, index) => {
+                    return <EpisodeFatCard link={`/episode/${season.id}/${seasonEpisode.id}`} episode={seasonEpisode} active={seasonEpisode.id === episode.id} key={episode.id}/>
+                  })}
+              </Scrollbars>
+            </div>
+          </Popover.Panel>
+        </Transition>
+      </>
+    )}
 </Popover>
 }

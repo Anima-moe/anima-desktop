@@ -8,7 +8,7 @@ type Props = {
 }
 
 function MediaTitle({ episodeNumber, episodeTitle, seasonNumber }: Props) {
-  return <p className='text-white text-opacity-70'>
+  return <p className='text-white'>
   S{seasonNumber}E{episodeNumber} • {episodeTitle}
 </p>
 }

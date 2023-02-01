@@ -78,13 +78,11 @@ namespace Anima {
     }
 
     type EpisodeMedia = {
-      hls_hardsub?: string
-      hls_softsub?: string
-      subtitles: {
-        [key: string]: {
-          ass?: string,
-          srt?: string
-        }
+      locale_key: Locales
+      hls: {
+        softsub?: string
+        hardsub?: string
+        subtitles: string
       }
     }
 
@@ -152,8 +150,11 @@ namespace Anima {
     } // Returns Error if user not found or episode not found
 
     type GetEpisodeMedia = {
-      count: 1,
-      data: [Anima.RAW.EpisodeMedia]
+      count: number,
+      data: {
+        streams: Anima.RAW.EpisodeMedia[],
+        bif: string
+      }
     } // Returns Error if unable to get episode media from source crawler
 
     type GetCategory = {

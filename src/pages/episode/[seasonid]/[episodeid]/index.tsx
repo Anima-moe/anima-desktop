@@ -3,7 +3,6 @@ import GeneralLayout from '@/components/Layout/General'
 import { Scrollbars } from 'react-custom-scrollbars'
 
 import 'vidstack/styles/base.css'
-// the following styles are optional - remove to go headless.
 import 'vidstack/styles/ui/buttons.css'
 import 'vidstack/styles/ui/sliders.css'
 
@@ -11,7 +10,7 @@ import MediaLayout from '@/components/Layout/Media'
 import { Season } from '@/services/anima/season'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Player from '@/components/Player'
-
+import EpisodeFatCard from '@/components/Episode/EpisodeFatCard'
 
 type Props = {}
 
@@ -35,7 +34,7 @@ function index({}: Props) {
    
   }, [])
 
-  useEffect(fetchAnimaInfo, [])
+  useEffect(fetchAnimaInfo, [router])
 
   if (!router.isReady) {
     return <div>
@@ -49,17 +48,6 @@ function index({}: Props) {
 
   return <MediaLayout>
         <Player episode={episodeData} season={seasonData} />
-      {/* <div className='flex flex-col w-[30%] aspect-[9/11.8] h-full pl-4 overflow-y-hidden'>
-        <span className='bg-secondary rounded-md px-4 py-2'>Episodes</span>
-        <Scrollbars autoHide hideTracksWhenNotNeeded universal id="episodescroller" ref={scrollbar}>
-          {seasonData.AnimeEpisode?.sort((a,b) => a.number-b.number).map((episode, index) => {
-            // season.AnimeEpisode.map((episode)=>{
-              return <EpisodeFatCard episode={episode} active={episode.id === episodeData.id} />
-            // })
-          })}
-        </Scrollbars>
-      </div> */}
-
     </MediaLayout>
 }
 

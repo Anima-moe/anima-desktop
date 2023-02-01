@@ -102,7 +102,7 @@ const languageTable = {
       anime_heading_status: 'Status',
       anime_heading_endDate: 'Data de Término',
 
-      anime_generic_season: '{{n}} Temporada',
+      anime_generic_season: '{{n}}ª Temporada',
       anime_generic_seasons: '{{n}} Temporadas',
       anime_generic_episode: 'Episódio {{n}}',
       anime_generic_episodes: '{{n}} Episódios',
