@@ -12,7 +12,6 @@ type Props = {}
 
 function AnimePage({}: Props) {
   const [animeData, setAnimeData] = useState<Anima.RAW.Anime | undefined>()
-  const [seasonsData, setSeasonsData] = useState<Anima.RAW.Season[]>([])
 
   const router = useRouter()
   const { id } = router.query
@@ -20,14 +19,9 @@ function AnimePage({}: Props) {
   const fetchAnimaInfo = useCallback(() => {
     const currentPath = window.location.href.split('/');
     (async ()=>{
-      const anime = await Anime.get(Number(id || currentPath[currentPath.length - 1]))
+      const anime = await Anime.get(Number(id || currentPath[1]))
       if (anime.data) {
         setAnimeData(anime.data)
-      }
-
-      const seasons = await Anime.getSeasons(Number(id || currentPath[currentPath.length - 1]))
-      if (seasons.data) {
-        setSeasonsData(seasons.data)
       }
     })()
   }, [])
@@ -67,7 +61,7 @@ function AnimePage({}: Props) {
         </div>
         {/* SEASONS */}
         <div className='w-full mt-4'>
-            {seasonsData.map(season => {
+            {animeData.AnimeSeason.map(season => {
               return <SeasonDisplay season={season} key={`season.${season.number}.${season.title}`}/>
             })}
         </div>
