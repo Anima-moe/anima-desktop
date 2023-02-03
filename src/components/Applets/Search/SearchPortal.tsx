@@ -48,7 +48,7 @@ function SearchPortal({query = ''}: Props) {
     })
   }
 
-  return <div className='fixed left-0 top-0 w-full h-full bg-primary bg-opacity-95 z-[1] flex px-32 pt-[11rem] pb-8 flex-col backdrop-blur-md'>
+  return <div className='fixed left-0 top-0 w-full h-full bg-primary bg-opacity-95 z-[2] flex px-32 pt-[11rem] pb-8 flex-col backdrop-blur-md'>
       <div className='flex w-full relative h-full flex-col'>
         {/* DISPLAY AVAILABLE CATEGORIES FOR THIS LOCALE */}
         {categories?.data.length > 0 && (
