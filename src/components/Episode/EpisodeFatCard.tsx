@@ -93,13 +93,13 @@ function EpisodeFatCard({episode, active, link}: Props) {
     'cursor-pointer': !active,
     'border-2 border-tertiary': active
   })
-  return <motion.div 
+  return <Link href={link}>
+  <motion.div 
       className={className} 
       style={{backgroundImage: `url('${episode.thumbnail}')`}}
       variants={active ? activeCardVariants : cardVariants}
       initial={ active ? 'hover' : 'initial'}
       whileHover='hover'
-      onClick={() => router.push(link)}
     >
     
       <motion.div 
@@ -112,14 +112,13 @@ function EpisodeFatCard({episode, active, link}: Props) {
       >
         <div className='flex flex-row mb-1.5'>
           <span className='bg-primary text-accent px-2 rounded-md mr-1.5 flex items-center justify-center'>{beautyNumber(episode.number) || '?'}</span>
-          {/* {JSON.stringify(episode)} */}
           <h1 className='font-semibold text-lg overflow-hidden w-full line-clamp-1 text-ellipsis'>{getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(episode)?.title || 'Unknown'}</h1>
         </div>
         <p className='text-xs text-white text-opacity-60 overflow-hidden w-full text-ellipsis line-clamp-3'>{getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(episode)?.synopsis || 'No synopsis'}</p>
-        {JSON.stringify(episode.EpisodeMetadata)}
       </motion.div>
 
     </motion.div>
+  </Link>
 }
 
 export default EpisodeFatCard

@@ -8,10 +8,13 @@ import { useTranslation } from 'react-i18next'
 import AnimeScroll from '@/components/Anime/AnimeScroll'
 import AnimeSwiper from '@/components/Anime/AnimeSwiper'
 import useSWR from 'swr'
-import Loading from '@/components/General/Loading'
 
-const fetchPopularAnimes = () =>{ return Anime.getByCategory(26) }
-const fetchSimulcastAnimes = () =>{ return Anime.getByCategory(16) }
+const fetchPopularAnimes = () =>{ 
+  return Anime.getByCategory(26) 
+}
+const fetchSimulcastAnimes = () =>{ 
+  return Anime.getByCategory(16) 
+}
 
 function App() {
   const { data: simulcastAnimes, error: simulcastError, isLoading: loadingSimulcast } = useSWR<Anima.API.GetAnimes>(`/api/getSimulcast`, fetchSimulcastAnimes)
@@ -29,20 +32,20 @@ function App() {
 
   if (simulcastError || popularError) return <GeneralLayout fluid><div className='flex justify-center items-center h-screen'><h1 className='text-2xl'>Error</h1></div></GeneralLayout>
 
-  if (loadingSimulcast || loadingPopular) return <GeneralLayout fluid><div className='flex justify-center items-center h-screen'><Loading /></div></GeneralLayout>
 
   return <GeneralLayout fluid>
     
     <AnimeHero anime={heroAnime} /> 
 
-    <ContentContainer>
+    {/* <ContentContainer>
      <DonationReminder />
-    </ContentContainer>
+    </ContentContainer> */}
 
-    <ContentContainer>
-      <h3>Continue watching</h3>{/*  */}
+    {/* <ContentContainer> */}
+      {/* <h3>Continue watching</h3> */}
       {/* TODO: LOAD RECENTLY WATCHED EPISODES/ANIMES */}
-    </ContentContainer>
+    {/* </ContentContainer> */}
+
     <ContentContainer>
       <h3>{t('section_simulcast')}</h3>
       <AnimeSwiper loading={loadingSimulcast} animes={simulcastAnimes?.data} animesPerScreen={7}/>

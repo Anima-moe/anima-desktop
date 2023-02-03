@@ -108,7 +108,7 @@ function AnimeCard({anime, disabled, noHover, onClick}: Props) {
                 className='w-full flex text-xs text-subtle'
                 variants={contentVariants}
               >
-                {`2023 • ${ t(anime.AnimeSeason.length > 1 ? 'anime_generic_seasons' : 'anime_generic_season', {n: anime.AnimeSeason.length})}`}
+                {`${ t(anime.AnimeSeason.length > 1 ? 'anime_generic_seasons' : 'anime_generic_season', {n: anime.AnimeSeason.length})}`}
               </motion.span>
             </motion.div> 
           )}

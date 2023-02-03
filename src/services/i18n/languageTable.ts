@@ -12,6 +12,7 @@ const languageTable = {
       splash_joinDiscord: 'Join us on our Discord server',
       splash_user: 'Username',
       splash_password: 'Password',
+      splash_email: 'Email',
 
       cta_watchTrailer: 'Trailer',
       cta_watchNow: 'Watch',
@@ -64,6 +65,10 @@ const languageTable = {
       api_fetchError: 'Oops! Something went wrong. Please try again later.',
 
       loading_moreData: 'Loading more ...',
+
+      user_wrongAuth: 'Wrong username or password',
+      user_missingField: 'Missing username or password',
+      user_uniqueTaken: 'Username or email already taken',
     },
   },
   'pt-BR': {
@@ -74,6 +79,7 @@ const languageTable = {
       splash_joinDiscord: 'Junte-se ao nosso servidor do discord!',
       splash_user: 'Usuário',
       splash_password: 'Senha',
+      splash_email: 'Email',
 
       nav_link_home: 'Início',
       nav_link_categories: 'Categorias',
@@ -128,6 +134,10 @@ const languageTable = {
       api_fetchError: 'Oops! Algo deu errado ao obter os dados do servidor. Tente novamente mais tarde.',
 
       loading_moreData: 'Carregando mais...',
+
+      user_wrongAuth: 'Usuário ou senha incorretos',
+      user_missingField: 'Preencha todos os campos',
+      user_uniqueTaken: 'Username or email already taken',
     },
   },
   'es-149': {

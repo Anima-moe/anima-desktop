@@ -38,7 +38,7 @@ function Season({season}: Props) {
     >
       {season.AnimeEpisode.sort((a,b)=> a.number - b.number).map((episode, index) => {
         return <div className='bg-secondary w-full flex flex-row last-of-type:rounded-b-md px-2 py-4 hover:bg-accent hover:text-secondary group duration-300 cursor-pointer' key={`season.episode.${episode.id}`}>
-            <Link href={`/episode/${season.id}/${episode.id}`}><EpisodeCard episode={episode}/></Link>
+            <Link href={`/episode/${episode.id}?seasonid=${season.id}`}><EpisodeCard episode={episode}/></Link>
         </div>
       })}
     </UnmountClosed >

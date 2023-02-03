@@ -9,6 +9,9 @@ import { useRouter } from "next/router"
 
 import "@/styles/globals.css"
 import "nprogress/nprogress.css"
+import 'skeleton-elements/css'
+
+import { SkeletonTheme } from "react-loading-skeleton"
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
@@ -63,5 +66,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       if (!await appWindow.isVisible()) { return } 
     })()
   }, [])
-  return <Component {...pageProps} />
+  return <SkeletonTheme baseColor="#202020" highlightColor="#444">
+        <Component {...pageProps} />
+  </SkeletonTheme>
 }

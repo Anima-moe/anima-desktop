@@ -10,10 +10,10 @@ type Props = {
 
 function ControlsContainer({children, bottom, middle, top}: Props) {
   const classNames = clsx({
-    'mt-auto': bottom,
-    'mb-auto': top,
-    'h-full': middle,
-    'flex py-4 w-full items-center z-[1] px-4 h-min w-full bg-blue-300' : true
+    'mt-auto media-user-idle:translate-y-32 media-user-idle:opacity-0': bottom,
+    'mb-auto media-user-idle:-translate-y-32 media-user-idle:opacity-0': top,
+    'h-full media-user-idle:opacity-0 items-center justify-center': middle,
+    'flex p-4 w-full items-center z-[1] h-min w-full duration-300 transition-all relative' : true
   })
   return (
     <div className={classNames + 'place-self-end justify-self-end '}>

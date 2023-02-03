@@ -77,12 +77,23 @@ namespace Anima {
       source: EpisodeSource[]
     }
 
-    type EpisodeMedia = {
-      locale_key: Locales
-      hls: {
-        softsub?: string
-        hardsub?: string
-        subtitles: string
+    type EpisodeStream = {
+      source: number
+      hls: string
+      hls_subtitled: string
+      subtitles: {
+        [key: string]: {
+          format: 'ass',
+          locale: Locales,
+          url: string
+        }
+      }
+      bif: string
+      audios: {
+        [key: string]: {
+          original: boolean,
+          external_id: string
+        }
       }
     }
 
@@ -151,10 +162,7 @@ namespace Anima {
 
     type GetEpisodeMedia = {
       count: number,
-      data: {
-        streams: Anima.RAW.EpisodeMedia[],
-        bif: string
-      }
+      data: Anima.RAW.EpisodeStream
     } // Returns Error if unable to get episode media from source crawler
 
     type GetCategory = {
@@ -168,5 +176,19 @@ namespace Anima {
     }
 
     type GetCategoryAnimes = Anima.API.GetAnimes
+
+    type Login = Anima.RAW.User & {
+      token: string
+    }
+
+    type Validate = Anima.RAW.User & {
+      password: undefined,
+      iat: number,
+      exp: number
+    }
+
+    type Register = Anima.RAW.User & {
+      token: string
+    }
   }
 }

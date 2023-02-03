@@ -9,7 +9,6 @@ const beautyNumber = (number: number) => {
 }
 
 function EpisodeCard({episode}: Props) {
-  console.log(episode)
   return <div className='flex flex-row'>
     <div className='h-40 w-72 min-w-[18rem] bg-cover bg-center rounded-md bg-tertiary' style={{backgroundImage: `url('${episode.thumbnail}')`}}/>
     <div className='flex flex-col ml-4 w-full justify-center'>
