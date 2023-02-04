@@ -10,10 +10,10 @@ import AnimeSwiper from '@/components/Anime/AnimeSwiper'
 import useSWR from 'swr'
 
 const fetchPopularAnimes = () =>{ 
-  return Anime.getByCategory(26) 
+  return Anime.getByCategory(25) 
 }
 const fetchSimulcastAnimes = () =>{ 
-  return Anime.getByCategory(16) 
+  return Anime.getByCategory(24) 
 }
 
 function App() {
