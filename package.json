@@ -1,7 +1,7 @@
 {
   "name": "anima-desktop",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.1.0",
   "scripts": {
     "dev": "next dev -p 1420",
     "build": "next build && next export -o dist",
@@ -10,6 +10,7 @@
   "dependencies": {
     "@apollo/client": "^3.7.5",
     "@headlessui/react": "^1.7.7",
+    "@radix-ui/react-popover": "^1.0.3",
     "@tauri-apps/api": "^1.2.0",
     "@vidstack/react": "^0.2.0",
     "@yisheng90/react-loading": "^1.5.0",
@@ -21,6 +22,7 @@
     "graphql": "^16.6.0",
     "hls.js": "^1.3.2",
     "i18next": "^22.4.9",
+    "jassub": "^1.2.4",
     "jotai": "^1.13.1",
     "next": "^13.1.5",
     "nprogress": "^0.2.0",
@@ -30,10 +32,7 @@
     "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^18.2.0",
     "react-i18next": "^12.1.4",
-    "react-loading-skeleton": "^3.1.0",
-    "react-paged-scroller": "^2.0.1",
     "react-portal": "^4.2.2",
-    "react-query": "^3.39.2",
     "skeleton-elements": "^4.0.1",
     "swiper": "^8.4.7",
     "swr": "^2.0.1",
