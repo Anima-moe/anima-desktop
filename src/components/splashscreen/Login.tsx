@@ -14,7 +14,7 @@ import { useAtom } from 'jotai'
 import { splashScreenPageAtom, splashScreenPagePropsAtom } from '@/stores/atoms'
 
 
-const bannerList = ['/splash_image_bocchi']
+const bannerList = ['/i/splash_image_bocchi']
 const randomBannerIndex = Math.floor(Math.random() * bannerList.length)
 const randomBanner = bannerList[randomBannerIndex]
 
@@ -227,7 +227,7 @@ function Login() {
           }}
         className='w-full h-full bg-center bg-cover bg-no-repeat absolute top-0 left-0'
         style={{
-          backgroundImage:`url('/i/${randomBanner}_2.png')`, 
+          backgroundImage:`url('${randomBanner}_2.png')`, 
         }}
       />
     </motion.div>
