@@ -9,9 +9,6 @@ export const Episode = {
   },
 
   getStreams: async function (id: number, locale) {
-    console.log("Trying to fetch streams for episode", id, locale)
-    console.log(`/episode/${id}/media`)
-
     const { data } = await client.get(`/episode/${id}/media`, {
       params: {
         locale

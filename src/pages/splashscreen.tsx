@@ -28,14 +28,12 @@ const ensureUserToken = async () => {
   try {
     const { getConfigValue, setConfigValue } = await import('@/services/tauri/configValue')
     const userToken = await getConfigValue('token') as string
-    console.log("TOKEN EXISTS", userToken)
     if (!userToken || userToken == '') { return false }
 
     const data = await User.validate(userToken)
 
     return dayjs().isBefore(dayjs.unix(data.exp).subtract(1, 'day'))
   } catch(e) {
-    console.log("User token was not setup or malformed.")
     return false
   }
 }

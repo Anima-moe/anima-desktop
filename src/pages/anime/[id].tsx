@@ -59,7 +59,6 @@ function AnimePage() {
         const anilist = await anilistService.getAnimeByName(anime.data.AnimeMetadata[0].title)
         if (!anilist) { return }
         setAnilistData(anilist)
-        console.log("Anilist Data", anilist, anime.data.AnimeMetadata[0].title)
       } catch(e) {
         console.error(e)
       }
@@ -78,7 +77,7 @@ function AnimePage() {
           <video autoPlay loop muted className='w-full h-full object-cover' src={animeData.background} />
         )
       ) : ( 
-        <video autoPlay loop muted className='w-full h-full object-cover' src='/splash.mp4' /> 
+        <video autoPlay loop muted className='w-full h-full object-cover' src='/i/splash.mp4' /> 
       )}
       <div className='w-full h-full absolute top-0 left-0 bg-secondary backdrop-blur-sm mix-blend-multiply bg-opacity-70' />
     </div>
@@ -143,7 +142,7 @@ function AnimePage() {
         {/* SEASONS */}
         <div className='w-full mt-4'>
             {animeData ? (
-              animeData.AnimeSeason?.map(season => {
+              animeData.AnimeSeason?.sort((a,b) => a.number - b.number).map(season => {
                 return <SeasonDisplay season={season} key={`season.${season.number}.${season.title}`}/>
               })
             ) : <>

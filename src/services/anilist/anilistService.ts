@@ -85,7 +85,6 @@ export type AnilistMedia = {
 
 export const anilistService = {
   async getAnimeByName(name: string) {
-    console.log("getAnimeByName", name)
     const query = gql`
       query ($name: String) {
         Media(search: $name, type: ANIME) {
