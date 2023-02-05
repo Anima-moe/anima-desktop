@@ -8,7 +8,8 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/virtual'
 import 'swiper/css/lazy'
-import Skeleton from 'react-loading-skeleton'
+// import Skeleton from 'react-loading-skeleton'
+import { SkeletonBlock } from 'skeleton-elements/react'
 
 SwiperCore.use([Virtual, Navigation, Lazy]);
 
@@ -19,20 +20,6 @@ type Props = {
   alwaysShowInfo?: boolean
 }
 
-
-function AnimeSkeleton({children} : { children: React.ReactNode }) {
-  return (
-    <div
-      className='aspect-[2/3] group flex mr-4'
-      style={{
-        width: `calc(calc(100vw - calc(1vw + 48px) - 16px) / 7)`,
-        minWidth: `calc(calc(100vw - calc(1vw + 48px) - 16px) / 7)`
-      }}
-    >
-      {children}
-    </div>
-  )
-}
 
 function SwiperAnime({ animesPerScreen, animes, loading, alwaysShowInfo }: Props) {
    return (
@@ -69,7 +56,16 @@ function SwiperAnime({ animesPerScreen, animes, loading, alwaysShowInfo }: Props
         )) : (
           <div className='flex flex-row select-none mt-4'>
             { Array.from({length: 7}, (_, index) => index + 1).map((_, index)=>{
-              return <Skeleton wrapper={AnimeSkeleton} width='100%' height='100%' key={`animeSkeleton.${index}`} />
+              return    <div
+                    className='aspect-[2/3] group flex mr-4'
+                    style={{
+                      width: `calc(calc(100vw - calc(1vw + 48px) - 16px) / 7)`,
+                      minWidth: `calc(calc(100vw - calc(1vw + 48px) - 16px) / 7)`
+                    }}
+                    key={`anime.Skeleton.${index}`}
+                  >
+                <SkeletonBlock borderRadius='.25rem' effect='wave' tag='div' width='100%' height='100%' />
+              </div>
             }) }
           </div>
         )}

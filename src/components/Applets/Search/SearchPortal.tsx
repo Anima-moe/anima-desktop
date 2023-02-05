@@ -1,5 +1,5 @@
 import useSWR from 'swr'
-import AnimeScroll from '@/components/Anime/AnimeScroll'
+import AnimeSwiper from '@/components/Anime/AnimeSwiper'
 import { Anime } from '@/services/anima/anime'
 import { Category } from '@/services/anima/category'
 import Loading from '@/components/General/Loading'
@@ -98,7 +98,7 @@ function SearchPortal({query = ''}: Props) {
 
         {/* DISPLAY SEARCH RESULTS */}
         {(searchResult?.data?.length > 0) && (
-          <AnimeScroll 
+          <AnimeSwiper 
             animes={searchResult.data.filter((anime)=> {
               if (selectedCategory.length < 1) return true
               return anime.Category.some((category) => selectedCategory.map((c) => c.slug).includes(category.slug))
