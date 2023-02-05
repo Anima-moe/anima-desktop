@@ -8,10 +8,8 @@ import { invoke } from "@tauri-apps/api/tauri"
 import { useRouter } from "next/router"
 
 import "@/styles/globals.css"
-import "nprogress/nprogress.css"
 import 'skeleton-elements/css'
 
-import { SkeletonTheme } from "react-loading-skeleton"
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
@@ -27,7 +25,7 @@ NProgress.configure({
   minimum: 0.3,
   easing: 'easeInOut',
   speed: 300,
-  showSpinner: true,
+  showSpinner: false,
 })
 
 // This default export is required in a new `pages/_app.js` file.
@@ -66,7 +64,5 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       if (!await appWindow.isVisible()) { return } 
     })()
   }, [])
-  return <SkeletonTheme baseColor="#202020" highlightColor="#444">
-        <Component {...pageProps} />
-  </SkeletonTheme>
+  return  <Component {...pageProps} />
 }
