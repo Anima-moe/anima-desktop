@@ -102,7 +102,7 @@ function AnimeCard({anime, disabled, noHover, onClick}: Props) {
                 className='text-sm font-semibold text-ellipsis w-full overflow-hidden translate-y-10'
                 variants={contentVariants}
               >
-                {getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(anime).title}
+                {getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(anime)?.title || 'Unknown title'}
               </motion.h6>
               <motion.span 
                 className='w-full flex text-xs text-subtle'

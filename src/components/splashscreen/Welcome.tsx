@@ -60,7 +60,7 @@ function Welcome({}: Props) {
       }}
       className="w-full h-full"
     >
-      <video autoPlay muted src='/splash.mp4' className="w-full h-full object-fill rounded-md overflow-hidden" loop/>
+      <video autoPlay muted src='/i/splash.mp4' className="w-full h-full object-fill rounded-md overflow-hidden" loop/>
     </motion.div>
     <div className="w-full h-full absolute top-0 left-0 opacity-70 bg-primary"/>
     <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex items-center flex-col justify-center animation-flash">
@@ -85,7 +85,7 @@ function Welcome({}: Props) {
           opacity: 0,
           y: -50,
         }}
-        src="/anima.svg" 
+        src="/i/anima.svg" 
         className="w-64 mix" 
       />
       <motion.span 

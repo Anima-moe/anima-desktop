@@ -77,24 +77,28 @@ namespace Anima {
       source: EpisodeSource[]
     }
 
+    type StreamObject = {
+      [key: string]: {
+        original: boolean,
+        external_id: string
+      }
+    }
+
+    type SubtitleObject = {
+      [key: string]: {
+        format: string,
+        locale: Locales,
+        url: string
+      }
+    }
+
     type EpisodeStream = {
       source: number
       hls: string
       hls_subtitled: string
-      subtitles: {
-        [key: string]: {
-          format: 'ass',
-          locale: Locales,
-          url: string
-        }
-      }
+      subtitles: SubtitleObject
       bif: string
-      audios: {
-        [key: string]: {
-          original: boolean,
-          external_id: string
-        }
-      }
+      audios: StreamObject
     }
 
     type User = {

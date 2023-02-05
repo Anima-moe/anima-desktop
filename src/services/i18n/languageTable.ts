@@ -138,6 +138,18 @@ const languageTable = {
       user_wrongAuth: 'Usuário ou senha incorretos',
       user_missingField: 'Preencha todos os campos',
       user_uniqueTaken: 'Username or email already taken',
+
+      'ar-SA': 'العربية',
+      'en-US': 'English',
+      'pt-BR': 'Português (Brasil)',
+      'de-DE': 'Deutsch',
+      'ru-RU': 'Русский',
+      'es-ES': 'Español',
+      'es-419': 'Español (Argentina)',
+      'fr-FR': 'Français',
+      'it-IT': 'Italiano',
+      'ja-JP': '日本語',
+      'none': 'Disabled',
     },
   },
   'es-149': {

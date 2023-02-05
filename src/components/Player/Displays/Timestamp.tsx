@@ -1,4 +1,4 @@
-import { MediaTime } from '@vidstack/react';
+import { MediaTime, useMediaStore } from '@vidstack/react';
 
 
 type Props = {
@@ -6,9 +6,10 @@ type Props = {
 }
 
 function Timestamp({ type }: Props) {
+  const { currentTime,  } = useMediaStore()
   return (
-    <div className='flex h-9 items-center justify-center text-xs'>
-       <MediaTime type={type} />
+    <div className='flex h-4 items-center justify-center'>
+       <MediaTime type={type} style={{ fontSize: '.9rem'}} />
     </div>
   )
 }

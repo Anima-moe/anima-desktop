@@ -4,7 +4,7 @@ import { Scrollbars } from 'react-custom-scrollbars'
 
 // import 'vidstack/styles/base.css'
 // import 'vidstack/styles/ui/buttons.css'
-import 'vidstack/styles/ui/sliders.css'
+// import 'vidstack/styles/ui/sliders.css'
 
 import MediaLayout from '@/components/Layout/Media'
 import { Season } from '@/services/anima/season'

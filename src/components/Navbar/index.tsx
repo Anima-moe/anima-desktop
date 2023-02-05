@@ -16,8 +16,8 @@ function Index() {
     className={`w-full py-3 px-8 flex flex-row select-none h-16 fixed z-[99] ${immersive ? 'bg-transparent bg-opacity-100' : 'bg-primary bg-opacity-40 backdrop-blur-sm'}`}
   >
     {/* LOGO */}
-    <div className='flex w-3/12 items-center cursor-pointer'>
-      <Link href='/'><img src='/anima.svg' className='w-22' /></Link>
+    <div className='flex w-3/12 items-center'>
+      <Link href='/'><div className='cursor-pointer'><img src='/i/anima.svg' className='w-22' /></div></Link>
     </div>
     {/* SEARCH BAR */}
     <div className='flex items-center justify-center focus-within:text-white w-6/12 h-full'>

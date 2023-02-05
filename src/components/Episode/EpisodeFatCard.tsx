@@ -2,8 +2,9 @@ import { motion } from 'framer-motion'
 import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
 import clsx from 'clsx'
 import React from 'react'
+import { useAtom } from 'jotai';
+import { playerStreamConfig } from '@/stores/atoms';
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 
 type Props = {
   episode: Anima.RAW.Episode
@@ -11,25 +12,6 @@ type Props = {
   duration?: number
   active?: boolean
   link: string
-}
-
-const cardVariants = {
-  initial: {
-    transition: {
-      duration: .3,
-      ease: 'easeOut'
-    }
-  },
-  hover: {
-    transition: {
-      duration: .3,
-      type: 'spring',
-      stiffness: 500,
-      damping: 60,
-      mass: 1,
-      ease: 'easeInOut'
-    }
-  }
 }
 
 const activeCardVariants = {
@@ -53,12 +35,10 @@ const activeCardVariants = {
 
 const contentVariants = {
   initial: {
-    opacity: 0,
-    y: 10
+    opacity: 1,
   },
   hover: {
     opacity: 1,
-    y: 0,
     transition: {
       duration: .3,
       ease: 'easeOut'
@@ -68,10 +48,10 @@ const contentVariants = {
 
 const shadeVariants = {
   initial: {
-    opacity: 0
+    opacity: .6
   },
   hover: {
-    opacity: 1,
+    opacity: .9,
     transition: {
       duration: .3,
       type: 'tween',
@@ -82,43 +62,43 @@ const shadeVariants = {
 
 
 function EpisodeFatCard({episode, active, link}: Props) {
-  const router = useRouter()
+  const [streamConfig, setStreamConfig] = useAtom(playerStreamConfig)
+
   const beautyNumber = (number: number) => {
     if (number < 10) return `0${number}`
     return number
   }
 
   const className = clsx({
-    'flex flex-col w-full min-h-[10rem] aspect-video bg-cover bg-center bg-no-repeat relative mb-4 rounded-md justify-end p-4 overflow-hidden select-none': true,
-    'cursor-pointer': !active,
-    'border-2 border-tertiary': active
+    'flex flex-col w-full bg-cover bg-center bg-no-repeat relative rounded-md justify-end p-4 overflow-hidden select-none transition-all duration-300 mt-2': true,
+    'cursor-pointer h-16': !active,
+    'border-2 border-tertiary cursor-not-allowed h-32': active
   })
-  return <Link href={link}>
-  <motion.div 
+  return <Link href={active ? '#' : `/episode/${episode.id}?season=${episode.season_id}`} >
+    <motion.div 
       className={className} 
       style={{backgroundImage: `url('${episode.thumbnail}')`}}
-      variants={active ? activeCardVariants : cardVariants}
-      initial={ active ? 'hover' : 'initial'}
+      variants={activeCardVariants}
+      initial={ 'initial'}
       whileHover='hover'
     >
     
       <motion.div 
         variants={shadeVariants}
-        className='bg-gradient-to-t from-primary to-transparent absolute top-0 left-0 w-[100%] h-[100%] bg-opacity-40 z[-1]' 
+        className='bg-gradient-to-r from-black to-transparent absolute top-0 left-0 w-[100%] h-[100%] z[-1]' 
       />
       <motion.div 
         className='z-[0]'
         variants={contentVariants}
       >
-        <div className='flex flex-row mb-1.5'>
-          <span className='bg-primary text-accent px-2 rounded-md mr-1.5 flex items-center justify-center'>{beautyNumber(episode.number) || '?'}</span>
-          <h1 className='font-semibold text-lg overflow-hidden w-full line-clamp-1 text-ellipsis'>{getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(episode)?.title || 'Unknown'}</h1>
+        <div className='flex flex-row items-center'>
+          <span className={`${active ? 'bg-accent text-primary' : 'bg-primary text-accent' } text-xs px-1.5 aspect-square rounded-md mr-1.5 flex items-center justify-center`}>{beautyNumber(episode.number) || '?'}</span>
+          <h1 className={`font-semibold text-xs overflow-hidden w-full line-clamp-1 text-ellipsis ${active ? 'opacity-100' : 'opacity-90'}`}>{getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(episode)?.title || 'Unknown'}</h1>
         </div>
-        <p className='text-xs text-white text-opacity-60 overflow-hidden w-full text-ellipsis line-clamp-3'>{getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(episode)?.synopsis || 'No synopsis'}</p>
       </motion.div>
 
     </motion.div>
-  </Link>
+    </Link>
 }
 
 export default EpisodeFatCard

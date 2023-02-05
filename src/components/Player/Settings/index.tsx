@@ -1,57 +1,58 @@
-import { Popover, Transition } from '@headlessui/react'
-import { Gear } from 'phosphor-react'
+// import { Popover, Transition } from '@headlessui/react'
+// import { Gear } from 'phosphor-react'
+import * as Popover from '@radix-ui/react-popover'
+import { AnimatePresence, motion } from 'framer-motion'
+import { CaretRight, Chat, Gear, MusicNote } from 'phosphor-react'
+import Subtitles from './Subtitles'
+import { playerStreamConfig } from '@/stores/atoms'
+import { useAtom } from 'jotai'
+import { useTranslation } from 'react-i18next'
+import { useEffect, useState } from 'react';
+import SettingEntry from './SettingEntry'
+import Audios from './Audios'
 
 type Props = {
-  audios: any
-  subtitles: any
-  onAudioChange: (locale: string) => void
-  onSubtitleChange: (locale: string) => void
+  audios: Anima.RAW.StreamObject
+  subtitles: Anima.RAW.SubtitleObject
 }
 
 function index({audios, subtitles}: Props) {
-  return <Popover className="relative pointer-events-auto">
-    {({ open }) => (
-      <>
-        <Popover.Button 
-          className={`
-          cursor-pointer ml-4 border hover:text-accent hover:bg-black duration-300 px-3 py-3 rounded-md
-          ${open ? 'bg-accent text-primary border-black' : 'bg-transparent border-transparent text-white'}`}
+  const [streamConfig, setStreamConfig] = useAtom(playerStreamConfig)
+  const { t } = useTranslation()
+
+
+  return <Popover.Root>
+    <Popover.Trigger asChild>
+      <button className={`
+          ml-1.5
+          cursor-pointer border hover:text-accent hover:bg-black duration-300 px-3 py-3 rounded-md
+         active:bg-accent active:text-primary active:border-accent bg-transparent border-transparent text-white pointer-events-auto`} aria-label="Update dimensions">
+        <Gear weight="fill" size={24}/>
+      </button>
+    </Popover.Trigger>
+    <Popover.Portal>
+      <Popover.Content sideOffset={2}  className='overflow-hidden select-none'>
+        <div 
+          className="bg-secondary rounded-md pt-2 px-2 transition-[height] w-max h-max border border-tertiary min-w-[14rem] relative 'overflow-hidden"
         >
-          <Gear weight="fill" size={24} />
-        </Popover.Button>
-        <Transition
-          enter="transition duration-300 ease-out"
-          enterFrom="transform opacity-0 -translate-y-6"
-          enterTo="transform opacity-300"
-          leave="transition ease-out"
-          leaveFrom="transform scale-300 opacity-100"
-          leaveTo="transform  opacity-0"
-        >
-          <Popover.Panel className="absolute mt-4 -translate-x-[20rem] h-96 w-96 rounded-md p-2 bg-primary aspect-video overflow-y-auto pb-8">
-            Audios
-            {audios && Object.keys(audios).map((locale, index) => {
-              const audio = audios[locale]
-
-              return <div key={index}>{audio.name}
-                <input type="radio" name="audio" id={locale} />
-                {locale}
-              </div>
-            })}
-
-            Subtitles
-            {subtitles && Object.keys(subtitles).map((locale, index) => {
-              const subtitle = subtitles[locale]
-
-              return <div key={index}>{subtitle.name}
-                <input type="radio" name="subtitle" id={locale} />
-                {locale}
-              </div>
-            })}
-          </Popover.Panel>
-        </Transition>
-      </>
-    )}
-  </Popover>
+          <AnimatePresence mode='wait' initial={false}>
+            {streamConfig.configPage === 'audio' && <Audios audios={audios} />}
+            {streamConfig.configPage === 'subtitle' && <Subtitles subtitles={subtitles} />}
+            {streamConfig.configPage === undefined && <motion.div 
+                className='flex flex-col w-full pb-2 cursor-pointer'
+                initial={{ x: -50 }}
+                animate={{ x: 0 }}
+                exit={{ x: -50 }}
+              > 
+              <SettingEntry LeftIcon={MusicNote} page='audio' text='Audio' value={streamConfig.audioLocale || 'ja-JP'} />
+              <SettingEntry LeftIcon={Chat} page='subtitle' text='Subtitle' value={streamConfig.subLocale || 'N/a'} />
+            </motion.div>}
+          </AnimatePresence>
+        </div>
+        <Popover.Arrow className="text-secondary fill-secondary stroke-tertiary" />
+      </Popover.Content>
+    </Popover.Portal>
+  </Popover.Root>
 }
 
 export default index
