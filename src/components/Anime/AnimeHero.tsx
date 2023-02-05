@@ -23,7 +23,7 @@ function AnimeHero({anime}: Props) {
   const router = useRouter()
 
   const { background, cover, external_id, AnimeSeason, slug } = anime || {}
-  const { title, synopsis, anime_id } = getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(anime)
+  const { title, synopsis, anime_id } = getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(anime) || {}
 
   return (
     <div className='flex w-full h-[80vh] px-8 items-center pt-16 relative mb-24 -my-32'>
@@ -33,7 +33,7 @@ function AnimeHero({anime}: Props) {
             <video autoPlay loop muted className='w-full h-full object-cover' src={background} />
             )
             ): (
-              <video autoPlay loop muted className='w-full h-full object-cover' src='/splash.mp4' />
+              <video autoPlay loop muted className='w-full h-full object-cover' src='/i/splash.mp4' />
             )}
       </div>
       <div className={'absolute top-0 left-0 w-full h-full bg-tertiary mix-blend-multiply z-[-1] '} />     
@@ -88,7 +88,7 @@ function AnimeHero({anime}: Props) {
       <style jsx>
         {`
           .cover {
-            background-image: url('${background || anilistData?.bannerImage || '/images/banner.png'}');
+            background-image: url('${background || anilistData?.bannerImage}');
             background-size: cover;
             background-position: center;
             background-repeate: no-repeat;

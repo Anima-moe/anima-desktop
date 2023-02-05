@@ -85,7 +85,7 @@ function Register({ password: previousPassword, username: previousUsername }: Pr
       }} />
       <div className='items-center justify-center w-full h-16 flex flex-col mt-auto'>
         <img 
-          src="/anima.svg" 
+          src="/i/anima.svg" 
           className="w-24 mix" 
         />
         <span className="mt-1 text-xs">あーにま</span>

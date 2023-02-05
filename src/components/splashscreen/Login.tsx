@@ -47,7 +47,7 @@ function Login() {
         damping: 60,
         mass: 1,
       }}
-      src='/anima.svg' 
+      src='/i/anima.svg' 
       className='absolute top-4 left-4 z-[1] overflow-hidden'
     />
     <motion.div 
@@ -227,7 +227,7 @@ function Login() {
           }}
         className='w-full h-full bg-center bg-cover bg-no-repeat absolute top-0 left-0'
         style={{
-          backgroundImage:`url('${randomBanner}_2.png')`, 
+          backgroundImage:`url('/i/${randomBanner}_2.png')`, 
         }}
       />
     </motion.div>
