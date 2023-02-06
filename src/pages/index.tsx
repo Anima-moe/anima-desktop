@@ -5,20 +5,17 @@ import DonationReminder from "@/components/General/DonationReminder"
 import ContentContainer from '@/components/Layout/ContentContainer'
 import { Anime } from '@/services/anima/anime'
 import { useTranslation } from 'react-i18next'
-import AnimeScroll from '@/components/Anime/AnimeScroll'
 import AnimeSwiper from '@/components/Anime/AnimeSwiper'
 import useSWR from 'swr'
 
-const fetchPopularAnimes = () =>{ 
-  return Anime.getByCategory(25) 
-}
-const fetchSimulcastAnimes = () =>{ 
-  return Anime.getByCategory(24) 
-}
+const fetchPopularAnimes = () =>{ return Anime.getByCategory(25) }
+const fetchSimulcastAnimes = () =>{ return Anime.getByCategory(24) } 
+const fetchStaffPickAnimes = () =>{ return Anime.getByCategory(32) }
 
 function App() {
   const { data: simulcastAnimes, error: simulcastError, isLoading: loadingSimulcast } = useSWR<Anima.API.GetAnimes>(`/api/getSimulcast`, fetchSimulcastAnimes)
   const { data: popularAnimes, error: popularError, isLoading: loadingPopular } = useSWR<Anima.API.GetAnimes>(`/api/getPopular`, fetchPopularAnimes)
+  const { data: staffAnimes, error: staffError, isLoading: loadingStaffPick } = useSWR<Anima.API.GetAnimes>(`/api/getStaff`, fetchStaffPickAnimes)
   const [heroAnime, setHeroAnime] = useState<Anima.RAW.Anime>({} as Anima.RAW.Anime)
   const { t } = useTranslation()
 
@@ -54,6 +51,11 @@ function App() {
     <ContentContainer>
       <h3>{t('section_popular')}</h3>
       <AnimeSwiper loading={loadingSimulcast} animes={popularAnimes?.data} animesPerScreen={7}/>
+    </ContentContainer>
+
+    <ContentContainer>
+      <h3>{t('section_staffPick')}</h3>
+      <AnimeSwiper loading={loadingStaffPick} animes={staffAnimes?.data} animesPerScreen={7}/>
     </ContentContainer>
   </GeneralLayout>
 }
