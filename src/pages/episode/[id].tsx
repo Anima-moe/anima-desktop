@@ -23,6 +23,7 @@ function index({}: Props) {
   const [seasonData, setSeasonData] = useState<Anima.RAW.Season | undefined>()
   const [episodeData, setEpisodeData] = useState<Anima.RAW.Episode | undefined>()
   const [streamData, setStreamData] = useState<Anima.RAW.EpisodeStream | undefined>()
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | undefined>()
 
   useEffect(()=>{
@@ -38,8 +39,10 @@ function index({}: Props) {
     
           const stream = await Episode.getStreams(episodeID, i18next.language)
           setStreamData(stream.data)
+          setLoading(false)
         } catch(e) {
           setError(e)
+          setLoading(false)
         }
       })()
   }, [router])
@@ -53,7 +56,14 @@ function index({}: Props) {
       <MediaLayout>
           <Player episode={episodeData} season={seasonData} streams={streamData} />
       </MediaLayout>
-    )} 
+    )}
+    {!loading && !error && !streamData.hls && (
+      <GeneralLayout>
+        <div className='flex flex-col items-center justify-center h-full'>
+          <StreamError error={JSON.stringify({anime: seasonData.anime_id, season: seasonData.AnimeEpisode, episode: episodeData.id})} />
+        </div>
+      </GeneralLayout>
+    )}
     {error && (
       <GeneralLayout>
         <StreamError error={error} />
