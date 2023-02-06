@@ -98,6 +98,8 @@ function Player({season, episode, streams}: Props) {
     }
     
     ;(async ()=>{
+      if (streams.audios) { return }
+
       const newAudio = streams.audios[streamConfig.audioLocale || 'ja-JP']
       const newStream = await Stream.get(episode.id, newAudio.external_id)
        if (streamConfig.streamURL === newStream.data.hls) { 
