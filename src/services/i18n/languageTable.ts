@@ -23,7 +23,8 @@ const languageTable = {
       section_popular: 'Popular',
       section_latest: 'Latest',
       section_categories: 'Categories',
-      section_simulcast: 'Simulcast',
+      section_simulcast: 'Winter season',
+      section_staffPick: 'Staff Pick',
 
       anime_heading_characters: 'Characters',
       anime_heading_casting: 'Casting',
@@ -94,7 +95,8 @@ const languageTable = {
       section_popular: 'Popular',
       section_latest: 'Mais recented',
       section_categories: 'Categorias',
-      section_simulcast: 'Temporada atual',
+      section_simulcast: 'Temporada de inverno',
+      section_staffPick: 'Escolha da Staff',
 
       anime_heading_characters: 'Personagens',
       anime_heading_casting: 'Elenco',
@@ -132,6 +134,8 @@ const languageTable = {
       search_moredata: 'A busca deve conter 3 ou mais caracteres OU uma categoria',
 
       api_fetchError: 'Oops! Algo deu errado ao obter os dados do servidor. Tente novamente mais tarde.',
+      api_streamError: 'Eita... Algo deu errado ao tentar obter uma stream para este anime. Tente novamente mais tarde.',
+      api_streamError_instructions: 'Você pode nos ajudar a resolver este problema reportando o erro no nosso servidor do discord, copie as informações abaixo e mande junto com a mensagem.',
 
       loading_moreData: 'Carregando mais...',
 
