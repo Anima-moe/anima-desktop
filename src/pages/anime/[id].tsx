@@ -70,11 +70,11 @@ function AnimePage() {
   return <GeneralLayout fluid> 
     <div 
       className='w-full h-[50vh] bg-center bg-cover bg-no-repeat relative -mt-16 z-0 overflow-hidden' 
-      style={{backgroundImage: `url('${animeData?.background}')`}}
+      style={{backgroundImage: `url('${animeData?.background || anilistData?.bannerImage}')`}}
     >
       {(animeData?.background) ? (
         (animeData.background.endsWith('.mp4') || animeData.background.endsWith('.webm')) && (
-          <video autoPlay loop muted className='w-full h-full object-cover' src={animeData.background} />
+          <video autoPlay loop muted className='w-full h-full object-cover -translate-y-1/4' src={animeData.background} />
         )
       ) : ( 
         <video autoPlay loop muted className='w-full h-full object-cover' src='/i/splash.mp4' /> 
