@@ -70,6 +70,7 @@ const languageTable = {
       user_wrongAuth: 'Wrong username or password',
       user_missingField: 'Missing username or password',
       user_uniqueTaken: 'Username or email already taken',
+      player_endtime: 'Ends at {{time}}'
     },
   },
   'pt-BR': {
@@ -154,6 +155,8 @@ const languageTable = {
       'it-IT': 'Italiano',
       'ja-JP': '日本語',
       'none': 'Disabled',
+
+      player_endtime: 'Termina às {{time}}'
     },
   },
   'es-149': {

@@ -44,7 +44,7 @@ function Subtitles({ subtitles }: Props) {
       <hr  className='border-tertiary my-2 mb-2' />
       <div className='max-h-[calc(100vh-16rem)] overflow-scroll'>
         <div 
-            className={classNames}
+            className={classNames + ' mt-2'}
             onClick={()=>{
               if (streamConfig.subLocale === '') return
               setStreamConfig({
@@ -59,7 +59,7 @@ function Subtitles({ subtitles }: Props) {
         </div>
         {Object.keys(subtitles).map((locale, index) => {
           const classNames = clsx({
-            'flex flex-row py-2 px-2 duration-300 rounded-md mb-2 justify-between group cursor-pointer': true,
+            'flex flex-row py-2 px-2 duration-300 rounded-md mb-2 last:mb-0 justify-between group cursor-pointer': true,
             'cursor-not-allowed bg-tertiary' : streamConfig.subLocale === locale,
             'hover:bg-accent hover:text-primary': streamConfig.subLocale !== locale
           })

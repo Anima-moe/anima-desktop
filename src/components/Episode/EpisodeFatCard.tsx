@@ -72,7 +72,7 @@ function EpisodeFatCard({episode, active, link}: Props) {
   const className = clsx({
     'flex flex-col w-full bg-cover bg-center bg-no-repeat relative rounded-md justify-end p-4 overflow-hidden select-none transition-all duration-300 mt-2': true,
     'cursor-pointer h-16': !active,
-    'border-2 border-tertiary cursor-not-allowed h-32': active
+    'border border-accent cursor-not-allowed h-32': active
   })
   return <Link href={active ? '#' : `/episode/${episode.id}?season=${episode.season_id}`} >
     <motion.div 
@@ -81,6 +81,7 @@ function EpisodeFatCard({episode, active, link}: Props) {
       variants={activeCardVariants}
       initial={ 'initial'}
       whileHover='hover'
+      data-episode-id={episode.id}
     >
     
       <motion.div 

@@ -9,7 +9,6 @@ function PlayButton({}: Props) {
   const remote = useMediaRemote()
   
   return <MediaToggleButton  className='flex items-center justify-center group cursor-pointer pointer-events-auto' onClick={()=>{
-    console.log("Clicked")
     paused ? remote.play() : remote.pause()
   }}>
     <Play weight='fill' className='hidden media-paused:block w-5 h-5 group-hover:scale-110 duration-300' />

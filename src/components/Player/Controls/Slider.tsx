@@ -16,13 +16,13 @@ type Props = {}
 // transform: translateY(-50%) scaleX(calc(var(--media-buffered-amount) / var(--media-duration)));
 function Slider({}: Props) {
   return <div className='w-full pointer-events-auto items-center relative px-3'>
-    <MediaTimeSlider className='group h-3'>
+    <MediaTimeSlider className='group h-3 rounded-md overflow-hidden'>
       {/* BACKGROUND */}
-      <div className='absolute top-1/2 -translate-y-1/2 origin-left w-full h-2 group-hover:h-4 transition-[height] duration-300 bg-white bg-opacity-10 rounded' slot='track' />
+      <div className='absolute top-1/2 -translate-y-1/2 origin-left w-full h-2 group-hover:h-4 transition-[height] duration-300 bg-white bg-opacity-10' slot='track' />
       {/* BUFFER */}
-      <div className='absolute top-1/2 -translate-y-1/2 origin-left w-full scale-x-[calc(var(--media-buffered-amount)/var(--media-duration))] h-2 group-hover:h-4 transition-[height] duration-300 bg-accent bg-opacity-20 rounded' slot='track track-progress' />
+      <div className='absolute top-1/2 -translate-y-1/2 origin-left w-full scale-x-[calc(var(--media-buffered-amount)/var(--media-duration))] h-2 group-hover:h-4 transition-[height] duration-300 bg-white bg-opacity-20' slot='track track-progress' />
       {/* PROGRESS */}
-      <div className='absolute top-1/2 -translate-y-1/2 origin-left w-[var(--slider-fill-percent)] h-2 group-hover:h-4 transition-[height] duration-300 bg-accent rounded-l' slot='track track-fill' />
+      <div className='absolute top-1/2 -translate-y-1/2 origin-left w-[var(--slider-fill-percent)] h-2 group-hover:h-4 transition-[height] duration-300 bg-accent' slot='track track-fill' />
     </MediaTimeSlider>
   </div>
   

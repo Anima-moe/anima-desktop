@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react';
 import SettingEntry from './SettingEntry'
 import Audios from './Audios'
+import { useMediaRemote } from '@vidstack/react';
 
 type Props = {
   audios: Anima.RAW.StreamObject
@@ -18,10 +19,17 @@ type Props = {
 
 function index({audios, subtitles}: Props) {
   const [streamConfig, setStreamConfig] = useAtom(playerStreamConfig)
+  const mediaRemote = useMediaRemote()
   const { t } = useTranslation()
 
 
-  return <Popover.Root>
+  return <Popover.Root onOpenChange={(o)=>{
+    if (o) {
+      mediaRemote.pauseUserIdle()
+    } else {
+      mediaRemote.resumeUserIdle()
+    }
+  }}>
     <Popover.Trigger asChild>
       <button className={`
           ml-1.5

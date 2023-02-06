@@ -21,6 +21,7 @@ import JASSUB from 'jassub'
 
 import 'vidstack/styles/base.css'
 import Watermark from './Displays/Watermark'
+import Endtime from './Displays/Endtime'
 // import 'vidstack/styles/ui/buttons.css'
 // import 'vidstack/styles/ui/sliders.css'
 
@@ -154,9 +155,9 @@ function Player({season, episode, streams}: Props) {
       src={`http://localhost:15411/${btoa(stream)}.m3u8`}
       ref={mediaPlayer}
     >
-      <MediaOutlet />
+      <MediaOutlet className='media-user-idle:cursor-none'/>
       <div className='w-full h-full flex pointer-events-none absolute top-0 left-0 flex-col justify-between'>
-        <div className='pointer-events-none absolute top-0 left-0 w-full h-full bg-black bg-opacity-40 media-user-idle:bg-opacity-0 media-paused:bg-opacity-70 transition-all duration-300' />
+        <div className='pointer-events-none absolute top-0 left-0 w-full h-full bg-primary bg-opacity-40 media-user-idle:bg-opacity-0 media-paused:bg-opacity-70 transition-all duration-300' />
         <ControlsContainer top>
           <BackButton target={`/anime/${season.anime_id}`} />
           <MediaTitle 
@@ -188,6 +189,7 @@ function Player({season, episode, streams}: Props) {
             <SkipButton backward time={15}/>
             <PlayButton />
             <SkipButton forward time={15}/>
+            <Endtime />
           </div>
         </ControlsContainer>
       </div>
