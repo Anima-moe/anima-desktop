@@ -1,14 +1,10 @@
 // import { Popover, Transition } from "@headlessui/react"
-import { ArrowDown, BookOpen, MonitorPlay } from "phosphor-react"
+import { BookOpen, FilmStrip } from "phosphor-react"
 import EpisodeFatCard from "@/components/Episode/EpisodeFatCard"
-import Scrollbars from 'react-custom-scrollbars'
 import { useTranslation } from 'react-i18next'
-import { useAtom } from "jotai"
-import { playerStreamConfig } from '@/stores/atoms'
 import * as Popover from '@radix-ui/react-popover'
-import { AnimatePresence, motion } from 'framer-motion'
 import { useMediaRemote } from '@vidstack/react';
-import { useEffect, useRef } from 'react'
+import {  useRef } from 'react'
 
 type Props = {
   season: Anima.RAW.Season
@@ -31,7 +27,7 @@ export default function SeasonBrowser({season, episode}: Props) {
       const target = scrollReference.current.querySelector(`[data-episode-id="${episode.id}"]`) as HTMLDivElement
       if (!target) return
   
-      scrollReference.current.scrollTop = target.offsetTop
+      scrollReference.current.scrollTop = target.offsetTop - 50
     })
   }}>
       <Popover.Trigger asChild>
@@ -41,7 +37,7 @@ export default function SeasonBrowser({season, episode}: Props) {
             bg-transparent hover:text-accent pointer-events-auto border-transparent text-white
           `}
         >
-           <MonitorPlay weight="fill" size={24} />
+           <FilmStrip weight="fill" size={24} />
         </button>
       </Popover.Trigger>
       <Popover.Portal>

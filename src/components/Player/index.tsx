@@ -4,12 +4,13 @@ import { MediaOutlet, MediaPlayer } from '@vidstack/react'
 // // import type { MediaElement, HLSVideoElement } from 'vidstack'
 import ControlsContainer from '@/components/Player/ControlsContainer'
 import BackButton from './Controls/BackButton'
-import MediaTitle from './Displays/MediaTitle'
+import MediaTitle from '@/components/Player/Displays/MediaTitle'
 import SeasonBrowser from './Controls/SeasonBrowser'
 import Settings from './Settings'
 import i18next from 'i18next'
 import SkipButton from '@/components/Player/Controls/SkipButton'
 import PlayButton from '@/components/Player/Controls/PlayButton'
+import FullscreenButton from '@/components/Player/Controls/FullscreenButton'
 import Slider from '@/components/Player/Controls/Slider'
 import Timestamp from '@/components/Player/Displays/Timestamp'
 // import { useRouter } from 'next/router'
@@ -23,9 +24,10 @@ import 'vidstack/styles/base.css'
 import JotaiNexus from 'jotai-nexus'
 import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
 import StreamLoading from '@/components/Player/Displays/StreamLoading'
-import Endtime from './Displays/Endtime'
-import Subtitles from './Displays/Subtitles'
+import Endtime from '@/components/Player/Displays/Endtime'
+import Subtitles from '@/components/Player/Displays/Subtitles'
 import { userPreferedAudio } from '../../stores/atoms';
+import PipButton from '@/components/Player/Controls//PipButton'
 
 
 type Props = {
@@ -65,24 +67,19 @@ export default forwardRef<MediaPlayerElement, Props>((props, ref) => {
       <ControlsContainer middle>
         
       </ControlsContainer>
-      <ControlsContainer bottom>
-        <div className='w-full text-xs whitespace-nowrap overflow-hidden text-ellipsis flex-col flex opacity-20 select-none'>
-          <span>STREAM: {streamConfig.streamLocale} @ {streamConfig.streamURL}</span>
-          <span>SUBTITLE: {streamConfig.subtitleLocale} @ {streamConfig.subtitleURL}</span>
-          <span>USER PREFERED SUBS: {userPreferedSubtitlesAtom}</span>
-          <span>USER PREFERED AUDIO: {userPreferedAudioAtom || 'ja-JP'}</span>
-        </div>
-      
+      <ControlsContainer bottom>     
         <div className='flex w-full items-center mb-4'>
           <Timestamp type='current' />
           <Slider />
           <Timestamp type='duration' />
         </div>
-        <div className='flex flex-row w-full py-4'>
+        <div className='flex flex-row w-full py-2 items-center'>
           <SkipButton backward time={15}/>
           <PlayButton />
           <SkipButton forward time={15}/>
-          {/* <Endtime /> */}
+          <Endtime />
+          <PipButton />
+          <FullscreenButton />
         </div>
       </ControlsContainer>
     </div>

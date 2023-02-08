@@ -8,7 +8,7 @@ function Endtime() {
   const { t } = useTranslation()
 
   return (
-    <span className='text-sm ml-4 opacity-60'>
+    <span className='text-sm ml-4 opacity-60 mr-auto'>
       {t('player_endtime', {time: dayjs().add(duration - currentTime, 'second').format('hh:mm')})}
     </span>
   )
