@@ -63,7 +63,10 @@ const languageTable = {
       search_moredata: 'The search query must contain 3 or more characters OR one category',
 
 
-      api_fetchError: 'Oops! Something went wrong. Please try again later.',
+      api_fetchError: 'Oops... Something went wrong while trying to get data from our servers. Please try again later.',
+      api_streamError_instructions: 'You can help us solve this problem by reporting the error on our discord server, copy the information below and send it along with the message.',
+      api_streamError: 'Oops... Something went wrong while trying to get a stream for this anime. Please try again later.',
+      api_streamLoading: 'Loading stream...',
 
       loading_moreData: 'Loading more ...',
 
@@ -137,6 +140,7 @@ const languageTable = {
       api_fetchError: 'Oops! Algo deu errado ao obter os dados do servidor. Tente novamente mais tarde.',
       api_streamError: 'Eita... Algo deu errado ao tentar obter uma stream para este anime. Tente novamente mais tarde.',
       api_streamError_instructions: 'Você pode nos ajudar a resolver este problema reportando o erro no nosso servidor do discord, copie as informações abaixo e mande junto com a mensagem.',
+      api_streamLoading: 'Carregando stream...',
 
       loading_moreData: 'Carregando mais...',
 
