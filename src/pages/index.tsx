@@ -6,16 +6,16 @@ import ContentContainer from '@/components/Layout/ContentContainer'
 import { Anime } from '@/services/anima/anime'
 import { useTranslation } from 'react-i18next'
 import AnimeSwiper from '@/components/Anime/AnimeSwiper'
-import useSWR from 'swr'
+import { useQuery } from 'react-query';
 
 const fetchPopularAnimes = () =>{ return Anime.getByCategory(25) }
 const fetchSimulcastAnimes = () =>{ return Anime.getByCategory(24) } 
 const fetchStaffPickAnimes = () =>{ return Anime.getByCategory(32) }
 
 function App() {
-  const { data: simulcastAnimes, error: simulcastError, isLoading: loadingSimulcast } = useSWR<Anima.API.GetAnimes>(`/api/getSimulcast`, fetchSimulcastAnimes)
-  const { data: popularAnimes, error: popularError, isLoading: loadingPopular } = useSWR<Anima.API.GetAnimes>(`/api/getPopular`, fetchPopularAnimes)
-  const { data: staffAnimes, error: staffError, isLoading: loadingStaffPick } = useSWR<Anima.API.GetAnimes>(`/api/getStaff`, fetchStaffPickAnimes)
+  const { data: simulcastAnimes, error: simulcastError, isLoading: loadingSimulcast } = useQuery<Anima.API.GetAnimes>(`/api/getSimulcast`, fetchSimulcastAnimes)
+  const { data: popularAnimes, error: popularError, isLoading: loadingPopular } = useQuery<Anima.API.GetAnimes>(`/api/getPopular`, fetchPopularAnimes)
+  const { data: staffAnimes, error: staffError, isLoading: loadingStaffPick } = useQuery<Anima.API.GetAnimes>(`/api/getStaff`, fetchStaffPickAnimes)
   const [heroAnime, setHeroAnime] = useState<Anima.RAW.Anime>({} as Anima.RAW.Anime)
   const { t } = useTranslation()
 

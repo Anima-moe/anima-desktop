@@ -4,8 +4,8 @@ import type { AppProps } from "next/app"
 import languageTable from '@/services/i18n/languageTable'
 import NProgress from 'nprogress'
 import { useEffect } from "react"
-import { invoke } from "@tauri-apps/api/tauri"
 import { useRouter } from "next/router"
+import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 
 import "@/styles/globals.css"
 import 'skeleton-elements/css'
@@ -27,6 +27,8 @@ NProgress.configure({
   speed: 300,
   showSpinner: false,
 })
+
+const queryClient = new QueryClient()
 
 // This default export is required in a new `pages/_app.js` file.
 export default function MyApp({ Component, pageProps }: AppProps) {
@@ -64,5 +66,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       if (!await appWindow.isVisible()) { return } 
     })()
   }, [])
-  return  <Component {...pageProps} />
+  
+  return  (
+    <QueryClientProvider client={queryClient}>
+        <Component {...pageProps} />
+    </QueryClientProvider>
+  )
 }

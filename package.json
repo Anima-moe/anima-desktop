@@ -24,6 +24,7 @@
     "i18next": "^22.4.9",
     "jassub": "^1.2.4",
     "jotai": "^1.13.1",
+    "jotai-nexus": "^1.0.7",
     "next": "^13.1.5",
     "nprogress": "^0.2.0",
     "phosphor-react": "^1.4.1",
@@ -33,9 +34,9 @@
     "react-dom": "^18.2.0",
     "react-i18next": "^12.1.4",
     "react-portal": "^4.2.2",
+    "react-query": "^3.39.3",
     "skeleton-elements": "^4.0.1",
     "swiper": "^8.4.7",
-    "swr": "^2.0.1",
     "tauri-plugin-store-api": "https://github.com/tauri-apps/tauri-plugin-store",
     "ts-debounce": "^4.0.0",
     "vidstack": "^0.2.0"
