@@ -35,7 +35,8 @@
         "setMinSize": true,
         "setMaxSize": true,
         "setFocus": true,
-        "startDragging": true
+        "startDragging": true,
+        "setFullscreen": true
       }
     },
     "bundle": {
