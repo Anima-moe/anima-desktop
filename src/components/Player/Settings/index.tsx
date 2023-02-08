@@ -4,7 +4,7 @@ import * as Popover from '@radix-ui/react-popover'
 import { AnimatePresence, motion } from 'framer-motion'
 import { CaretRight, Chat, Gear, MusicNote } from 'phosphor-react'
 import Subtitles from './Subtitles'
-import { playerStreamConfig } from '@/stores/atoms'
+import { playerStreamConfig, playerConfigPage } from '@/stores/atoms'
 import { useAtom } from 'jotai'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react';
@@ -18,6 +18,7 @@ type Props = {
 }
 
 function index({audios, subtitles}: Props) {
+  const [configPage, setConfigPage] = useAtom(playerConfigPage)
   const [streamConfig, setStreamConfig] = useAtom(playerStreamConfig)
   const mediaRemote = useMediaRemote()
   const { t } = useTranslation()
@@ -44,16 +45,16 @@ function index({audios, subtitles}: Props) {
           className="bg-secondary rounded-md pt-2 px-2 transition-[height] w-max h-max border border-tertiary min-w-[14rem] relative 'overflow-hidden"
         >
           <AnimatePresence mode='wait' initial={false}>
-            {streamConfig.configPage === 'audio' && <Audios audios={audios} />}
-            {streamConfig.configPage === 'subtitle' && <Subtitles subtitles={subtitles} />}
-            {streamConfig.configPage === undefined && <motion.div 
+            {configPage === 'audio' && <Audios audios={audios} />}
+            {configPage === 'subtitle' && <Subtitles subtitles={subtitles} />}
+            {configPage === 'main' && <motion.div 
                 className='flex flex-col w-full pb-2 cursor-pointer'
                 initial={{ x: -50 }}
                 animate={{ x: 0 }}
                 exit={{ x: -50 }}
               > 
-              <SettingEntry LeftIcon={MusicNote} page='audio' text='Audio' value={streamConfig.audioLocale || 'ja-JP'} />
-              <SettingEntry LeftIcon={Chat} page='subtitle' text='Subtitle' value={streamConfig.subLocale || 'N/a'} />
+              <SettingEntry LeftIcon={MusicNote} page='audio' text='Audio' value={streamConfig.streamLocale || 'ja-JP'} />
+              <SettingEntry LeftIcon={Chat} page='subtitle' text='Subtitle' value={streamConfig.subtitleLocale || 'N/a'} />
             </motion.div>}
           </AnimatePresence>
         </div>

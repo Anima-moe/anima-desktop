@@ -16,7 +16,7 @@ tauri-build = { version = "1.2", features = [] }
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.2", features = ["http-all", "process-command-api", "shell-open", "window-center", "window-close", "window-create", "window-hide", "window-set-always-on-top", "window-set-decorations", "window-set-focus", "window-set-max-size", "window-set-min-size", "window-set-resizable", "window-set-size", "window-show", "window-start-dragging"] }
+tauri = { version = "1.2", features = ["devtools", "http-all", "process-command-api", "shell-open", "window-center", "window-close", "window-create", "window-hide", "window-set-always-on-top", "window-set-decorations", "window-set-focus", "window-set-max-size", "window-set-min-size", "window-set-resizable", "window-set-size", "window-show", "window-start-dragging"] }
 tauri-plugin-window-state = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "dev" }
 tauri-plugin-store = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "dev" }
 declarative-discord-rich-presence = { git = "https://github.com/KPidS/declarative-discord-rich-presence" }

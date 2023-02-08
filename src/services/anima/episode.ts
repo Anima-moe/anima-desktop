@@ -2,8 +2,12 @@ import client from '@/services/anima/httpService'
 
 export const Episode = {
 
-  get: async function (id: number) {
-    const { data } = await client.get(`/episode/${id}`)
+  get: async function (id: number, locale: string) {
+    const { data } = await client.get(`/episode/${id}`, {
+      params: {
+        locale
+      }
+    })
 
     return data as Anima.API.GetEpisodeByID
   },

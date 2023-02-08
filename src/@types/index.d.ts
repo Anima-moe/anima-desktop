@@ -6,6 +6,10 @@ namespace Anima {
       LORD = 2,
       GOD = 3
     }
+
+    enum Source {
+      CRUNCHYROLL = 1,
+    }
   }
   namespace RAW {
 
@@ -93,9 +97,10 @@ namespace Anima {
     }
 
     type EpisodeStream = {
-      source: number
+      source: Anima.ENUM.Source
       hls: string
       hls_subtitled: string
+      mp4: { src: string, height: number }[]
       subtitles: SubtitleObject
       bif: string
       audios: StreamObject
@@ -140,7 +145,7 @@ namespace Anima {
 
     type GetEpisodeByID = {
       count: 1
-      data: [Anima.RAW.Episode]
+      data: Anima.RAW.Episode
     } // Returns Error if episode not found
 
     type GetSeasonByID = {

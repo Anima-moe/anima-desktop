@@ -1,4 +1,4 @@
-import { playerStreamConfig } from '@/stores/atoms'
+import { playerStreamConfig, playerConfigPage } from '@/stores/atoms'
 import clsx from 'clsx'
 import { motion } from 'framer-motion'
 import { useAtom } from 'jotai'
@@ -12,6 +12,7 @@ type Props = {
 
 function Audios({ audios }: Props) {
   const [streamConfig, setStreamConfig] = useAtom(playerStreamConfig)
+  const [configPage, setConfigPage] = useAtom(playerConfigPage)
   const { t } = useTranslation()
   
   return (
@@ -23,10 +24,7 @@ function Audios({ audios }: Props) {
     <div 
       className='flex flex-row p-2 items-center justify-between group hover:bg-tertiary hover:text-white cursor-pointer pointer-events-auto rounded-md'
       onClick={()=>{
-        setStreamConfig({
-          ...streamConfig,
-          configPage: undefined,
-        })
+        setConfigPage('main')
       }} 
     > 
       <ArrowLeft />
@@ -40,8 +38,8 @@ function Audios({ audios }: Props) {
       {Object.keys(audios).map((locale, index) => {
         const classNames = clsx({
           'flex flex-row py-2 px-2 duration-300 rounded-md nth-last-of-type:mb-2 justify-between group': true,
-          'cursor-not-allowed bg-tertiary' : streamConfig.audioLocale === locale || (streamConfig.audioLocale === '' && locale === 'ja-JP'),
-          'cursor-pointer hover:bg-accent hover:text-primary': streamConfig.audioLocale !== locale,
+          'cursor-not-allowed bg-tertiary' : streamConfig.streamLocale === locale || (streamConfig.streamLocale === '' && locale === 'ja-JP'),
+          'cursor-pointer hover:bg-accent hover:text-primary': streamConfig.streamLocale !== locale,
         })
         return  <div 
             className={classNames}
@@ -49,8 +47,7 @@ function Audios({ audios }: Props) {
             onClick={()=>{
               setStreamConfig({
                 ...streamConfig,
-                audioLocale: locale,
-                configPage: undefined
+                streamLocale: locale
               })
             }}
           >

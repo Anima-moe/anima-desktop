@@ -2,8 +2,6 @@ import { motion } from 'framer-motion'
 import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
 import clsx from 'clsx'
 import React from 'react'
-import { useAtom } from 'jotai';
-import { playerStreamConfig } from '@/stores/atoms';
 import Link from 'next/link'
 
 type Props = {
@@ -62,8 +60,6 @@ const shadeVariants = {
 
 
 function EpisodeFatCard({episode, active, link}: Props) {
-  const [streamConfig, setStreamConfig] = useAtom(playerStreamConfig)
-
   const beautyNumber = (number: number) => {
     if (number < 10) return `0${number}`
     return number
@@ -74,7 +70,7 @@ function EpisodeFatCard({episode, active, link}: Props) {
     'cursor-pointer h-16': !active,
     'border border-accent cursor-not-allowed h-32': active
   })
-  return <Link href={active ? '#' : `/episode/${episode.id}?season=${episode.season_id}`} >
+  return <Link href={active ? '#' : `/episode/${episode.id}?season=${episode.season_id}`} prefetch={false} replace={true}>
     <motion.div 
       className={className} 
       style={{backgroundImage: `url('${episode.thumbnail}')`}}

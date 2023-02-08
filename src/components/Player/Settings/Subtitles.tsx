@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import { ArrowLeft, Chat } from 'phosphor-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { playerStreamConfig } from '@/stores/atoms'
+import { playerStreamConfig, playerConfigPage } from '@/stores/atoms'
 import { useAtom } from 'jotai'
 import clsx from 'clsx'
 
@@ -12,12 +12,13 @@ type Props = {
 
 function Subtitles({ subtitles }: Props) {
   const [streamConfig, setStreamConfig] = useAtom(playerStreamConfig)
+  const [configPage, setConfigPage] = useAtom(playerConfigPage)
   const { t } = useTranslation()
 
   const classNames = clsx({
     'flex flex-row py-2 px-2 duration-300 rounded-md mb-2 justify-between group cursor-pointer': true,
-    'cursor-not-allowed bg-tertiary' : streamConfig.subLocale === '',
-    'hover:bg-accent hover:text-primary': streamConfig.subLocale !== ''
+    'cursor-not-allowed bg-tertiary' : streamConfig.subtitleURL === '' || !streamConfig.subtitleURL,
+    'hover:bg-accent hover:text-primary': streamConfig.subtitleURL !== ''
   })
 
   return (
@@ -29,10 +30,7 @@ function Subtitles({ subtitles }: Props) {
       <div 
         className='flex flex-row p-2 items-center justify-between group hover:bg-tertiary hover:text-white cursor-pointer pointer-events-auto rounded-md'
         onClick={()=>{
-          setStreamConfig({
-            ...streamConfig,
-            configPage: undefined
-          })
+          setConfigPage('main')
         }} 
       > 
         <ArrowLeft />
@@ -46,11 +44,11 @@ function Subtitles({ subtitles }: Props) {
         <div 
             className={classNames + ' mt-2'}
             onClick={()=>{
-              if (streamConfig.subLocale === '') return
+              if (streamConfig.subtitleLocale === '') return
+
               setStreamConfig({
                 ...streamConfig,
-                subLocale: '',
-                configPage: undefined
+                subtitleLocale: ''
               })
             }}
           >
@@ -60,20 +58,19 @@ function Subtitles({ subtitles }: Props) {
         {Object.keys(subtitles).map((locale, index) => {
           const classNames = clsx({
             'flex flex-row py-2 px-2 duration-300 rounded-md mb-2 last:mb-0 justify-between group cursor-pointer': true,
-            'cursor-not-allowed bg-tertiary' : streamConfig.subLocale === locale,
-            'hover:bg-accent hover:text-primary': streamConfig.subLocale !== locale
+            'cursor-not-allowed bg-tertiary' : streamConfig.subtitleLocale === locale,
+            'hover:bg-accent hover:text-primary': streamConfig.subtitleLocale !== locale
           })
 
           return  <div 
             className={classNames}
             key={`sub-${index}.${locale}`}
             onClick={()=>{
-              if (streamConfig.subLocale === locale) return
-
+              if (streamConfig.subtitleLocale === locale) return
+              console.log('[SETTINGS PANEL] set subtitle locale to', locale)
               setStreamConfig({
                 ...streamConfig,
-                subLocale: locale,
-                configPage: undefined
+                subtitleLocale: locale
               })
             }}
           >
