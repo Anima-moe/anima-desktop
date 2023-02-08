@@ -45,17 +45,17 @@ function App() {
 
     <ContentContainer>
       <h3>{t('section_simulcast')}</h3>
-      <AnimeSwiper loading={loadingSimulcast} animes={simulcastAnimes?.data} animesPerScreen={7}/>
+      <AnimeSwiper loading={loadingSimulcast} animes={simulcastAnimes?.data} animesPerScreen={6}/>
     </ContentContainer>
 
     <ContentContainer>
       <h3>{t('section_popular')}</h3>
-      <AnimeSwiper loading={loadingSimulcast} animes={popularAnimes?.data} animesPerScreen={7}/>
+      <AnimeSwiper loading={loadingSimulcast} animes={popularAnimes?.data} animesPerScreen={6}/>
     </ContentContainer>
 
     <ContentContainer>
       <h3>{t('section_staffPick')}</h3>
-      <AnimeSwiper loading={loadingStaffPick} animes={staffAnimes?.data} animesPerScreen={7}/>
+      <AnimeSwiper loading={loadingStaffPick} animes={staffAnimes?.data} animesPerScreen={6}/>
     </ContentContainer>
   </GeneralLayout>
 }

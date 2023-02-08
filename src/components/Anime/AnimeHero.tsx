@@ -47,7 +47,7 @@ function AnimeHero({anime}: Props) {
           { AnimeSeason?.length ? <Pill Icon={Books} color='#ABABAB'>{t( AnimeSeason?.length > 1 ? 'anime_generic_seasons' : 'anime_generic_season', {n: AnimeSeason?.length})} </Pill> : <SkeletonText effect='wave' tag='span' className='mr-4 rounded-md'>2 Seasons</SkeletonText> }
         </div>
         <div className='w-1/2 flex items-start text-subtle flex-col relative'>
-          <p className='text-sm'>
+          <p className='text-sm line-clamp-5'>
            {synopsis ? synopsis : <SkeletonText tag='span' effect='wave' className='rounded-md'>
                 Lorem ipsum, dolor sit amet consectetur adipisicing elit. Earum
                 animi nihil ullam! Asperiores recusandae ullam deleniti, modi

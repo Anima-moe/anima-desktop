@@ -38,8 +38,8 @@ function AnimeGrid({animes, alwaysShowInfo, animesPerRow, onHitBottom, hasMore}:
             key={anime.external_id} 
             className='aspect-[3/2] group py-2.5 mx-2 flex flex-col select-none'
             style={{
-              width: `calc(calc(100vw - calc(1vw + 48px) - 16px - 8rem) / ${animesPerRow})`,
-              minWidth: `calc(calc(100vw - calc(1vw + 48px) - 16px - 8rem) / ${animesPerRow})`
+              width: `calc(calc(100vw - 16px - 8rem) / ${animesPerRow})`,
+              minWidth: `calc(calc(100vw - 16px - 8rem) / ${animesPerRow})`
             }}
             itemID={anime.external_id}
           >
@@ -47,7 +47,7 @@ function AnimeGrid({animes, alwaysShowInfo, animesPerRow, onHitBottom, hasMore}:
               anime={anime}
               noHover={alwaysShowInfo}
             />
-            {alwaysShowInfo && <span className='pt-1 text-sm font-medium'>
+            {alwaysShowInfo && <span className='pt-1 text-xs line-clamp-2 font-medium'>
               {getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(anime)?.title || 'No title'}
             </span>}
           </div> 

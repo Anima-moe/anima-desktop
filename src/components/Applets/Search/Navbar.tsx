@@ -8,6 +8,7 @@ import resolveConfig from 'tailwindcss/resolveConfig'
 import { debounce } from 'ts-debounce'
 import tailwindConfig from '@/../tailwind.config.js'
 import { t } from 'i18next'
+import { exit } from 'process'
 const twConfig = resolveConfig(tailwindConfig)
 
 const typebarVariants = {
@@ -21,7 +22,7 @@ const typebarVariants = {
     borderColor: twConfig.theme.colors['tertiary'],
     zIndex: 'unset',
     transition: {
-      duration: .3,
+      duration: .2,
       type: 'spring',
       stiffness: 500,
       damping: 60,
@@ -33,7 +34,7 @@ const typebarVariants = {
     width: '45%',
     borderBottom: 'none none none #f45000',
     padding: '0 1rem 0 1rem',
-    y: '6rem',
+    y: '5rem',
     height: '4rem',
     fontSize: '1.3em',
     border: '1px solid',
@@ -41,7 +42,7 @@ const typebarVariants = {
     borderRadius: 0,
     zIndex: 2,
     transition: {
-      duration: .3,
+      duration: .2,
       type: 'spring',
       stiffness: 500,
       damping: 60,
@@ -67,10 +68,10 @@ const searchIconVariants = {
 
 const clearIconVariants = {
   initial: {
-    right: '-2em',
+    right: '0m',
     opacity: 0,
     transition: {
-      delay: .3,
+      delay: 0,
       duration: .1,
       type: 'spring',
       stiffness: 500,
@@ -91,7 +92,7 @@ const clearIconVariants = {
       mass: 1,
       ease: 'easeInOut'
     }
-  }
+  },
 }
 
 type Props = {}

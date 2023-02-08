@@ -48,7 +48,7 @@ function SearchPortal({query = ''}: Props) {
     })
   }
 
-  return <div className='fixed left-0 top-0 w-full h-full bg-primary bg-opacity-95 z-[2] flex px-32 pt-[11rem] pb-8 flex-col backdrop-blur-md'>
+  return <div className='fixed left-0 top-0 w-full h-full bg-primary bg-opacity-95 z-[2] flex px-4 pt-[11rem] flex-col backdrop-blur-md'>
       <div className='flex w-full relative h-full flex-col'>
         {/* DISPLAY AVAILABLE CATEGORIES FOR THIS LOCALE */}
         {categories?.data.length > 0 && (
@@ -57,14 +57,14 @@ function SearchPortal({query = ''}: Props) {
               initial={{opacity: 0, y: -20}}
               animate={{opacity: 1, y: 0}}
               transition={{
-                delay: .25,
-                duration: .15,
+                delay: .20,
+                duration: .1,
                 type: 'spring',
                 stiffness: 500,
                 damping: 60,
                 mass: 1
               }}
-              className='flex flex-row flex-wrap mb-4'
+              className='flex flex-row flex-wrap '
             >
                 {categories?.data.map((category, index) => (
                   <CategoryPill 
@@ -98,14 +98,13 @@ function SearchPortal({query = ''}: Props) {
 
         {/* DISPLAY SEARCH RESULTS */}
         {(searchResult?.data?.length > 0) && (
-          <AnimeSwiper 
-            animes={searchResult.data.filter((anime)=> {
-              if (selectedCategory.length < 1) return true
-              return anime.Category.some((category) => selectedCategory.map((c) => c.slug).includes(category.slug))
-            })} 
-            animesPerScreen={7} 
-            alwaysShowInfo
-          /> 
+            <AnimeGrid  
+            animes={searchResult.data.filter((anime) => {
+              if (selectedCategory.length === 0) return true
+              return compareArrays(anime.Category.map(c=>c.slug), selectedCategory.map(c=>c.slug))
+            })}
+            alwaysShowInfo animesPerRow={7} 
+          />
         )}
 
         {/* DISPLAY CATEGORY ANIMES */}
@@ -133,3 +132,7 @@ function SearchPortal({query = ''}: Props) {
 }
 
 export default SearchPortal
+
+function compareArrays(array1: string[], array2: string[]) {
+  return array2.every((value) => array1.includes(value))
+}

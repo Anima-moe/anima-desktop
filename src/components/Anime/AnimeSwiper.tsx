@@ -26,7 +26,7 @@ function SwiperAnime({ animesPerScreen, animes, loading, alwaysShowInfo }: Props
       <Swiper
         slidesPerView={animesPerScreen}
         slidesPerGroup={Math.round(animesPerScreen / 2)}
-        spaceBetween={128}
+        // spaceBetween={0}
         navigation
         lazy
         grabCursor
@@ -39,8 +39,8 @@ function SwiperAnime({ animesPerScreen, animes, loading, alwaysShowInfo }: Props
               key={anime.external_id} 
               className='aspect-[3/2] group py-2.5 flex flex-col select-none'
               style={{
-                width: `calc(calc(100vw - calc(1vw + 48px) - 16px) / ${animesPerScreen})`,
-                minWidth: `calc(calc(100vw - calc(1vw + 48px) - 16px) / ${animesPerScreen})`
+                width: `calc(calc(100vw - calc(1vw + 120px) ) / ${animesPerScreen})`,
+                minWidth: `calc(calc(100vw - calc(1vw + 120px) ) / ${animesPerScreen})`
               }}
               itemID={anime.external_id}
             >
@@ -57,7 +57,7 @@ function SwiperAnime({ animesPerScreen, animes, loading, alwaysShowInfo }: Props
           <div className='flex flex-row select-none mt-4'>
             { Array.from({length: 7}, (_, index) => index + 1).map((_, index)=>{
               return    <div
-                    className='aspect-[2/3] group flex mr-4'
+                    className='aspect-[2/3] group flex mx-4'
                     style={{
                       width: `calc(calc(100vw - calc(1vw + 48px) - 16px) / 7)`,
                       minWidth: `calc(calc(100vw - calc(1vw + 48px) - 16px) / 7)`
