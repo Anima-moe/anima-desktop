@@ -58,14 +58,14 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   useEffect(()=>{
     (async ()=>{
       const { getConfigValue } = await import('@/services/tauri/configValue')
-      const userLanguage = await getConfigValue<string>('locale')
-      i18n.changeLanguage(userLanguage || 'pt-BR')
+      const userLanguage = await getConfigValue<string>('language')
+      i18n.changeLanguage(userLanguage)
 
       const { appWindow } = await import('@tauri-apps/api/window')
 
       if (!await appWindow.isVisible()) { return } 
     })()
-  }, [])
+  }, [router])
   
   return  (
     <QueryClientProvider client={queryClient}>
