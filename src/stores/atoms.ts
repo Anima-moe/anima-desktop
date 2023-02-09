@@ -4,6 +4,7 @@ import { atomWithStorage } from 'jotai/utils'
 
 export const splashScreenPageAtom = atom('welcome')
 export const splashScreenPagePropsAtom = atom({})
+export const displaySearchPortal = atom(false)
 
 export const playerStreamConfig = atom({
   subtitleURL: '',
