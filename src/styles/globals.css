@@ -113,8 +113,6 @@ video {
   height: 100vh !important;
 }
 
-
-
 /* Make clicks pass-through */
 #nprogress {
   pointer-events: none;
@@ -184,6 +182,7 @@ video {
   0%   { -webkit-transform: rotate(0deg); }
   100% { -webkit-transform: rotate(360deg); }
 }
+
 @keyframes nprogress-spinner {
   0%   { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
