@@ -61,6 +61,7 @@ const languageTable = {
       search_placeholder: 'Search',
       search_prompt: 'Search for anime titles',
       search_moredata: 'The search query must contain 3 or more characters OR one category',
+      search_noresult: 'No results found',
 
 
       api_fetchError: 'Oops... Something went wrong while trying to get data from our servers. Please try again later.',
@@ -136,6 +137,7 @@ const languageTable = {
       search_placeholder: 'Pesquisar',
       search_prompt: 'Busque por título de animes',
       search_moredata: 'A busca deve conter 3 ou mais caracteres OU uma categoria',
+      search_noresult: 'Nenhum resultado encontrado',
 
       api_fetchError: 'Oops! Algo deu errado ao obter os dados do servidor. Tente novamente mais tarde.',
       api_streamError: 'Eita... Algo deu errado ao tentar obter uma stream para este anime. Tente novamente mais tarde.',
