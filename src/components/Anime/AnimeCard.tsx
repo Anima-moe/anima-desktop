@@ -8,7 +8,7 @@ type Props = {
   anime: Anima.RAW.Anime
   disabled?: boolean
   noHover?: boolean
-  onClick?: () => void
+  onClick?: (anime: Anima.RAW.Anime) => void
 }
 
 const cardVariants = {
@@ -91,7 +91,7 @@ function AnimeCard({anime, disabled, noHover, onClick}: Props) {
         whileHover={disabled ? 'initial' : 'hover'}
         animate="initial"
         variants={cardVariants}
-        onClick={onClick}
+        onClick={()=>{ onClick?.(anime) }}
       >
           {noHover ?? (
             <motion.div 

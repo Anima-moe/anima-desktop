@@ -8,6 +8,9 @@ import CategoryPill from '@/components/Category/CategoryPill'
 import AnimeGrid from '@/components/Anime/AnimeGrid'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useQuery } from 'react-query'
+import { useAtom } from 'jotai'
+import { displaySearchPortal } from '@/stores/atoms'
+import { useRouter } from 'next/router'
 
 // With those functions we avoid re-fetching the data when the requires inputs are either invalid or doesn't meet the criteria.
 async function getCategoryAnimes(categories: Anima.RAW.Category[], start: number = 0) {  
@@ -29,6 +32,8 @@ function SearchPortal({query = ''}: Props) {
   const [selectedCategory, setSelectedCategory] = useState<Anima.RAW.Category[]>([])
   const {data: searchResult, error: searchError, isLoading: searchLoading} = useQuery<Anima.API.SearchAnimes>(`/api/search/${query}`, ()=>{return getSearchResult(query)})
   const {data: categories, error: categoriesError, isLoading: categoriesLoading} = useQuery<Anima.API.GetCategories>(`/api/categories`, ()=>{return Category.getAll(i18next.language)})
+  const [displaySearchbar, setDisplaySearchbar] = useAtom(displaySearchPortal)
+  const router = useRouter()
 
   const fetchCategoryAnimes = useCallback(()=>{
     if (query.length > 1) { return }
@@ -91,11 +96,6 @@ function SearchPortal({query = ''}: Props) {
           </AnimatePresence>
         )}
 
-        {/* LOADING ANIMES */}
-        {searchLoading || categoriesLoading && <div className='w-full flex items-center justify-center mt-32'>
-          <Loading/>
-        </div>}
-
         {/* DISPLAY SEARCH RESULTS */}
         {(searchResult?.data?.length > 0) && (
             <AnimeGrid  
@@ -103,7 +103,15 @@ function SearchPortal({query = ''}: Props) {
               if (selectedCategory.length === 0) return true
               return compareArrays(anime.Category.map(c=>c.slug), selectedCategory.map(c=>c.slug))
             })}
-            alwaysShowInfo animesPerRow={7} 
+            alwaysShowInfo animesPerRow={7}
+            key={`category.${i18next.language}.${selectedCategory.map(c=>c.slug).join(',')}.${query}`}
+            onAnimeSelect={(anime) => {
+              setDisplaySearchbar(false)
+              router.push(`/anime/${anime.id}`)
+              router.events.on('routeChangeComplete', () => {
+                setDisplaySearchbar(false)
+              })
+            }}
           />
         )}
 
@@ -114,7 +122,26 @@ function SearchPortal({query = ''}: Props) {
             onHitBottom={appendCategoryAnimes} 
             hasMore={categoryAnimes.count === 20} 
             alwaysShowInfo animesPerRow={7} 
+            key={`category.${i18next.language}.${selectedCategory.map(c=>c.slug).join(',')}.${query}`}
+            onAnimeSelect={(anime) => {
+              setDisplaySearchbar(false)
+              router.push(`/anime/${anime.id}`)
+              router.events.on('routeChangeComplete', () => {
+                setDisplaySearchbar(false)
+              })
+            }}
           />
+        )}
+
+
+        {/* LOADING ANIMES */}
+        {searchLoading || categoriesLoading && <div className='w-full flex items-center justify-center mt-32'>
+          <Loading/>
+        </div>}
+        
+        {/* DISPLAY NO RESULTS */}
+        {((query && searchResult?.count < 1) || (selectedCategory.length > 0 && categoryAnimes.count < 1)) && (
+          <span className='text-xs text-subtle w-full flex items-center justify-center mt-32'>{t('search_noresult')}</span> 
         )}
 
         {/* DISPLAY NO QUERY */}

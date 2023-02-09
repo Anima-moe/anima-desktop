@@ -11,9 +11,10 @@ type Props = {
   animesPerRow?: number
   onHitBottom?: () => void
   hasMore?: boolean
+  onAnimeSelect?: (anime: Anima.RAW.Anime) => void
 }
 
-function AnimeGrid({animes, alwaysShowInfo, animesPerRow, onHitBottom, hasMore}: Props) {
+function AnimeGrid({animes, alwaysShowInfo, animesPerRow, onHitBottom, hasMore, onAnimeSelect}: Props) {
   const { t } = useTranslation()
   const handleScroll = (e) => {
     if (!hasMore) return
@@ -35,17 +36,18 @@ function AnimeGrid({animes, alwaysShowInfo, animesPerRow, onHitBottom, hasMore}:
         <div className='flex w-full h-full flex-wrap'>
           {animes.map(anime => (
             <div 
-            key={anime.external_id} 
+            key={anime.slug} 
             className='aspect-[3/2] group py-2.5 mx-2 flex flex-col select-none'
             style={{
               width: `calc(calc(100vw - 16px - 8rem) / ${animesPerRow})`,
               minWidth: `calc(calc(100vw - 16px - 8rem) / ${animesPerRow})`
             }}
-            itemID={anime.external_id}
+            itemID={anime.slug}
           >
             <AnimeCard 
               anime={anime}
               noHover={alwaysShowInfo}
+              onClick={onAnimeSelect}
             />
             {alwaysShowInfo && <span className='pt-1 text-xs line-clamp-2 font-medium'>
               {getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(anime)?.title || 'No title'}

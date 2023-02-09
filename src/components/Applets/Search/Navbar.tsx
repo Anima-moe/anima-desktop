@@ -9,6 +9,8 @@ import { debounce } from 'ts-debounce'
 import tailwindConfig from '@/../tailwind.config.js'
 import { t } from 'i18next'
 import { exit } from 'process'
+import { useAtom } from 'jotai';
+import { displaySearchPortal } from '@/stores/atoms'
 const twConfig = resolveConfig(tailwindConfig)
 
 const typebarVariants = {
@@ -99,7 +101,7 @@ type Props = {}
 
 function Navbar({}: Props) {
   const [query, setQuery] = useState<string>("")
-  const [focused, setFocused] = useState(false)
+  const [focused, setFocused] = useAtom(displaySearchPortal)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const debouncedSetQuery = debounce(setQuery, 300)
