@@ -10,7 +10,7 @@ const beautyNumber = (number: number) => {
 
 function EpisodeCard({episode}: Props) {
   return <div className='flex flex-row'>
-    <div className='h-40 w-72 min-w-[18rem] bg-cover bg-center rounded-md bg-tertiary' style={{backgroundImage: `url('${episode.thumbnail}')`}}/>
+    <div className='h-40 w-72 min-w-[18rem] bg-cover bg-center rounded-md bg-tertiary episde-card' style={{backgroundImage: `url('${episode.thumbnail}')`}}/>
     <div className='flex flex-col ml-4 w-full justify-center'>
       <h2 className='text-lg font-semibold flex mb-2'>
         <span className='bg-primary text-accent px-2 rounded-md mr-1.5 flex items-center justify-center'>

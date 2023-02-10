@@ -35,6 +35,7 @@
     "react-i18next": "^12.1.4",
     "react-portal": "^4.2.2",
     "react-query": "^3.39.3",
+    "sass": "^1.58.0",
     "skeleton-elements": "^4.0.1",
     "swiper": "^8.4.7",
     "tauri-plugin-store-api": "https://github.com/tauri-apps/tauri-plugin-store",

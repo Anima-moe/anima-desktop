@@ -8,6 +8,7 @@ import { useRouter } from "next/router"
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 
 import "@/styles/globals.css"
+import "@/styles/tweaks.scss"
 import 'skeleton-elements/css'
 
 

@@ -36,10 +36,10 @@ export default class SubtitleController {
   private initialize(JASSUB) {
     if (!this._renderer) {
       this._renderer = new JASSUB.default({
-        // video: this._media.querySelector('video'),
-        canvas: document.getElementById('animajassub'),
-        asyncRender: true,
-        offscreenRender: true,
+        video: this._media.querySelector('video'),
+        // canvas: document.getElementById('animajassub'),
+        // asyncRender: true,
+        // offscreenRender: true,
         subUrl: 'https://libass.github.io/JavascriptSubtitlesOctopus/subtitles/test.ass',
         workerUrl: '/s/jassub-worker.js',
       })
@@ -87,7 +87,7 @@ export default class SubtitleController {
       })
       // writeAtom(userPreferedSubtitles, '')
       if (!this._renderer) { return }
-      this._renderer.freeTrack()
+      // this._renderer.freeTrack()
       return
     }
 
