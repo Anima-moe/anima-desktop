@@ -1,0 +1,22 @@
+// Only MacOS related tweaks, we HATE SAFARI!
+
+.aspect-\[2\/3\] {
+  @supports not (aspect-ratio: 2 / 3) {
+    &::before {
+      float: left;
+      padding-top: 150%;
+      content: "";
+    }
+  
+    &::after {
+      display: block;
+      content: "";
+      clear: both;
+    }
+  }
+}
+
+.episode-card {
+  padding: 71.75% 0;
+  width: 100%;
+}
