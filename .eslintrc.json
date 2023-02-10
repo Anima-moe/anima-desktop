@@ -1,0 +1,33 @@
+{
+  "extends": "next/core-web-vitals",
+  "plugins": [
+    "eslint-plugin-import-helpers"
+  ],
+  "rules": {
+    "quotes": ["error", "single"],
+    "semi": ["error", "never"],
+    "no-console": 1,
+    // Puray import rules, feels like home
+    "import-helpers/order-imports": [
+      "warn",
+      {
+        "newlinesBetween": "always",
+        "groups": [
+          "/^react/",
+          "module",
+          "/^@/",
+          "/^components/",
+          "/^hooks/",
+          "/^utils/",
+          "/^config/",
+          ["parent", "sibling", "index"]
+        ],
+        "alphabetize": {
+          "order": "asc",
+          "ignoreCase": true
+        }
+      }
+    ],
+    "react-hooks/rules-of-hooks": "error"
+  }
+}
