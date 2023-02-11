@@ -56,11 +56,6 @@ fn discord_clear_activity(client: State<'_, DeclarativeDiscordIpcClient>) -> Res
 }
 
 fn main() {
-    let (_rx, _child) = Command::new_sidecar("main")
-        .expect("failed to create `proxy` command")
-        .spawn()
-        .expect("failed to spawn `proxy` command");
-
     tauri::Builder::default()
         .plugin(tauri_plugin_store::Builder::default().build())
         .plugin(tauri_plugin_window_state::Builder::default().build())
@@ -70,15 +65,13 @@ fn main() {
           let client = app.state::<DeclarativeDiscordIpcClient>();
           client.enable();
 
-          let _tauri_cmd = Command::new_sidecar("proxy")
-            .expect("Failed to create anima proxy server");
-
             tauri::async_runtime::spawn(async move {
-              let tauri_cmd = Command::new_sidecar("main").expect("failed to setup `proxy` sidecar");
+              let tauri_cmd = Command::new_sidecar("main")
+                .expect("failed to setup sidecar");
               let mut std_cmd = StdCommand::from(tauri_cmd);
               let mut child = std_cmd
                 .group_spawn() // !
-                .expect("failed to spawn `proxy` sidecar");
+                .expect("failed to spawn sidecar");
               let mut stdout = BufReader::new(child.inner().stdout.take().unwrap());
               let mut buf = Vec::new();
               loop {
