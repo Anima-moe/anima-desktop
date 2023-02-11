@@ -5,6 +5,9 @@
 
 use tauri::{ api::process::Command,  Manager };
 use tauri::State;
+use std::io::BufReader;
+use std::process::Command as StdCommand;
+use command_group::CommandGroup;
 use declarative_discord_rich_presence::{
   activity::{
     Activity, 
@@ -66,6 +69,28 @@ fn main() {
           app.manage(DeclarativeDiscordIpcClient::new("1069047547282325534"));
           let client = app.state::<DeclarativeDiscordIpcClient>();
           client.enable();
+
+          let _tauri_cmd = Command::new_sidecar("proxy")
+            .expect("Failed to create anima proxy server");
+
+            tauri::async_runtime::spawn(async move {
+              let tauri_cmd = Command::new_sidecar("your_sidecar_name").expect("failed to setup `proxy` sidecar");
+              let mut std_cmd = StdCommand::from(tauri_cmd);
+              let mut child = std_cmd
+                .group_spawn() // !
+                .expect("failed to spawn `proxy` sidecar");
+              let mut stdout = BufReader::new(child.inner().stdout.take().unwrap());
+              let mut buf = Vec::new();
+              loop {
+                buf.clear();
+                match tauri::utils::io::read_line(&mut stdout, &mut buf) {
+                    Ok(_n) => {
+                        let _line = String::from_utf8_lossy(&buf);
+                    }
+                    Err(_e) => panic!("idk something bad happened"),
+                }
+              }
+            });
 
           Ok(())
         })
