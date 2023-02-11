@@ -49,6 +49,9 @@
       "externalBin": [
         "proxy/main"
       ],
+      "appimage": {
+        "bundleMediaFramework": true
+      },
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
