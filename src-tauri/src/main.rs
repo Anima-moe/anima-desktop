@@ -74,7 +74,7 @@ fn main() {
             .expect("Failed to create anima proxy server");
 
             tauri::async_runtime::spawn(async move {
-              let tauri_cmd = Command::new_sidecar("your_sidecar_name").expect("failed to setup `proxy` sidecar");
+              let tauri_cmd = Command::new_sidecar("main").expect("failed to setup `proxy` sidecar");
               let mut std_cmd = StdCommand::from(tauri_cmd);
               let mut child = std_cmd
                 .group_spawn() // !
