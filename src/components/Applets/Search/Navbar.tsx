@@ -22,7 +22,7 @@ const typebarVariants = {
     fontSize: '1em',
     border: '1px',
     borderStyle: 'solid solid solid solid',
-    borderColor: twConfig.theme.colors['tertiary'],
+    borderColor: twConfig.theme.colors['tertiary'] as string,
     zIndex: 'unset',
     transition: {
       duration: .2,
@@ -30,7 +30,6 @@ const typebarVariants = {
       stiffness: 500,
       damping: 60,
       mass: 1,
-      ease: 'easeInOut'
     }
   },
   animate: {
@@ -50,10 +49,8 @@ const typebarVariants = {
       stiffness: 500,
       damping: 60,
       mass: 1,
-      ease: 'easeInOut'
     }
-  }
-}
+  }}
 
 const searchIconVariants = {
   initial: {

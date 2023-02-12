@@ -21,7 +21,7 @@ type Props = {
   subtitles: Anima.RAW.SubtitleObject
 }
 
-function index({audios, subtitles}: Props) {
+function Index({audios, subtitles}: Props) {
   const [configPage, setConfigPage] = useAtom(playerConfigPage)
   const [streamConfig, setStreamConfig] = useAtom(playerStreamConfig)
   const mediaRemote = useMediaRemote()
@@ -68,4 +68,4 @@ function index({audios, subtitles}: Props) {
   </Popover.Root>
 }
 
-export default index
+export default Index

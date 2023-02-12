@@ -24,12 +24,14 @@ import { playerStreamConfig, playerSwitchingStream, userPreferedSubtitles } from
 import { MediaOutlet, MediaPlayer, MediaPoster } from '@vidstack/react'
 
 import 'vidstack/styles/base.css'
+import { SkipOpening } from './Controls/SkipOpening'
 
 
 type Props = {
   episodeData: Anima.RAW.Episode,
   seasonData: Anima.RAW.Season,
   streamData: Anima.RAW.EpisodeStream
+  myAnimeListId?: number
   onCanLoad?: () => void
   onSourceChange?: (newStream: MediaSourceChangeEvent) => void
 }
@@ -73,6 +75,7 @@ const Player =  forwardRef<MediaPlayerElement, Props>((props, ref) => {
         
       </ControlsContainer>
       <ControlsContainer bottom>     
+        {/* <SkipOpening animeID={props.seasonData.anime_id} episodeNumber={props.episodeData.number} /> */}
         <div className='flex flex-row w-full p-3 items-center rounded-md backdrop-blur-md bg-opacity-30 bg-primary'>
           <SkipButton time={-15}/>
           <PlayButton />
