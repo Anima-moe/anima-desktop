@@ -93,8 +93,6 @@ export default class SourceController {
             tag: this._qualityTags[level.height.toString()] as string || 'AUTO'
           }
         })
-
-        // console.log("Gathered qualities:", this._availableQualities)
     })
   }
 
@@ -149,7 +147,7 @@ export default class SourceController {
     })
     writeAtom(userPreferedAudio, locale)
     this._mediaPlayer.startLoading()
-
+ 
     this._mediaPlayer.addEventListener('can-play', () => {
       this._mediaPlayer.currentTime = currentTime || 0
       setTimeout(()=>{

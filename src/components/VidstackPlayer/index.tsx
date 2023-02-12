@@ -22,17 +22,8 @@ import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
 import { userPreferedAudio } from '@/stores/atoms'
 import { playerStreamConfig, playerSwitchingStream, userPreferedSubtitles } from '@/stores/atoms'
 import { MediaOutlet, MediaPlayer, MediaPoster } from '@vidstack/react'
-// import Subtitles from '@/components/VidstackPlayer/Displays/Subtitles'
-
-
-// import { useRouter } from 'next/router'
-// import { Stream } from '@/services/anima/stream'
-
-
 
 import 'vidstack/styles/base.css'
-
-
 
 
 type Props = {

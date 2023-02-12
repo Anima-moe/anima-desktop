@@ -50,15 +50,11 @@ function Index() {
   const { t } = useTranslation()
 
   useEffect(()=>{
-    console.log('router')
     if (!router.isReady) { return }
-    console.log('streamData')
     if (!streamData || !seasonData || !episodeData) { return }
-    console.log('player')
     if (!mediaPlayer.current) { return }
 
     defineSourceController( new SourceController(mediaPlayer.current, streamData.data, episodeData.data) )
-    console.log('Defined source controller', episodeData)
     defineSubtitleController( new SutbtitleController(mediaPlayer.current, streamData.data) )
     
   },[router, episodeLoading, seasonLoading, streamLoading, mediaPlayer.current])
@@ -75,7 +71,7 @@ function Index() {
   useEffect(()=>{
     if (!router.isReady) { return }
     if (!subtitleController) { return }
-    console.log('Subtitle controller request subtitle change', streamConfig)
+
     subtitleController.requestSubtitleChange(streamConfig.subtitleLocale)
   }, [router.isReady, subtitleController, streamConfig.subtitleLocale])
 

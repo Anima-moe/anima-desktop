@@ -37,7 +37,6 @@ function ShortcutCollector() {
           };
           case ' ':
           case 'Space': {
-            console.log('ELEMENT:', videoElement)
             e.preventDefault()
             if(playerElement.provider.paused) {
               playerElement.provider.play()

@@ -47,7 +47,6 @@ export function useShaka(manifestUri) {
       try {
         await playerRef.current.load(manifestUri)
         // This runs if the asynchronous load is successful.
-        console.log('The video has now been loaded!')
       } catch (e) {
         // onError is executed if the asynchronous load fails.
         onError(e)

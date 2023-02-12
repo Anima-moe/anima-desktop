@@ -70,7 +70,6 @@ function Subtitles({ subtitles }: Props) {
             key={`sub-${index}.${locale}`}
             onClick={()=>{
               if (streamConfig.subtitleLocale === locale) return
-              console.log('[SETTINGS PANEL] set subtitle locale to', locale)
               setStreamConfig({
                 ...streamConfig,
                 subtitleLocale: locale
