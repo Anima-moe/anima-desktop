@@ -46,6 +46,7 @@ const Player =  forwardRef<MediaPlayerElement, Props>((props, ref) => {
     onSourceChange={props.onSourceChange}
     onCanLoad={props.onCanLoad}
     load='custom'
+    aspectRatio={16/9}
   >
     {/* {JSON.stringify(streamConfig)} */}
     <MediaOutlet />

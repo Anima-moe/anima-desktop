@@ -85,7 +85,10 @@ export default class SubtitleController {
     const assJS = await import('assjs')
     const subtitle = await fetch(this.currentSubtitle).then(res => res.text())
     this._renderer = new assJS.default(subtitle, this._media.querySelector('video'))
-
+    const resizeObserver = new ResizeObserver((entries) => {
+      this._renderer.resize()
+    })
+    resizeObserver.observe(this._media)
     this._media.addEventListener('provider-change', (e)=>{
       this._renderer.destroy()
       this.requestSubtitleChange(locale)
