@@ -11,7 +11,7 @@ import 'swiper/css/lazy'
 // import Skeleton from 'react-loading-skeleton'
 import { SkeletonBlock } from 'skeleton-elements/react'
 
-SwiperCore.use([Virtual, Navigation, Lazy]);
+SwiperCore.use([Virtual, Navigation, Lazy])
 
 type Props = {
   animesPerScreen: number
@@ -59,8 +59,8 @@ function SwiperAnime({ animesPerScreen, animes, loading, alwaysShowInfo }: Props
               return    <div
                     className='aspect-[2/3] group flex mx-4'
                     style={{
-                      width: `calc(calc(100vw - calc(1vw + 48px) - 16px) / 7)`,
-                      minWidth: `calc(calc(100vw - calc(1vw + 48px) - 16px) / 7)`
+                      width: 'calc(calc(100vw - calc(1vw + 48px) - 16px) / 7)',
+                      minWidth: 'calc(calc(100vw - calc(1vw + 48px) - 16px) / 7)'
                     }}
                     key={`anime.Skeleton.${index}`}
                   >
@@ -70,7 +70,7 @@ function SwiperAnime({ animesPerScreen, animes, loading, alwaysShowInfo }: Props
           </div>
         )}
       </Swiper>
-  );
+  )
 }
 
-export default SwiperAnime;
+export default SwiperAnime

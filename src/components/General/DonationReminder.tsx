@@ -1,5 +1,6 @@
-import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
+
+import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'phosphor-react'
 
 type Props = {}

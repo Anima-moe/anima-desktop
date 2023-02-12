@@ -1,9 +1,11 @@
-import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia';
 import React from 'react'
-import { Scrollbars } from 'react-custom-scrollbars';
-import { useTranslation } from 'react-i18next';
-import Loading from '../General/Loading';
-import AnimeCard from './AnimeCard';
+import { Scrollbars } from 'react-custom-scrollbars'
+import { useTranslation } from 'react-i18next'
+
+import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
+
+import Loading from '../General/Loading'
+import AnimeCard from './AnimeCard'
 
 type Props = {
   animes: Anima.RAW.Anime[]
@@ -18,7 +20,7 @@ function AnimeGrid({animes, alwaysShowInfo, animesPerRow, onHitBottom, hasMore, 
   const { t } = useTranslation()
   const handleScroll = (e) => {
     if (!hasMore) return
-    const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+    const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight
     if (bottom) {
       onHitBottom?.()
     }

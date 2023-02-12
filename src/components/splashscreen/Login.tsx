@@ -1,17 +1,18 @@
-import { invoke } from '@tauri-apps/api/tauri'
+import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+
 import { motion } from 'framer-motion'
+import i18next from 'i18next'
+import { useAtom } from 'jotai'
 import { Shield, User, ArrowRight, ArrowSquareOut, DiscordLogo } from 'phosphor-react'
 
-import IconInput from '@/components/splashscreen/Inputs/IconTextInput'
-import EmojiOptionsInput from '@/components/splashscreen/Inputs/EmojiSelectionInput'
 import Button from '@/components/General/Button'
-import { useState, useEffect } from 'react';
-import i18next from 'i18next'
-import { useTranslation } from 'react-i18next'
+import EmojiOptionsInput from '@/components/splashscreen/Inputs/EmojiSelectionInput'
+import IconInput from '@/components/splashscreen/Inputs/IconTextInput'
 import { User as AnimaUser } from '@/services/anima/user'
 import { createMainWindow } from '@/services/tauri/windows'
-import { useAtom } from 'jotai'
 import { splashScreenPageAtom, splashScreenPagePropsAtom } from '@/stores/atoms'
+import { invoke } from '@tauri-apps/api/tauri'
 
 
 const bannerList = ['/i/splash_image_bocchi']
@@ -77,7 +78,7 @@ function Login() {
             { value: 'es-149', label: 'Español', emoji: '🇪🇸'}
           ]}
           onChange={async (value)=>{
-            const { setConfigValue } = await import('@/services/tauri/configValue');
+            const { setConfigValue } = await import('@/services/tauri/configValue')
 
             setConfigValue('language', value)
             .then(()=>{
@@ -232,7 +233,7 @@ function Login() {
       />
     </motion.div>
     <style>
-      {`body { background: transparent }`}
+      {'body { background: transparent }'}
     </style>
   </motion.main>
 }

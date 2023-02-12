@@ -1,11 +1,15 @@
+import { useState } from 'react'
+import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+
 import { motion } from 'framer-motion'
 import { Shield, SignIn, User, Envelope } from 'phosphor-react'
-import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import IconInput from './Inputs/IconTextInput'
-import { useEffect } from 'react'
-import Button from '../General/Button'
+
 import { User as AnimaUser } from '@/services/anima/user'
+
+import Button from '../General/Button'
+import IconInput from './Inputs/IconTextInput'
+
 
 type Props = {
   username: string
@@ -92,7 +96,7 @@ function Register({ password: previousPassword, username: previousUsername }: Pr
       </div>
     </motion.div>
     <style>
-      {`body { background: transparent }`}
+      {'body { background: transparent }'}
     </style>
   </div>
 }

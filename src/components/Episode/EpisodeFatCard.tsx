@@ -1,8 +1,11 @@
-import { motion } from 'framer-motion'
-import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
-import clsx from 'clsx'
 import React from 'react'
+
+import clsx from 'clsx'
+import { motion } from 'framer-motion'
 import Link from 'next/link'
+
+import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
+
 
 type Props = {
   episode: Anima.RAW.Episode

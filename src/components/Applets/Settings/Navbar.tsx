@@ -1,5 +1,6 @@
 import { Gear } from 'phosphor-react'
-import NavIcon from '@/components/Navbar/NavbarIcon';
+
+import NavIcon from '@/components/Navbar/NavbarIcon'
 
 type Props = {}
 

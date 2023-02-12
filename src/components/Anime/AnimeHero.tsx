@@ -1,14 +1,18 @@
 // import anilistService from '@/services/anilist/anilistService';
-import { useState, useEffect, useCallback } from 'react';
-import { Play, FilmStrip, Books, Star, Calendar } from 'phosphor-react'
-
-import Pill from '@/components/General/Pill'
-import { useRouter } from 'next/router'
-import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
-import Button from '@/components/General/Button'
+import { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
+
+import { useRouter } from 'next/router'
+import { Play, FilmStrip, Books, Star, Calendar } from 'phosphor-react'
 import { SkeletonBlock, SkeletonText } from 'skeleton-elements/react'
-import { AnilistMedia } from '@/services/anilist/anilistService';
+
+import Button from '@/components/General/Button'
+import Pill from '@/components/General/Pill'
+import { AnilistMedia } from '@/services/anilist/anilistService'
+import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
+
+
+
 
 type Props = {
  anime?: Anima.RAW.Anime

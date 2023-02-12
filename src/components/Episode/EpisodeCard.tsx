@@ -1,4 +1,4 @@
-import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia';
+import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
 type Props = {
   episode: Anima.RAW.Episode
 }

@@ -1,6 +1,8 @@
-import { Listbox, Transition } from '@headlessui/react'
 import React, {Fragment, useState} from 'react'
+
 import { CaretDown } from 'phosphor-react'
+
+import { Listbox, Transition } from '@headlessui/react'
 
 type Props = {
   options: { value: string, label: string, emoji: string }[]

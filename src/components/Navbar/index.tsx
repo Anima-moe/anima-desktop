@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion'
-
-import SearchApplet from '@/components/Applets/Search/Navbar'
-import NotificationApplet from '@/components/Applets/Notifications/Navbar'
-import UserApplet from '@/components/Applets/User/Navbar'
-import ConfigApplet from '@/components/Applets/Settings/Navbar'
-import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+
+import NotificationApplet from '@/components/Applets/Notifications/Navbar'
+import SearchApplet from '@/components/Applets/Search/Navbar'
+import ConfigApplet from '@/components/Applets/Settings/Navbar'
+import UserApplet from '@/components/Applets/User/Navbar'
 import useNavScroll from '@/hooks/useNavScroll'
 
 

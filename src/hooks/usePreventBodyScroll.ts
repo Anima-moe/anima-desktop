@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback } from 'react'
 
 const preventDefault = (ev: Event) => {
   if (ev.preventDefault) {
@@ -8,11 +8,11 @@ const preventDefault = (ev: Event) => {
 }
 
 const enableBodyScroll = () => {
-  document && document.removeEventListener("wheel", preventDefault, false)
+  document && document.removeEventListener('wheel', preventDefault, false)
 }
 const disableBodyScroll = () => {
   document &&
-    document.addEventListener("wheel", preventDefault, {
+    document.addEventListener('wheel', preventDefault, {
       passive: false
     })
 }

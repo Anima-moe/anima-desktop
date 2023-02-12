@@ -1,5 +1,6 @@
 import React from 'react'
-import clsx from 'clsx';
+
+import clsx from 'clsx'
 
 type Props = {
   xs?: boolean

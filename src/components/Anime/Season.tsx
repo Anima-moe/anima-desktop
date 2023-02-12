@@ -1,8 +1,10 @@
-import Link from 'next/link';
-import { CaretDown, CaretUp } from 'phosphor-react'
 import { useState } from 'react'
 import { UnmountClosed } from 'react-collapse'
 import { useTranslation } from 'react-i18next'
+
+import Link from 'next/link'
+import { CaretDown, CaretUp } from 'phosphor-react'
+
 import EpisodeCard from '../Episode/EpisodeCard'
 
 type Props = {
@@ -29,7 +31,9 @@ function Season({season}: Props) {
       role="button"
       tabIndex={0}
     >
-      {t('anime_generic_season', {n: season.number})} - {season.title}
+      <span className='w-full'>
+        {t('anime_generic_season', {n: season.number})} - {season.title}
+      </span>
       { expanded ? <CaretDown size={24} /> : <CaretUp size={24} /> }
     </div>
     <UnmountClosed  

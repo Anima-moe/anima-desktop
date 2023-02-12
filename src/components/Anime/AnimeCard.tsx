@@ -1,8 +1,12 @@
-import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
-import { motion } from 'framer-motion'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
+
+import { motion } from 'framer-motion'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+
+import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
+
+
 
 type Props = {
   anime: Anima.RAW.Anime

@@ -8,7 +8,7 @@ export const Anime = {
   },
 
   getAll: async function (limit: number = 10, offset: number = 0) {
-    const { data } = await client.get(`/anime`, {
+    const { data } = await client.get('/anime', {
       params: {
         count: limit,
         start: offset
@@ -24,7 +24,7 @@ export const Anime = {
   },
 
   getByCategories: async function (slugs: string[], start: number = 0) {
-    const { data } = await client.get(`/category/animes`, {
+    const { data } = await client.get('/category/animes', {
       params: {
         slugs: slugs.join(','),
         start
@@ -41,7 +41,7 @@ export const Anime = {
   },
 
   search: async function (query: string) {
-    const { data } = await client.get(`/anime/search`, {
+    const { data } = await client.get('/anime/search', {
       params: {
         q: query,
         count: 20,

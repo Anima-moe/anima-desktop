@@ -9,8 +9,10 @@ export const displaySearchPortal = atom(false)
 export const playerStreamConfig = atom({
   subtitleURL: '',
   subtitleLocale: '',
-  streamURL: '/i/splash.mp4',
-  streamLocale: ''
+  streamURL: '',
+  streamLocale: '',
+  subType: 'soft',
+  streamHeight: 1080
 })
 export const playerConfigPage = atom<string>('main')
 export const playerSwitchingStream = atom(false)

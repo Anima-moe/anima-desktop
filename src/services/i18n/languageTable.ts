@@ -6,7 +6,7 @@
 const languageTable = {
   'en-US': {
     translation: {
-      splash_welcome: `Let's get started!`,
+      splash_welcome: 'Let\'s get started!',
       splash_continueAsGuest: 'Continue without an account',
       splash_loginOrRegister: 'Login/Register',
       splash_joinDiscord: 'Join us on our Discord server',
@@ -79,7 +79,7 @@ const languageTable = {
   },
   'pt-BR': {
     translation: {
-      splash_welcome: `Vamos começar.`,
+      splash_welcome: 'Vamos começar.',
       splash_continueAsGuest: 'Continuar sem uma conta',
       splash_loginOrRegister: 'Login/Registro',
       splash_joinDiscord: 'Junte-se ao nosso servidor do discord!',
@@ -167,7 +167,7 @@ const languageTable = {
   },
   'es-149': {
   }
-};
+}
 
 
-export default languageTable;
+export default languageTable

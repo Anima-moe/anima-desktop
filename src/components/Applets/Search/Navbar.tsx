@@ -1,15 +1,16 @@
-import { motion } from 'framer-motion'
-import { MagnifyingGlass, X } from 'phosphor-react'
 import { useRef, useState } from 'react'
-
-import SearchPortal from '@/components/Applets/Search/SearchPortal'
 import { Portal } from 'react-portal'
+
+import { motion } from 'framer-motion'
+import { t } from 'i18next'
+import { useAtom } from 'jotai'
+import { MagnifyingGlass, X } from 'phosphor-react'
+import { exit } from 'process'
 import resolveConfig from 'tailwindcss/resolveConfig'
 import { debounce } from 'ts-debounce'
+
 import tailwindConfig from '@/../tailwind.config.js'
-import { t } from 'i18next'
-import { exit } from 'process'
-import { useAtom } from 'jotai';
+import SearchPortal from '@/components/Applets/Search/SearchPortal'
 import { displaySearchPortal } from '@/stores/atoms'
 const twConfig = resolveConfig(tailwindConfig)
 
@@ -19,7 +20,7 @@ const typebarVariants = {
     padding: '0px 1rem 0px 3rem',
     width: '20%',
     fontSize: '1em',
-    border: `1px`,
+    border: '1px',
     borderStyle: 'solid solid solid solid',
     borderColor: twConfig.theme.colors['tertiary'],
     zIndex: 'unset',
@@ -100,7 +101,7 @@ const clearIconVariants = {
 type Props = {}
 
 function Navbar({}: Props) {
-  const [query, setQuery] = useState<string>("")
+  const [query, setQuery] = useState<string>('')
   const [focused, setFocused] = useAtom(displaySearchPortal)
   const inputRef = useRef<HTMLInputElement>(null)
 

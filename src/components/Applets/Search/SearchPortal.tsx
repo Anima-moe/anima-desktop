@@ -1,16 +1,19 @@
+import { useState, useCallback, useEffect } from 'react'
+import { useQuery } from 'react-query'
+
+import { AnimatePresence, motion } from 'framer-motion'
+import i18next, { t } from 'i18next'
+import { useAtom } from 'jotai'
+import { useRouter } from 'next/router'
+
+import AnimeGrid from '@/components/Anime/AnimeGrid'
 import AnimeSwiper from '@/components/Anime/AnimeSwiper'
+import CategoryPill from '@/components/Category/CategoryPill'
+import Loading from '@/components/General/Loading'
 import { Anime } from '@/services/anima/anime'
 import { Category } from '@/services/anima/category'
-import Loading from '@/components/General/Loading'
-import i18next, { t } from 'i18next'
-import { useState, useCallback, useEffect } from 'react'
-import CategoryPill from '@/components/Category/CategoryPill'
-import AnimeGrid from '@/components/Anime/AnimeGrid'
-import { AnimatePresence, motion } from 'framer-motion'
-import { useQuery } from 'react-query'
-import { useAtom } from 'jotai'
 import { displaySearchPortal } from '@/stores/atoms'
-import { useRouter } from 'next/router'
+
 
 // With those functions we avoid re-fetching the data when the requires inputs are either invalid or doesn't meet the criteria.
 async function getCategoryAnimes(categories: Anima.RAW.Category[], start: number = 0) {  
@@ -31,7 +34,7 @@ function SearchPortal({query = ''}: Props) {
   const [categoryAnimes, setCategoryAnimes] = useState<Anima.API.GetAnimes>({data:[], count:0})
   const [selectedCategory, setSelectedCategory] = useState<Anima.RAW.Category[]>([])
   const {data: searchResult, error: searchError, isLoading: searchLoading} = useQuery<Anima.API.SearchAnimes>(`/api/search/${query}`, ()=>{return getSearchResult(query)})
-  const {data: categories, error: categoriesError, isLoading: categoriesLoading} = useQuery<Anima.API.GetCategories>(`/api/categories`, ()=>{return Category.getAll(i18next.language)})
+  const {data: categories, error: categoriesError, isLoading: categoriesLoading} = useQuery<Anima.API.GetCategories>('/api/categories', ()=>{return Category.getAll(i18next.language)})
   const [displaySearchbar, setDisplaySearchbar] = useAtom(displaySearchPortal)
   const router = useRouter()
 

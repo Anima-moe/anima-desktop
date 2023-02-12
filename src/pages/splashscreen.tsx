@@ -1,13 +1,15 @@
-import { AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
-import Welcome from '@/components/splashscreen/Welcome'
-import Login from '@/components/splashscreen/Login'
 import { useEffect } from 'react'
-import { User } from '@/services/anima/user'
+
 import dayjs from 'dayjs'
+import { AnimatePresence } from 'framer-motion'
 import { useAtom } from 'jotai'
-import { splashScreenPageAtom, splashScreenPagePropsAtom } from '@/stores/atoms'
+
+import Login from '@/components/splashscreen/Login'
 import Register from '@/components/splashscreen/Register'
+import Welcome from '@/components/splashscreen/Welcome'
+import { User } from '@/services/anima/user'
+import { splashScreenPageAtom, splashScreenPagePropsAtom } from '@/stores/atoms'
 
 const pages = {
   welcome: Welcome,
@@ -16,8 +18,8 @@ const pages = {
 }
 
 const timedPromise = async (promFac: () => Promise<any>) => {
-  const start = performance.now();
-  const returnValue = await promFac();
+  const start = performance.now()
+  const returnValue = await promFac()
   return {
       value: returnValue,
       elapsed: performance.now() - start
@@ -60,7 +62,7 @@ function SplashScreen() {
   return <AnimatePresence initial mode='wait'>
     <Element key={currentPage} {...pageProps}/>
     <style>
-      {`body { background: transparent }`}
+      {'body { background: transparent }'}
     </style>
   </AnimatePresence>
 }

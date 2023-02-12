@@ -1,5 +1,6 @@
-import Navbar from '@/components/Navbar'
 import { Scrollbars } from 'react-custom-scrollbars'
+
+import Navbar from '@/components/Navbar'
 
 type Props = {
   children: React.ReactNode | React.ReactNode[]

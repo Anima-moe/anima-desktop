@@ -1,5 +1,6 @@
 import { User } from 'phosphor-react'
-import NavIcon from "@/components/Navbar/NavbarIcon"
+
+import NavIcon from '@/components/Navbar/NavbarIcon'
 
 function Navbar() {
   return <>

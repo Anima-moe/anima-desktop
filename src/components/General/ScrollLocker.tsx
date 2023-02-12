@@ -1,4 +1,4 @@
-import usePreventBodyScroll from "@/hooks/usePreventBodyScroll"
+import usePreventBodyScroll from '@/hooks/usePreventBodyScroll'
 
 type Props = {
   children: React.ReactNode

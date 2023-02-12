@@ -1,5 +1,6 @@
-import clsx from 'clsx'
 import { ReactNode } from 'react'
+
+import clsx from 'clsx'
 type Props = {
   Icon?: JSX.Element | ReactNode | JSX.Element[] | ReactNode[]
   fluid?: boolean

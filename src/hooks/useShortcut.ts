@@ -1,10 +1,11 @@
+import { useEffect } from 'react'
+
 import {
   isRegistered,
   register,
   ShortcutHandler,
   unregister,
-} from "@tauri-apps/api/globalShortcut"
-import { useEffect } from "react"
+} from '@tauri-apps/api/globalShortcut'
 
 /**
  * @param shortcut The key combination string for the shortcut
