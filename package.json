@@ -13,7 +13,7 @@
     "@headlessui/react": "^1.7.7",
     "@radix-ui/react-popover": "^1.0.3",
     "@tauri-apps/api": "^1.2.0",
-st    "@vidstack/react": "^0.2.3",
+    "@vidstack/react": "^0.2.3",
     "@yisheng90/react-loading": "^1.5.0",
     "assjs": "^0.0.11",
     "axios": "^1.2.6",
