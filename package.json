@@ -13,8 +13,9 @@
     "@headlessui/react": "^1.7.7",
     "@radix-ui/react-popover": "^1.0.3",
     "@tauri-apps/api": "^1.2.0",
-    "@vidstack/react": "^0.2.0",
+st    "@vidstack/react": "^0.2.3",
     "@yisheng90/react-loading": "^1.5.0",
+    "assjs": "^0.0.11",
     "axios": "^1.2.6",
     "clsx": "^1.2.1",
     "dayjs": "^1.11.7",
@@ -24,7 +25,6 @@
     "graphql": "^16.6.0",
     "hls.js": "^1.3.2",
     "i18next": "^22.4.9",
-    "jassub": "^1.2.4",
     "jotai": "^1.13.1",
     "jotai-nexus": "^1.0.7",
     "next": "^13.1.5",
@@ -37,12 +37,13 @@
     "react-i18next": "^12.1.4",
     "react-portal": "^4.2.2",
     "react-query": "^3.39.3",
+    "react-shaka-plyr": "^1.1.0",
     "sass": "^1.58.0",
     "skeleton-elements": "^4.0.1",
     "swiper": "^8.4.7",
     "tauri-plugin-store-api": "https://github.com/tauri-apps/tauri-plugin-store",
     "ts-debounce": "^4.0.0",
-    "vidstack": "^0.2.0"
+    "vidstack": "^0.2.3"
   },
   "devDependencies": {
     "@swc-jotai/react-refresh": "^0.0.4",

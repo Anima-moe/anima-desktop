@@ -1,10 +1,12 @@
-import { playerStreamConfig, playerConfigPage } from '@/stores/atoms'
+import React from 'react'
+import { useTranslation } from 'react-i18next'
+
 import clsx from 'clsx'
 import { motion } from 'framer-motion'
 import { useAtom } from 'jotai'
 import { ArrowLeft, MusicNote } from 'phosphor-react'
-import React from 'react'
-import { useTranslation } from 'react-i18next'
+
+import { playerStreamConfig, playerConfigPage } from '@/stores/atoms'
 
 type Props = {
   audios: Anima.RAW.StreamObject

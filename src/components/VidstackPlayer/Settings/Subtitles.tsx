@@ -1,10 +1,13 @@
-import { motion } from 'framer-motion'
-import { ArrowLeft, Chat } from 'phosphor-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { playerStreamConfig, playerConfigPage } from '@/stores/atoms'
-import { useAtom } from 'jotai'
+
 import clsx from 'clsx'
+import { motion } from 'framer-motion'
+import { useAtom } from 'jotai'
+import { ArrowLeft, Chat } from 'phosphor-react'
+
+import { playerStreamConfig, playerConfigPage } from '@/stores/atoms'
+
 
 type Props = {
   subtitles: Anima.RAW.SubtitleObject

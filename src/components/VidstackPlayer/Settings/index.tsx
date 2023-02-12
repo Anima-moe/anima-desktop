@@ -1,16 +1,20 @@
 // import { Popover, Transition } from '@headlessui/react'
 // import { Gear } from 'phosphor-react'
-import * as Popover from '@radix-ui/react-popover'
-import { AnimatePresence, motion } from 'framer-motion'
-import { CaretRight, Chat, Gear, MusicNote } from 'phosphor-react'
-import Subtitles from './Subtitles'
-import { playerStreamConfig, playerConfigPage } from '@/stores/atoms'
-import { useAtom } from 'jotai'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useEffect, useState } from 'react';
-import SettingEntry from './SettingEntry'
+
+import { AnimatePresence, motion } from 'framer-motion'
+import { useAtom } from 'jotai'
+import { CaretRight, Chat, Gear, MusicNote } from 'phosphor-react'
+
+import { playerStreamConfig, playerConfigPage } from '@/stores/atoms'
+import * as Popover from '@radix-ui/react-popover'
+import { useMediaRemote } from '@vidstack/react'
+
 import Audios from './Audios'
-import { useMediaRemote } from '@vidstack/react';
+import SettingEntry from './SettingEntry'
+import Subtitles from './Subtitles'
+
 
 type Props = {
   audios: Anima.RAW.StreamObject

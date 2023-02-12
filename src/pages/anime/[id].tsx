@@ -1,17 +1,18 @@
-import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useState } from 'react'
-import GeneralLayout from '@/components/Layout/General'
-import AnimeCard from '@/components/Anime/AnimeCard'
+import { useTranslation } from 'react-i18next'
 
-import { Anime } from '@/services/anima/anime'
-
-import SeasonDisplay from '@/components/Anime/Season'
-import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
+import { useRouter } from 'next/router'
 import { SkeletonBlock, SkeletonText } from 'skeleton-elements/react'
-import { AnilistMedia, anilistService } from '@/services/anilist/anilistService'
+
+import AnimeCard from '@/components/Anime/AnimeCard'
 import AnimeCharacters from '@/components/Anime/AnimeCharacters'
 import AnimeStaffs from '@/components/Anime/AnimeStaffs'
-import { useTranslation } from 'react-i18next'
+import SeasonDisplay from '@/components/Anime/Season'
+import GeneralLayout from '@/components/Layout/General'
+import { AnilistMedia, anilistService } from '@/services/anilist/anilistService'
+import { Anime } from '@/services/anima/anime'
+import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
+
 
 function AnimeProperty(props: { heading: string, value: any }) {
   const { t } = useTranslation()
@@ -74,7 +75,7 @@ function AnimePage() {
     >
       {(animeData?.background) ? (
         (animeData.background.endsWith('.mp4') || animeData.background.endsWith('.webm')) && (
-          <video autoPlay loop muted className='w-full h-full object-cover -translate-y-1/4' src={animeData.background} />
+          <video autoPlay loop muted className='w-full h-full object-cover' src={animeData.background} />
         )
       ) : ( 
         <video autoPlay loop muted className='w-full h-full object-cover' src='/i/splash.mp4' /> 

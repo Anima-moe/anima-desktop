@@ -1,5 +1,6 @@
-import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
 import React from 'react'
+
+import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
 
 type Props = {
   seasonNumber: number

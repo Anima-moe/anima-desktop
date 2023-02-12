@@ -36,6 +36,7 @@ dependencies = [
 name = "anima-desktop"
 version = "0.0.0"
 dependencies = [
+ "command-group",
  "declarative-discord-rich-presence",
  "serde",
  "serde_json",
@@ -307,6 +308,15 @@ checksum = "35ed6e9d84f0b51a7f52daf1c7d71dd136fd7a3f41a8462b8cdb8c78d920fad4"
 dependencies = [
  "bytes",
  "memchr",
+]
+
+[[package]]
+name = "command-group"
+version = "1.0.9"
+source = "git+https://github.com/Bilnaa/command-group#1490ad71ff6630230c592c495f00248e9075f3be"
+dependencies = [
+ "nix",
+ "winapi",
 ]
 
 [[package]]
@@ -1414,6 +1424,19 @@ name = "new_debug_unreachable"
 version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e4a24736216ec316047a1fc4252e27dabb04218aa4a3f37c6e7ddbf1f9782b54"
+
+[[package]]
+name = "nix"
+version = "0.22.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e4916f159ed8e5de0082076562152a76b7a1f64a01fd9d1e0fea002c37624faf"
+dependencies = [
+ "bitflags",
+ "cc",
+ "cfg-if",
+ "libc",
+ "memoffset",
+]
 
 [[package]]
 name = "nodrop"

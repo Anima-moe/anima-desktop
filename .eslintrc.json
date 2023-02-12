@@ -6,6 +6,9 @@
   "rules": {
     "quotes": ["error", "single"],
     "semi": ["error", "never"],
+    "react-hooks/exhaustive-deps": "off",
+    "jsx-a11y/alt-text": "off",
+    "@next/next/no-img-element": "off",
     "no-console": 1,
     // Puray import rules, feels like home
     "import-helpers/order-imports": [

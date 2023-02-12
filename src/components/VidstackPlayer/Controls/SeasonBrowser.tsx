@@ -1,10 +1,12 @@
 // import { Popover, Transition } from "@headlessui/react"
-import { BookOpen, FilmStrip } from "phosphor-react"
-import EpisodeFatCard from "@/components/Episode/EpisodeFatCard"
-import { useTranslation } from 'react-i18next'
-import * as Popover from '@radix-ui/react-popover'
-import { useMediaRemote } from '@vidstack/react';
 import {  useRef } from 'react'
+import { useTranslation } from 'react-i18next'
+
+import { BookOpen, FilmStrip } from 'phosphor-react'
+
+import EpisodeFatCard from '@/components/Episode/EpisodeFatCard'
+import * as Popover from '@radix-ui/react-popover'
+import { useMediaRemote } from '@vidstack/react'
 
 type Props = {
   season: Anima.RAW.Season

@@ -1,4 +1,4 @@
-import { MediaTime, useMediaStore } from '@vidstack/react';
+import { MediaTime, useMediaStore } from '@vidstack/react'
 
 
 type Props = {

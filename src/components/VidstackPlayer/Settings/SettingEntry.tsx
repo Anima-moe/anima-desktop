@@ -1,7 +1,9 @@
-import { useAtom } from 'jotai';
-import { Icon, CaretRight } from 'phosphor-react'
 import React from 'react'
-import { playerConfigPage } from '@/stores/atoms';
+
+import { useAtom } from 'jotai'
+import { Icon, CaretRight } from 'phosphor-react'
+
+import { playerConfigPage } from '@/stores/atoms'
 
 type Props = {
   LeftIcon: Icon

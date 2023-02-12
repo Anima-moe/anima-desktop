@@ -1,22 +1,26 @@
-import { useRouter } from 'next/router'
-
-import MediaLayout from '@/components/Layout/Media'
-import { Season } from '@/services/anima/season'
 import { createRef, useCallback, useEffect, useRef, useState } from 'react'
-import Player from '@/components/Player'
-import { Episode } from '@/services/anima/episode'
-import i18next from 'i18next'
-import StreamError from '@/components/Player/Displays/StreamError'
-import { useTranslation } from 'react-i18next';
-import Loading from '@/components/General/Loading'
-import SourceController from '@/components/Player/sourceController'
-import SutbtitleController from '@/components/Player/subtitleController'
-import type { MediaPlayerElement } from 'vidstack'
-import { useAtom } from 'jotai'
-import { playerSwitchingStream } from '@/stores/atoms'
-import { playerStreamConfig } from '../../stores/atoms';
-import StreamLoading from '@/components/Player/Displays/StreamLoading'
+import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
+
+import i18next from 'i18next'
+import { useAtom } from 'jotai'
+import { useRouter } from 'next/router'
+import type { MediaPlayerElement } from 'vidstack'
+
+import Loading from '@/components/General/Loading'
+import MediaLayout from '@/components/Layout/Media'
+import Player from '@/components/VidstackPlayer'
+import StreamError from '@/components/VidstackPlayer/Displays/StreamError'
+import StreamLoading from '@/components/VidstackPlayer/Displays/StreamLoading'
+import SourceController from '@/components/VidstackPlayer/sourceController'
+import SutbtitleController from '@/components/VidstackPlayer/subtitleController'
+import { Episode } from '@/services/anima/episode'
+import { Season } from '@/services/anima/season'
+import { playerSwitchingStream, userPreferedAudio } from '@/stores/atoms'
+
+import { playerStreamConfig } from '../../stores/atoms'
+
+
 
 function fetchStreams(episodeID?: string) {
   if (!episodeID) return
@@ -33,7 +37,7 @@ function fetchSeason(seasonID?: number) {
   return Season.get(Number(seasonID), i18next.language)
 }
 
-function index() {
+function Index() {
   const router = useRouter()
   const mediaPlayer = createRef<MediaPlayerElement>()
   const [ streamConfig ] = useAtom(playerStreamConfig)
@@ -46,33 +50,42 @@ function index() {
   const { t } = useTranslation()
 
   useEffect(()=>{
+    console.log('router')
     if (!router.isReady) { return }
+    console.log('streamData')
     if (!streamData || !seasonData || !episodeData) { return }
+    console.log('player')
     if (!mediaPlayer.current) { return }
 
-    defineSourceController( new SourceController(mediaPlayer.current, streamData.data) )
+    defineSourceController( new SourceController(mediaPlayer.current, streamData.data, episodeData.data) )
+    console.log('Defined source controller', episodeData)
     defineSubtitleController( new SutbtitleController(mediaPlayer.current, streamData.data) )
     
-  },[router.query.id, episodeLoading, seasonLoading, streamLoading, mediaPlayer.current])
+  },[router, episodeLoading, seasonLoading, streamLoading, mediaPlayer.current])
 
   // Listen for stream changes
   useEffect(()=>{
     if (!router.isReady) { return }
     if (!streamConfig.streamURL) { return }
     if (!sourceController) { return }
-
+    console.log('Source controller request audio change', streamConfig)
     sourceController.requestAudioChange(streamConfig.streamLocale)
   }, [router.query.id, streamConfig.streamLocale])
 
-  // Listen for request to change subtitle locale
-  useEffect(()=>{
-    if (!router.isReady) { return }
-    if (!subtitleController) { return }
+  // // Listen for request to change subtitle locale
+  // useEffect(()=>{
+  //   if (!router.isReady) { return }
+  //   if (!subtitleController) { return }
 
-    subtitleController.requestSubtitleChange(streamConfig.subtitleLocale)
-  }, [router.isReady, subtitleController, streamConfig.subtitleLocale])
+  //   subtitleController.requestSubtitleChange(streamConfig.subtitleLocale)
+  // }, [router.isReady, subtitleController, streamConfig.subtitleLocale])
 
-  if (episodeError || seasonError || streamError) return (
+
+  if ( streamLoading || seasonLoading || episodeLoading) {
+    return <StreamLoading background={episodeData?.data?.thumbnail} />
+  } 
+
+  if (!episodeData || !seasonData || !streamData || episodeError || seasonError || streamError) return (
     <StreamError 
       error={JSON.stringify({
         animeid: router.query.id,
@@ -81,16 +94,22 @@ function index() {
     />
   )
 
-    if(streamLoading || episodeLoading || seasonLoading || !streamConfig.streamURL || !streamData) {
-      return <MediaLayout>
-        <StreamLoading /> 
-      </MediaLayout>
-    }
-
     return <MediaLayout>
-      { streamData && streamConfig.streamURL && <Player episodeData={episodeData.data} seasonData={seasonData?.data[0]} ref={mediaPlayer} streamData={streamData.data}/> }
+      { streamData && (
+        <Player 
+          episodeData={episodeData.data} 
+          seasonData={seasonData?.data[0]} 
+          ref={mediaPlayer}
+          streamData={streamData.data}
+          onCanLoad={()=>{
+          }}
+          onSourceChange={(source)=>{
+          }}
+
+        /> 
+      )}
     </MediaLayout>
 
 }
 
-export default index
+export default Index
