@@ -13,7 +13,7 @@ function Index() {
  const immersive = useNavScroll()
 
   return <motion.nav 
-    className={`w-full py-3 px-8 flex flex-row select-none h-16 fixed z-[99] ${immersive ? 'bg-transparent bg-opacity-100' : 'bg-primary bg-opacity-40 backdrop-blur-sm'}`}
+    className={`w-full py-3 px-8 flex flex-row select-none h-16 fixed z-[99]  transition-all duration-300 ${immersive ? 'bg-primary bg-opacity-80 backdrop-blur-sm' : 'bg-opacity-100 backdrop-blur-none'}`}
   >
     {/* LOGO */}
     <div className='flex w-3/12 items-center'>

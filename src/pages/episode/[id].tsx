@@ -68,28 +68,27 @@ function Index() {
     if (!router.isReady) { return }
     if (!streamConfig.streamURL) { return }
     if (!sourceController) { return }
-    console.log('Source controller request audio change', streamConfig)
     sourceController.requestAudioChange(streamConfig.streamLocale)
   }, [router.query.id, streamConfig.streamLocale])
 
-  // // Listen for request to change subtitle locale
-  // useEffect(()=>{
-  //   if (!router.isReady) { return }
-  //   if (!subtitleController) { return }
-
-  //   subtitleController.requestSubtitleChange(streamConfig.subtitleLocale)
-  // }, [router.isReady, subtitleController, streamConfig.subtitleLocale])
+  // Listen for request to change subtitle locale
+  useEffect(()=>{
+    if (!router.isReady) { return }
+    if (!subtitleController) { return }
+    console.log('Subtitle controller request subtitle change', streamConfig)
+    subtitleController.requestSubtitleChange(streamConfig.subtitleLocale)
+  }, [router.isReady, subtitleController, streamConfig.subtitleLocale])
 
 
   if ( streamLoading || seasonLoading || episodeLoading) {
     return <StreamLoading background={episodeData?.data?.thumbnail} />
   } 
 
-  if (!episodeData || !seasonData || !streamData || episodeError || seasonError || streamError) return (
+  if (!episodeData || !seasonData || !streamData || episodeError || seasonError || streamError || streamData.count < 1) return (
     <StreamError 
       error={JSON.stringify({
         animeid: router.query.id,
-        message: `${episodeError || seasonError || streamError}`
+        message: `${episodeError || seasonError || streamError || 'Stream was reduced to ashes'}`
       })} 
     />
   )

@@ -1,27 +1,22 @@
 import { useEffect, useState } from 'react'
-
 export default function useNavScroll() {
-  const [immersive, setImmersion] = useState(true)
-
+  const [blackHeader, setBlackHeader] = useState(false)
 
   useEffect(() => {
-    const content = document.getElementById('content')
-    if (!content) { return }
     const scrollListener = () => {
-      if (content.scrollTop > 60 && immersive) {
-        setImmersion(false)
+      if (window.scrollY > 60) {
+        setBlackHeader(true)
       } else {
-        setImmersion(true)
+        setBlackHeader(false)
       }
     }
 
-    content.addEventListener('scroll', scrollListener)
+    window.addEventListener('scroll', scrollListener)
 
     return () => {
-      content.removeEventListener('scroll', scrollListener)
+      window.removeEventListener('scroll', scrollListener)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return immersive
+  return blackHeader
 }

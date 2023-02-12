@@ -10,7 +10,7 @@ type Props = {
 function General({children, fluid}: Props) {
   return <>
     <Navbar />
-    <main className={`h-full flex flex-col ${fluid ? 'px-0 w-full' : 'px-8'}`}>
+    <main className={`h-full flex flex-col ${fluid ? 'px-0 w-full' : 'px-8'}`} id='animacontent'>
         {children}
     </main>
   </>

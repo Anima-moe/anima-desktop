@@ -35,9 +35,6 @@ export default class SourceController {
   }
   
   private initialize() {
-      console.log('Called to be initialized', this._mediaPlayer)
-      console.log('Stream data', this._streamData)
-      console.log('Episode', this._episodeID)
       //----------------------------------------//
       // RESOLVE STREAM VIDEO Qualities
       //----------------------------------------//
@@ -59,15 +56,12 @@ export default class SourceController {
               streamLocale: this.getLocaleFromStreamExternalID(this._streamData, opiniatedStream.external_id),
             })
 
-            console.log('Opiniated stream', opiniatedStream)
-            console.log('Request source change')
             this.requestSourceChange(opiniatedStream)
             // this._mediaPlayer.addEventListener('can-play', () => {
               // this._mediaPlayer.play()
             // }, { once: true })
           })
       } else {
-        console.log('No opiniated stream', readAtom(playerStreamConfig))
         this._mediaPlayer.startLoading()
       }
   }
@@ -155,7 +149,6 @@ export default class SourceController {
     })
     writeAtom(userPreferedAudio, locale)
     this._mediaPlayer.startLoading()
-    console.log('Request source change')
 
     this._mediaPlayer.addEventListener('can-play', () => {
       this._mediaPlayer.currentTime = currentTime || 0

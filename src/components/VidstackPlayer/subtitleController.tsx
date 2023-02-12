@@ -1,4 +1,3 @@
-import JASSUB from 'jassub'
 import { readAtom, writeAtom } from 'jotai-nexus'
 import { MediaPlayerElement } from 'vidstack'
 
@@ -17,12 +16,23 @@ export default class SubtitleController {
     this._media = media
     this._streamData = streamData
 
-    import('assjs')
-       .then(mod => {
-         
-       })
+    this.initialize()
   }
 
+  private async initialize() {
+    if (this._renderer) {
+      this._renderer.destroy()
+    }
+
+    if (this.currentSubtitleLocale && this.currentSubtitleLocale !== '') {
+      this.requestSubtitleChange(this.currentSubtitleLocale)
+    } else {
+      const opiniatedSubtitle = this.getOpiniatedSubtitle()
+      if (opiniatedSubtitle && opiniatedSubtitle !== '') {
+        this.requestSubtitleChange(opiniatedSubtitle)
+      }
+    }
+  }
 
   public getOpiniatedSubtitle() {
     const userPrefered = readAtom(userPreferedSubtitles)
@@ -44,13 +54,15 @@ export default class SubtitleController {
   }
 
   public async requestSubtitleChange(locale: string) {
-    if (!this._renderer) { return }
+    console.log('Requesting subtitle change', locale)
+    console.log('Current renderer', this._renderer)
     if (this._streamData.subtitles[locale] && this.currentSubtitle === this._streamData.subtitles[locale].url) {
       return
     }
     
 
     if (locale === '' && this.currentSubtitle || !locale) {
+      console.log('locale is disabled')
       this.currentSubtitle = ''
       this.currentSubtitleLocale = ''
       writeAtom(playerStreamConfig, {
@@ -60,6 +72,7 @@ export default class SubtitleController {
       })
       // writeAtom(userPreferedSubtitles, '')
       if (!this._renderer) { return }
+      console.log('subtitle was disabled, destroying renderer', this._renderer)
       this._renderer.destroy()
       return
     }
@@ -73,13 +86,16 @@ export default class SubtitleController {
       subtitleLocale: locale
     })
 
+    if (!this._media.querySelector('video')) { 
+      console.log('No video element found')
+      return
+    }
     const assJS = await import('assjs')
-  
+    console.log('imported assJS')
     const subtitle = await fetch(this.currentSubtitle).then(res => res.text())
-    this._renderer = new assJS(subtitle, this._media.querySelector('video'), {
-
-    })
-
+    console.log('Got subtitle fetched', subtitle)
+    this._renderer = new assJS.default(subtitle, this._media.querySelector('video'))
+    console.log('Created renderer', this._renderer)
     this._media.addEventListener('provider-change', (e)=>{
       this._renderer.destroy()
       this.requestSubtitleChange(locale)

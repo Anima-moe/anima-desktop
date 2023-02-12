@@ -1,7 +1,8 @@
 import React, { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { Clipboard } from 'phosphor-react'
+import Link from 'next/link'
+import { ArrowBendDoubleUpLeft, Clipboard } from 'phosphor-react'
 
 import Button from '@/components/General/Button'
 
@@ -27,6 +28,7 @@ function StreamError({error}: Props) {
             const content = outputRef.current.textContent
             navigator.clipboard.writeText(content)
           }}/>
+          <Link href='/'><Button text='Home' iconLeft fluid tertiary Icon={<ArrowBendDoubleUpLeft />} className='mt-4'/></Link>
         </div>
       </div>
     </div>
