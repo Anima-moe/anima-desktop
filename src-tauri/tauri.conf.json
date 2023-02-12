@@ -8,8 +8,9 @@
   },
   "package": {
     "productName": "anima-desktop",
-    "version": "0.0.2"
+    "version": "0.0.3"
   },
+  
   "tauri": {
     "macOSPrivateApi": true,
     "allowlist": {
@@ -82,12 +83,12 @@
       "csp": null
     },
     "updater": {
-      "active": false,
+      "active": true,
       "endpoints": [
-        "https://api.anima.moe/app/{{target}}/{{current_version}}"
+        "https://api.anima.moe/version/{{target}}/{{current_version}}"
       ],
       "dialog": true,
-      "pubkey": ""
+      "pubkey": "6671f68d-1bca-4e56-839b-8cdec0f6692f"
     },
     "windows": [
       {
