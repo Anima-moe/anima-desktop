@@ -10,9 +10,9 @@ import GeneralLayout from '@/components/Layout/General'
 import { Anime } from '@/services/anima/anime'
 
 
-const fetchPopularAnimes = () =>{ return Anime.getByCategory(25) }
-const fetchSimulcastAnimes = () =>{ return Anime.getByCategory(24) } 
-const fetchStaffPickAnimes = () =>{ return Anime.getByCategory(32) }
+const fetchPopularAnimes = () =>{ return Anime.getByCategory(30) }
+const fetchSimulcastAnimes = () =>{ return Anime.getByCategory(33) } 
+const fetchStaffPickAnimes = () =>{ return Anime.getByCategory(34) }
 
 function App() {
   const { data: simulcastAnimes, error: simulcastError, isLoading: loadingSimulcast } = useQuery<Anima.API.GetAnimes>('/api/getSimulcast', fetchSimulcastAnimes)
