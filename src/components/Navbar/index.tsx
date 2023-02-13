@@ -24,7 +24,7 @@ function Index() {
         <SearchApplet />
     </div>
     {/* NAVBAR ICONS */}
-    <div className='flex w-3/12 items-center justify-end'>
+    <div className='flex w-3/12 items-center justify-end gap-3'>
         <NotificationApplet />
         <ConfigApplet />
         <UserApplet />
