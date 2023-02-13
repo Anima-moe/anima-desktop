@@ -20,10 +20,6 @@ export default class SubtitleController {
   }
 
   private async initialize() {
-    if (this._renderer) {
-      this._renderer.destroy()
-    }
-
     if (this.currentSubtitleLocale && this.currentSubtitleLocale !== '') {
       this.requestSubtitleChange(this.currentSubtitleLocale)
     } else {
@@ -31,6 +27,46 @@ export default class SubtitleController {
       if (opiniatedSubtitle && opiniatedSubtitle !== '') {
         this.requestSubtitleChange(opiniatedSubtitle)
       }
+    }
+  }
+
+  private async buildRenderer(subtitleType: string) {
+    this.destroyRenderer()
+
+    if (subtitleType === 'ass') {
+        const assJS = await import('assjs')
+        const subtitle = await fetch(this.currentSubtitle).then(res => res.text())
+
+        if (!this._renderer) {
+          this._renderer = new assJS.default(subtitle, this._media.querySelector('video'))
+        }
+
+        const resizeObserver = new ResizeObserver((entries) => {
+          this._renderer.resize()
+        })
+
+        resizeObserver.observe(this._media)
+    }
+
+    if (subtitleType === 'vtt') {
+        const track = document.createElement('track')
+        track.src = this.currentSubtitle
+        track.kind = 'subtitles'
+        track.srclang = this.currentSubtitleLocale
+        
+        this._media.querySelector('video').appendChild(track)
+        for (let i = 0; i < this._media.querySelector('video').textTracks.length; i++) {
+          this._media.querySelector('video').textTracks[i].mode =  'showing'
+        }        
+        this._renderer = track
+    }
+  }
+
+  private destroyRenderer() {
+    if (this._renderer) {
+      this._renderer?.destroy()
+      this._renderer?.remove()
+      this._renderer = undefined
     }
   }
 
@@ -50,12 +86,12 @@ export default class SubtitleController {
   }
 
   public async requestSubtitleChange(locale: string) {
-    if (this._streamData.subtitles[locale] && this.currentSubtitle === this._streamData.subtitles[locale].url) {
+    if (this._streamData.subtitles[locale] && this.currentSubtitle === this._streamData.subtitles[locale].url && this._renderer) {
       return
     }
-    
 
-    if (locale === '' && this.currentSubtitle || !locale) {
+
+    if (locale === '' && !this.currentSubtitle || !locale) {
       this.currentSubtitle = ''
       this.currentSubtitleLocale = ''
       writeAtom(playerStreamConfig, {
@@ -63,16 +99,20 @@ export default class SubtitleController {
         subtitleURL: '',
         subtitleLocale: ''
       })
-      // writeAtom(userPreferedSubtitles, '')
+
+      writeAtom(userPreferedSubtitles, '')
       if (!this._renderer) { return }
       
-      this._renderer.destroy()
+      this.destroyRenderer
+
       return
     }
 
-    this.currentSubtitle = this._streamData.subtitles[locale]?.url || ''
+    this.currentSubtitle = this._streamData.subtitles[locale].url
     this.currentSubtitleLocale = locale
+
     writeAtom(userPreferedSubtitles, locale)
+
     writeAtom(playerStreamConfig, {
       ...readAtom(playerStreamConfig),
       subtitleURL: this.currentSubtitle,
@@ -82,18 +122,12 @@ export default class SubtitleController {
     if (!this._media.querySelector('video')) { 
       return
     }
-    const assJS = await import('assjs')
-    const subtitle = await fetch(this.currentSubtitle).then(res => res.text())
-    this._renderer = new assJS.default(subtitle, this._media.querySelector('video'))
-    const resizeObserver = new ResizeObserver((entries) => {
-      this._renderer.resize()
-    })
-    resizeObserver.observe(this._media)
+
+    await this.buildRenderer(this._streamData.subtitles[locale].format)
+
     this._media.addEventListener('provider-change', (e)=>{
-      this._renderer.destroy()
       this.requestSubtitleChange(locale)
     })
-
   }
   
 }

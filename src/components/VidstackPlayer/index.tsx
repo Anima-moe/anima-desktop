@@ -20,11 +20,14 @@ import Timestamp from '@/components/VidstackPlayer/Displays/Timestamp'
 import Settings from '@/components/VidstackPlayer/Settings'
 import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
 import { userPreferedAudio } from '@/stores/atoms'
-import { playerStreamConfig, playerSwitchingStream, userPreferedSubtitles } from '@/stores/atoms'
+import { playerStreamConfig } from '@/stores/atoms'
 import { MediaOutlet, MediaPlayer, MediaPoster } from '@vidstack/react'
 
 import 'vidstack/styles/base.css'
 import { SkipOpening } from './Controls/SkipOpening'
+import Caption from './Displays/Subtitles/Caption'
+import Text from './Displays/Subtitles/Text'
+import Time, { getFormat } from './Displays/Subtitles/Time'
 
 
 type Props = {
@@ -38,7 +41,6 @@ type Props = {
 
 const Player =  forwardRef<MediaPlayerElement, Props>((props, ref) => {
   const [streamConfig, setStreamConfig] = useAtom(playerStreamConfig)
-  const [ userPreferedSubtitlesAtom, setUserPreferedSubtitlesAtom ] = useAtom(userPreferedSubtitles)
   const [ userPreferedAudioAtom, setUserPreferedAudioAtom ] = useAtom(userPreferedAudio)
 
   return <MediaPlayer
@@ -52,7 +54,7 @@ const Player =  forwardRef<MediaPlayerElement, Props>((props, ref) => {
   >
     {/* {JSON.stringify(streamConfig)} */}
     <MediaOutlet />
-    <MediaPoster alt={getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(props.episodeData)?.title} />
+    {/* <MediaPoster alt={getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(props.episodeData)?.title} /> */}
     <ShortcutCollector />
     <div className='w-full h-full flex pointer-events-none absolute top-0 left-0 flex-col justify-between'>
       <div className='pointer-events-none absolute top-0 left-0 w-full h-full bg-primary bg-opacity-40 media-user-idle:bg-opacity-0 media-paused:bg-opacity-70 transition-all duration-300' />
@@ -72,7 +74,12 @@ const Player =  forwardRef<MediaPlayerElement, Props>((props, ref) => {
         />
       </ControlsContainer>
       <ControlsContainer middle>
-        
+       <Caption 
+        start={2001}
+        end={5000}
+        format={getFormat(5000)}
+        text='Hello World'
+       />
       </ControlsContainer>
       <ControlsContainer bottom>     
         {/* <SkipOpening animeID={props.seasonData.anime_id} episodeNumber={props.episodeData.number} /> */}

@@ -39,7 +39,6 @@ export default class SourceController {
       // RESOLVE STREAM VIDEO Qualities
       //----------------------------------------//
       this.initializeStreamQuality()
-
       //----------------------------------------//
       // RESOLVE STREAM VIDEO SOURCE
       //----------------------------------------//
@@ -47,9 +46,10 @@ export default class SourceController {
       if (opiniatedStream) {
         Stream.get(this._episodeID, opiniatedStream.external_id)
           .then( newStreamData => {
+
             if ((newStreamData.data.mp4 || newStreamData.data.hls) === readAtom(playerStreamConfig).streamURL) return
             const streamExtension = newStreamData.data.mp4 ? 'mp4' : 'm3u8'
-    
+            
             writeAtom(playerStreamConfig, {
               ...readAtom(playerStreamConfig),
               streamURL: `http://localhost:15411/${btoa(newStreamData.data?.mp4?.filter(s => s.height === this.getOpiniatedQuality()?.height)?.[0].src|| newStreamData.data.hls)}.${streamExtension}`,
@@ -57,11 +57,17 @@ export default class SourceController {
             })
 
             this.requestSourceChange(opiniatedStream)
-            // this._mediaPlayer.addEventListener('can-play', () => {
-              // this._mediaPlayer.play()
-            // }, { once: true })
           })
       } else {
+
+        const streamExtension = this._streamData?.mp4 ? 'mp4' : 'm3u8'
+
+        writeAtom(playerStreamConfig, {
+          ...readAtom(playerStreamConfig),
+          streamURL: `http://localhost:15411/${btoa(this._streamData?.mp4?.filter(s => s.height === this.getOpiniatedQuality()?.height)?.[0].src || this._streamData.hls)}.${streamExtension}`,
+          streamLocale: 'ja-JP',
+        })
+
         this._mediaPlayer.startLoading()
       }
   }
@@ -101,6 +107,7 @@ export default class SourceController {
     const availableAudios = this._streamData.audios
 
     if (!availableAudios) return
+
     if (Object.keys(availableAudios).length === 1) {
       return availableAudios[Object.keys(availableAudios)[0]]
     }
@@ -132,6 +139,7 @@ export default class SourceController {
 
   public async requestSourceChange(newSource: { original: boolean, external_id: string }) {
     const newStreamData = await Stream.get(this._episodeID, newSource.external_id)
+
     if ((newStreamData.data.mp4 || newStreamData.data.hls) === readAtom(playerStreamConfig).streamURL) return
     const streamExtension = newStreamData.data.mp4 ? 'mp4' : 'm3u8'
     this._mediaPlayer.pause()
@@ -147,7 +155,7 @@ export default class SourceController {
     })
     writeAtom(userPreferedAudio, locale)
     this._mediaPlayer.startLoading()
- 
+
     this._mediaPlayer.addEventListener('can-play', () => {
       this._mediaPlayer.currentTime = currentTime || 0
       setTimeout(()=>{
