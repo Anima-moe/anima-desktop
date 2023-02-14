@@ -31,6 +31,8 @@ export default class SubtitleController {
   }
 
   private async buildRenderer(subtitleType: string) {
+    if (!subtitleType) { return }
+    
     this.destroyRenderer()
 
     if (subtitleType === 'ass') {
@@ -49,23 +51,23 @@ export default class SubtitleController {
     }
 
     if (subtitleType === 'vtt') {
-        const track = document.createElement('track')
-        track.src = this.currentSubtitle
-        track.kind = 'subtitles'
-        track.srclang = this.currentSubtitleLocale
-        
-        this._media.querySelector('video').appendChild(track)
-        for (let i = 0; i < this._media.querySelector('video').textTracks.length; i++) {
-          this._media.querySelector('video').textTracks[i].mode =  'showing'
-        }        
-        this._renderer = track
+        // const track = document.createElement('track')
+        // Object.assign(track,{
+        //   mode: 'showing',
+        //   kind: 'subtitles',
+        //   src: this.currentSubtitle,
+        //   default: true,
+        //   label: 'VTT',
+        //   srclang: 'en'
+        // })
+        // this._media.querySelector('video').appendChild(track)
+        // this._renderer = track
     }
   }
 
   private destroyRenderer() {
     if (this._renderer) {
-      this._renderer?.destroy()
-      this._renderer?.remove()
+      this._renderer.destroy()
       this._renderer = undefined
     }
   }
@@ -86,7 +88,7 @@ export default class SubtitleController {
   }
 
   public async requestSubtitleChange(locale: string) {
-    if (this._streamData.subtitles[locale] && this.currentSubtitle === this._streamData.subtitles[locale].url && this._renderer) {
+    if (this._streamData.subtitles && this._streamData.subtitles[locale] && this.currentSubtitle === this._streamData.subtitles[locale].url && this._renderer) {
       return
     }
 
@@ -108,7 +110,7 @@ export default class SubtitleController {
       return
     }
 
-    this.currentSubtitle = this._streamData.subtitles[locale].url
+    this.currentSubtitle = this._streamData.subtitles[locale]?.url
     this.currentSubtitleLocale = locale
 
     writeAtom(userPreferedSubtitles, locale)
@@ -123,7 +125,7 @@ export default class SubtitleController {
       return
     }
 
-    await this.buildRenderer(this._streamData.subtitles[locale].format)
+    await this.buildRenderer(this._streamData?.subtitles?.[locale]?.format)
 
     this._media.addEventListener('provider-change', (e)=>{
       this.requestSubtitleChange(locale)

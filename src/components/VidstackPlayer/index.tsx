@@ -26,8 +26,7 @@ import { MediaOutlet, MediaPlayer, MediaPoster } from '@vidstack/react'
 import 'vidstack/styles/base.css'
 import { SkipOpening } from './Controls/SkipOpening'
 import Caption from './Displays/Subtitles/Caption'
-import Text from './Displays/Subtitles/Text'
-import Time, { getFormat } from './Displays/Subtitles/Time'
+import List from './Displays/Subtitles/List'
 
 
 type Props = {
@@ -42,7 +41,7 @@ type Props = {
 const Player =  forwardRef<MediaPlayerElement, Props>((props, ref) => {
   const [streamConfig, setStreamConfig] = useAtom(playerStreamConfig)
   const [ userPreferedAudioAtom, setUserPreferedAudioAtom ] = useAtom(userPreferedAudio)
-
+  
   return <MediaPlayer
     poster={props.episodeData.thumbnail}
     ref={ref}
@@ -51,6 +50,7 @@ const Player =  forwardRef<MediaPlayerElement, Props>((props, ref) => {
     onCanLoad={props.onCanLoad}
     load='custom'
     aspectRatio={16/9}
+    userIdleDelay={400}
   >
     {/* {JSON.stringify(streamConfig)} */}
     <MediaOutlet />
@@ -58,6 +58,11 @@ const Player =  forwardRef<MediaPlayerElement, Props>((props, ref) => {
     <ShortcutCollector />
     <div className='w-full h-full flex pointer-events-none absolute top-0 left-0 flex-col justify-between'>
       <div className='pointer-events-none absolute top-0 left-0 w-full h-full bg-primary bg-opacity-40 media-user-idle:bg-opacity-0 media-paused:bg-opacity-70 transition-all duration-300' />
+      {streamConfig?.subtitleURL?.endsWith('.vtt') && (
+        <div className='absolute w-full h-full pointer-events-none'>
+          <List />
+        </div> 
+      )}
       <img src='/i/anima.svg' className='right-4 bottom-20 media-user-idle:bottom-4 media-user-idle:opacity-40 absolute opacity-80 transition-all duration-300' />
       <ControlsContainer top>
         <BackButton target={`/anime/${props?.seasonData?.anime_id}`} />
@@ -72,14 +77,6 @@ const Player =  forwardRef<MediaPlayerElement, Props>((props, ref) => {
           audios={props?.streamData?.audios} 
           subtitles={props?.streamData?.subtitles}
         />
-      </ControlsContainer>
-      <ControlsContainer middle>
-       <Caption 
-        start={2001}
-        end={5000}
-        format={getFormat(5000)}
-        text='Hello World'
-       />
       </ControlsContainer>
       <ControlsContainer bottom>     
         {/* <SkipOpening animeID={props.seasonData.anime_id} episodeNumber={props.episodeData.number} /> */}
