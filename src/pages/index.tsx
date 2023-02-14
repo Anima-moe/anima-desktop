@@ -15,9 +15,24 @@ const fetchSimulcastAnimes = () =>{ return Anime.getByCategory(33) }
 const fetchStaffPickAnimes = () =>{ return Anime.getByCategory(34) }
 
 function App() {
-  const { data: simulcastAnimes, error: simulcastError, isLoading: loadingSimulcast } = useQuery<Anima.API.GetAnimes>('/api/getSimulcast', fetchSimulcastAnimes)
-  const { data: popularAnimes, error: popularError, isLoading: loadingPopular } = useQuery<Anima.API.GetAnimes>('/api/getPopular', fetchPopularAnimes)
-  const { data: staffAnimes, error: staffError, isLoading: loadingStaffPick } = useQuery<Anima.API.GetAnimes>('/api/getStaff', fetchStaffPickAnimes)
+  const { data: simulcastAnimes, error: simulcastError, isLoading: loadingSimulcast } = useQuery<Anima.API.GetAnimes>('/api/getSimulcast', fetchSimulcastAnimes, {
+    retry: 3,
+    staleTime: Infinity,
+    cacheTime: 30 * 60 * 1000,
+    refetchOnWindowFocus: false
+  })
+  const { data: popularAnimes, error: popularError, isLoading: loadingPopular } = useQuery<Anima.API.GetAnimes>('/api/getPopular', fetchPopularAnimes, {
+    retry: 3,
+    staleTime: Infinity,
+    cacheTime: 30 * 60 * 1000,
+    refetchOnWindowFocus: false
+  })
+  const { data: staffAnimes, error: staffError, isLoading: loadingStaffPick } = useQuery<Anima.API.GetAnimes>('/api/getStaff', fetchStaffPickAnimes, {
+    retry: 3,
+    staleTime: Infinity,
+    cacheTime: 30 * 60 * 1000,
+    refetchOnWindowFocus: false
+  })
   const [heroAnime, setHeroAnime] = useState<Anima.RAW.Anime>({} as Anima.RAW.Anime)
   const { t } = useTranslation()
 

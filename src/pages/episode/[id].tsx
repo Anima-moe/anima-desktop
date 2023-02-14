@@ -1,5 +1,4 @@
-import { createRef, useCallback, useEffect, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { createRef, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 
 import i18next from 'i18next'
@@ -7,7 +6,6 @@ import { useAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import type { MediaPlayerElement } from 'vidstack'
 
-import Loading from '@/components/General/Loading'
 import MediaLayout from '@/components/Layout/Media'
 import Player from '@/components/VidstackPlayer'
 import StreamError from '@/components/VidstackPlayer/Displays/StreamError'
@@ -45,10 +43,20 @@ function Index() {
   const [ sourceController, defineSourceController ] = useState<SourceController>()
   const [ subtitleController, defineSubtitleController] = useState<SutbtitleController>()
   const [ switchingStream, setSwitchingStream ] = useAtom(playerSwitchingStream)
-  const { data: episodeData, isLoading: episodeLoading, error: episodeError } = useQuery(`/api/episode/${router.query.id}`, () => fetchEpisode(router.query.id as string), { cacheTime: 0 })
-  const { data: seasonData, isLoading: seasonLoading, error: seasonError } = useQuery(`/api/season/${episodeData?.data?.season_id}`, () => fetchSeason(episodeData?.data?.season_id), { cacheTime: 0 })
-  const { data: streamData, isLoading: streamLoading, error:streamError } = useQuery(`/api/episode/${router.query.id}/streams`, () => fetchStreams(router.query.id as string), { cacheTime: 0 })
-  const { t } = useTranslation()
+  const { data: episodeData, isLoading: episodeLoading, error: episodeError } = useQuery(`/api/episode/${router.query.id}`, () => fetchEpisode(router.query.id as string), { cacheTime: 0,
+  retry: 3, 
+  refetchOnWindowFocus: false
+ })
+  const { data: seasonData, isLoading: seasonLoading, error: seasonError } = useQuery(`/api/season/${episodeData?.data?.season_id}`, () => fetchSeason(episodeData?.data?.season_id), { 
+    cacheTime: 0,
+    retry: 3, 
+    refetchOnWindowFocus: false 
+  })
+  const { data: streamData, isLoading: streamLoading, error:streamError } = useQuery(`/api/episode/${router.query.id}/streams`, () => fetchStreams(router.query.id as string), { 
+    cacheTime: 0,
+    retry: 3, 
+    refetchOnWindowFocus: false 
+  })
 
   useEffect(()=>{
     if (!router.isReady) { return }
