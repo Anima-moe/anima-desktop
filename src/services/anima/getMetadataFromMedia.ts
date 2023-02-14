@@ -6,7 +6,7 @@ export type AnimaMediaMetadata = {
 
 export function getLocaleMetadata<T, TM>(media: T): TM {
   const locale = i18next.language
-
+  if (!media) return {} as TM
   //@ts-expect-error
   if (media?.AnimeMetadata) {
     //@ts-expect-error
