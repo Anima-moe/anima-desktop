@@ -3,6 +3,10 @@
 @tailwind components;
 @tailwind utilities;
 
+*:focus-visible {
+  outline: none;
+}
+
 .skeleton-block,
 .skeleton-text {
   --skeleton-color: #212121;
