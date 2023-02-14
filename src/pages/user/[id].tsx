@@ -1,24 +1,30 @@
 import GeneralLayout from '@/components/Layout/General'
 
 const User = () => {
+  const background = '/i/splash.mp4' // example
+
   return (
     <GeneralLayout fluid>
-      <div
-        className="absolute z-0 h-[100vh] w-full bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage:
-            'linear-gradient(0deg, rgba(22,22,22,1) 25%, rgba(22,22,22,0) 100%), url(/test/back.png)',
-        }}
-      />
+      <div className={'absolute top-0 left-0 w-full h-full cover z-[-1] overflow-hidden'}>
+        {(background) ? (
+            (background.endsWith('.mp4') || background.endsWith('.webm')) && (
+              <video autoPlay loop muted className='w-full h-full object-cover' src={background} />
+            )
+          ) : (
+            <video autoPlay loop muted className='w-full h-full object-cover' src='/i/splash.mp4' />
+        )}
+      </div>
+      <div className='from-primary w-full h-full absolute top-0 left-0 to-transparent bg-primary/70 bg-gradient-to-t' />
       <div className="z-10 mx-8 my-24">
         <div
-          className="h-48 rounded-t-md bg-tertiary"
+          className="h-48 rounded-t-md bg-tertiary bg-cover bg-no-repeat bg-center"
           style={{
             backgroundImage: 'url(/i/splash_image_bocchi_1.png)',
           }}
         />
-        <div className="mb-4 flex h-24 justify-between rounded-b-md bg-accent/10 px-8">
-          <div className="flex items-center">
+        <div className="mb-4 flex h-24 justify-between rounded-b-md bg-secondary px-8 relative overflow-hidden">
+          <div className='absolute top-0 left-0 w-full h-full bg-accent/10 pointer-events-none z-[0]' />
+          <div className="flex items-center z-[1]">
             <span
               className="mr-4 h-20 w-20 rounded-full bg-cover bg-center bg-no-repeat"
               style={{ backgroundImage: 'url(/test/avtr.png)' }}
