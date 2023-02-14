@@ -1,6 +1,5 @@
 import React, { memo, useMemo } from 'react'
 import { useQuery } from 'react-query'
-import useSubtitles from 'react-subtitles'
 
 import axios from 'axios'
 import { useAtom } from 'jotai'

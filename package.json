@@ -42,6 +42,7 @@
     "react-shaka-plyr": "^1.1.0",
     "sass": "^1.58.0",
     "skeleton-elements": "^4.0.1",
+    "subtitle": "^4.2.1",
     "swiper": "^8.4.7",
     "tauri-plugin-store-api": "https://github.com/tauri-apps/tauri-plugin-store",
     "ts-debounce": "^4.0.0",
