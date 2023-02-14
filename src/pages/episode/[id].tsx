@@ -15,6 +15,7 @@ import StreamLoading from '@/components/VidstackPlayer/Displays/StreamLoading'
 import SourceController from '@/components/VidstackPlayer/sourceController'
 import SutbtitleController from '@/components/VidstackPlayer/subtitleController'
 import { Episode } from '@/services/anima/episode'
+import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
 import { Season } from '@/services/anima/season'
 import { playerSwitchingStream, userPreferedAudio } from '@/stores/atoms'
 
@@ -82,10 +83,14 @@ function Index() {
 
   if (!episodeData || !seasonData || !streamData || episodeError || seasonError || streamError || streamData.count < 1) return (
     <StreamError 
-      error={JSON.stringify({
-        animeid: router.query.id,
-        message: `${episodeError || seasonError || streamError || 'Stream was reduced to ashes'}`
-      })} 
+      error={`.report ${btoa(JSON.stringify({
+        episode: episodeData?.data?.id,
+        season: episodeData?.data?.season_id,
+        anime: seasonData?.data?.[0]?.anime_id,
+        source: episodeData?.data?.source_id,
+        localizedTitle: getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(episodeData?.data)?.title,
+        message: `${episodeError || seasonError || streamError || 'STREAM NOT FOUND'}`
+      }))}`} 
     />
   )
 
