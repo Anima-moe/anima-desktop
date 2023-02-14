@@ -63,6 +63,9 @@ const languageTable = {
       search_moredata: 'The search query must contain 3 or more characters OR one category',
       search_noresult: 'No results found',
 
+      user_menu_profile: 'My profile',
+      user_menu_settings: 'Settings',
+      user_menu_signout: 'Sign out',
 
       api_fetchError: 'Oops... Something went wrong while trying to get data from our servers. Please try again later.',
       api_streamError_instructions: 'You can help us solve this problem by reporting the error on our discord server, copy the information below and send it along with the message.',
@@ -138,6 +141,10 @@ const languageTable = {
       search_prompt: 'Busque por título de animes',
       search_moredata: 'A busca deve conter 3 ou mais caracteres OU uma categoria',
       search_noresult: 'Nenhum resultado encontrado',
+
+      user_menu_profile: 'Perfil',
+      user_menu_settings: 'Opções',
+      user_menu_signout: 'Sair',
 
       api_fetchError: 'Oops! Algo deu errado ao obter os dados do servidor. Tente novamente mais tarde.',
       api_streamError: 'Eita... Algo deu errado ao tentar obter uma stream para este anime. Tente novamente mais tarde.',
