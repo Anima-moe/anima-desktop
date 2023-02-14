@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import clsx from 'clsx'
@@ -44,7 +45,7 @@ function Navbar() {
           align="end"
         >
           {menuItems.map((item, i, arr) => (
-            <>
+            <Fragment key={`user.navbar.${i}`} >
               {i === arr.length - 1 && (
                 <DropdownMenuSeparator className="my-2 w-full border border-tertiary" />
               )}
@@ -60,7 +61,7 @@ function Navbar() {
                   {item.name}
                 </span>
               </DropdownMenuItem>
-            </>
+            </Fragment>
           ))}
         </DropdownMenuContent>
       </DropdownMenu>
