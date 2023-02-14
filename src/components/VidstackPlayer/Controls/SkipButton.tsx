@@ -16,7 +16,7 @@ function PlayButton({ time }: Props) {
     'ml-4': time > 0,
   })
   return <div className={classes} onClick={()=>{
-    remote.seek(time)
+    remote.seek(currentTime + time)
   }}>
     { time < 0 && <ArrowCounterClockwise weight='fill' className='w-6 h-5 opacity-50 group-hover:opacity-100 duration-300 order-2 hover:-rotate-90'/> }
     { time === 0 && <ArrowElbowUpRight weight='fill' className='w-5 h-5 opacity-50 group-hover:opacity-100 duration-300'/>}
