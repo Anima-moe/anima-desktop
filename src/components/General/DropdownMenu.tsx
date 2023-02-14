@@ -15,7 +15,6 @@ export const DropdownMenuContent = forwardRef<
     <DropdownMenuPrimitive.Portal>
       <DropdownMenuPrimitive.Content {...props} ref={forwardedRef}>
         {children}
-        <DropdownMenuPrimitive.Arrow className="fill-secondary" />
       </DropdownMenuPrimitive.Content>
     </DropdownMenuPrimitive.Portal>
   )
