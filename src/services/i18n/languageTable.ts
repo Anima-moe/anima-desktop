@@ -67,6 +67,16 @@ const languageTable = {
       user_menu_settings: 'Settings',
       user_menu_signout: 'Sign out',
 
+      user_edit_email: 'Email',
+      user_edit_password: 'Password',
+      user_edit_avatar: 'Avatar',
+      user_edit_banner: 'Banner',
+      user_edit_background: 'Background',
+      user_edit_color: 'Color',
+      user_edit_legend: 'Legend',
+      user_edit_audio: 'Audio',
+      user_edit_history: 'History',
+
       api_fetchError: 'Oops... Something went wrong while trying to get data from our servers. Please try again later.',
       api_streamError_instructions: 'You can help us solve this problem by reporting the error on our discord server, copy the information below and send it along with the message.',
       api_streamError: 'Oops... Something went wrong while trying to get a stream for this anime. Please try again later.',
@@ -145,6 +155,16 @@ const languageTable = {
       user_menu_profile: 'Perfil',
       user_menu_settings: 'Opções',
       user_menu_signout: 'Sair',
+
+      user_edit_email: 'E-mail',
+      user_edit_password: 'Senha',
+      user_edit_avatar: 'Avatar',
+      user_edit_banner: 'Capa',
+      user_edit_background: 'Fundo',
+      user_edit_color: 'Cor',
+      user_edit_legend: 'Legenda',
+      user_edit_audio: 'Audio',
+      user_edit_history: 'Histórico',
 
       api_fetchError: 'Oops! Algo deu errado ao obter os dados do servidor. Tente novamente mais tarde.',
       api_streamError: 'Eita... Algo deu errado ao tentar obter uma stream para este anime. Tente novamente mais tarde.',
