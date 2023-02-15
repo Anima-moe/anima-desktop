@@ -43,7 +43,7 @@ export default function SeasonBrowser({season, episode}: Props) {
         </button>
       </Popover.Trigger>
       <Popover.Portal>
-        <Popover.Content className="bg-secondary rounded-md pt-2 px-2 transition-[height] w-max h-max border border-tertiary max-w-[20rem] relative 'overflow-hidden text-subtle whitespace-nowrap text-ellipsis overflow-hidden" sideOffset={1}>
+        <Popover.Content align='end' className="bg-secondary rounded-md pt-2 px-2 transition-[height] w-max h-max border border-tertiary max-w-[20rem] relative 'overflow-hidden text-subtle whitespace-nowrap text-ellipsis overflow-hidden" sideOffset={1}>
           <div className="pb-4 px-2 flex items-center text-ellipsis overflow-hidden w-3/4">
               <BookOpen weight="fill" size={16} className='mr-1.5 '/> {t('anime_generic_season', {n: season.number})}
           </div>

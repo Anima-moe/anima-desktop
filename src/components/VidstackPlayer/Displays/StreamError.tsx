@@ -7,7 +7,7 @@ import { ArrowBendDoubleUpLeft, Clipboard } from 'phosphor-react'
 import Button from '@/components/General/Button'
 
 type Props = {
-  error: Error | string
+  error: string
 }
 
 function StreamError({error}: Props) {
@@ -22,7 +22,7 @@ function StreamError({error}: Props) {
           <h1 className='font-semibold uppercase'>{t('api_streamError')}</h1>
           <p className='text-sm mt-12'>{t('api_streamError_instructions')}</p>
           <div className='scroll-y-auto w-full break-words whitespace-wrap bg-tertiary px-4 py-2 rounded max-h-[13rem] mt-2 overflow-y-auto' ref={outputRef}>
-            {JSON.stringify(`${error}`)}
+            {error}
           </div>
           <Button text={t('copy')} Icon={<Clipboard />} accent fluid xs className='mt-4' onClick={()=>{
             const content = outputRef.current.textContent

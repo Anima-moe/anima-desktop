@@ -58,9 +58,8 @@ export default memo(function Captions() {
   const format = getFormatFromList(captions)
 
   return (
-    <div className="z-[50] w-full absolute bottom-24 media-user-idle:bottom-10 flex items-end justify-center text-3xl duration-300 transition-all">
+    <div className="z-[50] w-full absolute bottom-24 media-user-idle:bottom-10 flex items-center justify-end text-3xl duration-300 transition-all flex-col">
       {captions.map((captionLine, index) => {
-        
         //@ts-expect-error 
         const endToUse = shouldUseEnd(captionLine?.data, index, captions) ? captionLine.data?.end : undefined
           return <div key={index}>

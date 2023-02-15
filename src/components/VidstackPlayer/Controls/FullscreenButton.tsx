@@ -15,7 +15,7 @@ function FullscreenButton({}: Props) {
   const remote = useMediaRemote()
   const router = useRouter()
   
-  return <MediaToggleButton  className='flex items-center justify-center group cursor-pointer pointer-events-auto' onClick={()=>{
+  return <MediaToggleButton  className='flex items-center justify-center group cursor-pointer pointer-events-auto ml-auto' onClick={()=>{
     import('@tauri-apps/api/window')
       .then((mod)=>{
         setFullscreen(!fullscreen)

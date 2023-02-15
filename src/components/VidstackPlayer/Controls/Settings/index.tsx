@@ -44,7 +44,7 @@ function Index({audios, subtitles}: Props) {
       </button>
     </Popover.Trigger>
     <Popover.Portal>
-      <Popover.Content sideOffset={2}  className='overflow-hidden select-none'>
+      <Popover.Content sideOffset={2} align='end' className='overflow-hidden select-none'>
         <div 
           className="bg-secondary rounded-md pt-2 px-2 transition-[height] w-max h-max border border-tertiary min-w-[14rem] relative 'overflow-hidden"
         >
