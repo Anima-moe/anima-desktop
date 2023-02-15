@@ -17,7 +17,7 @@ function Subtitles({ subtitles }: Props) {
   const [streamConfig, setStreamConfig] = useAtom(playerStreamConfig)
   const [configPage, setConfigPage] = useAtom(playerConfigPage)
   const { t } = useTranslation()
-  console.log('Subtitles in the component', subtitles)
+
   const classNames = clsx({
     'flex flex-row py-2 px-2 duration-300 rounded-md mb-2 justify-between group cursor-pointer': true,
     'cursor-not-allowed bg-tertiary' : streamConfig.subtitleURL === '' || !streamConfig.subtitleURL,

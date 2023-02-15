@@ -3,7 +3,7 @@ import { forwardRef } from 'react'
 import { useAtom } from 'jotai'
 import JotaiNexus from 'jotai-nexus'
 import { CircleNotch } from 'phosphor-react'
-import type { MediaPauseEvent, MediaPlayerElement, MediaSourceChangeEvent } from 'vidstack'
+import type { MediaPlayerElement, MediaSourceChangeEvent } from 'vidstack'
 
 import BackButton from '@/components/VidstackPlayer/Controls/BackButton'
 import FullscreenButton from '@/components/VidstackPlayer/Controls/FullscreenButton'
@@ -25,8 +25,6 @@ import 'vidstack/styles/base.css'
 import { SkipChapter } from './Controls/SkipChapter'
 import VolumeControl from './Controls/VolumeControl'
 import CaptionList from './Displays/Subtitles/List'
-
-
 
 type Props = {
   episodeData: Anima.RAW.Episode,

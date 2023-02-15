@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from 'react'
+import React, { memo, useEffect, useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
 
 import axios from 'axios'
@@ -33,6 +33,7 @@ function shouldUseEnd(end, index, captions) {
 export default memo(function Captions() {
   const {currentTime, duration} = useMediaStore()
   const [streamConfig] = useAtom(playerStreamConfig)
+  const [textLine, setTextLine] = useState<any>()
   const { data, error, isLoading } = useQuery(`subtitles/${streamConfig.subtitleURL}.${streamConfig.streamLocale}`, ()=> { return axios.get(streamConfig.subtitleURL).then(g => g.data ) })
 
   const captions = useMemo(()=> {
@@ -45,6 +46,16 @@ export default memo(function Captions() {
     return parseSync(data)
   }, [data])
 
+  useEffect(()=>{
+    if (!captions) { return }
+
+    const currentCaption = captions.find(caption => shouldDisplayCaption(caption.data, currentTime))
+    if (shouldDisplayCaption(currentCaption?.data, currentTime)) {
+      setTextLine(currentCaption)
+    } else {
+      setTextLine(null)
+    }
+  }, [captions, Math.round(currentTime)])
 
   if (!streamConfig.streamLocale || streamConfig.subtitleURL === '') {
     return <></>
@@ -59,16 +70,7 @@ export default memo(function Captions() {
 
   return (
     <div className="z-[50] w-full absolute bottom-24 media-user-idle:bottom-10 flex items-center justify-end text-3xl duration-300 transition-all flex-col">
-      {captions.map((captionLine, index) => {
-        //@ts-expect-error 
-        const endToUse = shouldUseEnd(captionLine?.data, index, captions) ? captionLine.data?.end : undefined
-          return <div key={index}>
-            {(shouldDisplayCaption(captionLine.data, currentTime))  && (
-              // @ts-expect-error
-              <Caption key={index} end={endToUse} start={captionLine.data?.start} text={captionLine.data?.text} format={format} /> 
-            )}
-        </div>
-      })}
+      { textLine && <Caption text={textLine.data.text} /> }
     </div>
   )
 })
