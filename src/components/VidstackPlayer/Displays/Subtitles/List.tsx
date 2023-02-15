@@ -33,7 +33,6 @@ function shouldUseEnd(end, index, captions) {
 export default memo(function Captions() {
   const {currentTime, duration} = useMediaStore()
   const [streamConfig] = useAtom(playerStreamConfig)
-  const [textLine, setTextLine] = useState<any>()
   const { data, error, isLoading } = useQuery(`subtitles/${streamConfig.subtitleURL}.${streamConfig.streamLocale}`, ()=> { return axios.get(streamConfig.subtitleURL).then(g => g.data ) })
 
   const captions = useMemo(()=> {
@@ -46,16 +45,16 @@ export default memo(function Captions() {
     return parseSync(data)
   }, [data])
 
-  useEffect(()=>{
+  const textLine = useMemo(()=>{
     if (!captions) { return }
 
     const currentCaption = captions.find(caption => shouldDisplayCaption(caption.data, currentTime))
     if (shouldDisplayCaption(currentCaption?.data, currentTime)) {
-      setTextLine(currentCaption)
+      return currentCaption
     } else {
-      setTextLine(null)
+      return null
     }
-  }, [captions, Math.round(currentTime)])
+  }, [captions, currentTime.toFixed(1)])
 
   if (!streamConfig.streamLocale || streamConfig.subtitleURL === '') {
     return <></>
@@ -70,6 +69,7 @@ export default memo(function Captions() {
 
   return (
     <div className="z-[50] w-full absolute bottom-24 media-user-idle:bottom-10 flex items-center justify-end text-3xl duration-300 transition-all flex-col">
+      {/* @ts-ignore-error |  */}
       { textLine && <Caption text={textLine.data.text} /> }
     </div>
   )
