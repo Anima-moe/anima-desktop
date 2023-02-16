@@ -8,9 +8,8 @@
   },
   "package": {
     "productName": "anima-desktop",
-    "version": "0.0.4"
+    "version": "0.0.5"
   },
-  
   "tauri": {
     "macOSPrivateApi": true,
     "allowlist": {
@@ -48,9 +47,7 @@
       "deb": {
         "depends": []
       },
-      "externalBin": [
-        "proxy/main"
-      ],
+      "externalBin": ["proxy/main"],
       "appimage": {
         "bundleMediaFramework": true
       },
@@ -84,11 +81,9 @@
     },
     "updater": {
       "active": true,
-      "endpoints": [
-        "https://api.anima.moe/version/{{target}}/{{current_version}}"
-      ],
+      "endpoints": ["https://api.anima.moe/version/{{target}}/{{current_version}}"],
       "dialog": true,
-      "pubkey": "6671f68d-1bca-4e56-839b-8cdec0f6692f"
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEQ1RjZFMEFBM0E0REY4OTMKUldTVCtFMDZxdUQyMVlpTVh0ZVN2Y053TUF0NkhsTjJ1MTRHRmM4V2hhUkpHenVLVSs2ZHRwNEMK"
     },
     "windows": [
       {
