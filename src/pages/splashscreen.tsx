@@ -10,6 +10,8 @@ import Register from '@/components/splashscreen/Register'
 import Welcome from '@/components/splashscreen/Welcome'
 import { User } from '@/services/anima/user'
 import { splashScreenPageAtom, splashScreenPagePropsAtom } from '@/stores/atoms'
+import { relaunch } from '@tauri-apps/api/process'
+import { checkUpdate, installUpdate } from '@tauri-apps/api/updater'
 
 const pages = {
   welcome: Welcome,
@@ -49,6 +51,15 @@ function SplashScreen() {
 
   useEffect(() => {
     ;(async () => {
+      const { shouldUpdate } = await checkUpdate()
+      if (shouldUpdate) {
+        // // display dialog
+        // await installUpdate()
+        // // install complete, restart the app
+        // await relaunch()
+        return
+      }
+
       const { value: userHasToken, elapsed } = await timedPromise(ensureUserToken)
       setTimeout(
         async () => {
