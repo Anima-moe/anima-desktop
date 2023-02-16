@@ -10,6 +10,8 @@ import Register from '@/components/splashscreen/Register'
 import Welcome from '@/components/splashscreen/Welcome'
 import { User } from '@/services/anima/user'
 import { splashScreenPageAtom, splashScreenPagePropsAtom } from '@/stores/atoms'
+import { relaunch } from '@tauri-apps/api/process'
+import { checkUpdate, installUpdate } from '@tauri-apps/api/updater'
 
 const pages = {
   welcome: Welcome,
@@ -21,21 +23,23 @@ const timedPromise = async (promFac: () => Promise<any>) => {
   const start = performance.now()
   const returnValue = await promFac()
   return {
-      value: returnValue,
-      elapsed: performance.now() - start
+    value: returnValue,
+    elapsed: performance.now() - start,
   }
 }
 
 const ensureUserToken = async () => {
   try {
     const { getConfigValue, setConfigValue } = await import('@/services/tauri/configValue')
-    const userToken = await getConfigValue('token') as string
-    if (!userToken || userToken == '') { return false }
+    const userToken = (await getConfigValue('token')) as string
+    if (!userToken || userToken == '') {
+      return false
+    }
 
     const data = await User.validate(userToken)
 
     return dayjs().isBefore(dayjs.unix(data.exp).subtract(1, 'day'))
-  } catch(e) {
+  } catch (e) {
     return false
   }
 }
@@ -45,26 +49,37 @@ function SplashScreen() {
   const [currentPage, setCurrentPage] = useAtom(splashScreenPageAtom)
   const Element = pages[currentPage]
 
-  useEffect(()=>{
-    (async ()=>{
-      const { value: userHasToken, elapsed } = await timedPromise(ensureUserToken)
-      setTimeout(async ()=>{
-        if (!userHasToken) {
-          setCurrentPage('login')
-        } else {
-          const { createMainWindow } = await import('@/services/tauri/windows')
-          createMainWindow()
-        }
-      }, elapsed > 2000 ? 0 : 2000 - elapsed)
+  useEffect(() => {
+    ;(async () => {
+      const { shouldUpdate } = await checkUpdate()
+      if (shouldUpdate) {
+        // // display dialog
+        // await installUpdate()
+        // // install complete, restart the app
+        // await relaunch()
+        return
+      }
 
+      const { value: userHasToken, elapsed } = await timedPromise(ensureUserToken)
+      setTimeout(
+        async () => {
+          if (!userHasToken) {
+            setCurrentPage('login')
+          } else {
+            const { createMainWindow } = await import('@/services/tauri/windows')
+            createMainWindow()
+          }
+        },
+        elapsed > 2000 ? 0 : 2000 - elapsed
+      )
     })()
   }, [])
-  return <AnimatePresence initial mode='wait'>
-    <Element key={currentPage} {...pageProps}/>
-    <style>
-      {'body { background: transparent }'}
-    </style>
-  </AnimatePresence>
+  return (
+    <AnimatePresence initial mode="wait">
+      <Element key={currentPage} {...pageProps} />
+      <style>{'body { background: transparent }'}</style>
+    </AnimatePresence>
+  )
 }
 
 export default SplashScreen

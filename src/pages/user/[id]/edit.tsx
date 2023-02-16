@@ -48,14 +48,18 @@ const User = () => {
           ))}
           {selects.map((secs, i) => (
             <Select.Root key={i}>
-              <Select.Trigger className="inline-flex h-[35px] items-center gap-[5px] rounded border border-tertiary bg-secondary px-[15px] text-[13px] leading-none shadow-[0_2px_10px] shadow-black/10 outline-none focus:shadow-[0_0_0_2px] focus:shadow-black">
+              <Select.Trigger className="flex h-[35px] items-center justify-between gap-[5px] rounded border border-tertiary bg-secondary px-[15px] text-[13px] leading-none shadow-[0_2px_10px] shadow-black/10 outline-none focus:shadow-[0_0_0_2px] focus:shadow-black">
                 <Select.Value placeholder={secs.title} />
                 <Select.Icon className="">
                   <CaretDown />
                 </Select.Icon>
               </Select.Trigger>
               <Select.Portal>
-                <Select.Content className="z-10 overflow-hidden rounded-md border border-tertiary bg-secondary">
+                <Select.Content
+                  position="popper"
+                  sideOffset={4}
+                  className="z-10 w-[var(--radix-select-trigger-width)] overflow-hidden rounded-md border border-tertiary bg-secondary"
+                >
                   {/* <Select.ScrollUpButton className="flex h-[25px] cursor-default items-center justify-center bg-secondary">
                     <CaretUp />
                   </Select.ScrollUpButton> */}
