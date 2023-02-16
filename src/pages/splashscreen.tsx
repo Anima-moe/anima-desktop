@@ -21,21 +21,23 @@ const timedPromise = async (promFac: () => Promise<any>) => {
   const start = performance.now()
   const returnValue = await promFac()
   return {
-      value: returnValue,
-      elapsed: performance.now() - start
+    value: returnValue,
+    elapsed: performance.now() - start,
   }
 }
 
 const ensureUserToken = async () => {
   try {
     const { getConfigValue, setConfigValue } = await import('@/services/tauri/configValue')
-    const userToken = await getConfigValue('token') as string
-    if (!userToken || userToken == '') { return false }
+    const userToken = (await getConfigValue('token')) as string
+    if (!userToken || userToken == '') {
+      return false
+    }
 
     const data = await User.validate(userToken)
 
     return dayjs().isBefore(dayjs.unix(data.exp).subtract(1, 'day'))
-  } catch(e) {
+  } catch (e) {
     return false
   }
 }
@@ -45,26 +47,28 @@ function SplashScreen() {
   const [currentPage, setCurrentPage] = useAtom(splashScreenPageAtom)
   const Element = pages[currentPage]
 
-  useEffect(()=>{
-    (async ()=>{
+  useEffect(() => {
+    ;(async () => {
       const { value: userHasToken, elapsed } = await timedPromise(ensureUserToken)
-      setTimeout(async ()=>{
-        if (!userHasToken) {
-          setCurrentPage('login')
-        } else {
-          const { createMainWindow } = await import('@/services/tauri/windows')
-          createMainWindow()
-        }
-      }, elapsed > 2000 ? 0 : 2000 - elapsed)
-
+      setTimeout(
+        async () => {
+          if (!userHasToken) {
+            setCurrentPage('login')
+          } else {
+            const { createMainWindow } = await import('@/services/tauri/windows')
+            createMainWindow()
+          }
+        },
+        elapsed > 2000 ? 0 : 2000 - elapsed
+      )
     })()
   }, [])
-  return <AnimatePresence initial mode='wait'>
-    <Element key={currentPage} {...pageProps}/>
-    <style>
-      {'body { background: transparent }'}
-    </style>
-  </AnimatePresence>
+  return (
+    <AnimatePresence initial mode="wait">
+      <Element key={currentPage} {...pageProps} />
+      <style>{'body { background: transparent }'}</style>
+    </AnimatePresence>
+  )
 }
 
 export default SplashScreen
