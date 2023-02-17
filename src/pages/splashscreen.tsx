@@ -52,9 +52,11 @@ function SplashScreen() {
     ;(async () => {
       try {
         const { checkUpdate, installUpdate } = await import('@tauri-apps/api/updater')
-        await checkUpdate()
-        await installUpdate()
-        return relaunch()
+        const { shouldUpdate } = await checkUpdate()
+        if (shouldUpdate) {
+          await installUpdate()
+          return relaunch()
+        }
       } catch (e) {}
 
       const { value: userHasToken, elapsed } = await timedPromise(ensureUserToken)
