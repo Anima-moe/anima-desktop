@@ -5,12 +5,12 @@
     &::before {
       float: left;
       padding-top: 150%;
-      content: "";
+      content: '';
     }
-  
+
     &::after {
       display: block;
-      content: "";
+      content: '';
       clear: both;
     }
   }

@@ -5,9 +5,7 @@ type Props = {
 }
 
 function EpisodeThumb({}: Props) {
-  return <div>
-    
-  </div>
+  return <div></div>
 }
 
 export default EpisodeThumb

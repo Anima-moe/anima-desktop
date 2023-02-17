@@ -5,7 +5,6 @@ import { PictureInPicture } from 'phosphor-react'
 import { MediaToggleButton } from '@vidstack/react'
 import { useMediaStore, useMediaRemote } from '@vidstack/react'
 
-
 type Props = {}
 
 function PipButton({}: Props) {
@@ -25,20 +24,26 @@ function PipButton({}: Props) {
       setPip(false)
     })
   }, [])
-  
-  return <button  className='flex items-center justify-center group cursor-pointer pointer-events-auto'>
-    <PictureInPicture weight='fill' className='block w-6 h-6 group-hover:scale-110 duration-300 ml-6' onClick={() => {
-        const video = document.querySelector('video')
 
-        if (pipStatus) {
-          document.exitPictureInPicture?.()
-        } else {
-          video.requestPictureInPicture?.()
-        }
+  return (
+    <button className="group pointer-events-auto flex cursor-pointer items-center justify-center">
+      <PictureInPicture
+        weight="fill"
+        className="ml-6 block h-6 w-6 duration-300 group-hover:scale-110"
+        onClick={() => {
+          const video = document.querySelector('video')
 
-        setPip(!pipStatus)
-      }} />
-  </button >
+          if (pipStatus) {
+            document.exitPictureInPicture?.()
+          } else {
+            video.requestPictureInPicture?.()
+          }
+
+          setPip(!pipStatus)
+        }}
+      />
+    </button>
+  )
 }
 
 export default PipButton

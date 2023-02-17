@@ -15,57 +15,72 @@ import Audios from './Audios'
 import SettingEntry from './SettingEntry'
 import Subtitles from './Subtitles'
 
-
 type Props = {
   audios: Anima.RAW.StreamObject
   subtitles: Anima.RAW.SubtitleObject
 }
 
-function Index({audios, subtitles}: Props) {
+function Index({ audios, subtitles }: Props) {
   const [configPage, setConfigPage] = useAtom(playerConfigPage)
   const [streamConfig, setStreamConfig] = useAtom(playerStreamConfig)
   const mediaRemote = useMediaRemote()
   const { t } = useTranslation()
 
-
-  return <Popover.Root onOpenChange={(o)=>{
-    if (o) {
-      mediaRemote.pauseUserIdle()
-    } else {
-      mediaRemote.resumeUserIdle()
-    }
-  }}>
-    <Popover.Trigger asChild>
-      <button className={`
-          ml-1.5
-          cursor-pointer border hover:text-accent hover:bg-black duration-300 px-3 py-3 rounded-md
-         active:bg-accent active:text-primary active:border-accent bg-transparent border-transparent text-white pointer-events-auto`} aria-label="Update dimensions">
-        <Gear weight="fill" size={24}/>
-      </button>
-    </Popover.Trigger>
-    <Popover.Portal>
-      <Popover.Content sideOffset={2} align='end' className='overflow-hidden select-none'>
-        <div 
-          className="bg-secondary rounded-md pt-2 px-2 transition-[height] w-max h-max border border-tertiary min-w-[14rem] relative 'overflow-hidden"
+  return (
+    <Popover.Root
+      onOpenChange={(o) => {
+        if (o) {
+          mediaRemote.pauseUserIdle()
+        } else {
+          mediaRemote.resumeUserIdle()
+        }
+      }}
+    >
+      <Popover.Trigger asChild>
+        <button
+          className={`
+          pointer-events-auto
+          ml-1.5 cursor-pointer rounded-md border border-transparent bg-transparent px-3 py-3
+         text-white duration-300 hover:bg-black hover:text-accent active:border-accent active:bg-accent active:text-primary`}
+          aria-label="Update dimensions"
         >
-          <AnimatePresence mode='wait' initial={false}>
-            {configPage === 'audio' && <Audios audios={audios} />}
-            {configPage === 'subtitle' && <Subtitles subtitles={subtitles} />}
-            {configPage === 'main' && <motion.div 
-                className='flex flex-col w-full pb-2 cursor-pointer'
-                initial={{ x: -50 }}
-                animate={{ x: 0 }}
-                exit={{ x: -50 }}
-              > 
-              <SettingEntry LeftIcon={MusicNote} page='audio' text='Audio' value={streamConfig.streamLocale || 'ja-JP'} />
-              <SettingEntry LeftIcon={Chat} page='subtitle' text='Subtitle' value={streamConfig.subtitleLocale || 'N/a'} />
-            </motion.div>}
-          </AnimatePresence>
-        </div>
-        <Popover.Arrow className="text-secondary fill-secondary stroke-tertiary" />
-      </Popover.Content>
-    </Popover.Portal>
-  </Popover.Root>
+          <Gear weight="fill" size={24} />
+        </button>
+      </Popover.Trigger>
+      <Popover.Portal>
+        <Popover.Content sideOffset={2} align="end" className="select-none overflow-hidden">
+          <div className="'overflow-hidden relative h-max w-max min-w-[14rem] rounded-md border border-tertiary bg-secondary px-2 pt-2 transition-[height]">
+            <AnimatePresence mode="wait" initial={false}>
+              {configPage === 'audio' && <Audios audios={audios} />}
+              {configPage === 'subtitle' && <Subtitles subtitles={subtitles} />}
+              {configPage === 'main' && (
+                <motion.div
+                  className="flex w-full cursor-pointer flex-col pb-2"
+                  initial={{ x: -50 }}
+                  animate={{ x: 0 }}
+                  exit={{ x: -50 }}
+                >
+                  <SettingEntry
+                    LeftIcon={MusicNote}
+                    page="audio"
+                    text="Audio"
+                    value={streamConfig.streamLocale || 'ja-JP'}
+                  />
+                  <SettingEntry
+                    LeftIcon={Chat}
+                    page="subtitle"
+                    text="Subtitle"
+                    value={streamConfig.subtitleLocale || 'N/a'}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+          <Popover.Arrow className="fill-secondary stroke-tertiary text-secondary" />
+        </Popover.Content>
+      </Popover.Portal>
+    </Popover.Root>
+  )
 }
 
 export default Index

@@ -5,7 +5,6 @@ import { motion } from 'framer-motion'
 import { t } from 'i18next'
 import { useAtom } from 'jotai'
 import { MagnifyingGlass, X } from 'phosphor-react'
-import { exit } from 'process'
 import resolveConfig from 'tailwindcss/resolveConfig'
 import { debounce } from 'ts-debounce'
 
@@ -25,12 +24,12 @@ const typebarVariants = {
     borderColor: twConfig.theme.colors['tertiary'] as string,
     zIndex: 'unset',
     transition: {
-      duration: .2,
+      duration: 0.2,
       type: 'spring',
       stiffness: 500,
       damping: 60,
       mass: 1,
-    }
+    },
   },
   animate: {
     width: '45%',
@@ -44,26 +43,27 @@ const typebarVariants = {
     borderRadius: 0,
     zIndex: 2,
     transition: {
-      duration: .2,
+      duration: 0.2,
       type: 'spring',
       stiffness: 500,
       damping: 60,
       mass: 1,
-    }
-  }}
+    },
+  },
+}
 
 const searchIconVariants = {
   initial: {
     y: 0,
     left: '1rem',
     x: 0,
-    opacity: 1
+    opacity: 1,
   },
   animate: {
     x: '-100%',
     left: '0',
-    opacity: 0
-  }
+    opacity: 0,
+  },
 }
 
 const clearIconVariants = {
@@ -72,26 +72,26 @@ const clearIconVariants = {
     opacity: 0,
     transition: {
       delay: 0,
-      duration: .1,
+      duration: 0.1,
       type: 'spring',
       stiffness: 500,
       damping: 60,
       mass: 1,
-      ease: 'easeInOut'
-    }
+      ease: 'easeInOut',
+    },
   },
   animate: {
     right: '1em',
     opacity: 1,
     transition: {
-      delay: .3,
-      duration: .1,
+      delay: 0.3,
+      duration: 0.1,
       type: 'spring',
       stiffness: 500,
       damping: 60,
       mass: 1,
-      ease: 'easeInOut'
-    }
+      ease: 'easeInOut',
+    },
   },
 }
 
@@ -104,59 +104,67 @@ function Navbar({}: Props) {
 
   const debouncedSetQuery = debounce(setQuery, 300)
 
-  return <>
-  <motion.div 
-    initial='initial'
-    animate={focused ? 'animate' : 'initial'} 
-    variants={typebarVariants}
-    onFocus={()=>{setFocused(true)}} 
-    onKeyUp={(e)=>{
-      if (e.key === 'Escape') {
-        if (!inputRef.current) { return }
-        setQuery('')
-        inputRef.current.blur()
-        setFocused(false)
-        inputRef.current.value = ''
-      }
-    }}
-    className={`absolute flex flex-row items-center rounded-md ${focused ? 'bg-transparent' : 'bg-secondary bg-opacity-40 !border-0 backdrop-blur-md'}`}
-  >
-    <motion.div 
-      initial='initial'
-      animate={focused ? 'animate' : 'initial'} 
-      variants={searchIconVariants}
-      className='absolute text-subtle'
-    >
-      <MagnifyingGlass size={22} />
-    </motion.div>
-    <motion.div
-      className='absolute text-subtle cursor-pointer'
-      variants={clearIconVariants}
-      onClick={()=>{
-        if (!inputRef?.current) return
-        inputRef.current.value = ''
-        setQuery('')
-        inputRef.current.blur()
-        setFocused(false)
-      }}
-    >
-      <X size={32} />
-    </motion.div>
-    <input 
-      className='py-2 bg-transparent text-subtle placeholder:text-subtle w-full focus:text-white focus:ring-0 focus:ring-offset-0 outline-none focus:font-medium' 
-      placeholder={focused ? t('search_prompt') : t('search_placeholder') } 
-      onChange={(e)=>{
-        debouncedSetQuery(e.target.value)
-      }} 
-      ref={inputRef}
-    />
-  </motion.div>
-  { focused && (
-    <Portal>
-      <SearchPortal query={query}/>
-    </Portal>
-  )}
-</>
+  return (
+    <>
+      <motion.div
+        initial="initial"
+        animate={focused ? 'animate' : 'initial'}
+        variants={typebarVariants}
+        onFocus={() => {
+          setFocused(true)
+        }}
+        onKeyUp={(e) => {
+          if (e.key === 'Escape') {
+            if (!inputRef.current) {
+              return
+            }
+            setQuery('')
+            inputRef.current.blur()
+            setFocused(false)
+            inputRef.current.value = ''
+          }
+        }}
+        className={`absolute flex flex-row items-center rounded-md ${
+          focused ? 'bg-transparent' : '!border-0 bg-secondary bg-opacity-40 backdrop-blur-md'
+        }`}
+      >
+        <motion.div
+          initial="initial"
+          animate={focused ? 'animate' : 'initial'}
+          variants={searchIconVariants}
+          className="absolute text-subtle"
+        >
+          <MagnifyingGlass size={22} />
+        </motion.div>
+        <motion.div
+          className="absolute cursor-pointer text-subtle"
+          variants={clearIconVariants}
+          onClick={() => {
+            if (!inputRef?.current) return
+            inputRef.current.value = ''
+            setQuery('')
+            inputRef.current.blur()
+            setFocused(false)
+          }}
+        >
+          <X size={32} />
+        </motion.div>
+        <input
+          className="w-full bg-transparent py-2 text-subtle outline-none placeholder:text-subtle focus:font-medium focus:text-white focus:ring-0 focus:ring-offset-0"
+          placeholder={focused ? t('search_prompt') : t('search_placeholder')}
+          onChange={(e) => {
+            debouncedSetQuery(e.target.value)
+          }}
+          ref={inputRef}
+        />
+      </motion.div>
+      {focused && (
+        <Portal>
+          <SearchPortal query={query} />
+        </Portal>
+      )}
+    </>
+  )
 }
 
 export default Navbar

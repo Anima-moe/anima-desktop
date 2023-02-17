@@ -12,11 +12,10 @@ export const playerStreamConfig = atom({
   streamURL: '',
   streamLocale: '',
   subType: 'soft',
-  streamHeight: 1080
+  streamHeight: 1080,
 })
 export const playerConfigPage = atom<string>('main')
 export const playerSwitchingStream = atom(false)
-
 
 // User preferences
 export const userEnabledSubtitles = atomWithStorage('anima.userPref.subtitlesEnabled', true)

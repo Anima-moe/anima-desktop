@@ -15,17 +15,27 @@ type Props = {}
 // will-change: transform;
 // transform: translateY(-50%) scaleX(calc(var(--media-buffered-amount) / var(--media-duration)));
 function Slider({}: Props) {
-  return <div className='w-full pointer-events-auto items-center relative px-3  flex'>
-    <MediaTimeSlider className='group h-5 rounded-md overflow-hidden'>
-      {/* BACKGROUND */}
-      <div className='absolute top-1/2 -translate-y-1/2 origin-left w-full h-5 group-hover:h-4 transition-[height] duration-300 bg-white bg-opacity-10' slot='track' />
-      {/* BUFFER */}
-      <div className='absolute top-1/2 -translate-y-1/2 origin-left w-full scale-x-[calc(var(--media-buffered-amount)/var(--media-duration))] h-5 group-hover:h-4 transition-[height] duration-300 bg-white bg-opacity-20' slot='track track-progress' />
-      {/* PROGRESS */}
-      <div className='absolute top-1/2 -translate-y-1/2 origin-left w-[var(--slider-fill-percent)] h-5 group-hover:h-4 transition-[height] duration-300 bg-accent' slot='track track-fill' />
-    </MediaTimeSlider>
-  </div>
-  
+  return (
+    <div className="pointer-events-auto relative flex w-full items-center  px-3">
+      <MediaTimeSlider className="group h-5 overflow-hidden rounded-md">
+        {/* BACKGROUND */}
+        <div
+          className="absolute top-1/2 h-5 w-full origin-left -translate-y-1/2 bg-white bg-opacity-10 transition-[height] duration-300 group-hover:h-4"
+          slot="track"
+        />
+        {/* BUFFER */}
+        <div
+          className="absolute top-1/2 h-5 w-full origin-left -translate-y-1/2 scale-x-[calc(var(--media-buffered-amount)/var(--media-duration))] bg-white bg-opacity-20 transition-[height] duration-300 group-hover:h-4"
+          slot="track track-progress"
+        />
+        {/* PROGRESS */}
+        <div
+          className="absolute top-1/2 h-5 w-[var(--slider-fill-percent)] origin-left -translate-y-1/2 bg-accent transition-[height] duration-300 group-hover:h-4"
+          slot="track track-fill"
+        />
+      </MediaTimeSlider>
+    </div>
+  )
 }
 
 export default Slider

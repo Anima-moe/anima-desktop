@@ -6,5 +6,5 @@ export async function setConfigValue(key: string, value: any) {
 }
 
 export async function getConfigValue<T>(key: string) {
-  return await store.get(key) as T
+  return (await store.get(key)) as T
 }

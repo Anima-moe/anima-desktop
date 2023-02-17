@@ -1,7 +1,6 @@
 import client from '@/services/anima/httpService'
 
 export const Anime = {
-
   get: async function (id: number) {
     const { data } = await client.get(`/anime/${id}`)
     return data as Anima.API.GetAnimeByID
@@ -11,8 +10,8 @@ export const Anime = {
     const { data } = await client.get('/anime', {
       params: {
         count: limit,
-        start: offset
-      }
+        start: offset,
+      },
     })
     return data as Anima.API.GetAnimes
   },
@@ -27,8 +26,8 @@ export const Anime = {
     const { data } = await client.get('/category/animes', {
       params: {
         slugs: slugs.join(','),
-        start
-      }
+        start,
+      },
     })
 
     return data as Anima.API.GetAnimes
@@ -45,9 +44,9 @@ export const Anime = {
       params: {
         q: query,
         count: 20,
-        start: 0
-      }
+        start: 0,
+      },
     })
     return data as Anima.API.SearchAnimes
-  }
+  },
 }

@@ -3,116 +3,126 @@ import { motion } from 'framer-motion'
 type Props = {}
 
 function Welcome({}: Props) {
-  return <motion.main
-    initial={{
-      opacity: 0,
-    }}
-    animate={{
-      opacity: 1,
-    }}
-    transition={{
-      duration: .2,
-      type: 'spring',
-      stiffness: 500,
-      damping: 60,
-      mass: 1,
-    }}
-    exit={{
-      opacity: 1,
-    }}
-    key={'welcome'}
-    className="bg-primary rounded-xl flex h-screen w-screen overflow-hidden relative"
-    onMouseDown={(e)=>{
-      //@ts-expect-error - this is tauri exclusive shit
-      window.__TAURI_INVOKE__('tauri', {
-        __tauriModule: 'Window',
-        message: {
-          cmd: 'manage',
-          data: {
-            cmd: {
-              type: e.detail === 2 ? '__toggleMaximize' : 'startDragging'
-            }
-          }
-        }
-      })
-    }}
-  >
-    <motion.div
+  return (
+    <motion.main
       initial={{
         opacity: 0,
-        scale: 2,
       }}
       animate={{
         opacity: 1,
-        scale: 1,
-      }}
-      exit={{
-        scale: 2,
-        opacity: 0
       }}
       transition={{
-        duration: .3,
-        delay: .3,
+        duration: 0.2,
         type: 'spring',
         stiffness: 500,
         damping: 60,
         mass: 1,
       }}
-      className="w-full h-full"
+      exit={{
+        opacity: 1,
+      }}
+      key={'welcome'}
+      className="relative flex h-screen w-screen overflow-hidden rounded-xl bg-primary"
+      onMouseDown={(e) => {
+        //@ts-expect-error - this is tauri exclusive shit
+        window.__TAURI_INVOKE__('tauri', {
+          __tauriModule: 'Window',
+          message: {
+            cmd: 'manage',
+            data: {
+              cmd: {
+                type: e.detail === 2 ? '__toggleMaximize' : 'startDragging',
+              },
+            },
+          },
+        })
+      }}
     >
-      <video autoPlay muted src='/i/splash.mp4' className="w-full h-full object-fill rounded-md overflow-hidden" loop/>
-    </motion.div>
-    <div className="w-full h-full absolute top-0 left-0 opacity-70 bg-primary"/>
-    <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex items-center flex-col justify-center animation-flash">
-      <motion.img 
+      <motion.div
         initial={{
           opacity: 0,
-          y: -50,
+          scale: 2,
         }}
         animate={{
           opacity: 1,
-          y: 0,
+          scale: 1,
+        }}
+        exit={{
+          scale: 2,
+          opacity: 0,
         }}
         transition={{
-          duration: .6,
-          delay: .6,
+          duration: 0.3,
+          delay: 0.3,
           type: 'spring',
           stiffness: 500,
           damping: 60,
           mass: 1,
         }}
-        exit={{
-          opacity: 0,
-          y: -50,
-        }}
-        src="/i/anima.svg" 
-        className="w-64 mix" 
-      />
-      <motion.span 
-        className="mt-4"
-        initial={{
-          opacity: 0,
-          y: 50,
-        }}
-        animate={{
-          opacity: .8,
-          y: 0,
-        }}
-        transition={{
-          duration: .6,
-          delay: .6,
-          type: 'spring',
-          stiffness: 500,
-          damping: 60,
-          mass: 1,
-        }}
-        exit={{
-          opacity: 0,
-          y: 50,
-        }}
-      >あーにま</motion.span>
-    </div>
-  </motion.main>
+        className="h-full w-full"
+      >
+        <video
+          autoPlay
+          muted
+          src="/i/splash.mp4"
+          className="h-full w-full overflow-hidden rounded-md object-fill"
+          loop
+        />
+      </motion.div>
+      <div className="absolute top-0 left-0 h-full w-full bg-primary opacity-70" />
+      <div className="animation-flash absolute top-1/2 left-1/2 flex -translate-y-1/2 -translate-x-1/2 flex-col items-center justify-center">
+        <motion.img
+          initial={{
+            opacity: 0,
+            y: -50,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+          transition={{
+            duration: 0.6,
+            delay: 0.6,
+            type: 'spring',
+            stiffness: 500,
+            damping: 60,
+            mass: 1,
+          }}
+          exit={{
+            opacity: 0,
+            y: -50,
+          }}
+          src="/i/anima.svg"
+          className="mix w-64"
+        />
+        <motion.span
+          className="mt-4"
+          initial={{
+            opacity: 0,
+            y: 50,
+          }}
+          animate={{
+            opacity: 0.8,
+            y: 0,
+          }}
+          transition={{
+            duration: 0.6,
+            delay: 0.6,
+            type: 'spring',
+            stiffness: 500,
+            damping: 60,
+            mass: 1,
+          }}
+          exit={{
+            opacity: 0,
+            y: 50,
+          }}
+        >
+          あーにま
+        </motion.span>
+      </div>
+    </motion.main>
+  )
 }
 
 export default Welcome

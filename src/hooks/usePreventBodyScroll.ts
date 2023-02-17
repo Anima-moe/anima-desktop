@@ -13,7 +13,7 @@ const enableBodyScroll = () => {
 const disableBodyScroll = () => {
   document &&
     document.addEventListener('wheel', preventDefault, {
-      passive: false
+      passive: false,
     })
 }
 

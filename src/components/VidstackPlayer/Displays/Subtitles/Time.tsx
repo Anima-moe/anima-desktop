@@ -12,19 +12,24 @@ export function getFormat(total) {
   // then get the index of the first section without a zero value
   const firstIndexWithoutZero = totalFormatted
     .split(':')
-    .map(value => +value.replace(/^0/))
-    .findIndex(numeric => numeric > 0)
+    .map((value) => +value.replace(/^0/))
+    .findIndex((numeric) => numeric > 0)
 
   const formatSplit = format.split(':'),
     // Use mm:ss if total is wack
-    indexToSplitFrom =
-      firstIndexWithoutZero === -1
-        ? formatSplit.length - 2
-        : firstIndexWithoutZero
+    indexToSplitFrom = firstIndexWithoutZero === -1 ? formatSplit.length - 2 : firstIndexWithoutZero
   return formatSplit.slice(indexToSplitFrom).join(':')
 }
 
-export default memo(function time({ start, end = undefined, format }: {start: number, end?: number, format: string}) {
+export default memo(function time({
+  start,
+  end = undefined,
+  format,
+}: {
+  start: number
+  end?: number
+  format: string
+}) {
   const startDuration = Duration.fromMillis(start),
     endDuration = end && Duration.fromMillis(end)
   const startFormatted = startDuration.toFormat(format),

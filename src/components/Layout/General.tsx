@@ -7,13 +7,15 @@ type Props = {
   fluid?: boolean
 }
 
-function General({children, fluid}: Props) {
-  return <>
-    <Navbar />
-    <main className={`h-full flex flex-col ${fluid ? 'px-0 w-full' : 'px-8'}`} id='animacontent'>
+function General({ children, fluid }: Props) {
+  return (
+    <>
+      <Navbar />
+      <main className={`flex h-full flex-col ${fluid ? 'w-full px-0' : 'px-8'}`} id="animacontent">
         {children}
-    </main>
-  </>
+      </main>
+    </>
+  )
 }
 
 export default General

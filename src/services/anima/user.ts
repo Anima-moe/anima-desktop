@@ -1,15 +1,12 @@
 import client from '@/services/anima/httpService'
 
 export const User = {
-
-  get: async function (id: number) {
-
-  },
+  get: async function (id: number) {},
 
   login: async function (username: string, password: string) {
     const { data } = await client.post('/auth/signin', {
       username,
-      password
+      password,
     })
 
     return data as Anima.API.Login
@@ -17,7 +14,7 @@ export const User = {
 
   validate: async function (token: string) {
     const { data } = await client.post('/auth/checkin', {
-      token
+      token,
     })
 
     return data as Anima.API.Validate
@@ -27,7 +24,7 @@ export const User = {
     const { data } = await client.post('/auth/signup', {
       username,
       password,
-      email
+      email,
     })
 
     return data as Anima.API.Register

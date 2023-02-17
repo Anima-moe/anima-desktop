@@ -45,7 +45,7 @@ function Navbar() {
           align="end"
         >
           {menuItems.map((item, i, arr) => (
-            <Fragment key={`user.navbar.${i}`} >
+            <Fragment key={`user.navbar.${i}`}>
               {i === arr.length - 1 && (
                 <DropdownMenuSeparator className="my-2 w-full border border-tertiary" />
               )}

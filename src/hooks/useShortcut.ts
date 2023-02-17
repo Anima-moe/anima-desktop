@@ -1,20 +1,12 @@
 import { useEffect } from 'react'
 
-import {
-  isRegistered,
-  register,
-  ShortcutHandler,
-  unregister,
-} from '@tauri-apps/api/globalShortcut'
+import { isRegistered, register, ShortcutHandler, unregister } from '@tauri-apps/api/globalShortcut'
 
 /**
  * @param shortcut The key combination string for the shortcut
  * @param shortcutHandler The handler callback when the shortcut is triggered
  */
-export const useGlobalShortcut = (
-  shortcut: string,
-  shortcutHandler: ShortcutHandler,
-) => {
+export const useGlobalShortcut = (shortcut: string, shortcutHandler: ShortcutHandler) => {
   useEffect(() => {
     let ignore = false
 
@@ -26,7 +18,7 @@ export const useGlobalShortcut = (
     }
 
     void registerShortcut().catch((err) =>
-      console.error(`Failed to register global shortcut '${shortcut}'`, err),
+      console.error(`Failed to register global shortcut '${shortcut}'`, err)
     )
 
     return () => {

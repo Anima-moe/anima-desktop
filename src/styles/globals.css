@@ -14,9 +14,8 @@
 
 ::-webkit-scrollbar-thumb {
   border-radius: 6px;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
-
 
 ::-webkit-scrollbar {
   width: 0px;
@@ -38,7 +37,6 @@ body {
 .font-noto {
   font-family: 'Noto Color Emoji', sans-serif;
 }
-
 
 .swiper-button-next {
   -webkit-mask: url(/icons/caret-right.svg) no-repeat 50% 50%;
@@ -63,8 +61,8 @@ body {
 
 .swiper-button-prev,
 .swiper-button-next {
-  @apply bg-white transition-all duration-300 w-10 h-10 rounded-md !important;
-  
+  @apply h-10 w-10 rounded-md bg-white transition-all duration-300 !important;
+
   background-size: 100% auto !important;
 }
 
@@ -81,21 +79,36 @@ vds-media[autoplay-error] {
   opacity: 1;
 }
 
-
-@keyframes flash{
-  0%, to { opacity: 1; }
-  4% { opacity: 0; }
-  6% { opacity: .6; }
-  8% { opacity: .2; }
-  10% { opacity: .9; }
+@keyframes flash {
+  0%,
+  to {
+    opacity: 1;
+  }
+  4% {
+    opacity: 0;
+  }
+  6% {
+    opacity: 0.6;
+  }
+  8% {
+    opacity: 0.2;
+  }
+  10% {
+    opacity: 0.9;
+  }
 }
 
-@keyframes float{
-  0%, 100% { transform: translate(-50%, -50%); }
-  50% { transform: translate(-50%, -55%); }
+@keyframes float {
+  0%,
+  100% {
+    transform: translate(-50%, -50%);
+  }
+  50% {
+    transform: translate(-50%, -55%);
+  }
 }
 
-.animation-flash { 
+.animation-flash {
   animation: flash 3s infinite, float 4s infinite;
 }
 
@@ -105,7 +118,7 @@ vds-media[autoplay-error] {
 
 @keyframes patternslide {
   0% {
-   background-position: 0px 0px;
+    background-position: 0px 0px;
   }
   100% {
     background-position: 871px 0; /* The image width */
@@ -142,11 +155,11 @@ video {
   width: 100px;
   height: 100%;
   box-shadow: 0 0 10px #c5eb45, 0 0 5px #c5eb45;
-  opacity: 1.0;
+  opacity: 1;
 
   -webkit-transform: rotate(3deg) translate(0px, -4px);
-      -ms-transform: rotate(3deg) translate(0px, -4px);
-          transform: rotate(3deg) translate(0px, -4px);
+  -ms-transform: rotate(3deg) translate(0px, -4px);
+  transform: rotate(3deg) translate(0px, -4px);
 }
 
 /* Remove these to get rid of the spinner */
@@ -169,7 +182,7 @@ video {
   border-radius: 50%;
 
   -webkit-animation: nprogress-spinner 400ms linear infinite;
-          animation: nprogress-spinner 400ms linear infinite;
+  animation: nprogress-spinner 400ms linear infinite;
 }
 
 .nprogress-custom-parent {
@@ -183,11 +196,19 @@ video {
 }
 
 @-webkit-keyframes nprogress-spinner {
-  0%   { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 @keyframes nprogress-spinner {
-  0%   { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

@@ -4,7 +4,7 @@ namespace Anima {
       FREE = 0,
       DONATOR = 1,
       LORD = 2,
-      GOD = 3
+      GOD = 3,
     }
 
     enum Source {
@@ -12,20 +12,19 @@ namespace Anima {
     }
   }
   namespace RAW {
-
     type Locales = 'en-US' | 'pt-BR' | 'es-149' | 'de-DE' | 'ja-JP'
 
     type CategoryMetadata = {
-      title: string,
-      description: string,
-      category_id: number,
+      title: string
+      description: string
+      category_id: number
       locale_key: Locales
     }
 
     type Category = {
-      id: number,
-      slug: string,
-      locale: string,
+      id: number
+      slug: string
+      locale: string
       CategoryMetadata: CategoryMetadata
     }
 
@@ -83,15 +82,15 @@ namespace Anima {
 
     type StreamObject = {
       [key: string]: {
-        original: boolean,
+        original: boolean
         external_id: string
       }
     }
 
     type SubtitleObject = {
       [key: string]: {
-        format: string,
-        locale: Locales,
+        format: string
+        locale: Locales
         url: string
       }
     }
@@ -100,14 +99,14 @@ namespace Anima {
       source: Anima.ENUM.Source
       hls: string
       hls_subtitled: string
-      mp4: { src: string, height: number }[]
+      mp4: { src: string; height: number }[]
       subtitles: SubtitleObject
       bif: string
       audios: StreamObject
     }
 
     type User = {
-      id: number,
+      id: number
       username: string
       email: string
       picture?: string
@@ -119,7 +118,7 @@ namespace Anima {
 
   namespace API {
     type Error = {
-      error: true,
+      error: true
       message: string
     }
 
@@ -159,7 +158,7 @@ namespace Anima {
     } // Returns empty array if no episode | Returns Error if season not found
 
     type GetUserByID = {
-      count: 1,
+      count: 1
       data: [Anima.RAW.User]
     } // Returns Error if user not found
 
@@ -170,17 +169,17 @@ namespace Anima {
     } // Returns Error if user not found or episode not found
 
     type GetEpisodeMedia = {
-      count: number,
+      count: number
       data: Anima.RAW.EpisodeStream
     } // Returns Error if unable to get episode media from source crawler
 
     type GetCategory = {
-      count: 1,
+      count: 1
       data: Anima.RAW.Category
     }
 
     type GetCategories = {
-      count: 1,
+      count: 1
       data: Anima.RAW.Category[]
     }
 
@@ -191,8 +190,8 @@ namespace Anima {
     }
 
     type Validate = Anima.RAW.User & {
-      password: undefined,
-      iat: number,
+      password: undefined
+      iat: number
       exp: number
     }
 

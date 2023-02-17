@@ -10,10 +10,8 @@ import { useEffect, useRef } from 'react'
 
 import shaka from 'shaka-player'
 
-
 /** @param {string} manifestUri */
 export function useShaka(manifestUri) {
-
   /** @type {React.MutableRefObject<HTMLMediaElement | null>} */
   const videoRef = useRef(null)
 
@@ -71,7 +69,6 @@ export function useShaka(manifestUri) {
         playerRef.current.destroy()
       }
     }
-
   }, [manifestUri])
 
   return { videoRef }

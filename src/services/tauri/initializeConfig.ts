@@ -7,10 +7,6 @@ export async function initLanguage() {
   i18n.changeLanguage(userLanguage)
 }
 
-export async function initUserToken() {
+export async function initUserToken() {}
 
-}
-
-export async function initPlayer() {
-
-}
+export async function initPlayer() {}

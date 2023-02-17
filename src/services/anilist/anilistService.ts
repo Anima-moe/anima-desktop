@@ -3,12 +3,12 @@ import { gql } from '@apollo/client'
 
 export type AnilistStaff = {
   name: {
-    full: string,
+    full: string
     native: string
   }
   image: {
     large: string
-  },
+  }
   primaryOccupations: string
 }
 
@@ -23,9 +23,9 @@ export type AnilistCharacter = {
     id: number
     image: {
       large: string
-    },
+    }
     name: {
-      full: string,
+      full: string
       native: string
     }
   }
@@ -35,9 +35,9 @@ export type AnilistVoiceActor = {
   languageV2: string
   image: {
     large: string
-  },
+  }
   name: {
-    full: string,
+    full: string
     native: string
   }
 }
@@ -57,15 +57,15 @@ export type AnilistMedia = {
     edges: AnilistCharacter[]
   }
   nextAiringEpisode?: {
-    episode: number,
+    episode: number
     timeUntilAiring: number
   }
-  synonyms: string[],
+  synonyms: string[]
   title: {
     native: string
   }
   trailer: {
-    site: string,
+    site: string
     id: string
   }
   averageScore: number
@@ -151,14 +151,14 @@ export const anilistService = {
           staff {
             nodes {
               name {
-                full,
+                full
                 native
               }
               image {
                 large
               }
               primaryOccupations
-            } 
+            }
           }
         }
       }
@@ -166,11 +166,10 @@ export const anilistService = {
     const res = await GqlClient.query({
       query: query,
       variables: {
-        name
-      }
+        name,
+      },
     })
 
     return res.data.Media as AnilistMedia
-
-  }
+  },
 }

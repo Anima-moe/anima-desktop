@@ -9,7 +9,7 @@ export async function createMainWindow() {
     resizable: true,
     title: 'Λ ＮＩＭ Λ - [あーにま • Alpha]',
     visible: false,
-    transparent: true
+    transparent: true,
   })
   animaWindow.once('tauri://created', () => {
     // invoke('close_splashscreen')

@@ -2,18 +2,15 @@ import React, { memo, Fragment } from 'react'
 
 export default memo(function time({ text }: { text: string }) {
   return (
-    <div className="flex flex-col text-center w-full items-center">
-      {
-        text
-          .split('\n')
-          .map(
-            (item, index, array) => (
-              <Fragment key={index}>
-                <text className='bg-primary rounded-md px-6 bg-opacity-95 py-1.5 mb-0.5' dangerouslySetInnerHTML={{__html: item}}/>
-              </Fragment>
-            )
-          )
-      }
+    <div className="flex w-full flex-col items-center text-center">
+      {text.split('\n').map((item, index, array) => (
+        <Fragment key={index}>
+          <text
+            className="mb-0.5 rounded-md bg-primary bg-opacity-95 px-6 py-1.5"
+            dangerouslySetInnerHTML={{ __html: item }}
+          />
+        </Fragment>
+      ))}
       {/* <style>
         {`
           text {

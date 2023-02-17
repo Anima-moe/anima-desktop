@@ -8,11 +8,14 @@ function ScrollLocker({ children }: Props) {
   const { disableScroll, enableScroll } = usePreventBodyScroll()
 
   return (
-    <div onMouseEnter={(e)=>{
-      disableScroll()
-    }} onMouseLeave={(e)=>{
-      enableScroll()
-    }}>
+    <div
+      onMouseEnter={(e) => {
+        disableScroll()
+      }}
+      onMouseLeave={(e) => {
+        enableScroll()
+      }}
+    >
       {children}
     </div>
   )

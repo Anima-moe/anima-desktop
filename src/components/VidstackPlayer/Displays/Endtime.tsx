@@ -10,8 +10,13 @@ function Endtime() {
   const { t } = useTranslation()
 
   return (
-    <span className='text-sm opacity-60 mr-auto h-full flex items-center'>
-       <span className='mr-3'>•</span>{t('player_endtime', {time: dayjs().add(duration - currentTime, 'second').format('hh:mm')})}
+    <span className="mr-auto flex h-full items-center text-sm opacity-60">
+      <span className="mr-3">•</span>
+      {t('player_endtime', {
+        time: dayjs()
+          .add(duration - currentTime, 'second')
+          .format('hh:mm'),
+      })}
     </span>
   )
 }

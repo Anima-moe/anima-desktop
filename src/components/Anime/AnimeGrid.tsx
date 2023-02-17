@@ -16,7 +16,14 @@ type Props = {
   onAnimeSelect?: (anime: Anima.RAW.Anime) => void
 }
 
-function AnimeGrid({animes, alwaysShowInfo, animesPerRow, onHitBottom, hasMore, onAnimeSelect}: Props) {
+function AnimeGrid({
+  animes,
+  alwaysShowInfo,
+  animesPerRow,
+  onHitBottom,
+  hasMore,
+  onAnimeSelect,
+}: Props) {
   const { t } = useTranslation()
   const handleScroll = (e) => {
     if (!hasMore) return
@@ -27,42 +34,38 @@ function AnimeGrid({animes, alwaysShowInfo, animesPerRow, onHitBottom, hasMore, 
   }
 
   return (
-    <div className='flex w-full h-full'>
+    <div className="flex h-full w-full">
       {/* {JSON.stringify(animes)} */}
-      <Scrollbars 
-        autoHide 
-        hideTracksWhenNotNeeded 
-        universal
-        onScroll={handleScroll}
-      >
-        <div className='flex w-full h-full flex-wrap'>
-          {animes.map(anime => (
-            <div 
-            key={anime.slug} 
-            className='aspect-[3/2] group py-2.5 mx-2 flex flex-col select-none'
-            style={{
-              width: `calc(calc(100vw - 16px - 8rem) / ${animesPerRow})`,
-              minWidth: `calc(calc(100vw - 16px - 8rem) / ${animesPerRow})`
-            }}
-            itemID={anime.slug}
-          >
-            <AnimeCard 
-              anime={anime}
-              noHover={alwaysShowInfo}
-              onClick={onAnimeSelect}
-            />
-            {alwaysShowInfo && <span className='pt-1 text-xs line-clamp-2 font-medium'>
-              {getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(anime)?.title || 'No title'}
-            </span>}
-          </div> 
+      <Scrollbars autoHide hideTracksWhenNotNeeded universal onScroll={handleScroll}>
+        <div className="flex h-full w-full flex-wrap">
+          {animes.map((anime) => (
+            <div
+              key={anime.slug}
+              className="group mx-2 flex aspect-[3/2] select-none flex-col py-2.5"
+              style={{
+                width: `calc(calc(100vw - 16px - 8rem) / ${animesPerRow})`,
+                minWidth: `calc(calc(100vw - 16px - 8rem) / ${animesPerRow})`,
+              }}
+              itemID={anime.slug}
+            >
+              <AnimeCard anime={anime} noHover={alwaysShowInfo} onClick={onAnimeSelect} />
+              {alwaysShowInfo && (
+                <span className="pt-1 text-xs font-medium line-clamp-2">
+                  {getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(anime)?.title ||
+                    'No title'}
+                </span>
+              )}
+            </div>
           ))}
-        {/* // TODO: SWAP TEXT FOR SKELETON */}
-        {hasMore && (
-          <div className='flex flex-row w-full items-center justify-center'>
-              <Loading xs/>
-              <div className='h-8 flex items-center justify-center text-subtle font-semibold ml-2'>{t('loading_moreData')}</div>
-          </div>
-        )}
+          {/* // TODO: SWAP TEXT FOR SKELETON */}
+          {hasMore && (
+            <div className="flex w-full flex-row items-center justify-center">
+              <Loading xs />
+              <div className="ml-2 flex h-8 items-center justify-center font-semibold text-subtle">
+                {t('loading_moreData')}
+              </div>
+            </div>
+          )}
         </div>
       </Scrollbars>
     </div>

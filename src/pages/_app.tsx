@@ -17,15 +17,14 @@ import '@/styles/globals.css'
 import '@/styles/tweaks.scss'
 import 'skeleton-elements/css'
 
-
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
     resources: languageTable,
     lng: 'pt-BR',
     interpolation: {
-      escapeValue: false
-    }
+      escapeValue: false,
+    },
   })
 
 NProgress.configure({
@@ -40,7 +39,7 @@ const queryClient = new QueryClient()
 // This default export is required in a new `pages/_app.js` file.
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter()
-  
+
   useEffect(() => {
     const handleStart = () => {
       NProgress.start()
@@ -61,23 +60,24 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [router])
 
-
-  useEffect(()=>{
-    (async ()=>{
+  useEffect(() => {
+    ;(async () => {
       const { getConfigValue } = await import('@/services/tauri/configValue')
       const userLanguage = await getConfigValue<string>('language')
       i18n.changeLanguage(userLanguage)
 
       const { appWindow } = await import('@tauri-apps/api/window')
 
-      if (!await appWindow.isVisible()) { return } 
+      if (!(await appWindow.isVisible())) {
+        return
+      }
     })()
   }, [router])
-  
-  return  (
+
+  return (
     <QueryClientProvider client={queryClient}>
       {/* <ShakaPlayerProvider> */}
-        <Component {...pageProps} />
+      <Component {...pageProps} />
       {/* </ShakaPlayerProvider> */}
     </QueryClientProvider>
   )
