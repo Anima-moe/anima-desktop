@@ -52,7 +52,7 @@ function SplashScreen() {
     ;(async () => {
       try {
         const { checkUpdate, installUpdate } = await import('@tauri-apps/api/updater')
-        const { shouldUpdate } = await checkUpdate()
+        await checkUpdate()
         await installUpdate()
         return relaunch()
       } catch (e) {}
