@@ -23,9 +23,12 @@ const User = () => {
   ]
 
   const selects = [
-    { title: t('user_edit_legend'), options: ['pt', 'en', 'es'] },
-    { title: t('user_edit_audio'), options: ['pt', 'en', 'es'] },
-    { title: t('user_edit_history'), options: ['public', 'private'] },
+    { title: t('user_edit_subtitle'), options: ['pt-BR', 'en-US', 'es-ES'] },
+    { title: t('user_edit_audio'), options: ['pt-BR', 'en-US', 'es-ES'] },
+    {
+      title: t('user_edit_history'),
+      options: [t('user_edit_history_public'), t('user_edit_history_private')],
+    },
   ]
 
   return (
@@ -48,7 +51,7 @@ const User = () => {
           ))}
           {selects.map((secs, i) => (
             <Select.Root key={i}>
-              <Select.Trigger className="flex h-[35px] items-center justify-between gap-[5px] rounded border border-tertiary bg-secondary px-[15px] text-[13px] leading-none shadow-[0_2px_10px] shadow-black/10 outline-none focus:shadow-[0_0_0_2px] focus:shadow-black">
+              <Select.Trigger className="flex w-full items-center justify-between rounded-md border border-tertiary bg-secondary px-3 py-2.5 text-lg leading-none outline-none">
                 <Select.Value placeholder={secs.title} />
                 <Select.Icon className="">
                   <CaretDown />
