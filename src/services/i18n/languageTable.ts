@@ -187,7 +187,7 @@ const languageTable = {
       'de-DE': 'Deutsch',
       'ru-RU': 'Русский',
       'es-ES': 'Español',
-      'es-419': 'Español (Argentina)',
+      'es-419': 'Español (América Latina)',
       'fr-FR': 'Français',
       'it-IT': 'Italiano',
       'ja-JP': '日本語',
@@ -196,7 +196,7 @@ const languageTable = {
       player_endtime: 'Termina às {{time}}'
     },
   },
-  'es-149': {
+  'es-419': {
   }
 }
 

@@ -72,7 +72,7 @@ function Login() {
             options={[
               { value: 'pt-BR', label: 'Português', emoji: '🇧🇷' },
               { value: 'en-US', label: 'English', emoji: '🇺🇸' },
-              { value: 'es-149', label: 'Español', emoji: '🇪🇸' },
+              { value: 'es-419', label: 'Español', emoji: '🇪🇸' },
             ]}
             onChange={async (value) => {
               const { setConfigValue } = await import('@/services/tauri/configValue')
