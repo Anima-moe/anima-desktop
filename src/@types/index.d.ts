@@ -107,12 +107,22 @@ namespace Anima {
 
     type User = {
       id: number
-      username: string
-      email: string
-      picture?: string
-      background?: string
-      isStaff: boolean
-      premium: ENUM.Premium
+      username: string,
+      email?: string,
+      staff: boolean,
+      iat?: number,
+      exp?: number
+      premium: ENUM.Premium,
+      profile: {
+        id: number,
+        user_id: number,
+        avatar?: string,
+        banner?: string,
+        bio?: string,
+        background?: string,
+        color?: string,
+        border?: string
+      }
     }
   }
 
@@ -184,6 +194,8 @@ namespace Anima {
     }
 
     type GetCategoryAnimes = Anima.API.GetAnimes
+
+    type GetUser = Anima.RAW.User
 
     type Login = Anima.RAW.User & {
       token: string

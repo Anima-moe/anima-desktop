@@ -77,152 +77,137 @@ function Login() {
             onChange={async (value) => {
               const { setConfigValue } = await import('@/services/tauri/configValue')
 
-              setConfigValue('language', value).then(() => {
-                i18next.changeLanguage(value)
-              })
+            setConfigValue('language', value)
+            .then(()=>{
+              i18next.changeLanguage(value)
+            })
+          }} 
+        />
+        <IconInput Icon={User} placeholder={t('splash_user')} error={error?.message} onChange={(v)=>{ setError(undefined); setUserName(v) }}/>
+        <IconInput Icon={Shield} placeholder={t('splash_password')} type='password' error={error?.message} onChange={(v)=>{ setError(undefined); setPassword(v) }}/>
+        <div className='flex flex-row w-full'>
+          <Button 
+            Icon={<ArrowRight />} 
+            iconSubtle 
+            text={t('splash_continueAsGuest')}
+            tertiary 
+            border 
+            md 
+            fluid 
+            disabled={loading}
+            loading={loading}
+            className='mr-1.5 mt-1.5' 
+            onClick={()=>{
+              createMainWindow()
             }}
           />
-          <IconInput
-            Icon={User}
-            placeholder={t('splash_user')}
-            error={error?.message}
-            onChange={(v) => {
-              setError(undefined)
-              setUserName(v)
-            }}
-          />
-          <IconInput
-            Icon={Shield}
-            placeholder={t('splash_password')}
-            type="password"
-            error={error?.message}
-            onChange={(v) => {
-              setError(undefined)
-              setPassword(v)
-            }}
-          />
-          <div className="flex w-full flex-row">
-            <Button
-              Icon={<ArrowRight />}
-              iconSubtle
-              text={t('splash_continueAsGuest')}
-              tertiary
-              border
-              md
-              fluid
-              disabled={loading}
-              loading={loading}
-              className="mr-1.5 mt-1.5"
-              onClick={() => {
-                createMainWindow()
-              }}
-            />
-            <Button
-              Icon={<ArrowRight />}
-              text={t('splash_loginOrRegister')}
-              accent
-              iconRight
-              md
-              className="ml-1.5 mt-1.5"
-              disabled={loading}
-              loading={loading}
-              semibold
-              onClick={async () => {
-                // TODO: Login to anima, save token to localstorage
+          <Button 
+            Icon={<ArrowRight />} 
+            text={t('splash_loginOrRegister')} 
+            accent 
+            iconRight 
+            md
+            className='ml-1.5 mt-1.5' 
+            disabled={loading}
+            loading={loading}
+            semibold 
+            onClick={async ()=>{
+              // TODO: Login to anima, save token to localstorage
+              setLoading(true)
+              
+              try {
                 setLoading(true)
-
-                try {
-                  setLoading(true)
-                  if (!username || !password || username.length < 3 || password.length < 3) {
-                    setLoading(false)
-                    setError({ field: 'username', message: t('user_missingField') })
-                    return
-                  }
-                  const userInfo = await AnimaUser.login(username, password)
-                  const { setConfigValue } = await import('@/services/tauri/configValue')
-
-                  await setConfigValue('token', userInfo.token)
-                  await window.location.reload()
-                } catch (e) {
-                  if (e?.response?.status) {
-                    setLoading(false)
-                    setPageProps({ username, password })
-                    setCurrentPage('register')
-                    return
-                  }
-                  setError({ field: 'username', message: t('user_wrongAuth') })
+                if (!username || !password || username.length < 3 || password.length < 3) {
                   setLoading(false)
+                  setError({ field: 'username', message: t('user_missingField') })
+                  return
                 }
-              }}
-            />
-          </div>
-        </div>
-        <Button
-          Icon={<ArrowSquareOut />}
-          text={t('splash_joinDiscord')}
-          iconRight
-          sm
-          secondary
-          border
-          fluid
-          iconSubtle
-          className="mt-auto"
-          onClick={() => {
-            open('https://discord.gg/Muw6QevAFd')
-          }}
-        >
-          <DiscordLogo weight="fill" className="mr-3" size={24} />
-        </Button>
-      </motion.div>
+                const userInfo = await AnimaUser.login(username, password)
+                const { setConfigValue } =  await import('@/services/tauri/configValue')
 
+                await setConfigValue('token', userInfo.token)
+                console.log('SAVED TOKEN', userInfo.token)
+                await window.location.reload()
+              } catch (e) {
+                if (e?.response?.status) {
+                  setLoading(false)
+                  setPageProps({ username, password })
+                  setCurrentPage('register')
+                  return
+                } 
+                setError({ field: 'username', message: t('user_wrongAuth') })
+                setLoading(false)
+              }
+            }}
+          /> 
+        </div>
+      </div>
+      <Button 
+        Icon={<ArrowSquareOut />}
+        text={t('splash_joinDiscord')}
+        iconRight
+        sm
+        secondary
+        border
+        fluid
+        iconSubtle
+        className='mt-auto'
+        onClick={()=>{
+          open('https://discord.gg/Muw6QevAFd')
+        }}
+      >
+        <DiscordLogo weight='fill' className='mr-3' size={24}/>
+      </Button>
+    </motion.div>
+    
+    <motion.div
+      initial={{
+        opacity: 0,
+      }} 
+      animate={{
+        opacity: 1,
+      }}
+      transition={{
+        duration: .3,
+      }}
+      exit={{
+        x: '100%',
+        opacity: 0
+      }}
+      className='w-1/2 flex h-full !bg-center !bg-cover bg-accent relative overflow-hidden' 
+      onMouseDown={(e)=>{
+        //@ts-expect-error - this is tauri exclusive shit
+        window.__TAURI_INVOKE__('tauri', {
+          __tauriModule: 'Window',
+          message: {
+            cmd: 'manage',
+            data: {
+              cmd: {
+                type: e.detail === 2 ? '__toggleMaximize' : 'startDragging'
+              }
+            }
+          }
+        })
+      }}
+    >
       <motion.div
         initial={{
           opacity: 0,
         }}
         animate={{
           opacity: 1,
+          transition: {
+            duration: 1,
+            ease: 'linear',
+          }
         }}
-        transition={{
-          duration: 0.3,
+        className='w-screen h-screen bg-center bg-cover absolute top-0 left-0 slider-animation'
+        style={{
+          backgroundSize: '45%',
+          backgroundImage:`url('${randomBanner}_1.png')`, 
         }}
-        exit={{
-          x: '100%',
-          opacity: 0,
-        }}
-        className="relative flex h-full w-1/2 overflow-hidden bg-accent !bg-cover !bg-center"
-        onMouseDown={(e) => {
-          //@ts-expect-error - this is tauri exclusive shit
-          window.__TAURI_INVOKE__('tauri', {
-            __tauriModule: 'Window',
-            message: {
-              cmd: 'manage',
-              data: {
-                cmd: {
-                  type: e.detail === 2 ? '__toggleMaximize' : 'startDragging',
-                },
-              },
-            },
-          })
-        }}
-      >
-        <motion.div
-          initial={{
-            opacity: 0,
-          }}
-          animate={{
-            opacity: 1,
-            transition: {
-              duration: 1,
-              ease: 'linear',
-            },
-          }}
-          className="slider-animation absolute top-0 left-0 h-screen w-screen bg-cover bg-center"
-          style={{
-            backgroundSize: '45%',
-            backgroundImage: `url('${randomBanner}_1.png')`,
-          }}
-        />
-        <motion.div
+      />
+      <motion.div
           initial={{
             opacity: 0,
             y: 50,
