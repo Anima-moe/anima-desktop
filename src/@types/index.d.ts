@@ -107,20 +107,20 @@ namespace Anima {
 
     type User = {
       id: number
-      username: string,
-      email?: string,
-      staff: boolean,
-      iat?: number,
+      username: string
+      email?: string
+      staff: boolean
+      iat?: number
       exp?: number
-      premium: ENUM.Premium,
+      premium: ENUM.Premium
       profile: {
-        id: number,
-        user_id: number,
-        avatar?: string,
-        banner?: string,
-        bio?: string,
-        background?: string,
-        color?: string,
+        id: number
+        user_id: number
+        avatar?: string
+        banner?: string
+        bio?: string
+        background?: string
+        color?: string
         border?: string
       }
     }
