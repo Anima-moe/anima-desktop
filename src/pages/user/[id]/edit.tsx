@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
 
 import clsx from 'clsx'
-import { Activity, CaretDown, CaretUp, PencilLine } from 'phosphor-react'
+import { Activity, CaretDown, CaretUp, CircleNotch, PencilLine } from 'phosphor-react'
 import {
   Shield,
   User,
@@ -57,7 +57,12 @@ const UserEdit = () => {
     },
   })
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading)
+    return (
+      <div className="absolute inset-0 flex items-center justify-center">
+        <CircleNotch size={60} className="animate-spin" />
+      </div>
+    )
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setLoading(true)
