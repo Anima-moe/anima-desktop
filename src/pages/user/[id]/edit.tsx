@@ -1,35 +1,92 @@
-import { forwardRef } from 'react'
+import { forwardRef, PropsWithChildren, useState } from 'react'
+import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 import clsx from 'clsx'
-import { Activity, CaretDown, CaretUp } from 'phosphor-react'
+import { Activity, CaretDown, CaretUp, PencilLine } from 'phosphor-react'
+import {
+  Shield,
+  User,
+  ArrowRight,
+  ArrowSquareOut,
+  DiscordLogo,
+  Palette,
+  PaintBucket,
+  Image,
+  UserCircle,
+  EnvelopeSimple,
+} from 'phosphor-react'
 
+import Button from '@/components/General/Button'
 import GeneralLayout from '@/components/Layout/General'
-import TitleInput, { TitleInputProps } from '@/components/splashscreen/Inputs/TitleInput'
+import EmojiOptionsInput from '@/components/splashscreen/Inputs/EmojiSelectionInput'
+import IconInput from '@/components/splashscreen/Inputs/IconTextInput'
 import UserCard from '@/components/User/UserCard'
-import * as Select from '@radix-ui/react-select'
+import { User as AnimaUser } from '@/services/anima/user'
 
-const User = () => {
+const UserEdit = () => {
+  const [loading, setLoading] = useState(false)
   const { t } = useTranslation()
 
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormInputs>()
+  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+    setLoading(true)
+    try {
+      await AnimaUser.update(data)
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+    }
+  }
+
   const background = '/i/splash.mp4' // example
-  const inputs: TitleInputProps[] = [
-    { title: t('user_edit_email'), type: 'email' },
-    { title: t('user_edit_password'), type: 'password' },
-    { title: t('user_edit_avatar'), type: 'url' },
-    { title: t('user_edit_banner'), type: 'url' },
-    { title: t('user_edit_background'), type: 'url' },
-    { title: t('user_edit_color'), type: 'color' },
+  const inputs = [
+    { id: 'email', title: t('user_edit_email'), type: 'email', icon: EnvelopeSimple },
+    { id: 'password', title: t('user_edit_password'), type: 'password', icon: Shield },
+    { id: 'avatar', title: t('user_edit_avatar'), type: 'url', icon: UserCircle },
+    { id: 'banner', title: t('user_edit_banner'), type: 'url', icon: Image },
+    {
+      id: 'background',
+      title: t('user_edit_background'),
+      type: 'url',
+      icon: PaintBucket,
+      donator: true,
+    },
+    { id: 'color', title: t('user_edit_color'), type: 'color', icon: Palette, donator: true },
+  ] as const
+
+  const locales = [
+    { value: 'pt-BR', emoji: '🇧🇷' },
+    { value: 'en-US', emoji: '🇺🇸' },
+    { value: 'es-419', emoji: '🇪🇸' },
   ]
 
-  const selects = [
-    { title: t('user_edit_subtitle'), options: ['pt-BR', 'en-US', 'es-ES'] },
-    { title: t('user_edit_audio'), options: ['pt-BR', 'en-US', 'es-ES'] },
+  const selectors = [
+    { id: 'subtitle', title: t('user_edit_subtitle'), options: locales },
+    { id: 'audio', title: t('user_edit_audio'), options: locales },
     {
+      id: 'history',
       title: t('user_edit_history'),
-      options: [t('user_edit_history_public'), t('user_edit_history_private')],
+      options: [
+        { value: t('user_edit_history_public') },
+        { value: t('user_edit_history_private') },
+      ],
     },
-  ]
+  ] as const
+
+  type FormInputs = {
+    [Key in (typeof inputs)[number]['id'] | (typeof selectors)[number]['id']]: string
+  }
+
+  const DonatorBadge = (
+    <span className="rounded bg-primary px-2 py-1 text-sm text-accent">
+      {t('user_edit_donator')}
+    </span>
+  )
 
   return (
     <GeneralLayout fluid>
@@ -45,64 +102,65 @@ const User = () => {
       <div className="absolute top-0 left-0 h-full w-full bg-primary/70 bg-gradient-to-t from-primary to-transparent" />
       <div className="z-10 mx-auto my-24 w-full max-w-2xl">
         <UserCard />
-        <div className="flex w-full flex-col gap-y-4 rounded-md bg-secondary p-5">
-          {inputs.map((input, i) => (
-            <TitleInput key={i} {...input} />
-          ))}
-          {selects.map((secs, i) => (
-            <Select.Root key={i}>
-              <Select.Trigger className="flex w-full items-center justify-between rounded-md border border-tertiary bg-secondary px-3 py-2.5 text-lg leading-none outline-none">
-                <Select.Value placeholder={secs.title} />
-                <Select.Icon className="">
-                  <CaretDown />
-                </Select.Icon>
-              </Select.Trigger>
-              <Select.Portal>
-                <Select.Content
-                  position="popper"
-                  sideOffset={4}
-                  className="z-10 w-[var(--radix-select-trigger-width)] overflow-hidden rounded-md border border-tertiary bg-secondary"
-                >
-                  {/* <Select.ScrollUpButton className="flex h-[25px] cursor-default items-center justify-center bg-secondary">
-                    <CaretUp />
-                  </Select.ScrollUpButton> */}
-                  <Select.Viewport className="">
-                    {secs.options.map((a, i) => (
-                      <SelectItem key={i} value={a}>
-                        {a}
-                      </SelectItem>
-                    ))}
-                  </Select.Viewport>
-                  {/* <Select.ScrollDownButton className="flex h-[25px] cursor-default items-center justify-center bg-secondary">
-                    <CaretDown />
-                  </Select.ScrollDownButton> */}
-                </Select.Content>
-              </Select.Portal>
-            </Select.Root>
-          ))}
-        </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="flex w-full flex-col space-y-2 rounded-md bg-secondary p-5">
+            {inputs.map((input, i) => (
+              <TitleInput id={input.id} title={input.title} key={input.id + i}>
+                <Controller
+                  name={input.id}
+                  control={control}
+                  render={({ field }) => (
+                    <IconInput
+                      Icon={input.icon}
+                      id={input.id}
+                      type={input.type}
+                      error={errors[input.id] && t(errors[input.id].message)}
+                      {...field}
+                    />
+                  )}
+                />
+              </TitleInput>
+            ))}
+            {selectors.map((select, i) => (
+              <TitleInput title={select.title} key={select.id + i}>
+                <Controller
+                  name={select.id}
+                  control={control}
+                  render={({ field }) => (
+                    <EmojiOptionsInput
+                      options={select.options.map((o) => ({ ...o, label: t(o.value) }))}
+                      {...field}
+                    />
+                  )}
+                />
+              </TitleInput>
+            ))}
+          </div>
+          <Button
+            text={t('user_edit_save')}
+            Icon={<PencilLine className="order-first mr-4" weight="fill" size={24} />}
+            className="ml-auto mt-4 bg-accent text-primary"
+            disabled={loading}
+          />
+        </form>
       </div>
     </GeneralLayout>
   )
 }
 
-const SelectItem = forwardRef<HTMLDivElement, Select.SelectItemProps>(
-  ({ children, className, ...props }, forwardedRef) => {
-    return (
-      <Select.Item
-        className={clsx(
-          'relative flex h-[25px] select-none items-center rounded-[3px] pr-[35px] pl-[25px] text-[13px] leading-none data-[disabled]:pointer-events-none data-[highlighted]:outline-none',
-          className
-        )}
-        {...props}
-        ref={forwardedRef}
-      >
-        <Select.ItemText>{children}</Select.ItemText>
-      </Select.Item>
-    )
-  }
+type TitleInputProps = {
+  id?: string
+  title: string
+  footer?: string
+}
+
+const TitleInput = ({ id, title, children }: PropsWithChildren<TitleInputProps>) => (
+  <div>
+    <label htmlFor={id} className="text-lg text-subtle">
+      {title}
+    </label>
+    {children}
+  </div>
 )
 
-SelectItem.displayName = 'SelectItem'
-
-export default User
+export default UserEdit
