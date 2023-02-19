@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
+import { AxiosError } from 'axios'
 import { motion } from 'framer-motion'
 import { Shield, SignIn, User, Envelope } from 'phosphor-react'
 
@@ -16,69 +17,43 @@ type Props = {
 }
 
 function Register({ password: previousPassword, username: previousUsername }: Props) {
-  const [username, setUserName] = useState(previousUsername)
-  const [password, setPassword] = useState(previousPassword)
-  const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<{ field?: string; message?: string }>({})
-
-  useEffect(() => {
-    document.querySelectorAll('input').forEach((input) => {
-      if (input.type === 'password') {
-        input.value = previousPassword
-      } else if (input.type === 'text') {
-        input.value = previousUsername
-      }
-    })
-  }, [])
-
   const { t } = useTranslation()
 
   const {
     control,
     handleSubmit,
+    setError,
     formState: { errors },
-  } = useForm<FormInputs>()
+  } = useForm<FormInputs>({
+    defaultValues: {
+      username: previousUsername,
+      password: previousPassword,
+    },
+  })
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     const { setConfigValue } = await import('@/services/tauri/configValue')
     setLoading(true)
-    // TODO: Use a form validator.. for god's sake
-    if (!username || username.length < 3) {
-      setLoading(false)
-      setError({ field: 'username', message: t('user_missingField') })
-      return
-    }
-
-    if (!password || password.length < 3) {
-      setLoading(false)
-      setError({ field: 'password', message: t('user_missingField') })
-      return
-    }
-
-    if (!email || email.length < 3) {
-      setLoading(false)
-      setError({ field: 'email', message: t('user_missingField') })
-      return
-    }
 
     try {
-      const userInfo = await AnimaUser.login(username, password)
+      const userInfo = await AnimaUser.login(data.username, data.password)
 
       await setConfigValue('token', userInfo.token)
       await window.location.reload()
     } catch (e) {
-      if (e?.response?.status === 404) {
+      if (e instanceof AxiosError && e.response.status === 404) {
         try {
-          const newUserInfo = await AnimaUser.register(username, password, email)
+          const newUserInfo = await AnimaUser.register(data.username, data.password, data.email)
 
           await setConfigValue('token', newUserInfo.token)
           await window.location.reload()
         } catch (e) {
           setLoading(false)
-          setError({ field: 'user', message: t('user_uniqueTaken') })
+          setError('username', { message: t('user_uniqueTaken') })
         }
       }
+      setLoading(false)
     }
   }
 
@@ -90,7 +65,7 @@ function Register({ password: previousPassword, username: previousUsername }: Pr
     { id: 'username', icon: User, title: t('splash_user'), type: 'text' },
     { id: 'email', icon: Envelope, title: t('splash_email'), type: 'email' },
     { id: 'password', icon: Shield, title: t('splash_password'), type: 'password' },
-  ]
+  ] as const
 
   return (
     <div className="flex h-screen w-screen items-center justify-center overflow-hidden rounded-md bg-primary">
@@ -101,13 +76,23 @@ function Register({ password: previousPassword, username: previousUsername }: Pr
               key={input.id}
               name={input.id}
               control={control}
+              rules={{
+                minLength: {
+                  value: 3,
+                  message: t('user_minLength', { n: 3 }),
+                },
+                required: {
+                  value: true,
+                  message: t('user_missingField'),
+                },
+              }}
               render={({ field }) => (
                 <IconInput
                   id={input.id}
                   Icon={input.icon}
                   type={input.type}
                   placeholder={input.title}
-                  error={errors[input.id] && error?.message}
+                  error={errors[input.id]?.message}
                   {...field}
                 />
               )}
