@@ -1,7 +1,6 @@
 import client from '@/services/anima/httpService'
 
 export const User = {
-
   get: async function (id: number) {
     const storeapi = await import('tauri-plugin-store-api')
     const { getConfigValue } = await import('@/services/tauri/configValue')
@@ -9,8 +8,8 @@ export const User = {
 
     const { data } = await client.get(`/user/${id}`, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
 
     return data as Anima.API.GetUser
@@ -49,10 +48,24 @@ export const User = {
 
     const { data } = await client.get('/user/me', {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
 
     return data as Anima.API.GetUser
-  }
+  },
+
+  update: async function (data: unknown) {
+    const { getConfigValue } = await import('@/services/tauri/configValue')
+    const token = await getConfigValue('token')
+
+    const response = await client.post('/user/update', {
+      data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    return response.data as Anima.API.GetUser
+  },
 }

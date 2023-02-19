@@ -12,7 +12,7 @@ namespace Anima {
     }
   }
   namespace RAW {
-    type Locales = 'en-US' | 'pt-BR' | 'es-149' | 'de-DE' | 'ja-JP'
+    type Locales = 'en-US' | 'pt-BR' | 'es-419' | 'de-DE' | 'ja-JP'
 
     type CategoryMetadata = {
       title: string

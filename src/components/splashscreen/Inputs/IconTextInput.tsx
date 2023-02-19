@@ -1,28 +1,29 @@
+import { HTMLInputTypeAttribute } from 'react'
+
 import clsx from 'clsx'
 import { Icon } from 'phosphor-react'
 
 type Props = {
   Icon: Icon
+  id?: string
   placeholder?: string
-  type?: string
+  type?: HTMLInputTypeAttribute
   error?: string
-  onChange?: (value: string) => void
 }
 
-function IconInput({ Icon, placeholder, type, error, onChange }: Props) {
+function IconInput({ id, Icon, placeholder, type, error, ...props }: Props) {
   return (
     <>
       <div className="relative my-1.5 flex w-full items-center justify-start">
         <input
+          id={id}
           className={clsx(
             'w-full rounded-md border px-3 py-2.5 pl-12 text-lg text-white outline-none placeholder-shown:text-subtle focus:ring-0 focus:ring-offset-0 active:text-white',
             error ? 'border-red-500 bg-[#240505]' : 'border-tertiary bg-secondary'
           )}
           placeholder={placeholder}
           type={type}
-          onChange={(e) => {
-            onChange?.(e.target.value)
-          }}
+          {...props}
         />
         <Icon size={24} className="absolute left-3 top-1/2 -translate-y-1/2 text-subtle" />
       </div>

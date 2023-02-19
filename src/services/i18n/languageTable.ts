@@ -78,6 +78,8 @@ const languageTable = {
       user_edit_history: 'History',
       user_edit_history_public: 'Public',
       user_edit_history_private: 'Private',
+      user_edit_donator: 'Donator',
+      user_edit_save: 'Save',
 
       api_fetchError: 'Oops... Something went wrong while trying to get data from our servers. Please try again later.',
       api_streamError_instructions: 'You can help us solve this problem by reporting the error on our discord server, copy the information below and send it along with the message.',
@@ -169,6 +171,8 @@ const languageTable = {
       user_edit_history: 'Histórico',
       user_edit_history_public: 'Público',
       user_edit_history_private: 'Privado',
+      user_edit_donator: 'Doador',
+      user_edit_save: 'Salvar',
 
       api_fetchError: 'Oops! Algo deu errado ao obter os dados do servidor. Tente novamente mais tarde.',
       api_streamError: 'Eita... Algo deu errado ao tentar obter uma stream para este anime. Tente novamente mais tarde.',
@@ -187,7 +191,7 @@ const languageTable = {
       'de-DE': 'Deutsch',
       'ru-RU': 'Русский',
       'es-ES': 'Español',
-      'es-419': 'Español (Argentina)',
+      'es-419': 'Español (América Latina)',
       'fr-FR': 'Français',
       'it-IT': 'Italiano',
       'ja-JP': '日本語',
@@ -196,7 +200,7 @@ const languageTable = {
       player_endtime: 'Termina às {{time}}'
     },
   },
-  'es-149': {
+  'es-419': {
   }
 }
 

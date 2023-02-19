@@ -5,11 +5,11 @@ import { CaretDown } from 'phosphor-react'
 import { Listbox, Transition } from '@headlessui/react'
 
 type Props = {
-  options: { value: string; label: string; emoji: string }[]
-  onChange: (value: string) => void
+  options: { value: string; label: string; emoji?: string }[]
+  // onChange: (value: string) => void
 }
 
-function EmojiOptionsInput({ options, onChange }: Props) {
+function EmojiOptionsInput({ options }: Props) {
   const [activeItem, setActiveItem] = useState<(typeof options)[0]>(options[0])
 
   return (
@@ -18,7 +18,7 @@ function EmojiOptionsInput({ options, onChange }: Props) {
         value={activeItem.value}
         onChange={(d) => {
           setActiveItem(options[options.findIndex((o) => o.value === d)] || options[0])
-          onChange?.(options[options.findIndex((o) => o.value === d)].value || options[0].value)
+          // onChange?.(options[options.findIndex((o) => o.value === d)].value || options[0].value)
         }}
       >
         <div className="relative my-1.5 flex w-full items-center justify-start">
@@ -55,7 +55,7 @@ function EmojiOptionsInput({ options, onChange }: Props) {
                       <span
                         className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}
                       >
-                        <span className="font-noto mr-4">{option.emoji}</span>
+                        {option.emoji && <span className="font-noto mr-4">{option.emoji}</span>}
                         {option.label}
                       </span>
                     </>
