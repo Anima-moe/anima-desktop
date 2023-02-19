@@ -1,6 +1,7 @@
 import { forwardRef, PropsWithChildren, useState } from 'react'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { useQuery } from 'react-query'
 
 import clsx from 'clsx'
 import { Activity, CaretDown, CaretUp, PencilLine } from 'phosphor-react'
@@ -28,11 +29,36 @@ const UserEdit = () => {
   const [loading, setLoading] = useState(false)
   const { t } = useTranslation()
 
+  function fetchInfo() {
+    return AnimaUser.me()
+  }
+  const { data, isLoading, error } = useQuery('/api/user/me', () => fetchInfo(), {
+    cacheTime: 0,
+    retry: 1,
+    refetchOnWindowFocus: false,
+  })
+
+  console.log(data)
+
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormInputs>()
+  } = useForm<FormInputs>({
+    defaultValues: {
+      email: data?.email,
+      avatar: data?.profile.avatar,
+      banner: data?.profile.banner,
+      background: data?.profile.background,
+      color: data?.profile.color,
+      // subtitle:data?.,
+      // audio:data?.,
+      // history:data?.,
+    },
+  })
+
+  if (isLoading) return <div>Loading...</div>
+
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setLoading(true)
     try {
@@ -44,6 +70,11 @@ const UserEdit = () => {
   }
 
   const background = '/i/splash.mp4' // example
+
+  type FormInputs = {
+    [Key in (typeof inputs)[number]['id'] | (typeof selectors)[number]['id']]: string
+  }
+
   const inputs = [
     { id: 'email', title: t('user_edit_email'), type: 'email', icon: EnvelopeSimple },
     { id: 'password', title: t('user_edit_password'), type: 'password', icon: Shield },
@@ -77,10 +108,6 @@ const UserEdit = () => {
       ],
     },
   ] as const
-
-  type FormInputs = {
-    [Key in (typeof inputs)[number]['id'] | (typeof selectors)[number]['id']]: string
-  }
 
   const DonatorBadge = (
     <span className="rounded bg-primary px-2 py-1 text-sm text-accent">
