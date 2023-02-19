@@ -1,4 +1,4 @@
-
+// prettier-ignore
 
 // the translations
 // (tip move them in a JSON file and import them,
@@ -88,6 +88,7 @@ const languageTable = {
 
       loading_moreData: 'Loading more ...',
 
+      user_minLength: 'Field must be at least {{n}} characters long',
       user_wrongAuth: 'Wrong username or password',
       user_missingField: 'Missing username or password',
       user_uniqueTaken: 'Username or email already taken',
@@ -181,6 +182,7 @@ const languageTable = {
 
       loading_moreData: 'Carregando mais...',
 
+      user_minLength: 'Campo deve ter no mínimo {{n}} caracteres',
       user_wrongAuth: 'Usuário ou senha incorretos',
       user_missingField: 'Preencha todos os campos',
       user_uniqueTaken: 'Username or email already taken',
@@ -195,14 +197,13 @@ const languageTable = {
       'fr-FR': 'Français',
       'it-IT': 'Italiano',
       'ja-JP': '日本語',
-      'none': 'Disabled',
+      none: 'Disabled',
 
-      player_endtime: 'Termina às {{time}}'
+      player_endtime: 'Termina às {{time}}',
     },
   },
   'es-419': {
-  }
+  },
 }
-
 
 export default languageTable
