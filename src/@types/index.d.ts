@@ -176,6 +176,7 @@ namespace Anima {
       head?: number
       episode_id: number
       user_id: number
+      AnimeEpisode: Anima.RAW.Episode
     } // Returns Error if user not found or episode not found
 
     type GetEpisodeMedia = {
