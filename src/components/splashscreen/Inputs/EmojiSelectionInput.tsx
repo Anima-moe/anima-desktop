@@ -6,10 +6,10 @@ import { Listbox, Transition } from '@headlessui/react'
 
 type Props = {
   options: { value: string; label: string; emoji?: string }[]
-  // onChange: (value: string) => void
+  onSelect?: (value: string) => void
 }
 
-function EmojiOptionsInput({ options }: Props) {
+function EmojiOptionsInput({ onSelect, options, ...props }: Props) {
   const [activeItem, setActiveItem] = useState<(typeof options)[0]>(options[0])
 
   return (
@@ -18,7 +18,7 @@ function EmojiOptionsInput({ options }: Props) {
         value={activeItem.value}
         onChange={(d) => {
           setActiveItem(options[options.findIndex((o) => o.value === d)] || options[0])
-          // onChange?.(options[options.findIndex((o) => o.value === d)].value || options[0].value)
+          onSelect?.(options[options.findIndex((o) => o.value === d)].value || options[0].value)
         }}
       >
         <div className="relative my-1.5 flex w-full items-center justify-start">
