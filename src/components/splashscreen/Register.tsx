@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 import { motion } from 'framer-motion'
@@ -33,90 +34,98 @@ function Register({ password: previousPassword, username: previousUsername }: Pr
 
   const { t } = useTranslation()
 
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormInputs>()
+
+  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+    const { setConfigValue } = await import('@/services/tauri/configValue')
+    setLoading(true)
+    // TODO: Use a form validator.. for god's sake
+    if (!username || username.length < 3) {
+      setLoading(false)
+      setError({ field: 'username', message: t('user_missingField') })
+      return
+    }
+
+    if (!password || password.length < 3) {
+      setLoading(false)
+      setError({ field: 'password', message: t('user_missingField') })
+      return
+    }
+
+    if (!email || email.length < 3) {
+      setLoading(false)
+      setError({ field: 'email', message: t('user_missingField') })
+      return
+    }
+
+    try {
+      const userInfo = await AnimaUser.login(username, password)
+
+      await setConfigValue('token', userInfo.token)
+      await window.location.reload()
+    } catch (e) {
+      if (e?.response?.status === 404) {
+        try {
+          const newUserInfo = await AnimaUser.register(username, password, email)
+
+          await setConfigValue('token', newUserInfo.token)
+          await window.location.reload()
+        } catch (e) {
+          setLoading(false)
+          setError({ field: 'user', message: t('user_uniqueTaken') })
+        }
+      }
+    }
+  }
+
+  type FormInputs = {
+    [Key in (typeof inputs)[number]['id']]: string
+  }
+
+  const inputs = [
+    { id: 'username', icon: User, title: t('splash_user'), type: 'text' },
+    { id: 'email', icon: Envelope, title: t('splash_email'), type: 'email' },
+    { id: 'password', icon: Shield, title: t('splash_password'), type: 'password' },
+  ]
+
   return (
     <div className="flex h-screen w-screen items-center justify-center overflow-hidden rounded-md bg-primary">
       <motion.div className="flex aspect-video w-2/5 flex-col items-center rounded-md">
-        <IconInput
-          Icon={User}
-          placeholder={t('splash_user')}
-          error={error?.field === 'user' && error.message}
-          onChange={(v) => {
-            setError(undefined)
-            setUserName(v)
-          }}
-        />
-        <IconInput
-          Icon={Envelope}
-          placeholder={t('splash_email')}
-          type="email"
-          error={error?.field === 'email' && error.message}
-          onChange={(v) => {
-            setError(undefined)
-            setEmail(v)
-          }}
-        />
-        <IconInput
-          Icon={Shield}
-          placeholder={t('splash_password')}
-          type="password"
-          error={error?.field === 'password' && error.message}
-          onChange={(v) => {
-            setError(undefined)
-            setPassword(v)
-          }}
-        />
-        <Button
-          fluid
-          accent
-          bold
-          border
-          iconRight
-          loading={loading}
-          text={t('splash_loginOrRegister')}
-          Icon={<SignIn weight="fill" size={24} />}
-          className="mt-4"
-          onClick={async () => {
-            const { setConfigValue } = await import('@/services/tauri/configValue')
-            setLoading(true)
-            // TODO: Use a form validator.. for god's sake
-            if (!username || username.length < 3) {
-              setLoading(false)
-              setError({ field: 'username', message: t('user_missingField') })
-              return
-            }
-
-            if (!password || password.length < 3) {
-              setLoading(false)
-              setError({ field: 'password', message: t('user_missingField') })
-              return
-            }
-
-            if (!email || email.length < 3) {
-              setLoading(false)
-              setError({ field: 'email', message: t('user_missingField') })
-              return
-            }
-
-            try {
-              const userInfo = await AnimaUser.login(username, password)
-
-              await setConfigValue('token', userInfo.token)
-              await window.location.reload()
-            } catch (e) {
-              if (e?.response?.status === 404) {
-                try {
-                  const newUserInfo = await AnimaUser.register(username, password, email)
-
-                  await setConfigValue('token', newUserInfo.token)
-                  await window.location.reload()
-                } catch (e) {
-                  setLoading(false)
-                  setError({ field: 'user', message: t('user_uniqueTaken') })
-                }
-              }
-            }
-          }}
-        />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {inputs.map((input) => (
+            <Controller
+              key={input.id}
+              name={input.id}
+              control={control}
+              render={({ field }) => (
+                <IconInput
+                  id={input.id}
+                  Icon={input.icon}
+                  type={input.type}
+                  placeholder={input.title}
+                  error={errors[input.id] && error?.message}
+                  {...field}
+                />
+              )}
+            />
+          ))}
+          <Button
+            fluid
+            accent
+            bold
+            border
+            iconRight
+            loading={loading}
+            text={t('splash_loginOrRegister')}
+            Icon={<SignIn weight="fill" size={24} />}
+            className="mt-4"
+            onClick={async () => {}}
+          />
+        </form>
         <div className="mt-auto flex h-16 w-full flex-col items-center justify-center">
           <img src="/i/anima.svg" className="mix w-24" />
           <span className="mt-1 text-xs">あーにま</span>

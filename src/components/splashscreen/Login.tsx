@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 import { motion } from 'framer-motion'
@@ -25,6 +26,50 @@ function Login() {
   const [password, setPassword] = useState('')
   const [currentPage, setCurrentPage] = useAtom(splashScreenPageAtom)
   const [pageProps, setPageProps] = useAtom(splashScreenPagePropsAtom)
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormInputs>()
+
+  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+    // TODO: Login to anima, save token to localstorage
+    setLoading(true)
+
+    try {
+      setLoading(true)
+      if (!username || !password || username.length < 3 || password.length < 3) {
+        setLoading(false)
+        setError({ field: 'username', message: t('user_missingField') })
+        return
+      }
+      const userInfo = await AnimaUser.login(username, password)
+      const { setConfigValue } = await import('@/services/tauri/configValue')
+
+      await setConfigValue('token', userInfo.token)
+      console.log('SAVED TOKEN', userInfo.token)
+      await window.location.reload()
+    } catch (e) {
+      if (e?.response?.status) {
+        setLoading(false)
+        setPageProps({ username, password })
+        setCurrentPage('register')
+        return
+      }
+      setError({ field: 'username', message: t('user_wrongAuth') })
+      setLoading(false)
+    }
+  }
+
+  type FormInputs = {
+    [Key in (typeof inputs)[number]['id']]: string
+  }
+
+  const inputs = [
+    { id: 'username', icon: User, title: t('splash_user'), type: 'text' },
+    { id: 'password', icon: Shield, title: t('splash_password'), type: 'password' },
+  ]
 
   return (
     <motion.main className="flex h-screen w-full items-center overflow-hidden rounded-lg bg-primary">
@@ -67,96 +112,68 @@ function Login() {
         className="border-md relative flex h-screen w-1/2 flex-col items-center justify-center px-4 py-4"
       >
         <div className="mt-auto flex h-min w-full flex-col">
-          <h1 className="mb-1.5 w-full text-subtle">{t('splash_welcome')}</h1>
-          <EmojiOptionsInput
-            options={[
-              { value: 'pt-BR', label: 'Português', emoji: '🇧🇷' },
-              { value: 'en-US', label: 'English', emoji: '🇺🇸' },
-              { value: 'es-419', label: 'Español', emoji: '🇪🇸' },
-            ]}
-            onChange={async (value) => {
-              const { setConfigValue } = await import('@/services/tauri/configValue')
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <h1 className="mb-1.5 w-full text-subtle">{t('splash_welcome')}</h1>
+            <EmojiOptionsInput
+              options={[
+                { value: 'pt-BR', label: 'Português', emoji: '🇧🇷' },
+                { value: 'en-US', label: 'English', emoji: '🇺🇸' },
+                { value: 'es-419', label: 'Español', emoji: '🇪🇸' },
+              ]}
+              onSelect={async (value) => {
+                const { setConfigValue } = await import('@/services/tauri/configValue')
 
-              setConfigValue('language', value).then(() => {
-                i18next.changeLanguage(value)
-              })
-            }}
-          />
-          <IconInput
-            Icon={User}
-            placeholder={t('splash_user')}
-            error={error?.message}
-            onChange={(v) => {
-              setError(undefined)
-              setUserName(v)
-            }}
-          />
-          <IconInput
-            Icon={Shield}
-            placeholder={t('splash_password')}
-            type="password"
-            error={error?.message}
-            onChange={(v) => {
-              setError(undefined)
-              setPassword(v)
-            }}
-          />
-          <div className="flex w-full flex-row">
-            <Button
-              Icon={<ArrowRight />}
-              iconSubtle
-              text={t('splash_continueAsGuest')}
-              tertiary
-              border
-              md
-              fluid
-              disabled={loading}
-              loading={loading}
-              className="mr-1.5 mt-1.5"
-              onClick={() => {
-                createMainWindow()
+                setConfigValue('language', value).then(() => {
+                  i18next.changeLanguage(value)
+                })
               }}
             />
-            <Button
-              Icon={<ArrowRight />}
-              text={t('splash_loginOrRegister')}
-              accent
-              iconRight
-              md
-              className="ml-1.5 mt-1.5"
-              disabled={loading}
-              loading={loading}
-              semibold
-              onClick={async () => {
-                // TODO: Login to anima, save token to localstorage
-                setLoading(true)
-
-                try {
-                  setLoading(true)
-                  if (!username || !password || username.length < 3 || password.length < 3) {
-                    setLoading(false)
-                    setError({ field: 'username', message: t('user_missingField') })
-                    return
-                  }
-                  const userInfo = await AnimaUser.login(username, password)
-                  const { setConfigValue } = await import('@/services/tauri/configValue')
-
-                  await setConfigValue('token', userInfo.token)
-                  console.log('SAVED TOKEN', userInfo.token)
-                  await window.location.reload()
-                } catch (e) {
-                  if (e?.response?.status) {
-                    setLoading(false)
-                    setPageProps({ username, password })
-                    setCurrentPage('register')
-                    return
-                  }
-                  setError({ field: 'username', message: t('user_wrongAuth') })
-                  setLoading(false)
-                }
-              }}
-            />
-          </div>
+            {inputs.map((input) => (
+              <Controller
+                key={input.id}
+                name={input.id}
+                control={control}
+                render={({ field }) => (
+                  <IconInput
+                    id={input.id}
+                    Icon={input.icon}
+                    type={input.type}
+                    placeholder={input.title}
+                    error={errors[input.id] && error?.message}
+                    {...field}
+                  />
+                )}
+              />
+            ))}
+            <div className="flex w-full flex-row">
+              <Button
+                Icon={<ArrowRight />}
+                iconSubtle
+                text={t('splash_continueAsGuest')}
+                tertiary
+                border
+                md
+                fluid
+                disabled={loading}
+                loading={loading}
+                className="mr-1.5 mt-1.5"
+                onClick={() => {
+                  createMainWindow()
+                }}
+              />
+              <Button
+                Icon={<ArrowRight />}
+                text={t('splash_loginOrRegister')}
+                accent
+                iconRight
+                md
+                className="ml-1.5 mt-1.5"
+                disabled={loading}
+                loading={loading}
+                semibold
+              />
+            </div>
+          </form>
         </div>
         <Button
           Icon={<ArrowSquareOut />}
