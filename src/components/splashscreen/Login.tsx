@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
+import { AxiosError } from 'axios'
 import { motion } from 'framer-motion'
 import i18next from 'i18next'
 import { useAtom } from 'jotai'
@@ -21,43 +22,32 @@ const randomBanner = bannerList[randomBannerIndex]
 function Login() {
   const { t } = useTranslation()
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<{ field: string; message: string } | undefined>()
-  const [username, setUserName] = useState('')
-  const [password, setPassword] = useState('')
   const [currentPage, setCurrentPage] = useAtom(splashScreenPageAtom)
   const [pageProps, setPageProps] = useAtom(splashScreenPagePropsAtom)
 
   const {
     control,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<FormInputs>()
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-    // TODO: Login to anima, save token to localstorage
     setLoading(true)
 
     try {
-      setLoading(true)
-      if (!username || !password || username.length < 3 || password.length < 3) {
-        setLoading(false)
-        setError({ field: 'username', message: t('user_missingField') })
-        return
-      }
-      const userInfo = await AnimaUser.login(username, password)
+      const userInfo = await AnimaUser.login(data.username, data.password)
       const { setConfigValue } = await import('@/services/tauri/configValue')
 
       await setConfigValue('token', userInfo.token)
-      console.log('SAVED TOKEN', userInfo.token)
       await window.location.reload()
     } catch (e) {
-      if (e?.response?.status) {
-        setLoading(false)
-        setPageProps({ username, password })
+      if (e instanceof AxiosError && e.response.status) {
+        setPageProps({ username: data.username, password: data.password })
         setCurrentPage('register')
         return
       }
-      setError({ field: 'username', message: t('user_wrongAuth') })
+      setError('password', { message: t('user_wrongAuth') })
       setLoading(false)
     }
   }
@@ -69,7 +59,7 @@ function Login() {
   const inputs = [
     { id: 'username', icon: User, title: t('splash_user'), type: 'text' },
     { id: 'password', icon: Shield, title: t('splash_password'), type: 'password' },
-  ]
+  ] as const
 
   return (
     <motion.main className="flex h-screen w-full items-center overflow-hidden rounded-lg bg-primary">
@@ -133,19 +123,40 @@ function Login() {
                 key={input.id}
                 name={input.id}
                 control={control}
+                rules={{
+                  minLength: {
+                    value: 3,
+                    message: t('user_minLength', { n: 3 }),
+                  },
+                  required: {
+                    value: true,
+                    message: t('user_missingField'),
+                  },
+                }}
                 render={({ field }) => (
                   <IconInput
                     id={input.id}
                     Icon={input.icon}
                     type={input.type}
                     placeholder={input.title}
-                    error={errors[input.id] && error?.message}
+                    error={errors[input.id]?.message}
                     {...field}
                   />
                 )}
               />
             ))}
-            <div className="flex w-full flex-row">
+            <div className="flex w-full flex-row-reverse">
+              <Button
+                Icon={<ArrowRight />}
+                text={t('splash_loginOrRegister')}
+                accent
+                iconRight
+                md
+                className="ml-1.5 mt-1.5"
+                disabled={loading}
+                loading={loading}
+                semibold
+              />
               <Button
                 Icon={<ArrowRight />}
                 iconSubtle
@@ -160,17 +171,6 @@ function Login() {
                 onClick={() => {
                   createMainWindow()
                 }}
-              />
-              <Button
-                Icon={<ArrowRight />}
-                text={t('splash_loginOrRegister')}
-                accent
-                iconRight
-                md
-                className="ml-1.5 mt-1.5"
-                disabled={loading}
-                loading={loading}
-                semibold
               />
             </div>
           </form>
