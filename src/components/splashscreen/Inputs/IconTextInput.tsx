@@ -13,7 +13,7 @@ type Props = {
 
 function IconInput({ id, Icon, placeholder, type, error, ...props }: Props) {
   return (
-    <>
+    <div className="flex flex-col">
       <div className="relative my-1.5 flex w-full items-center justify-start">
         <input
           id={id}
@@ -28,9 +28,9 @@ function IconInput({ id, Icon, placeholder, type, error, ...props }: Props) {
         <Icon size={24} className="absolute left-3 top-1/2 -translate-y-1/2 text-subtle" />
       </div>
       {error && (
-        <span className="mb-1.5 -mt-2 w-full rounded-b bg-red-500 px-2 text-xs">{error}</span>
+        <span className="mb-1.5 -mt-3 w-full rounded-b bg-red-500 px-2 pt-1 text-xs">{error}</span>
       )}
-    </>
+    </div>
   )
 }
 
