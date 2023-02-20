@@ -45,7 +45,6 @@ export const User = {
   me: async function () {
     const { getConfigValue } = await import('@/services/tauri/configValue')
     const token = await getConfigValue('token')
-
     const { data } = await client.get('/user/me', {
       headers: {
         Authorization: `Bearer ${token}`,

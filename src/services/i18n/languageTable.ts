@@ -64,7 +64,7 @@ const languageTable = {
       search_noresult: 'No results found',
 
       user_menu_profile: 'My profile',
-      user_menu_settings: 'Settings',
+      user_menu_settings: 'Edit profile',
       user_menu_signout: 'Sign out',
 
       user_edit_email: 'Email',
@@ -158,7 +158,7 @@ const languageTable = {
       search_noresult: 'Nenhum resultado encontrado',
 
       user_menu_profile: 'Perfil',
-      user_menu_settings: 'Opções',
+      user_menu_settings: 'Edit profile',
       user_menu_signout: 'Sair',
 
       user_edit_email: 'E-mail',
