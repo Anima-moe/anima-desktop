@@ -127,6 +127,11 @@ namespace Anima {
   }
 
   namespace API {
+    type DefaultResponse<T> = {
+      count: number
+      data: T
+    }
+
     type Error = {
       error: true
       message: string
