@@ -181,9 +181,6 @@ export default class SourceController {
       'can-play',
       () => {
         this._mediaPlayer.currentTime = currentTime || 0
-        setTimeout(() => {
-          this._mediaPlayer.play()
-        }, 100)
       },
       { once: true }
     )

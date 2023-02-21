@@ -105,6 +105,26 @@ namespace Anima {
       audios: StreamObject
     }
 
+    type Badge = {
+      id: number
+      name: string
+      description: string
+      icon: string
+      level: number
+    }
+
+    type UserProfile = {
+      id: number
+      user_id: number
+      avatar?: string
+      banner?: string
+      bio?: string
+      background?: string
+      color?: string
+      border?: string
+      Badge?: Anima.RAW.Badge[]
+    }
+
     type User = {
       id: number
       username: string
@@ -113,16 +133,7 @@ namespace Anima {
       iat?: number
       exp?: number
       premium: ENUM.Premium
-      profile: {
-        id: number
-        user_id: number
-        avatar?: string
-        banner?: string
-        bio?: string
-        background?: string
-        color?: string
-        border?: string
-      }
+      profile: Anima.RAW.UserProfile
     }
   }
 

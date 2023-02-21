@@ -42,7 +42,12 @@ function Login() {
       await setConfigValue('token', userInfo.token)
       await window.location.reload()
     } catch (e) {
-      if (e instanceof AxiosError && e.response.status) {
+      if (!e.response.status) {
+        setError('username', { message: 'Anima backend offline' })
+        setLoading(false)
+        return
+      }
+      if (e instanceof AxiosError && e.response?.status) {
         setPageProps({ username: data.username, password: data.password })
         setCurrentPage('register')
         return
