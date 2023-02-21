@@ -1,10 +1,10 @@
-import { forwardRef, PropsWithChildren, useState } from 'react'
+import { forwardRef, PropsWithChildren, useEffect, useRef, useState } from 'react'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
 
 import clsx from 'clsx'
-import { Activity, CaretDown, CaretUp, CircleNotch, PencilLine } from 'phosphor-react'
+import { Activity, CaretDown, CaretUp, CircleNotch, PencilLine, Icon } from 'phosphor-react'
 import {
   Shield,
   User,
@@ -29,49 +29,39 @@ const UserEdit = () => {
   const [loading, setLoading] = useState(false)
   const { t } = useTranslation()
 
-  function fetchInfo() {
-    return AnimaUser.me()
-  }
-  const { data, isLoading, error } = useQuery('/api/user/me', () => fetchInfo(), {
-    cacheTime: 0,
-    retry: 1,
+  const { data, isLoading } = useQuery('/api/user/me', () => AnimaUser.me(), {
     refetchOnWindowFocus: false,
   })
 
-  console.log(data)
+  const isDonator = useRef(false)
+
+  useEffect(() => {
+    if (!isLoading) isDonator.current = !!data?.staff || !!data?.premium
+  }, [isLoading])
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormInputs>({
-    defaultValues: {
-      email: data?.email,
-      avatar: data?.profile.avatar,
-      banner: data?.profile.banner,
-      background: data?.profile.background,
-      color: data?.profile.color,
-      // subtitle:data?.,
-      // audio:data?.,
-      // history:data?.,
-    },
-  })
+  } = useForm<FormInputs>()
 
   if (isLoading)
     return (
       <div className="absolute inset-0 flex items-center justify-center">
-        <CircleNotch size={60} className="animate-spin" />
+        <CircleNotch size={100} className="animate-spin" />
       </div>
     )
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setLoading(true)
+    console.log(data)
     try {
-      await AnimaUser.update(data)
-      setLoading(false)
-    } catch (error) {
-      setLoading(false)
+      const x = await AnimaUser.update(data)
+      console.log(x)
+    } catch {
+      console.log('sdajhdfgsdfdshfsdgfhdsgh')
     }
+    setLoading(false)
   }
 
   const background = '/i/splash.mp4' // example
@@ -80,19 +70,59 @@ const UserEdit = () => {
     [Key in (typeof inputs)[number]['id'] | (typeof selectors)[number]['id']]: string
   }
 
-  const inputs = [
-    { id: 'email', title: t('user_edit_email'), type: 'email', icon: EnvelopeSimple },
-    { id: 'password', title: t('user_edit_password'), type: 'password', icon: Shield },
-    { id: 'avatar', title: t('user_edit_avatar'), type: 'url', icon: UserCircle },
-    { id: 'banner', title: t('user_edit_banner'), type: 'url', icon: Image },
+  type InputProps = readonly {
+    id: string
+    type: string
+    icon: Icon
+    title: string
+    footer?: string
+    donator?: boolean
+    placeholder?: string
+  }[]
+
+  const inputs: InputProps = [
+    {
+      id: 'email',
+      title: t('user_edit_email'),
+      type: 'email',
+      icon: EnvelopeSimple,
+      placeholder: data?.email || 'testet',
+    },
+    // { id: 'password', title: t('user_edit_password'), type: 'password', icon: Shield },
+    {
+      id: 'avatar',
+      title: t('user_edit_avatar'),
+      type: 'url',
+      icon: UserCircle,
+      footer: `.webp / .jpg / .jpeg / .png / .gif [${t('user_edit_donator')}]`,
+      placeholder: data?.profile?.avatar,
+    },
+    {
+      id: 'banner',
+      title: t('user_edit_banner'),
+      type: 'url',
+      icon: Image,
+      footer: `.webp / .jpg / .jpeg / .png / .gif [${t('user_edit_donator')}]`,
+      placeholder: data?.profile?.banner,
+    },
     {
       id: 'background',
       title: t('user_edit_background'),
       type: 'url',
       icon: PaintBucket,
       donator: true,
+      footer: '.webp / .jpg / .jpeg / .png / .gif / .mp4 / .webm',
+      placeholder: data?.profile?.background,
     },
-    { id: 'color', title: t('user_edit_color'), type: 'color', icon: Palette, donator: true },
+    {
+      id: 'color',
+      title: t('user_edit_color'),
+      type: 'color',
+      icon: Palette,
+      donator: true,
+      footer: t('user_edit_color_footer'),
+      placeholder: data?.profile?.color,
+    },
   ] as const
 
   const locales = [
@@ -114,7 +144,7 @@ const UserEdit = () => {
     },
   ] as const
 
-  const DonatorBadge = (
+  const DonatorBadge = () => (
     <span className="rounded bg-primary px-2 py-1 text-sm text-accent">
       {t('user_edit_donator')}
     </span>
@@ -137,18 +167,33 @@ const UserEdit = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex w-full flex-col space-y-2 rounded-md bg-secondary p-5">
             {inputs.map((input, i) => (
-              <TitleInput id={input.id} title={input.title} key={input.id + i}>
+              <TitleInput
+                id={input.id}
+                title={input.title}
+                footer={input.footer}
+                key={input.id + i}
+              >
                 <Controller
                   name={input.id}
                   control={control}
+                  rules={{ required: false }}
+                  defaultValue={input.placeholder}
                   render={({ field }) => (
                     <IconInput
                       Icon={input.icon}
                       id={input.id}
                       type={input.type}
                       error={errors[input.id] && t(errors[input.id].message)}
+                      className={input.donator && 'pr-20'}
+                      disabled={!isDonator}
                       {...field}
-                    />
+                    >
+                      {input.donator && !isDonator && (
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                          <DonatorBadge />
+                        </div>
+                      )}
+                    </IconInput>
                   )}
                 />
               </TitleInput>
@@ -186,12 +231,13 @@ type TitleInputProps = {
   footer?: string
 }
 
-const TitleInput = ({ id, title, children }: PropsWithChildren<TitleInputProps>) => (
+const TitleInput = ({ id, title, footer, children }: PropsWithChildren<TitleInputProps>) => (
   <div>
     <label htmlFor={id} className="text-lg text-subtle">
       {title}
     </label>
     {children}
+    {footer && <span className="text-sm text-tertiary">{footer}</span>}
   </div>
 )
 
