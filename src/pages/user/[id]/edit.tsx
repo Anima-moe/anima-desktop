@@ -29,15 +29,15 @@ const UserEdit = () => {
   const [loading, setLoading] = useState(false)
   const { t } = useTranslation()
 
-  const { data, isLoading } = useQuery('/api/user/me', () => AnimaUser.me(), {
+  const {
+    data: userData,
+    isLoading: userIsLoading,
+    error: userError,
+  } = useQuery('/api/user/me', () => AnimaUser.me(), {
     refetchOnWindowFocus: false,
   })
 
-  const isDonator = useRef(false)
-
-  useEffect(() => {
-    if (!isLoading) isDonator.current = !!data?.staff || !!data?.premium
-  }, [isLoading])
+  const isDonator = !!userData?.staff || !!userData?.premium
 
   const {
     control,
@@ -45,22 +45,19 @@ const UserEdit = () => {
     formState: { errors },
   } = useForm<FormInputs>()
 
-  if (isLoading)
+  if (userIsLoading)
     return (
       <div className="absolute inset-0 flex items-center justify-center">
         <CircleNotch size={100} className="animate-spin" />
       </div>
     )
 
-  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+  const onSubmit: SubmitHandler<FormInputs> = async (data: FormInputs) => {
     setLoading(true)
-    console.log(data)
+
     try {
-      const x = await AnimaUser.update(data)
-      console.log(x)
-    } catch {
-      console.log('sdajhdfgsdfdshfsdgfhdsgh')
-    }
+      await AnimaUser.update(data)
+    } catch {}
     setLoading(false)
   }
 
@@ -71,7 +68,7 @@ const UserEdit = () => {
   }
 
   type InputProps = readonly {
-    id: string
+    id: 'avatar' | 'banner' | 'background' | 'color'
     type: string
     icon: Icon
     title: string
@@ -81,13 +78,13 @@ const UserEdit = () => {
   }[]
 
   const inputs: InputProps = [
-    {
-      id: 'email',
-      title: t('user_edit_email'),
-      type: 'email',
-      icon: EnvelopeSimple,
-      placeholder: data?.email || 'testet',
-    },
+    // {
+    //   id: 'email',
+    //   title: t('user_edit_email'),
+    //   type: 'email',
+    //   icon: EnvelopeSimple,
+    //   placeholder: userData?.email || 'testet',
+    // },
     // { id: 'password', title: t('user_edit_password'), type: 'password', icon: Shield },
     {
       id: 'avatar',
@@ -95,7 +92,7 @@ const UserEdit = () => {
       type: 'url',
       icon: UserCircle,
       footer: `.webp / .jpg / .jpeg / .png / .gif [${t('user_edit_donator')}]`,
-      placeholder: data?.profile?.avatar,
+      placeholder: userData?.profile?.avatar,
     },
     {
       id: 'banner',
@@ -103,7 +100,7 @@ const UserEdit = () => {
       type: 'url',
       icon: Image,
       footer: `.webp / .jpg / .jpeg / .png / .gif [${t('user_edit_donator')}]`,
-      placeholder: data?.profile?.banner,
+      placeholder: userData?.profile?.banner,
     },
     {
       id: 'background',
@@ -112,7 +109,7 @@ const UserEdit = () => {
       icon: PaintBucket,
       donator: true,
       footer: '.webp / .jpg / .jpeg / .png / .gif / .mp4 / .webm',
-      placeholder: data?.profile?.background,
+      placeholder: userData?.profile?.background,
     },
     {
       id: 'color',
@@ -121,7 +118,7 @@ const UserEdit = () => {
       icon: Palette,
       donator: true,
       footer: t('user_edit_color_footer'),
-      placeholder: data?.profile?.color,
+      placeholder: userData?.profile?.color || '#000000',
     },
   ] as const
 
@@ -163,7 +160,7 @@ const UserEdit = () => {
       </div>
       <div className="absolute top-0 left-0 h-full w-full bg-primary/70 bg-gradient-to-t from-primary to-transparent" />
       <div className="z-10 mx-auto my-24 w-full max-w-2xl">
-        <UserCard />
+        <UserCard user={{ ...userData }} />
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex w-full flex-col space-y-2 rounded-md bg-secondary p-5">
             {inputs.map((input, i) => (
@@ -184,7 +181,7 @@ const UserEdit = () => {
                       id={input.id}
                       type={input.type}
                       error={errors[input.id] && t(errors[input.id].message)}
-                      className={input.donator && 'pr-20'}
+                      className={input.donator && !isDonator && 'pr-20'}
                       disabled={!isDonator}
                       {...field}
                     >
