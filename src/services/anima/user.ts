@@ -58,8 +58,7 @@ export const User = {
     const { getConfigValue } = await import('@/services/tauri/configValue')
     const token = await getConfigValue('token')
 
-    const response = await client.post('/user/update', {
-      data,
+    const response = await client.post('/user/update', data, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
