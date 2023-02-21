@@ -6,7 +6,7 @@ import {User as UserService} from '@/services/anima/user'
 
 
 const User = () => {
-  const { data: userData, isLoading: userIsLoading, error: userError} = useQuery('me', () => UserService.me(), {
+  const { data: userData, isLoading: userIsLoading, error: userError} = useQuery('/api/user/me', () => UserService.me(), {
     refetchOnWindowFocus: false
   })
   const background = '/i/splash.mp4' // example
