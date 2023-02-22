@@ -98,8 +98,8 @@ function Button({
   })
 
   const contentClassName = clsx({
-    'order-last': iconRight,
-    'order-first': iconLeft,
+    'order-first': iconRight,
+    'order-last': iconLeft,
   })
 
   return (
@@ -111,7 +111,7 @@ function Button({
       }}
     >
       <span className="flex items-center">
-        <div className={contentClassName}>{Icon && Icon}</div>
+        <span className={contentClassName}>{children}</span>
         {loading && (
           <div className="absolute top-0 left-0 flex h-full w-full items-center justify-center bg-primary bg-opacity-40">
             <svg
@@ -138,7 +138,7 @@ function Button({
         )}
         {text}
       </span>
-      
+      {Icon && Icon}
     </button>
   )
 }
