@@ -3,7 +3,6 @@ import Link from 'next/link'
 
 import NotificationApplet from '@/components/Applets/Notifications/Navbar'
 import SearchApplet from '@/components/Applets/Search/Navbar'
-import ConfigApplet from '@/components/Applets/Settings/Navbar'
 import UserApplet from '@/components/Applets/User/Navbar'
 import useNavScroll from '@/hooks/useNavScroll'
 
@@ -14,8 +13,7 @@ function Index() {
     <motion.nav
       className={`fixed z-[99] flex h-16 w-full select-none flex-row py-3 px-8  transition-all duration-300 ${
         immersive
-          ? 'bg-primary bg-opacity-80 backdrop-blur-sm'
-          : 'bg-opacity-100 backdrop-blur-none'
+          && 'bg-gradient-to-b from-primary'
       }`}
     >
       {/* LOGO */}
@@ -33,7 +31,6 @@ function Index() {
       {/* NAVBAR ICONS */}
       <div className="flex w-3/12 items-center justify-end gap-3">
         <NotificationApplet />
-        <ConfigApplet />
         <UserApplet />
       </div>
     </motion.nav>
