@@ -12,7 +12,7 @@ export const User = {
       },
     })
 
-    return data as Anima.API.GetUser
+    return data.data as Anima.API.GetUser
   },
 
   login: async function (username: string, password: string) {
