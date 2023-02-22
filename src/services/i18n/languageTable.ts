@@ -37,6 +37,7 @@ const languageTable = {
       anime_heading_synonyms: 'Synonyms',
       anime_heading_status: 'Status',
       anime_heading_endDate: 'End Date',
+      anime_heading_studios: 'Studios',
 
       anime_generic_season: '{{n}} Season',
       anime_generic_seasons: '{{n}} Seasons',
@@ -133,6 +134,7 @@ const languageTable = {
       anime_heading_synonyms: 'Sinônimos',
       anime_heading_status: 'Status',
       anime_heading_endDate: 'Data de Término',
+      anime_heading_studios: 'Estúdios',
 
       anime_generic_season: '{{n}}ª Temporada',
       anime_generic_seasons: '{{n}} Temporadas',
