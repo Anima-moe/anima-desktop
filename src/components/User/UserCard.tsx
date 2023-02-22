@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 
+import Link from 'next/link'
 import { NotePencil } from 'phosphor-react'
 
 import Button from '@/components/General/Button'
@@ -9,6 +10,7 @@ import UserBadge from './UserBadge'
 type Props = {
   showStatics?: boolean
   user: Anima.RAW.User
+  showEditButton?: boolean
 }
 
 const properCase = (str: string) => {
@@ -23,33 +25,37 @@ const beautyNumber = (number: number) => {
   return number
 }
 
-const UserCard = ({ showStatics, user }: Props) => {
+const UserCard = ({ showStatics, user, showEditButton }: Props) => {
   const { t } = useTranslation()
+
   return (
-    <>
+    <div className='relative'>
       <div
-        className="relative h-48 rounded-t-md bg-tertiary bg-cover bg-center bg-no-repeat"
+        className="relative h-72 rounded-md bg-tertiary bg-cover bg-center bg-no-repeat select-none mb-8"
         style={{
-          backgroundImage: `url(${user?.profile?.background})`,
+          backgroundImage: `url(${user?.profile?.banner})`,
         }}
       >
         <span
-          className="absolute left-4 top-4 rounded-md px-2 py-1 text-xs font-medium text-primary"
+          className="absolute left-4 top-4 rounded-md px-2 py-1 text-xs font-semibold text-primary"
           style={{ backgroundColor: `${user?.profile?.color || '#161616'}` }}
         >
           #{beautyNumber(user?.id)}
         </span>
         <div className="absolute right-4 top-4">
-          <Button
-            secondary
-            Icon={<NotePencil className="mr-3" />}
-            text={t('user_menu_settings')}
-            iconLeft
-            xs
-          />
+          {showEditButton && <Link href='/user/me/edit'>
+            <Button
+              secondary
+              Icon={<NotePencil className="mr-3" />}
+              text={t('user_menu_settings')}
+              iconLeft
+              xs
+            />  
+        </Link>}
+        
         </div>
       </div>
-      <div className="relative mb-4 flex h-24 justify-between overflow-hidden rounded-b-md bg-secondary px-8">
+      <div className="absolute w-full bottom-0 left-0 flex h-24 justify-between overflow-hidden rounded-b-md bg-secondary bg-opacity-80 backdrop-blur-xl px-8">
         <div
           className="pointer-events-none absolute top-0 left-0 z-[0] h-full w-full opacity-10"
           style={{ backgroundColor: `${user?.profile?.color || '#161616'}` }}
@@ -57,7 +63,7 @@ const UserCard = ({ showStatics, user }: Props) => {
         <div className="z-[1] flex items-center">
           <span
             className="mr-4 h-20 w-20 rounded-full bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: 'url(/test/avtr.png)' }}
+            style={{ backgroundImage: `url('${user?.profile?.avatar ?? 'https://i.imgur.com/CBdQGA3.png'}')`  }}
           />
           <div className="flex flex-col">
             <div className="flex items-center gap-x-3">
@@ -96,7 +102,7 @@ const UserCard = ({ showStatics, user }: Props) => {
           </div>
         )}
       </div>
-    </>
+    </div>
   )
 }
 
