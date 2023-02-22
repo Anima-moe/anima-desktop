@@ -91,7 +91,7 @@ function AnimePage() {
   return (
     <GeneralLayout fluid>
       <div
-        className="relative z-0 -mt-16 h-[50vh] w-full overflow-hidden bg-cover bg-center bg-no-repeat"
+        className="aboslute z-0 -mt-16 h-[100vh] w-full overflow-hidden bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url('${animeData?.background || anilistData?.bannerImage}')` }}
       >
         {animeData?.background ? (
@@ -107,10 +107,10 @@ function AnimePage() {
         ) : (
           <video autoPlay loop muted className="h-full w-full object-cover" src="/i/splash.mp4" />
         )}
-        <div className="absolute top-0 left-0 h-full w-full bg-secondary bg-opacity-70 mix-blend-multiply backdrop-blur-sm" />
+        <div className="absolute top-0 left-0 h-full w-full" style={{background: 'linear-gradient(180deg, #16161688 0%, #161616 90%)'}} />
       </div>
-      <div className="relative z-[2] -mt-[20vh] flex w-full flex-row px-8">
-        <div className="mr-4 w-1/5">
+      <div className="relative -mt-[40vh] z-[2] flex w-full flex-row px-8 bg-primary/70 backdrop-blur-sm">
+        <div className="mr-4 w-1/5 -mt-[20vh]">
           {animeData ? (
             <AnimeCard disabled noHover anime={animeData} />
           ) : (
@@ -167,11 +167,16 @@ function AnimePage() {
             ) : (
               <AnimePropertySkeleton />
             )}
+            {anilistData?.studios ? (
+              <AnimeProperty heading="anime_heading_studios" value={anilistData.studios.nodes.map(s=>s.name)} />
+            ) : (
+              <AnimePropertySkeleton />
+            )}
           </div>
         </div>
-        <div className="ml-4 flex w-4/5 flex-col">
+        <div className="ml-4 flex w-4/5 flex-col -mt-[20vh]">
           {/* TITLE METADATA */}
-          <div className="flex h-[20vh] w-full flex-col items-start justify-end overflow-hidden pb-4">
+          <div className="flex w-full flex-col items-start justify-end overflow-hidden pb-4 h-[20vh]">
             <h6 className="text-xs text-white text-opacity-40">
               {anilistData ? (
                 anilistData?.startDate?.year
