@@ -64,7 +64,6 @@ namespace Anima {
       cover: string
       background: string
       slug: string
-      external_id: string
       AnimeSeason: Season[]
       AnimeMetadata: Anima.RAW.AnimeMetadata[]
       Category: Anima.RAW.Category[]
