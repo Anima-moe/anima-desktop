@@ -66,4 +66,12 @@ export const User = {
 
     return response.data as Anima.API.GetUser
   },
+
+  isLogged: async function () {
+    const { getConfigValue } = await import('@/services/tauri/configValue')
+    const token = (await getConfigValue('token')) as string
+
+    if (!token || token.trim() === '') return false
+    return true
+  },
 }

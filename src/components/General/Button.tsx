@@ -107,7 +107,8 @@ function Button({
       className={classes}
       onClick={() => {
         if (disabled) return
-        onClick?.()
+        if (!onClick) return 
+        onClick()
       }}
     >
       <span className="flex items-center">

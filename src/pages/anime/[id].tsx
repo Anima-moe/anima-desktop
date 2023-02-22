@@ -8,6 +8,8 @@ import AnimeCard from '@/components/Anime/AnimeCard'
 import AnimeCharacters from '@/components/Anime/AnimeCharacters'
 import AnimeStaffs from '@/components/Anime/AnimeStaffs'
 import SeasonDisplay from '@/components/Anime/Season'
+import { ReportError } from '@/components/Error/ReportError'
+import AlphaRemminder from '@/components/General/AlphaReminder'
 import GeneralLayout from '@/components/Layout/General'
 import { AnilistMedia, anilistService } from '@/services/anilist/anilistService'
 import { Anime } from '@/services/anima/anime'
@@ -176,48 +178,56 @@ function AnimePage() {
         </div>
         <div className="ml-4 flex w-4/5 flex-col -mt-[20vh]">
           {/* TITLE METADATA */}
-          <div className="flex w-full flex-col items-start justify-end overflow-hidden pb-4 h-[20vh]">
-            <h6 className="text-xs text-white text-opacity-40">
-              {anilistData ? (
-                anilistData?.startDate?.year
-              ) : (
-                <SkeletonBlock
-                  tag="div"
-                  width="100px"
-                  effect="wave"
-                  borderRadius=".2em"
-                  height="20px"
-                />
-              )}
-            </h6>
-            <h1 className="text-4xl font-bold line-clamp-2">
-              {animeData ? (
-                getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(animeData)?.title ||
-                'Unknown title'
-              ) : (
-                <SkeletonBlock
-                  tag="div"
-                  width="600px"
-                  effect="wave"
-                  borderRadius=".2em"
-                  height="50px"
-                  className="my-1.5"
-                />
-              )}
-            </h1>
-            <h3 className="text-lg">
-              {anilistData ? (
-                anilistData.title.native
-              ) : (
-                <SkeletonBlock
-                  tag="div"
-                  width="200px"
-                  effect="wave"
-                  borderRadius=".2em"
-                  height="20px"
-                />
-              )}
-            </h3>
+          <div className='flex flex-row'>
+            <div className="flex w-full flex-col items-start justify-end overflow-hidden pb-4 h-[20vh]">
+              <h6 className="text-xs text-white text-opacity-40">
+                {anilistData ? (
+                  anilistData?.startDate?.year
+                ) : (
+                  <SkeletonBlock
+                    tag="div"
+                    width="100px"
+                    effect="wave"
+                    borderRadius=".2em"
+                    height="20px"
+                  />
+                )}
+              </h6>
+              <h1 className="text-4xl font-bold line-clamp-2">
+                {animeData ? (
+                  getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(animeData)?.title ||
+                  'Unknown title'
+                ) : (
+                  <SkeletonBlock
+                    tag="div"
+                    width="600px"
+                    effect="wave"
+                    borderRadius=".2em"
+                    height="50px"
+                    className="my-1.5"
+                  />
+                )}
+              </h1>
+              <h3 className="text-lg">
+                {anilistData ? (
+                  anilistData.title.native
+                ) : (
+                  <SkeletonBlock
+                    tag="div"
+                    width="200px"
+                    effect="wave"
+                    borderRadius=".2em"
+                    height="20px"
+                  />
+                )}
+              </h3>
+            </div>
+            <div className='ml-auto flex flex-col items-start justify-end pb-6'>
+              <ReportError anime={animeData} />
+            </div>
+          </div>
+          <div className='w-full'>
+            <AlphaRemminder />
           </div>
           {/* SYNOPSIS */}
           <div className="mt-4 w-3/4">

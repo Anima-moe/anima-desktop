@@ -6,6 +6,11 @@
 const languageTable = {
   'en-US': {
     translation: {
+      anima_alpha_reminder: ' Hey! Anima is in alpha and we are still working on it.<br /> If you find animes missing metadata or episodes, please press the report button and paste the resulting code into our discord.',
+      anima_report_metadata: 'Missing metadata',
+      anima_report_episodes: 'Missing episodes',
+      anima_report_error: 'Error',
+
       splash_welcome: 'Let\'s get started!',
       splash_continueAsGuest: 'Continue without an account',
       splash_loginOrRegister: 'Login/Register',
@@ -47,6 +52,9 @@ const languageTable = {
       anime_episodes: 'Episodes',
 
       generic_date: '{{month}}/{{day}}/{{year}}',
+      generic_accept: 'Accept',
+      generic_cancel: 'Cancel',
+      gerenic_copy: 'Copy',
 
       anilist_status_NOT_YET_RELEASED: 'Not Yet Released',
       anilist_status_FINISHED: 'Finished',
@@ -84,7 +92,7 @@ const languageTable = {
       user_edit_color_footer: 'Set color of your name and profile highlights.',
 
       api_fetchError: 'Oops... Something went wrong while trying to get data from our servers. Please try again later.',
-      api_streamError_instructions: 'You can help us solve this problem by reporting the error on our discord server, copy the information below and send it along with the message.',
+      api_streamError_instructions: 'You can help us solve this problem by reporting the error on our discord server, copy the information below and send it on the support channel on discord',
       api_streamError: 'Oops... Something went wrong while trying to get a stream for this anime. Please try again later.',
       api_streamLoading: 'Loading stream...',
 
@@ -99,6 +107,11 @@ const languageTable = {
   },
   'pt-BR': {
     translation: {
+      anima_alpha_reminder: 'Olá! Anima está em alpha e ainda estamos trabalhando nele.<br /> Se você encontrar animes com metadados ou episódios faltando, por favor, pressione o botão de reportar e cole o código resultante em nosso discord.',
+      anima_report_metadata: 'Faltando metadados',
+      anima_report_episodes: 'Faltando temporadas/episódios',
+      anima_report_error: 'Erro ao carregar',
+
       splash_welcome: 'Vamos começar.',
       splash_continueAsGuest: 'Continuar sem uma conta',
       splash_loginOrRegister: 'Login/Registro',
@@ -144,6 +157,10 @@ const languageTable = {
       anime_episodes: 'Episódios',
 
       generic_date: '{{day}}/{{month}}/{{year}}',
+      generic_accept: 'Aceitar',
+      generic_cancel: 'Cancelar',
+      gerenic_copy: 'Copiar',
+
       anilist_status_NOT_YET_RELEASED: 'Não Lançado',
       anilist_status_FINISHED: 'Finalizado',
       anilist_status_RELEASING: 'Em Lançamento',
@@ -181,7 +198,7 @@ const languageTable = {
 
       api_fetchError: 'Oops! Algo deu errado ao obter os dados do servidor. Tente novamente mais tarde.',
       api_streamError: 'Eita... Algo deu errado ao tentar obter uma stream para este anime. Tente novamente mais tarde.',
-      api_streamError_instructions: 'Você pode nos ajudar a resolver este problema reportando o erro no nosso servidor do discord, copie as informações abaixo e mande junto com a mensagem.',
+      api_streamError_instructions: 'Você pode nos ajudar a resolver este problema reportando o erro no nosso servidor do discord, copie o código de report abaixo e cole no canal de suporte.',
       api_streamLoading: 'Carregando stream...',
 
       loading_moreData: 'Carregando mais...',
