@@ -35,13 +35,13 @@ function SwiperAnime({ animesPerScreen, animes, loading, alwaysShowInfo }: Props
         animes.map((anime, index) => (
           <SwiperSlide key={anime.id} virtualIndex={index}>
             <div
-              key={anime.external_id}
+              key={anime.id}
               className="group flex aspect-[3/2] select-none flex-col py-2.5"
               style={{
                 width: `calc(calc(100vw - calc(1vw + 120px) ) / ${animesPerScreen})`,
                 minWidth: `calc(calc(100vw - calc(1vw + 120px) ) / ${animesPerScreen})`,
               }}
-              itemID={anime.external_id}
+              itemID={anime.id.toString()}
             >
               <AnimeCard anime={anime} noHover={alwaysShowInfo} />
               {alwaysShowInfo && (
