@@ -19,9 +19,9 @@ import {
 } from 'phosphor-react'
 
 import Button from '@/components/General/Button'
+import EmojiOptionsInput from '@/components/General/Inputs/EmojiSelectionInput'
+import IconInput from '@/components/General/Inputs/IconTextInput'
 import GeneralLayout from '@/components/Layout/General'
-import EmojiOptionsInput from '@/components/splashscreen/Inputs/EmojiSelectionInput'
-import IconInput from '@/components/splashscreen/Inputs/IconTextInput'
 import UserCard from '@/components/User/UserCard'
 import { User as AnimaUser } from '@/services/anima/user'
 
@@ -37,7 +37,11 @@ const UserEdit = () => {
     refetchOnWindowFocus: false,
   })
 
-  const isDonator = !!userData?.staff || !!userData?.premium
+  function isDonator() {
+    if (!userData) return false
+
+    return userData?.staff || userData?.premium > 0
+  }
 
   const {
     control,
@@ -126,6 +130,7 @@ const UserEdit = () => {
     { value: 'pt-BR', emoji: '🇧🇷' },
     { value: 'en-US', emoji: '🇺🇸' },
     { value: 'es-419', emoji: '🇪🇸' },
+    { value: 'ja-JP', emoji: '🇯🇵'}
   ]
 
   const selectors = [
@@ -149,6 +154,7 @@ const UserEdit = () => {
 
   return (
     <GeneralLayout fluid>
+      DONATOR: {JSON.stringify(isDonator)}
       <div className={'cover absolute top-0 left-0 z-[-1] h-full w-full overflow-hidden'}>
         {background ? (
           (background.endsWith('.mp4') || background.endsWith('.webm')) && (
@@ -159,7 +165,7 @@ const UserEdit = () => {
         )}
       </div>
       <div className="absolute top-0 left-0 h-full w-full bg-primary/70 bg-gradient-to-t from-primary to-transparent" />
-      <div className="z-10 mx-auto my-24 w-full max-w-2xl">
+      <div className="z-[1] mx-auto my-24 w-full max-w-2xl">
         <UserCard user={{ ...userData }} />
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex w-full flex-col space-y-2 rounded-md bg-secondary p-5">
@@ -182,10 +188,10 @@ const UserEdit = () => {
                       type={input.type}
                       error={errors[input.id] && t(errors[input.id].message)}
                       className={input.donator && !isDonator && 'pr-20'}
-                      disabled={!isDonator}
+                      disabled={!isDonator && input.donator}
                       {...field}
                     >
-                      {input.donator && !isDonator && (
+                      {input.donator && (
                         <div className="absolute right-3 top-1/2 -translate-y-1/2">
                           <DonatorBadge />
                         </div>
@@ -229,12 +235,12 @@ type TitleInputProps = {
 }
 
 const TitleInput = ({ id, title, footer, children }: PropsWithChildren<TitleInputProps>) => (
-  <div>
-    <label htmlFor={id} className="text-lg text-subtle">
+  <div className='flex flex-col -mt-4'>
+    <label htmlFor={id} className="text-lg text-white/50 -mb-0.5 mt-3">
       {title}
     </label>
     {children}
-    {footer && <span className="text-sm text-tertiary">{footer}</span>}
+    {footer && <span className="text-xs text-subtle flex -mt-1">{footer}</span>}
   </div>
 )
 

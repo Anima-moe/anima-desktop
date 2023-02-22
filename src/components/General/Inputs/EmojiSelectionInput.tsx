@@ -25,7 +25,7 @@ const EmojiOptionsInput = forwardRef<SelectHTMLAttributes<HTMLSelectElement>, Pr
           <div className="relative my-1.5 flex w-full items-center justify-start">
             <Listbox.Button className="relative flex w-full flex-row items-center justify-between rounded-md border border-tertiary bg-secondary px-3 py-2.5 text-lg text-white placeholder-shown:text-subtle active:text-white">
               <p className="flex flex-row">
-                <span className="font-noto mr-4">{activeItem.emoji}</span>
+                <span className="font-noto mr-4">{activeItem.emoji || '📌'}</span>
                 {activeItem.label}
               </p>
               <CaretDown className="text-subtle" size={24} />
@@ -56,7 +56,7 @@ const EmojiOptionsInput = forwardRef<SelectHTMLAttributes<HTMLSelectElement>, Pr
                         <span
                           className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}
                         >
-                          {option.emoji && <span className="font-noto mr-4">{option.emoji}</span>}
+                          <span className="font-noto mr-4">{option.emoji || '📌'}</span> 
                           {option.label}
                         </span>
                       </>

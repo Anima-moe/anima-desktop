@@ -9,7 +9,7 @@ import { Shield, SignIn, User, Envelope } from 'phosphor-react'
 import { User as AnimaUser } from '@/services/anima/user'
 
 import Button from '../General/Button'
-import IconInput from './Inputs/IconTextInput'
+import IconInput from '../General/Inputs/IconTextInput'
 
 type Props = {
   username: string
