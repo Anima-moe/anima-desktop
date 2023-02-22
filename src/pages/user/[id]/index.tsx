@@ -27,7 +27,7 @@ const User = () => {
   if (userError) return <div>Error</div>
 
   return (
-    <GeneralLayout fluid layoutId='userprofile'>
+    <GeneralLayout fluid>
       <div className={'cover absolute top-0 left-0 z-[-1] h-full w-full overflow-hidden'} style={{backgroundImage: `url('${userData?.profile?.background}')`}}>
         {userData?.profile?.background ? (
           (userData?.profile?.background && userData?.profile?.background.endsWith('.mp4') || userData?.profile?.background.endsWith('.webm')) && (
