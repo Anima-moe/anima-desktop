@@ -48,10 +48,9 @@ const Player = forwardRef<MediaPlayerElement, Props>((props, ref) => {
       load="custom"
       aspectRatio={16 / 9}
       userIdleDelay={400}
+      className="flex items-center justify-center"
     >
-      {/* {JSON.stringify(streamConfig)} */}
       <MediaOutlet />
-      {/* <MediaPoster alt={getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(props.episodeData)?.title} /> */}
       <ShortcutCollector />
       <div className="pointer-events-none absolute top-0 left-0 flex h-full w-full flex-col justify-between">
         <div className="pointer-events-none absolute top-0 left-0 h-full w-full bg-primary bg-opacity-40 transition-all duration-300 media-user-idle:bg-opacity-0 media-paused:bg-opacity-70 media-waiting:bg-black media-waiting:opacity-90" />
