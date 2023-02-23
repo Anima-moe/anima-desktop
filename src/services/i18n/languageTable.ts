@@ -89,6 +89,9 @@ const languageTable = {
       user_edit_history_private: 'Private',
       user_edit_donator: 'Donator',
       user_edit_save: 'Save',
+      user_edit_save_pending: 'Saving data',
+      user_edit_save_success: 'Data saved successfully',
+      user_edit_save_error: 'Error while saving data',
       user_edit_color_footer: 'Set color of your name and profile highlights.',
       user_edit_language: 'Language',
 
@@ -209,6 +212,9 @@ const languageTable = {
       user_edit_history_private: 'Privado',
       user_edit_donator: 'Doador',
       user_edit_save: 'Salvar',
+      user_edit_save_pending: 'Salvando dados',
+      user_edit_save_success: 'Dados salvos com sucesso',
+      user_edit_save_error: 'Erro ao salvar dados',
       user_edit_color_footer: 'Define cor do seu nome e destaques do perfil.',
       user_edit_language: 'Idioma',
 
@@ -330,6 +336,9 @@ const languageTable = {
     user_edit_history_private: 'Privado',
     user_edit_donator: 'Doador',
     user_edit_save: 'Salvar',
+    user_edit_save_pending: 'Salvando dados',
+    user_edit_save_success: 'Dados salvos com sucesso',
+    user_edit_save_error: 'Erro ao salvar dados',
     user_edit_color_footer: 'Define a cor do teu nome e destaques do perfil.',
     user_edit_langauge: 'Idioma',
 
