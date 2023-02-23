@@ -55,7 +55,7 @@ const UserCard = ({ showStatics, user, showEditButton }: Props) => {
         
         </div>
       </div>
-      <div className="absolute w-full bottom-0 left-0 flex h-24 justify-between overflow-hidden rounded-b-md bg-secondary bg-opacity-80 backdrop-blur-xl px-8">
+      <div className="absolute w-full bottom-0 left-0 flex h-24 justify-between overflow-hidden rounded-b-md bg-secondary bg-opacity-80 backdrop-blur-xl px-4">
         <div
           className="pointer-events-none absolute top-0 left-0 z-[0] h-full w-full opacity-10"
           style={{ backgroundColor: `${user?.profile?.color || '#161616'}` }}
