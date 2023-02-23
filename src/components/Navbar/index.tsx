@@ -11,13 +11,15 @@ function Index() {
 
   return (
     <motion.nav
-      className={`fixed z-[99] flex h-16 w-full select-none flex-row py-3 px-8  transition-all duration-300 ${
-        immersive
-          && 'bg-gradient-to-b from-primary'
-      }`}
+      className='fixed z-[99] flex h-16 w-full select-none flex-row py-3 px-8'
     >
+      <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-b transition-all duration-300 z-[0] from-primary ${
+        immersive
+          ? 'opacity-100' 
+          : 'opacity-0'
+      }`} />
       {/* LOGO */}
-      <div className="flex w-3/12 items-center">
+      <div className="flex w-3/12 items-center z-[1]">
         <Link href="/">
           <div className="cursor-pointer">
             <img src="/i/anima.svg" className="w-22" />
