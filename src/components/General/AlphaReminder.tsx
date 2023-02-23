@@ -10,7 +10,7 @@ function AlphaRemminder({}: Props) {
   const { t } = useTranslation()
 
   return isVisible ? (
-    <div className="flex w-full select-none flex-row items-center justify-between rounded-md bg-red-400 px-4 py-2 text-xs font-semibold text-primary my-4">
+    <div className="flex w-full select-none flex-row items-center justify-between rounded-md bg-red-400 px-4 py-2 text-xs font-semibold text-primary mt-4">
       <span className='w-full' dangerouslySetInnerHTML={{__html: t('anima_alpha_reminder')}} />
       <X
         size={16}
