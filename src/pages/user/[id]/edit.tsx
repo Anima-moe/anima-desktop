@@ -27,8 +27,6 @@ import { User as AnimaUser } from '@/services/anima/user'
 
 const UserEdit = () => {
   const [loading, setLoading] = useState(false)
-  const { t } = useTranslation()
-
   const {
     data: userData,
     isLoading: userIsLoading,
@@ -36,6 +34,39 @@ const UserEdit = () => {
   } = useQuery('/api/user/me', () => AnimaUser.me(), {
     refetchOnWindowFocus: false,
   })
+  const [currentUserData, setCurrentUserData] = useState<Anima.RAW.User | null>(null)
+  const { t } = useTranslation()
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    watch
+  } = useForm<FormInputs>()
+  
+  useEffect(()=>{
+    if (!userData) { return }
+    
+    setCurrentUserData(userData)
+  }, [userData])
+  const profile = watch()
+
+  // useEffect(()=>{
+  //   const subscription = watch((value, { name, type }) => {
+  //     console.log(value, setCurrentUserData)
+  //     setCurrentUserData({
+  //       ...currentUserData,
+  //       profile: {
+  //         avatar: value.avatar,
+  //         banner: value.banner,
+  //         background: value.background,
+  //         color: value.color,
+  //         ...currentUserData.profile
+  //       }
+  //     })
+  //   })
+  //   return () => subscription.unsubscribe()
+  // },[watch])
+
 
   function isDonator() {
     if (!userData) return false
@@ -43,11 +74,6 @@ const UserEdit = () => {
     return userData?.staff || userData?.premium > 0
   }
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormInputs>()
 
   if (userIsLoading)
     return (
@@ -65,7 +91,6 @@ const UserEdit = () => {
     setLoading(false)
   }
 
-  const background = '/i/splash.mp4' // example
 
   type FormInputs = {
     [Key in (typeof inputs)[number]['id'] | (typeof selectors)[number]['id']]: string
@@ -154,11 +179,10 @@ const UserEdit = () => {
 
   return (
     <GeneralLayout fluid>
-      DONATOR: {JSON.stringify(isDonator)}
       <div className={'cover absolute top-0 left-0 z-[-1] h-full w-full overflow-hidden'}>
-        {background ? (
-          (background.endsWith('.mp4') || background.endsWith('.webm')) && (
-            <video autoPlay loop muted className="h-full w-full object-cover" src={background} />
+        {profile?.background ? (
+          (profile?.background.endsWith('.mp4') || profile?.background.endsWith('.webm')) && (
+            <video autoPlay loop muted className="h-full w-full object-cover" src={profile?.background} />
           )
         ) : (
           <video autoPlay loop muted className="h-full w-full object-cover" src="/i/splash.mp4" />
@@ -166,7 +190,15 @@ const UserEdit = () => {
       </div>
       <div className="absolute top-0 left-0 h-full w-full bg-primary/70 bg-gradient-to-t from-primary to-transparent" />
       <div className="z-[1] mx-auto my-24 w-full max-w-2xl">
-        <UserCard user={{ ...userData }} />
+        { profile && <UserCard user={{
+          ...currentUserData,
+          profile: {
+            user_id: currentUserData?.profile?.user_id,
+            id: currentUserData?.profile.id,
+            ...currentUserData?.profile,
+            ...watch()
+          }
+        }} /> }
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex w-full flex-col space-y-2 rounded-md bg-secondary p-5">
             {inputs.map((input, i) => (
