@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useRouter } from 'next/router'
+import { Calendar, CaretRight, FilmSlate, Graph, IconProps, PlayCircle, Tag } from 'phosphor-react'
 import { SkeletonBlock, SkeletonText } from 'skeleton-elements/react'
 
 import AnimeCard from '@/components/Anime/AnimeCard'
@@ -15,25 +16,38 @@ import { AnilistMedia, anilistService } from '@/services/anilist/anilistService'
 import { Anime } from '@/services/anima/anime'
 import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
 
-function AnimeProperty(props: { heading: string; value: any }) {
+interface props {
+  heading: string
+  value: any
+  Icon?: React.ForwardRefExoticComponent<IconProps & React.RefAttributes<SVGSVGElement>>
+}
+
+function AnimeProperty({ heading, value, Icon }: props) {
   const { t } = useTranslation()
 
   return (
-    <div className="mb-4">
-      <h6 className="mb-1 text-xs text-subtle">{t(props.heading)}</h6>
-      {Array.isArray(props.value) ? (
-        <ul className="font-semibold">
-          {props.value.map((value) => {
+    <div className='flex flex-col'>
+      <div className=" mt-4 w-full bg-secondary rounded-t-md min-h-[3rem] flex items-center px-2 text-subtle">
+        { Icon ? <Icon size={24}/> : <Tag size={24}/> }
+        <div className='flex flex-col'>
+          <span className='text-xs ml-3'>{t(heading)}</span>
+          {!Array.isArray(value) ? (
+            <p className='ml-3 text-white'>{value}</p>
+          ) : (
+            <></>
+          )}
+        </div>
+      </div>
+          { Array.isArray(value) && <div className='bg-tertiary py-2 rounded-b-md'>
+            {value.map((value) => {
             return (
-              <li className="mb-2" key={value}>
-                • {value}
-              </li>
+              <p key={`property.item.${value}`} className='ml-3 text-white my-1.5 flex items-center'>
+                <CaretRight className='text-subtle mr-1' size={12}/>
+                {value}
+              </p>
             )
           })}
-        </ul>
-      ) : (
-        <h1 className="text font-semibold">{props.value}</h1>
-      )}
+        </div> }
     </div>
   )
 }
@@ -83,7 +97,7 @@ function AnimePage() {
         }
         setAnilistData(anilist)
       } catch (e) {
-        console.error(e)
+        // console.error(e)
       }
     })()
   }, [router])
@@ -111,7 +125,7 @@ function AnimePage() {
         )}
         <div className="absolute top-0 left-0 h-full w-full" style={{background: 'linear-gradient(180deg, #16161688 0%, #161616 90%)'}} />
       </div>
-      <div className="relative -mt-[40vh] z-[2] flex w-full flex-row px-8 bg-primary/70 backdrop-blur-sm">
+      <div className="relative -mt-[40vh] z-[2] flex w-full flex-row px-8 bg-primary/60 backdrop-blur-sm">
         <div className="mr-4 w-1/5 -mt-[20vh]">
           {animeData ? (
             <AnimeCard disabled noHover anime={animeData} />
@@ -132,6 +146,7 @@ function AnimePage() {
               <AnimeProperty
                 heading="anime_heading_status"
                 value={t('anilist_status_' + anilistData.status)}
+                Icon={FilmSlate}
               />
             ) : (
               <AnimePropertySkeleton />
@@ -144,6 +159,7 @@ function AnimePage() {
                   month: anilistData.endDate.month,
                   day: anilistData.endDate.day,
                 })}
+                Icon={Calendar}
               />
             ) : (
               <AnimePropertySkeleton />
@@ -152,14 +168,7 @@ function AnimePage() {
               <AnimeProperty
                 heading="anime_heading_averageScore"
                 value={anilistData.averageScore || '🛠️'}
-              />
-            ) : (
-              <AnimePropertySkeleton />
-            )}
-            {anilistData ? (
-              <AnimeProperty
-                heading="anime_heading_meanScore"
-                value={anilistData.meanScore || '🛠️'}
+                Icon={Graph}
               />
             ) : (
               <AnimePropertySkeleton />
@@ -170,7 +179,7 @@ function AnimePage() {
               <AnimePropertySkeleton />
             )}
             {anilistData?.studios ? (
-              <AnimeProperty heading="anime_heading_studios" value={anilistData.studios.nodes.map(s=>s.name)} />
+              <AnimeProperty heading="anime_heading_studios" value={anilistData.studios.nodes.map(s=>s.name)} Icon={PlayCircle}/>
             ) : (
               <AnimePropertySkeleton />
             )}
