@@ -5,6 +5,7 @@ import { useQuery } from 'react-query'
 
 import clsx from 'clsx'
 import i18next from 'i18next'
+import { useAtom } from 'jotai'
 import { Activity, CaretDown, CaretUp, CircleNotch, PencilLine, Icon } from 'phosphor-react'
 import {
   Shield,
@@ -25,9 +26,12 @@ import IconInput from '@/components/General/Inputs/IconTextInput'
 import GeneralLayout from '@/components/Layout/General'
 import UserCard from '@/components/User/UserCard'
 import { User as AnimaUser } from '@/services/anima/user'
+import { userPreferedAudio, userPreferedSubtitles } from '@/stores/atoms'
 
 const UserEdit = () => {
   const [loading, setLoading] = useState(false)
+  const [userAudio, setUserAudio] = useAtom(userPreferedAudio)
+  const [userSubtitle, setUserSubtitle] = useAtom(userPreferedSubtitles)
   const {
     data: userData,
     isLoading: userIsLoading,
@@ -49,25 +53,6 @@ const UserEdit = () => {
     
     setCurrentUserData(userData)
   }, [userData])
-  const profile = watch()
-
-  // useEffect(()=>{
-  //   const subscription = watch((value, { name, type }) => {
-  //     console.log(value, setCurrentUserData)
-  //     setCurrentUserData({
-  //       ...currentUserData,
-  //       profile: {
-  //         avatar: value.avatar,
-  //         banner: value.banner,
-  //         background: value.background,
-  //         color: value.color,
-  //         ...currentUserData.profile
-  //       }
-  //     })
-  //   })
-  //   return () => subscription.unsubscribe()
-  // },[watch])
-
 
   function isDonator() {
     if (!userData) return false
@@ -88,7 +73,9 @@ const UserEdit = () => {
 
     try {
       await AnimaUser.update(data)
-    } catch {}
+    } catch {
+      setLoading(false)
+    }
     setLoading(false)
   }
 
@@ -166,9 +153,9 @@ const UserEdit = () => {
   ]
 
   const selectors = [
-    { id: 'language', title: t('user_edit_language'), options: i18languages },
-    { id: 'subtitle', title: t('user_edit_subtitle'), options: locales },
-    { id: 'audio', title: t('user_edit_audio'), options: locales },
+    { id: 'language', title: t('user_edit_language'), options: i18languages, default: i18next.language },
+    { id: 'subtitle', title: t('user_edit_subtitle'), options: locales, default: userPreferedSubtitles },
+    { id: 'audio', title: t('user_edit_audio'), options: locales, default: userPreferedAudio },
     {
       id: 'history',
       title: t('user_edit_history'),
@@ -176,6 +163,7 @@ const UserEdit = () => {
         { value: t('user_edit_history_public') },
         { value: t('user_edit_history_private') },
       ],
+      default:t('user_edit_history_public'),
     },
   ] as const
 
@@ -188,9 +176,9 @@ const UserEdit = () => {
   return (
     <GeneralLayout fluid>
       <div className={'cover absolute top-0 left-0 z-[-1] h-full w-full overflow-hidden'}>
-        {profile?.background ? (
-          (profile?.background.endsWith('.mp4') || profile?.background.endsWith('.webm')) && (
-            <video autoPlay loop muted className="h-full w-full object-cover" src={profile?.background} />
+        {watch()?.background ? (
+          (watch()?.background.endsWith('.mp4') || watch()?.background.endsWith('.webm')) && (
+            <video autoPlay loop muted className="h-full w-full object-cover" src={watch()?.background} />
           )
         ) : (
           <video autoPlay loop muted className="h-full w-full object-cover" src="/i/splash.mp4" />
@@ -198,7 +186,7 @@ const UserEdit = () => {
       </div>
       <div className="absolute top-0 left-0 h-full w-full bg-primary/70 bg-gradient-to-t from-primary to-transparent" />
       <div className="z-[1] mx-auto my-24 w-full max-w-2xl">
-        { profile && <UserCard user={{
+        { watch() && <UserCard user={{
           ...currentUserData,
           profile: {
             user_id: currentUserData?.profile?.user_id,
@@ -250,11 +238,25 @@ const UserEdit = () => {
                     <EmojiOptionsInput
                       options={select.options.map((o) => ({ ...o, label: t(o.value) }))}
                       {...field}
-                      onSelect={(value) => {
-                        if (select.id === 'subtitle') {
-                          
+                      defaultValue={select.default as string}
+                      onSelect={async (value) => {
+                        switch (select.id) {
+                          case 'language':
+                              const { setConfigValue } = await import('@/services/tauri/configValue')
+              
+                              setConfigValue('language', value).then(() => {
+                                i18next.changeLanguage(value)
+                              })
+                            break
+                          case 'audio':
+                            setUserAudio(value)
+                            break
+                          case 'subtitle':
+                            setUserSubtitle(value)
+                            break
+                          default:
+                            break
                         }
-                        i18next.changeLanguage(value)
                       }}
                     />
                   )}

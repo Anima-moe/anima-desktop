@@ -6,12 +6,13 @@ import { Listbox, Transition } from '@headlessui/react'
 
 type Props = {
   options: { value: string; label: string; emoji?: string }[]
+  defaultValue?: string
   onSelect?: (value: string) => void
 }
 
 const EmojiOptionsInput = forwardRef<SelectHTMLAttributes<HTMLSelectElement>, Props>(
-  ({ onSelect, options, ...props }, ref) => {
-    const [activeItem, setActiveItem] = useState<(typeof options)[0]>(options[0])
+  ({ onSelect, options, defaultValue, ...props }, ref) => {
+    const [activeItem, setActiveItem] = useState<(typeof options)[0]>(options?.filter(v => v.value === defaultValue )?.[0] || options[0])
 
     return (
       <>
@@ -36,7 +37,7 @@ const EmojiOptionsInput = forwardRef<SelectHTMLAttributes<HTMLSelectElement>, Pr
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Listbox.Options className="absolute z-10 mt-52 max-h-60 w-full overflow-auto rounded-md bg-tertiary py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+              <Listbox.Options className="absolute z-10 translate-y-1/2 mt-14 max-h-60 w-full overflow-auto rounded-md bg-tertiary py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                 {options.map((option, optionIdx) => (
                   <Listbox.Option
                     key={optionIdx}

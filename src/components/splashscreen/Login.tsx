@@ -112,6 +112,7 @@ function Login() {
             <EmojiOptionsInput
               options={[
                 { value: 'pt-BR', label: 'Português', emoji: '🇧🇷' },
+                { value: 'pt-PT', label: 'Português', emoji: '🇵🇹' },
                 { value: 'en-US', label: 'English', emoji: '🇺🇸' },
                 { value: 'es-419', label: 'Español', emoji: '🇪🇸' },
               ]}
