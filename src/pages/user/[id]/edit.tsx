@@ -2,6 +2,7 @@ import { forwardRef, PropsWithChildren, useEffect, useRef, useState } from 'reac
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
+import { toast } from 'react-toastify'
 
 import clsx from 'clsx'
 import i18next from 'i18next'
@@ -70,12 +71,26 @@ const UserEdit = () => {
 
   const onSubmit: SubmitHandler<FormInputs> = async (data: FormInputs) => {
     setLoading(true)
+ 
+    toast.promise(
+      AnimaUser.update(data),
+      {
+        pending: t('user_edit_save_pending'),
+        success: t('user_edit_save_success'),
+        error: t('user_edit_save_error'),
+      },
+      {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: 'dark',
+      }
+    )
 
-    try {
-      await AnimaUser.update(data)
-    } catch {
-      setLoading(false)
-    }
     setLoading(false)
   }
 
