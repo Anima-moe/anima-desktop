@@ -46,12 +46,14 @@ const UserEdit = () => {
     control,
     handleSubmit,
     formState: { errors },
-    watch
+    watch,
   } = useForm<FormInputs>()
-  
-  useEffect(()=>{
-    if (!userData) { return }
-    
+
+  useEffect(() => {
+    if (!userData) {
+      return
+    }
+
     setCurrentUserData(userData)
   }, [userData])
 
@@ -60,7 +62,6 @@ const UserEdit = () => {
 
     return userData?.staff || userData?.premium > 0
   }
-
 
   if (userIsLoading)
     return (
@@ -71,7 +72,7 @@ const UserEdit = () => {
 
   const onSubmit: SubmitHandler<FormInputs> = async (data: FormInputs) => {
     setLoading(true)
- 
+
     toast.promise(
       AnimaUser.update(data),
       {
@@ -93,7 +94,6 @@ const UserEdit = () => {
 
     setLoading(false)
   }
-
 
   type FormInputs = {
     [Key in (typeof inputs)[number]['id'] | (typeof selectors)[number]['id']]: string
@@ -164,12 +164,22 @@ const UserEdit = () => {
     { value: 'pt-BR', emoji: '🇧🇷' },
     { value: 'en-US', emoji: '🇺🇸' },
     { value: 'es-419', emoji: '🇪🇸' },
-    { value: 'ja-JP', emoji: '🇯🇵'}
+    { value: 'ja-JP', emoji: '🇯🇵' },
   ]
 
   const selectors = [
-    { id: 'language', title: t('user_edit_language'), options: i18languages, default: i18next.language },
-    { id: 'subtitle', title: t('user_edit_subtitle'), options: locales, default: userPreferedSubtitles },
+    {
+      id: 'language',
+      title: t('user_edit_language'),
+      options: i18languages,
+      default: i18next.language,
+    },
+    {
+      id: 'subtitle',
+      title: t('user_edit_subtitle'),
+      options: locales,
+      default: userPreferedSubtitles,
+    },
     { id: 'audio', title: t('user_edit_audio'), options: locales, default: userPreferedAudio },
     {
       id: 'history',
@@ -178,7 +188,7 @@ const UserEdit = () => {
         { value: t('user_edit_history_public') },
         { value: t('user_edit_history_private') },
       ],
-      default:t('user_edit_history_public'),
+      default: t('user_edit_history_public'),
     },
   ] as const
 
@@ -193,7 +203,13 @@ const UserEdit = () => {
       <div className={'cover absolute top-0 left-0 z-[-1] h-full w-full overflow-hidden'}>
         {watch()?.background ? (
           (watch()?.background.endsWith('.mp4') || watch()?.background.endsWith('.webm')) && (
-            <video autoPlay loop muted className="h-full w-full object-cover" src={watch()?.background} />
+            <video
+              autoPlay
+              loop
+              muted
+              className="h-full w-full object-cover"
+              src={watch()?.background}
+            />
           )
         ) : (
           <video autoPlay loop muted className="h-full w-full object-cover" src="/i/splash.mp4" />
@@ -201,15 +217,19 @@ const UserEdit = () => {
       </div>
       <div className="absolute top-0 left-0 h-full w-full bg-primary/70 bg-gradient-to-t from-primary to-transparent" />
       <div className="z-[1] mx-auto my-24 w-full max-w-2xl">
-        { watch() && <UserCard user={{
-          ...currentUserData,
-          profile: {
-            user_id: currentUserData?.profile?.user_id,
-            id: currentUserData?.profile.id,
-            ...currentUserData?.profile,
-            ...watch()
-          }
-        }} /> }
+        {watch() && (
+          <UserCard
+            user={{
+              ...currentUserData,
+              profile: {
+                user_id: currentUserData?.profile?.user_id,
+                id: currentUserData?.profile.id,
+                ...currentUserData?.profile,
+                ...watch(),
+              },
+            }}
+          />
+        )}
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex w-full flex-col space-y-2 rounded-md bg-secondary p-5">
             {inputs.map((input, i) => (
@@ -257,11 +277,11 @@ const UserEdit = () => {
                       onSelect={async (value) => {
                         switch (select.id) {
                           case 'language':
-                              const { setConfigValue } = await import('@/services/tauri/configValue')
-              
-                              setConfigValue('language', value).then(() => {
-                                i18next.changeLanguage(value)
-                              })
+                            const { setConfigValue } = await import('@/services/tauri/configValue')
+
+                            setConfigValue('language', value).then(() => {
+                              i18next.changeLanguage(value)
+                            })
                             break
                           case 'audio':
                             setUserAudio(value)
@@ -298,12 +318,12 @@ type TitleInputProps = {
 }
 
 const TitleInput = ({ id, title, footer, children }: PropsWithChildren<TitleInputProps>) => (
-  <div className='flex flex-col -mt-4'>
-    <label htmlFor={id} className="text-lg text-white/50 -mb-0.5 mt-3">
+  <div className="-mt-4 flex flex-col">
+    <label htmlFor={id} className="-mb-0.5 mt-3 text-lg text-white/50">
       {title}
     </label>
     {children}
-    {footer && <span className="text-xs text-subtle flex -mt-1">{footer}</span>}
+    {footer && <span className="-mt-1 flex text-xs text-subtle">{footer}</span>}
   </div>
 )
 
