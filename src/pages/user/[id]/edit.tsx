@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
 
 import clsx from 'clsx'
+import i18next from 'i18next'
 import { Activity, CaretDown, CaretUp, CircleNotch, PencilLine, Icon } from 'phosphor-react'
 import {
   Shield,
@@ -151,6 +152,12 @@ const UserEdit = () => {
     },
   ] as const
 
+  const i18languages = [
+    { value: 'pt-BR', emoji: '🇧🇷' },
+    { value: 'en-US', emoji: '🇺🇸' },
+    { value: 'es-419', emoji: '🇪🇸' },
+    { value: 'pt-PT', emoji: '🇵🇹' },
+  ]
   const locales = [
     { value: 'pt-BR', emoji: '🇧🇷' },
     { value: 'en-US', emoji: '🇺🇸' },
@@ -159,6 +166,7 @@ const UserEdit = () => {
   ]
 
   const selectors = [
+    { id: 'language', title: t('user_edit_language'), options: i18languages },
     { id: 'subtitle', title: t('user_edit_subtitle'), options: locales },
     { id: 'audio', title: t('user_edit_audio'), options: locales },
     {
@@ -242,6 +250,12 @@ const UserEdit = () => {
                     <EmojiOptionsInput
                       options={select.options.map((o) => ({ ...o, label: t(o.value) }))}
                       {...field}
+                      onSelect={(value) => {
+                        if (select.id === 'subtitle') {
+                          
+                        }
+                        i18next.changeLanguage(value)
+                      }}
                     />
                   )}
                 />

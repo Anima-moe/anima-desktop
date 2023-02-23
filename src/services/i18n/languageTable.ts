@@ -90,6 +90,7 @@ const languageTable = {
       user_edit_donator: 'Donator',
       user_edit_save: 'Save',
       user_edit_color_footer: 'Set color of your name and profile highlights.',
+      user_edit_language: 'Language',
 
       api_fetchError: 'Oops... Something went wrong while trying to get data from our servers. Please try again later.',
       api_streamError_instructions: 'You can help us solve this problem by reporting the error on our discord server, copy the information below and send it on the support channel on discord',
@@ -209,6 +210,7 @@ const languageTable = {
       user_edit_donator: 'Doador',
       user_edit_save: 'Salvar',
       user_edit_color_footer: 'Define cor do seu nome e destaques do perfil.',
+      user_edit_language: 'Idioma',
 
       api_fetchError: 'Oops! Algo deu errado ao obter os dados do servidor. Tente novamente mais tarde.',
       api_streamError: 'Eita... Algo deu errado ao tentar obter uma stream para este anime. Tente novamente mais tarde.',
@@ -329,6 +331,7 @@ const languageTable = {
     user_edit_donator: 'Doador',
     user_edit_save: 'Salvar',
     user_edit_color_footer: 'Define a cor do teu nome e destaques do perfil.',
+    user_edit_langauge: 'Idioma',
 
     api_fetchError: 'Oops! Algo deu errado ao obter os dados do servidor. Tenta novamente mais tarde.',
     api_streamError: 'Eita... Algo deu errado ao tentar obter uma stream para este anime. Tenta novamente mais tarde.',
