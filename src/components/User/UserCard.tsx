@@ -46,9 +46,8 @@ const UserCard = ({ showStatics, user, showEditButton }: Props) => {
           {showEditButton && <Link href='/user/me/edit'>
             <Button
               secondary
-              Icon={<NotePencil className="mr-3" />}
+              Icon={<NotePencil className="ml-3" />}
               text={t('user_menu_settings')}
-              iconLeft
               xs
             />  
         </Link>}
