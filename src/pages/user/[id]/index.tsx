@@ -2,6 +2,7 @@ import { useQuery } from 'react-query'
 
 import { useRouter } from 'next/router'
 
+import Loading from '@/components/General/Loading'
 import GeneralLayout from '@/components/Layout/General'
 import UserCard from '@/components/User/UserCard'
 import {User as UserService} from '@/services/anima/user'
@@ -23,12 +24,17 @@ const User = () => {
     refetchOnWindowFocus: false
   })
 
-  if (userIsLoading || !router.isReady) return <div>Loading...</div>
+  if (userIsLoading || !router.isReady) return (
+    <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 items-center justify-center">
+      <Loading sm />
+    </div>
+  )
+  
   if (userError) return <div>Error</div>
 
   return (
     <GeneralLayout fluid>
-      <div className={'cover absolute top-0 left-0 z-[-1] h-full w-full overflow-hidden'} style={{backgroundImage: `url('${userData?.profile?.background}')`}}>
+      <div className={'cover absolute top-0 left-0 h-full w-full overflow-hidden'} style={{backgroundImage: `url('${userData?.profile?.background}')`}}>
         {userData?.profile?.background ? (
           (userData?.profile?.background && userData?.profile?.background.endsWith('.mp4') || userData?.profile?.background.endsWith('.webm')) && (
             <video autoPlay loop muted className='h-full w-full object-cover' src={userData?.profile?.background || '/i/splash/mp4'} />
