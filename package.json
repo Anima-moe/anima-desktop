@@ -49,6 +49,7 @@
     "react-portal": "^4.2.2",
     "react-query": "^3.39.3",
     "react-shaka-plyr": "^1.1.0",
+    "react-toastify": "^9.1.1",
     "sass": "^1.58.0",
     "skeleton-elements": "^4.0.1",
     "subtitle": "^4.2.1",
