@@ -72,7 +72,7 @@ function SearchPortal({ query = '' }: Props) {
   }
 
   return (
-    <div className="fixed left-0 top-0 z-[2] flex h-full w-full flex-col bg-primary bg-opacity-95 px-4 pt-[11rem] backdrop-blur-md">
+    <div className="fixed left-0 top-0 z-[10] flex h-full w-full flex-col bg-primary bg-opacity-95 px-4 pt-[11rem] backdrop-blur-md">
       <div className="relative flex h-full w-full max-w-[85rem] mx-auto flex-col">
         {/* DISPLAY AVAILABLE CATEGORIES FOR THIS LOCALE */}
         {categories?.data.length > 0 && (
