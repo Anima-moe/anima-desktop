@@ -129,6 +129,7 @@ function Login() {
                 key={input.id}
                 name={input.id}
                 control={control}
+                defaultValue=""
                 rules={{
                   minLength: {
                     value: 3,
