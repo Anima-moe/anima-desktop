@@ -74,7 +74,7 @@ const Player = forwardRef<MediaPlayerElement, Props>((props, ref) => {
                 ?.title
             }
           />
-          <Endtime />
+          <Endtime episodeId={props.episodeData.id} />
           <SeasonBrowser episode={props.episodeData} season={props.seasonData} />
           <Settings audios={props?.streamData?.audios} subtitles={props?.streamData?.subtitles} />
         </ControlsContainer>

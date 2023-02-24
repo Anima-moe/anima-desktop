@@ -69,7 +69,7 @@ export function SkipChapter({ animeID, episodeNumber }: ISkipOpeningProps) {
     })()
   }, [animeID, episodeNumber, duration])
 
-  if (forceHide) {
+  if (forceHide || !duration || duration === 0) {
     return <> </>
   }
 
