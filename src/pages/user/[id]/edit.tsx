@@ -4,8 +4,10 @@ import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
 import { toast } from 'react-toastify'
 
+import axios from 'axios'
 import clsx from 'clsx'
 import i18next from 'i18next'
+import isAnimated from 'is-animated'
 import { useAtom } from 'jotai'
 import { Activity, CaretDown, CaretUp, CircleNotch, PencilLine, Icon } from 'phosphor-react'
 import {
@@ -47,6 +49,7 @@ const UserEdit = () => {
     handleSubmit,
     formState: { errors },
     watch,
+    setError,
   } = useForm<FormInputs>()
 
   useEffect(() => {
@@ -72,6 +75,30 @@ const UserEdit = () => {
 
   const onSubmit: SubmitHandler<FormInputs> = async (data: FormInputs) => {
     setLoading(true)
+
+    if (!isDonator()) {
+      const imageInputs: (keyof FormInputs)[] = ['avatar', 'banner', 'background']
+
+      const imageBuffer = (img: string) =>
+        axios
+          .get(img, { responseType: 'arraybuffer' })
+          .then((res) => Buffer.from(res.data))
+          .catch(() => Buffer.from(''))
+
+      const validation = await Promise.all(
+        imageInputs.map(async (input) => {
+          if (isAnimated(await imageBuffer(data[input]))) {
+            setError(input, { type: 'manual', message: t('user_edit_save_animated') })
+            return true
+          }
+          return false
+        })
+      )
+      if (validation.some((v) => v)) {
+        setLoading(false)
+        return
+      }
+    }
 
     toast.promise(
       AnimaUser.update(data),
