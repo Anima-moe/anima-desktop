@@ -6,11 +6,6 @@ type Props = {
   playerHead: Anima.RAW.UserPlayerHead
 }
 
-const beautyNumber = (number: number) => {
-  if (number < 10) return `0${number}`
-  return number
-}
-
 
 const cardVariants = {
   initial: {
@@ -68,12 +63,11 @@ function EpisodePlayerHead({ playerHead }: Props) {
   return (
       <motion.div 
         className="flex flex-col cursor-pointer"  
-        onClick={()=>{
-          window.location.href = `/episode/${playerHead?.AnimeEpisode?.id}?seasonid=${playerHead?.AnimeEpisode?.season_id}`
-        }}
         whileHover={'hover'}
         animate="initial"
         variants={cardVariants}>
+        <Link href={`/episode/${playerHead?.AnimeEpisode?.id}?seasonid=${playerHead?.AnimeEpisode?.season_id}`}>
+          
         <motion.div
           className="episde-card aspect-video relative w-full rounded-md bg-tertiary bg-cover bg-center overflow-hidden"
           style={{ backgroundImage: `url('${playerHead?.AnimeEpisode?.thumbnail}')` }}
@@ -99,6 +93,7 @@ function EpisodePlayerHead({ playerHead }: Props) {
             </motion.div>
           </motion.div>
         </motion.div>
+        </Link>
       </motion.div>
   )
 }
