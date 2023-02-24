@@ -102,6 +102,7 @@ export const User = {
 
   getMyEpisodePlayerHead: async function (episodeId: number) {
     const userData = await User.getUserData()
+    if (!userData || !userData.id) return
     const { data } = await client.get(`/user/${userData.id}/playerhead/${episodeId}`, {})
 
     return data as Anima.API.GetEpisodePlayerHead
@@ -115,6 +116,8 @@ export const User = {
 
   postEpisodePlayerHead: async function (episodeId: number, duration: number, head: number) {
     const userData = await User.getUserData()
+    if (!userData || !userData.id) return
+
     const { data } = await client.post(
       `/user/${userData.id}/playerhead`,
       {
