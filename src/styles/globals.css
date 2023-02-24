@@ -239,3 +239,8 @@ input[type="color"]::-webkit-color-swatch {
 	border: solid 1px #000; /*change color of the swatch border here*/
 	border-radius: .25rem;
 }
+
+.swiper {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
