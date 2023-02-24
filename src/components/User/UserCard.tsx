@@ -1,5 +1,7 @@
 import { useTranslation } from 'react-i18next'
 
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
 import Link from 'next/link'
 import { NotePencil } from 'phosphor-react'
 
@@ -12,6 +14,8 @@ type Props = {
   user: Anima.RAW.User
   showEditButton?: boolean
 }
+
+dayjs.extend(duration)
 
 const properCase = (str: string) => {
   return str
@@ -27,11 +31,10 @@ const beautyNumber = (number: number) => {
 
 const UserCard = ({ showStatics, user, showEditButton }: Props) => {
   const { t } = useTranslation()
-
   return (
-    <div className='relative'>
+    <div className="relative">
       <div
-        className="relative h-72 rounded-md bg-tertiary bg-cover bg-center bg-no-repeat select-none mb-8"
+        className="relative mb-8 h-72 select-none rounded-md bg-tertiary bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage: `url(${user?.profile?.banner})`,
         }}
@@ -43,18 +46,19 @@ const UserCard = ({ showStatics, user, showEditButton }: Props) => {
           #{beautyNumber(user?.id)}
         </span>
         <div className="absolute right-4 top-4">
-          {showEditButton && <Link href='/user/me/edit'>
-            <Button
-              secondary
-              Icon={<NotePencil className="ml-3" />}
-              text={t('user_menu_settings')}
-              xs
-            />  
-        </Link>}
-        
+          {showEditButton && (
+            <Link href="/user/me/edit">
+              <Button
+                secondary
+                Icon={<NotePencil className="ml-3" />}
+                text={t('user_menu_settings')}
+                xs
+              />
+            </Link>
+          )}
         </div>
       </div>
-      <div className="absolute w-full bottom-0 left-0 flex h-24 justify-between overflow-hidden rounded-b-md bg-secondary bg-opacity-80 backdrop-blur-xl px-4">
+      <div className="absolute bottom-0 left-0 flex h-24 w-full justify-between overflow-hidden rounded-b-md bg-secondary bg-opacity-80 px-4 backdrop-blur-xl">
         <div
           className="pointer-events-none absolute top-0 left-0 z-[0] h-full w-full opacity-10"
           style={{ backgroundColor: `${user?.profile?.color || '#161616'}` }}
@@ -62,7 +66,11 @@ const UserCard = ({ showStatics, user, showEditButton }: Props) => {
         <div className="z-[1] flex items-center">
           <span
             className="mr-4 h-20 w-20 rounded-full bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url('${user?.profile?.avatar ?? 'https://i.imgur.com/CBdQGA3.png'}')`  }}
+            style={{
+              backgroundImage: `url('${
+                user?.profile?.avatar ?? 'https://i.imgur.com/CBdQGA3.png'
+              }')`,
+            }}
           />
           <div className="flex flex-col">
             <div className="flex items-center gap-x-3">
@@ -87,17 +95,33 @@ const UserCard = ({ showStatics, user, showEditButton }: Props) => {
         </div>
         {showStatics && (
           <div className="flex items-center gap-x-8">
-            {Array.from({ length: 3 }).map((item, i) => (
-              <div key={i} className="flex flex-col items-center ">
-                <span
-                  className="text-2xl font-semibold"
-                  style={{ color: `${user?.profile?.color || '#161616'}` }}
-                >
-                  0
-                </span>
-                <span className="">Coment</span>
-              </div>
-            ))}
+            <div className="flex flex-col items-center ">
+              <span
+                className="text-2xl font-semibold"
+                style={{ color: `${user?.profile?.color || '#161616'}` }}
+              >
+                {user?._count?.Comment}
+              </span>
+              <span className="">Coments</span>
+            </div>
+            <div className="flex flex-col items-center ">
+              <span
+                className="text-2xl font-semibold"
+                style={{ color: `${user?.profile?.color || '#161616'}` }}
+              >
+                {user?._count?.UserPlayerHead || 0}
+              </span>
+              <span className="">Episodes</span>
+            </div>
+            <div className="flex flex-col items-center ">
+              <span
+                className="text-2xl font-semibold"
+                style={{ color: `${user?.profile?.color || '#161616'}` }}
+              >
+                {parseFloat(dayjs.duration({ seconds: user?.UserPlayerHead?.reduce((acc, curr) => { return acc + curr.duration }, 0) }).asHours().toString()).toFixed(1)}
+              </span>
+              <span className="">Hours</span>
+            </div>
           </div>
         )}
       </div>
