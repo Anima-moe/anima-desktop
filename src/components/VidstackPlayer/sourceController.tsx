@@ -3,6 +3,7 @@ import { createStore } from 'jotai/vanilla'
 import type { MediaCanLoadEvent, MediaPlayerElement } from 'vidstack'
 
 import { Stream } from '@/services/anima/stream'
+import { User } from '@/services/anima/user'
 import {
   userPreferedAudio,
   userPreferedPlaybackQuality,
@@ -180,7 +181,21 @@ export default class SourceController {
     this._mediaPlayer.addEventListener(
       'can-play',
       () => {
-        this._mediaPlayer.currentTime = currentTime || 0
+        if (currentTime && currentTime !== 0) {
+          this._mediaPlayer.currentTime = currentTime || 0
+          return
+        }
+
+        User.getMyEpisodePlayerHead(this._episodeID)
+        .then((ph) => {
+          if (ph?.data) {
+            this._mediaPlayer.currentTime = ph.data.head
+            this._mediaPlayer.addEventListener('seeked', () => {
+              this._mediaPlayer.play()
+            }, { once: true })
+          }
+        })
+
       },
       { once: true }
     )
