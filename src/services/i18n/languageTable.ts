@@ -6,6 +6,11 @@
 const languageTable = {
   'en-US': {
     translation: {
+      activity_details_watching: 'EP{{spisode_number}}・{{episode}}',
+      activity_details_browsing: '{{path}}',
+      activity_browsing: 'Browsing',
+      activity_watching: 'Watching',
+
       anima_alpha_reminder: ' Hey! Anima is in alpha and we are still working on it.<br /> If you find animes missing metadata or episodes, please press the report button and paste the resulting code into our discord.',
       anima_report_metadata: 'Missing metadata',
       anima_report_episodes: 'Missing episodes',
@@ -75,6 +80,7 @@ const languageTable = {
       user_menu_profile: 'My profile',
       user_menu_settings: 'Edit profile',
       user_menu_signout: 'Sign out',
+      user_menu_login: 'Sign in',
 
       user_edit_email: 'Email',
       user_edit_password: 'Password',
@@ -125,6 +131,11 @@ const languageTable = {
   },
   'pt-BR': {
     translation: {
+      activity_details_watching: 'EP{{episode_number}}・{{episode}}',
+      activity_details_browsing: '{{path}}',
+      activity_browsing: 'Navegando',
+      activity_watching: 'Assistindo',
+
       anima_alpha_reminder: 'Olá! Anima está em alpha e ainda estamos trabalhando nele.<br /> Se você encontrar animes com metadados ou episódios faltando, por favor, pressione o botão de reportar e cole o código resultante em nosso discord.',
       anima_report_metadata: 'Faltando metadados',
       anima_report_episodes: 'Faltando temporadas/episódios',
@@ -198,6 +209,7 @@ const languageTable = {
       user_menu_profile: 'Perfil',
       user_menu_settings: 'Edit profile',
       user_menu_signout: 'Sair',
+      user_menu_login: 'Entrar',
 
       user_edit_email: 'E-mail',
       user_edit_password: 'Senha',
@@ -249,6 +261,11 @@ const languageTable = {
   'es-419': {
   },
   'pt-PT': {
+    activity_details_watching: 'EP{{episode_number}}・{{episode}}',
+    activity_details_browsing: '{{path}}',
+    activity_browsing: 'Navegando',
+    activity_watching: 'Assistindo',
+
     anima_alpha_reminder: 'Olá! O Anima está em alpha e ainda estamos a trabalhar nele.<br /> Se encontrares animes com metadados ou episódios em falta, por favor, pressiona o botão de reportar e cola o código resultante no nosso discord.',
     anima_report_metadata: 'Metadados em falta',
     anima_report_episodes: 'Temporadas/episódios em falta',
@@ -322,6 +339,7 @@ const languageTable = {
     user_menu_profile: 'Perfil',
     user_menu_settings: 'Edit profile',
     user_menu_signout: 'Sair',
+    user_menu_login: 'Login',
 
     user_edit_email: 'E-mail',
     user_edit_password: 'Senha',

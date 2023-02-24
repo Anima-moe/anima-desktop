@@ -4,12 +4,13 @@ import { useQuery } from 'react-query'
 
 import { useRouter } from 'next/router'
 
-import EpisodePlayerHead from '@/components/Episode/EpisodePlayerHead'
 import SwiperPlayerHead from '@/components/Episode/PlayerHeadSwiper'
 import Loading from '@/components/General/Loading'
+import ContentContainer from '@/components/Layout/ContentContainer'
 import GeneralLayout from '@/components/Layout/General'
 import UserCard from '@/components/User/UserCard'
-import {User as UserService} from '@/services/anima/user'
+import usePresence from '@/hooks/usePresence'
+import { User as UserService } from '@/services/anima/user'
 
 async function fetchUser(id: string | number) {
   if (!id) { return }
@@ -32,7 +33,8 @@ async function fetchPlayerHead(id: string | number) {
 const User = () => {
   const router = useRouter()
   const { t } = useTranslation()
-
+  const {clearPresence} = usePresence()
+  
   const { data: userData, isLoading: userIsLoading, error: userError} = useQuery(`/api/user/${router.query.id}`, () => { return fetchUser(router.query.id as string) }, {
     refetchOnWindowFocus: false
   })
@@ -40,13 +42,26 @@ const User = () => {
     refetchOnWindowFocus: false
   })
 
+  useEffect(()=>{
+    if (!userData) { return }
+    clearPresence('@' + userData.username)
+  }, [userData])
+
   if (userIsLoading || !router.isReady) return (
-    <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 items-center justify-center">
-      <Loading sm />
-    </div>
+    <GeneralLayout>
+      <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 items-center justify-center">
+        <Loading sm />
+      </div>
+    </GeneralLayout>
   )
   
-  if (userError) return <div>Error</div>
+  if (userError) return <GeneralLayout>
+    <ContentContainer>
+      <span className='text-xs text-sublte absolute top-1/2 -translate-y-1/2 -translate-x-1/2 left-1/2'>
+        ERR: No profile or invalid profile
+      </span>
+    </ContentContainer>
+  </GeneralLayout>
 
   return (
     <GeneralLayout fluid>
@@ -56,7 +71,7 @@ const User = () => {
             <video autoPlay loop muted className='h-full w-full object-cover' src={userData?.profile?.background || '/i/splash/mp4'} />
           )
         ) : (
-          <video autoPlay loop muted className='h-full w-full object-cover' src={userData?.profile?.background} />
+          <video autoPlay loop muted className='h-full w-full object-cover' src='/i/splash.mp4' />
         )}
       </div>
       <div className='fixed top-0 left-0 h-screen w-screen bg-primary/70 bg-gradient-to-t from-primary to-transparent' />

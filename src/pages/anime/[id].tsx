@@ -12,6 +12,7 @@ import SeasonDisplay from '@/components/Anime/Season'
 import { ReportError } from '@/components/Error/ReportError'
 import AlphaRemminder from '@/components/General/AlphaReminder'
 import GeneralLayout from '@/components/Layout/General'
+import usePresence from '@/hooks/usePresence'
 import { AnilistMedia, anilistService } from '@/services/anilist/anilistService'
 import { Anime } from '@/services/anima/anime'
 import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
@@ -103,6 +104,10 @@ function AnimePage() {
   }, [router])
 
   useEffect(fetchAnimaInfo, [fetchAnimaInfo])
+
+  const {clearPresence} = usePresence()
+ 
+  useEffect(()=> {  clearPresence(getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(animeData).title) }, [animeData])
 
   return (
     <GeneralLayout fluid>

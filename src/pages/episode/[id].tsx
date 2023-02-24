@@ -12,6 +12,7 @@ import Player from '@/components/VidstackPlayer'
 import StreamLoading from '@/components/VidstackPlayer/Displays/StreamLoading'
 import SourceController from '@/components/VidstackPlayer/sourceController'
 import SutbtitleController from '@/components/VidstackPlayer/subtitleController'
+import usePresence from '@/hooks/usePresence'
 import { Episode } from '@/services/anima/episode'
 import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
 import { Season } from '@/services/anima/season'
@@ -40,7 +41,6 @@ function Index() {
   const [streamConfig] = useAtom(playerStreamConfig)
   const [sourceController, defineSourceController] = useState<SourceController>()
   const [subtitleController, defineSubtitleController] = useState<SutbtitleController>()
-  const [switchingStream, setSwitchingStream] = useAtom(playerSwitchingStream)
   const {
     data: episodeData,
     isLoading: episodeLoading,
@@ -62,37 +62,42 @@ function Index() {
       retry: 3,
       refetchOnWindowFocus: false,
     }
-  )
-  const {
-    data: streamData,
-    isLoading: streamLoading,
-    error: streamError,
-  } = useQuery(
-    `/api/episode/${router.query.id}/streams`,
-    () => fetchStreams(router.query.id as string),
-    {
-      cacheTime: 0,
-      retry: 3,
-      refetchOnWindowFocus: false,
-    }
-  )
-
-  useEffect(() => {
-    if (!router.isReady) {
-      return
-    }
-    if (!streamData || !seasonData || !episodeData) {
-      return
-    }
-    if (!mediaPlayer.current) {
-      return
-    }
-
-    defineSourceController(
-      new SourceController(mediaPlayer.current, streamData.data, episodeData.data)
     )
-    defineSubtitleController(new SutbtitleController(mediaPlayer.current, streamData.data))
-  }, [router, episodeLoading, seasonLoading, streamLoading, mediaPlayer.current])
+    const {
+      data: streamData,
+      isLoading: streamLoading,
+      error: streamError,
+    } = useQuery(
+      `/api/episode/${router.query.id}/streams`,
+      () => fetchStreams(router.query.id as string),
+      {
+        cacheTime: 0,
+        retry: 3,
+        refetchOnWindowFocus: false,
+      }
+      )
+    const {setPresence} = usePresence()
+    
+    useEffect(() => {
+      
+      if (!router.isReady) {
+        return
+      }
+      if (!streamData || !seasonData || !episodeData) {
+        return
+      }
+      
+      setPresence(episodeData.data, true)
+
+      if (!mediaPlayer.current) {
+        return
+      }
+
+      defineSourceController(
+        new SourceController(mediaPlayer.current, streamData.data, episodeData.data)
+      )
+      defineSubtitleController(new SutbtitleController(mediaPlayer.current, streamData.data))
+    }, [router, episodeLoading, seasonLoading, streamLoading, mediaPlayer.current])
 
   // Listen for stream changes
   useEffect(() => {

@@ -9,6 +9,7 @@ import SwiperPlayerHead from '@/components/Episode/PlayerHeadSwiper'
 import DonationReminder from '@/components/General/DonationReminder'
 import ContentContainer from '@/components/Layout/ContentContainer'
 import GeneralLayout from '@/components/Layout/General'
+import usePresence from '@/hooks/usePresence'
 import { Anime } from '@/services/anima/anime'
 import { User as UserService } from '@/services/anima/user'
 
@@ -68,8 +69,10 @@ function App() {
   })
   const [heroAnime, setHeroAnime] = useState<Anima.RAW.Anime>({} as Anima.RAW.Anime)
   const { t } = useTranslation()
+  const { clearPresence } = usePresence()
 
   const decideHeroAnime = useCallback(() => {
+    clearPresence('Home')
     if (simulcastAnimes)
       setHeroAnime(simulcastAnimes.data[Math.floor(Math.random() * simulcastAnimes.data.length)])
     else if (popularAnimes)
