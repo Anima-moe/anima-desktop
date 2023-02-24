@@ -113,6 +113,7 @@ function Index() {
     if (!router.isReady) {
       return
     }
+    
     if (!subtitleController) {
       return
     }
@@ -159,7 +160,9 @@ function Index() {
           ref={mediaPlayer}
           streamData={streamData.data}
           onCanLoad={() => {}}
-          onSourceChange={(source) => {}}
+          onSourceChange={(source) => {
+            subtitleController.requestSubtitleChange(streamConfig.subtitleLocale)
+          }}
         />
       )}
     </MediaLayout>
