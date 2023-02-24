@@ -124,6 +124,21 @@ namespace Anima {
       Badge?: Anima.RAW.Badge[]
     }
 
+    type UserPlayerHead = {
+      id: number
+      head: number
+      episode_id: number
+      user_id: number
+      AnimeEpisode: Anima.RAW.Episode & {
+        AnimeSeason: Anima.RAW.Season & {
+          Anime: Anima.RAW.Anime & {
+            AnimeMetadata: Anima.RAW.AnimeMetadata[]
+          }
+        }
+      }
+      duration: number
+    }
+
     type User = {
       id: number
       username: string
@@ -133,6 +148,11 @@ namespace Anima {
       exp?: number
       premium: ENUM.Premium
       profile: Anima.RAW.UserProfile
+      UserPlayerHead: Anima.RAW.UserPlayerHead[]
+      _count: {
+        Comment?: number
+        UserPlayerHead?: number
+      }
     }
   }
 
@@ -187,11 +207,14 @@ namespace Anima {
       data: [Anima.RAW.User]
     } // Returns Error if user not found
 
+    type GetEpisodePlayerHead = {
+      count: number
+      data: Anima.RAW.UserPlayerHead
+    }
+
     type GetUserPlayerHead = {
-      head?: number
-      episode_id: number
-      user_id: number
-      AnimeEpisode: Anima.RAW.Episode
+      count: number
+      data: Anima.RAW.UserPlayerHead[]
     } // Returns Error if user not found or episode not found
 
     type GetEpisodeMedia = {

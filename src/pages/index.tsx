@@ -4,10 +4,13 @@ import { useQuery } from 'react-query'
 
 import AnimeHero from '@/components/Anime/AnimeHero'
 import AnimeSwiper from '@/components/Anime/AnimeSwiper'
+import EpisodePlayerHead from '@/components/Episode/EpisodePlayerHead'
+import SwiperPlayerHead from '@/components/Episode/PlayerHeadSwiper'
 import DonationReminder from '@/components/General/DonationReminder'
 import ContentContainer from '@/components/Layout/ContentContainer'
 import GeneralLayout from '@/components/Layout/General'
 import { Anime } from '@/services/anima/anime'
+import { User as UserService } from '@/services/anima/user'
 
 const fetchPopularAnimes = () => {
   return Anime.getByCategory(30)
@@ -40,6 +43,19 @@ function App() {
     cacheTime: 30 * 60 * 1000,
     refetchOnWindowFocus: false,
   })
+  const {
+    data: userPlayerHead,
+    isLoading: userPlayerHeadIsLoading,
+    error: userPlayerHeadError,
+  } = useQuery(
+    '/api/user/me/player-head',
+    () => {
+      return UserService.getMyPlayerHeads()
+    },
+    {
+      refetchOnWindowFocus: false,
+    }
+  )
   const {
     data: staffAnimes,
     error: staffError,
@@ -75,15 +91,15 @@ function App() {
   return (
     <GeneralLayout fluid>
       <AnimeHero anime={heroAnime} />
-
-      {/* <ContentContainer>
-     <DonationReminder />
-    </ContentContainer> */}
-
-      {/* <ContentContainer> */}
-      {/* <h3>Continue watching</h3> */}
-      {/* TODO: LOAD RECENTLY WATCHED EPISODES/ANIMES */}
-      {/* </ContentContainer> */}
+      {userPlayerHead && userPlayerHead.data.length > 0 && (
+        <ContentContainer>
+          <h3>{t('section_continueWatching')}</h3>
+          <SwiperPlayerHead playerHeads={userPlayerHead.data} />
+          {/* {userPlayerHead.data.map(ph => {
+            return <EpisodePlayerHead key={`episode.playerhead.${ph.user_id}.${ph.episode_id}`} playerHead={ph} />
+          })} */}
+        </ContentContainer> 
+      )}
 
       <ContentContainer>
         <h3>{t('section_simulcast')}</h3>

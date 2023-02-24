@@ -1,7 +1,11 @@
+import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
 
 import { useRouter } from 'next/router'
 
+import EpisodePlayerHead from '@/components/Episode/EpisodePlayerHead'
+import SwiperPlayerHead from '@/components/Episode/PlayerHeadSwiper'
 import Loading from '@/components/General/Loading'
 import GeneralLayout from '@/components/Layout/General'
 import UserCard from '@/components/User/UserCard'
@@ -17,10 +21,22 @@ async function fetchUser(id: string | number) {
   }
 }
 
+async function fetchPlayerHead(id: string | number) {
+  if (id === 'me') {
+    return await UserService.getMyPlayerHeads()
+  } else {
+    return await UserService.getPlayerHeads(Number(id))
+  }
+}
+
 const User = () => {
   const router = useRouter()
-  
+  const { t } = useTranslation()
+
   const { data: userData, isLoading: userIsLoading, error: userError} = useQuery(`/api/user/${router.query.id}`, () => { return fetchUser(router.query.id as string) }, {
+    refetchOnWindowFocus: false
+  })
+  const { data: userPlayerHead, isLoading: userPlayerHeadIsLoading, error: userPlayerHeadError} = useQuery(`/api/user/${router.query.id}/player-head`, () => { return fetchPlayerHead(router.query.id as string) }, {
     refetchOnWindowFocus: false
   })
 
@@ -51,17 +67,17 @@ const User = () => {
             <p dangerouslySetInnerHTML={{__html: userData?.profile?.bio?.replace('\\n', '<br/>') || '🥰 anima.moe'}} />
           </div>
           <div className='flex flex-col gap-y-2 overflow-hidden'>
-            <span className='text-xl text-subtle'>History</span>
-            <div className='flex gap-x-4'>
-              {Array.from({ length: 7 }).map((item, i) => (
-                <img
-                  key={i}
-                  src='/test/hist.png'
-                  alt=''
-                  className='bg-cover bg-center bg-no-repeat'
-                />
-              ))}
+          {userPlayerHead?.count > 0 &&  <>
+            <span className='text-xl text-subtle'>{t('user_edit_history')}</span>
+            <div className='flex flex-col'>
+                <SwiperPlayerHead playerHeads={userPlayerHead.data}/>
+              {userPlayerHead.count < 1 && (
+                <div className='text-xs w-full'>
+                  <span className=' text-subtle'>👀</span>
+                </div>
+              )}
             </div>
+          </>}
           </div>
         </div>
       </div>
