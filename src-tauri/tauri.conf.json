@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "anima-desktop",
-    "version": "0.0.7"
+    "version": "0.0.71"
   },
   "tauri": {
     "macOSPrivateApi": true,
