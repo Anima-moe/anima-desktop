@@ -11,9 +11,9 @@ function Index() {
 
   return (
     <motion.nav
-      className='fixed z-[99] flex h-16 w-full select-none flex-row py-3 px-8'
+      className='fixed z-[99] flex h-20 w-full select-none flex-row py-3 px-8'
     >
-      <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-b transition-all duration-300 z-[0] from-primary ${
+      <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-b transition-all duration-300 z-[0] from-primary pointer-events-none ${
         immersive
           ? 'opacity-100' 
           : 'opacity-0'
