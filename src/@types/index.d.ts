@@ -146,7 +146,7 @@ namespace Anima {
       staff: boolean
       iat?: number
       exp?: number
-      premium: ENUM.Premium
+      premium: number
       profile: Anima.RAW.UserProfile
       UserPlayerHead: Anima.RAW.UserPlayerHead[]
       _count: {

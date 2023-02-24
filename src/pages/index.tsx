@@ -4,12 +4,12 @@ import { useQuery } from 'react-query'
 
 import AnimeHero from '@/components/Anime/AnimeHero'
 import AnimeSwiper from '@/components/Anime/AnimeSwiper'
-import EpisodePlayerHead from '@/components/Episode/EpisodePlayerHead'
 import SwiperPlayerHead from '@/components/Episode/PlayerHeadSwiper'
 import DonationReminder from '@/components/General/DonationReminder'
 import ContentContainer from '@/components/Layout/ContentContainer'
 import GeneralLayout from '@/components/Layout/General'
 import usePresence from '@/hooks/usePresence'
+import useSession from '@/hooks/useSession'
 import { Anime } from '@/services/anima/anime'
 import { User as UserService } from '@/services/anima/user'
 
@@ -70,6 +70,7 @@ function App() {
   const [heroAnime, setHeroAnime] = useState<Anima.RAW.Anime>({} as Anima.RAW.Anime)
   const { t } = useTranslation()
   const { clearPresence } = usePresence()
+  const {session, loading: loadingSession} = useSession()
 
   const decideHeroAnime = useCallback(() => {
     clearPresence('Home')
@@ -93,6 +94,7 @@ function App() {
 
   return (
     <GeneralLayout fluid>
+
       <AnimeHero anime={heroAnime} />
       {userPlayerHead && userPlayerHead.data.length > 0 && (
         <ContentContainer>
@@ -102,6 +104,12 @@ function App() {
             return <EpisodePlayerHead key={`episode.playerhead.${ph.user_id}.${ph.episode_id}`} playerHead={ph} />
           })} */}
         </ContentContainer> 
+      )}
+      
+      {(!loadingSession && session && session.premium < 1) || (!loadingSession && !session) && (
+      <ContentContainer>
+        <DonationReminder />
+      </ContentContainer>
       )}
 
       <ContentContainer>

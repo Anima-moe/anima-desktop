@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/General/DropdownMenu'
 import { User as UserService } from '@/services/anima/user'
+import { DropdownMenuArrow } from '@radix-ui/react-dropdown-menu'
 
 function Navbar() {
   const {data: user, isLoading: userIsLoading, error: userError} = useQuery('/api/user/me', UserService.me, {
@@ -61,14 +62,14 @@ function Navbar() {
           </DropdownMenuTrigger>
         ) : (
           <DropdownMenuTrigger asChild>
-            <button className="flex aspect-square h-full cursor-pointer bg-secondary items-center justify-center rounded-md  border-opacity-50 p-2 backdrop-blur-sm duration-300 hover:border-tertiary hover:bg-black hover:text-white active:border-accent active:bg-accent active:text-primary">
+            <button className="flex aspect-square h-12 cursor-pointer items-center justify-center rounded-md  border-opacity-50  bg-opacity-60 p-2 backdrop-blur-sm duration-300 hover:border-tertiary hover:bg-black hover:text-white active:border-accent active:bg-accent active:text-primary">
               <User size={22} />
             </button>
           </DropdownMenuTrigger>
         )}
 
         <DropdownMenuContent
-          className="min-w-[13rem] rounded-md border border-tertiary bg-secondary px-2 py-2"
+          className="z-[50] min-w-[13rem] rounded-md border border-tertiary bg-secondary px-2 py-2"
           sideOffset={16}
           align="end"
         >
@@ -110,7 +111,7 @@ function Navbar() {
             }
 
           })}
-
+        <DropdownMenuArrow  className='fill-secondary stroke-tertiary'/>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
