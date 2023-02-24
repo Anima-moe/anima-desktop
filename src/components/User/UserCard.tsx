@@ -36,12 +36,12 @@ const UserCard = ({ showStatics, user, showEditButton }: Props) => {
       <div
         className="relative mb-8 h-72 select-none rounded-md bg-tertiary bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url(${user?.profile?.banner})`,
+          backgroundImage: `url(${user?.profile?.banner || '/i/banner.png'})`,
         }}
       >
         <span
           className="absolute left-4 top-4 rounded-md px-2 py-1 text-xs font-semibold text-primary"
-          style={{ backgroundColor: `${user?.profile?.color || '#161616'}` }}
+          style={{ backgroundColor: `${user?.profile?.color || '#8D8D8D'}` }}
         >
           #{beautyNumber(user?.id)}
         </span>
@@ -76,7 +76,7 @@ const UserCard = ({ showStatics, user, showEditButton }: Props) => {
             <div className="flex items-center gap-x-3">
               <span
                 className="text-2xl font-semibold"
-                style={{ color: `${user?.profile?.color || '#161616'}` }}
+                style={{ color: `${user?.profile?.color || '#8D8D8D'}` }}
               >
                 {properCase(user?.username)}
               </span>
@@ -98,16 +98,16 @@ const UserCard = ({ showStatics, user, showEditButton }: Props) => {
             <div className="flex flex-col items-center ">
               <span
                 className="text-2xl font-semibold"
-                style={{ color: `${user?.profile?.color || '#161616'}` }}
+                style={{ color: `${user?.profile?.color || '#8D8D8D'}` }}
               >
-                {user?._count?.Comment}
+                {user?._count?.Comment || 0}
               </span>
               <span className="">Coments</span>
             </div>
             <div className="flex flex-col items-center ">
               <span
                 className="text-2xl font-semibold"
-                style={{ color: `${user?.profile?.color || '#161616'}` }}
+                style={{ color: `${user?.profile?.color || '#8D8D8D'}` }}
               >
                 {user?._count?.UserPlayerHead || 0}
               </span>
@@ -116,7 +116,7 @@ const UserCard = ({ showStatics, user, showEditButton }: Props) => {
             <div className="flex flex-col items-center ">
               <span
                 className="text-2xl font-semibold"
-                style={{ color: `${user?.profile?.color || '#161616'}` }}
+                style={{ color: `${user?.profile?.color || '#8D8D8D'}` }}
               >
                 {parseFloat(dayjs.duration({ seconds: user?.UserPlayerHead?.reduce((acc, curr) => { return acc + curr.duration }, 0) }).asHours().toString()).toFixed(1)}
               </span>
