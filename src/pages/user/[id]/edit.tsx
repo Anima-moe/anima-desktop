@@ -277,8 +277,8 @@ const UserEdit = () => {
                       id={input.id}
                       type={input.type}
                       error={errors[input.id] && t(errors[input.id].message)}
-                      className={input.donator && !isDonator && 'pr-20'}
-                      disabled={!isDonator && input.donator}
+                      className={input.donator && !isDonator() && 'pr-20'}
+                      disabled={input.donator && !isDonator()}
                       {...field}
                     >
                       {input.donator && (
