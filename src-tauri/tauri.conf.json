@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "anima-desktop",
-    "version": "0.0.61"
+    "version": "0.0.7"
   },
   "tauri": {
     "macOSPrivateApi": true,
@@ -103,7 +103,8 @@
         "url": "/splashscreen",
         "transparent": true,
         "resizable": true,
-        "title": "Λ ＮＩＭ Λ"
+        "title": "Λ ＮＩＭ Λ",
+        "center": true
       }
     ]
   }

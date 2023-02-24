@@ -29,7 +29,7 @@ fn discord_set_activity(
 ) -> Result<(), ()> {
   
   let buttons = vec![
-    Button::new("Assistir".into(), "https://anima.moe".into())
+    Button::new("Assistir".into(), "https://discord.anima.moe".into())
   ];
 
   client.set_activity(Activity::new()
