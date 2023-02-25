@@ -170,6 +170,7 @@ export default class SourceController {
   }
 
   public async requestSourceChange(newSource: { original: boolean; external_id: string }) {
+    console.log('Requested to change source, the current time is', this._mediaPlayer.currentTime)
     const newStreamData = await Stream.get(this._episodeID, newSource.external_id)
 
     if (
@@ -199,22 +200,22 @@ export default class SourceController {
       () => {
 
         if (currentTime && currentTime !== 0) {
-          this._mediaPlayer.currentTime = currentTime || 0
+          this._mediaPlayer.currentTime = currentTime || .3
+          this._mediaPlayer.addEventListener('seeked', () => {
+            this._mediaPlayer.play()
+          }, { once: true })
           return
         }
 
         User.getMyEpisodePlayerHead(this._episodeID)
         .then((ph) => {
-          if (ph?.data && ph.data.head) {
-            this._mediaPlayer.currentTime = ph.data.head
-            this._mediaPlayer.addEventListener('seeked', () => {
-              this._mediaPlayer.play()
-            }, { once: true })
-          } else {
-            // this._mediaPlayer.addEventListener('loaded-data')
-          }
-        })
+          this._mediaPlayer.currentTime = (ph?.data && ph.data.head) ? ph.data.head : this._mediaPlayer.currentTime || .3
 
+          this._mediaPlayer.addEventListener('seeked', () => {
+            this._mediaPlayer.play()
+          }, { once: true })
+        })
+        
       },
       { once: true }
     )
