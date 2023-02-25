@@ -31,6 +31,15 @@ import UserCard from '@/components/User/UserCard'
 import { User as AnimaUser } from '@/services/anima/user'
 import { userPreferedAudio, userPreferedSubtitles } from '@/stores/atoms'
 
+const validateUrl = (url: string) => {
+  try {
+    new URL(url)
+    return url
+  } catch (e) {
+    return ''
+  }
+}
+
 const UserEdit = () => {
   const [loading, setLoading] = useState(false)
   const [userAudio, setUserAudio] = useAtom(userPreferedAudio)
@@ -151,7 +160,7 @@ const UserEdit = () => {
       type: 'url',
       icon: UserCircle,
       footer: `.webp / .jpg / .jpeg / .png / .gif [${t('user_edit_donator')}]`,
-      placeholder: userData?.profile?.avatar,
+      placeholder: validateUrl(userData?.profile?.avatar),
     },
     {
       id: 'banner',
@@ -159,7 +168,7 @@ const UserEdit = () => {
       type: 'url',
       icon: Image,
       footer: `.webp / .jpg / .jpeg / .png / .gif [${t('user_edit_donator')}]`,
-      placeholder: userData?.profile?.banner,
+      placeholder: validateUrl(userData?.profile?.banner),
     },
     {
       id: 'background',
@@ -168,7 +177,7 @@ const UserEdit = () => {
       icon: PaintBucket,
       donator: true,
       footer: '.webp / .jpg / .jpeg / .png / .gif / .mp4 / .webm',
-      placeholder: userData?.profile?.background,
+      placeholder: validateUrl(userData?.profile?.background),
     },
     {
       id: 'color',
