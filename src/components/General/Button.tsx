@@ -1,7 +1,7 @@
-import { ReactNode } from 'react'
+import { ButtonHTMLAttributes, ReactNode } from 'react'
 
 import clsx from 'clsx'
-type Props = {
+type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   Icon?: JSX.Element | ReactNode | JSX.Element[] | ReactNode[]
   fluid?: boolean
   text: string
@@ -61,6 +61,7 @@ function Button({
   onClick,
   children,
   loading,
+  ...props
 }: Props) {
   const classes = clsx({
     'bg-primary': primary && !disabled,
@@ -107,9 +108,10 @@ function Button({
       className={classes}
       onClick={() => {
         if (disabled) return
-        if (!onClick) return 
+        if (!onClick) return
         onClick()
       }}
+      {...props}
     >
       <span className="flex items-center">
         <span className={contentClassName}>{children}</span>

@@ -4,8 +4,10 @@ import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
 import { toast } from 'react-toastify'
 
+import axios from 'axios'
 import clsx from 'clsx'
 import i18next from 'i18next'
+import isAnimated from 'is-animated'
 import { useAtom } from 'jotai'
 import { Activity, CaretDown, CaretUp, CircleNotch, PencilLine, Icon, UserFocus } from 'phosphor-react'
 import {
@@ -29,6 +31,15 @@ import UserCard from '@/components/User/UserCard'
 import { User as AnimaUser } from '@/services/anima/user'
 import { userPreferedAudio, userPreferedSubtitles } from '@/stores/atoms'
 
+const validateUrl = (url: string) => {
+  try {
+    new URL(url)
+    return url
+  } catch (e) {
+    return ''
+  }
+}
+
 const UserEdit = () => {
   const [loading, setLoading] = useState(false)
   const [userAudio, setUserAudio] = useAtom(userPreferedAudio)
@@ -47,6 +58,7 @@ const UserEdit = () => {
     handleSubmit,
     formState: { errors },
     watch,
+    setError,
   } = useForm<FormInputs>()
 
   useEffect(() => {
@@ -72,6 +84,30 @@ const UserEdit = () => {
 
   const onSubmit: SubmitHandler<FormInputs> = async (data: FormInputs) => {
     setLoading(true)
+
+    if (!isDonator()) {
+      const imageInputs: (keyof FormInputs)[] = ['avatar', 'banner', 'background']
+
+      const imageBuffer = (img: string) =>
+        axios
+          .get(img, { responseType: 'arraybuffer' })
+          .then((res) => Buffer.from(res.data))
+          .catch(() => Buffer.from(''))
+
+      const validation = await Promise.all(
+        imageInputs.map(async (input) => {
+          if (isAnimated(await imageBuffer(data[input]))) {
+            setError(input, { type: 'manual', message: t('user_edit_save_animated') })
+            return true
+          }
+          return false
+        })
+      )
+      if (validation.some((v) => v)) {
+        setLoading(false)
+        return
+      }
+    }
 
     toast.promise(
       AnimaUser.update(data),
@@ -124,7 +160,7 @@ const UserEdit = () => {
       type: 'url',
       icon: UserCircle,
       footer: `.webp / .jpg / .jpeg / .png / .gif [${t('user_edit_donator')}]`,
-      placeholder: userData?.profile?.avatar,
+      placeholder: validateUrl(userData?.profile?.avatar),
     },
     {
       id: 'banner',
@@ -132,7 +168,7 @@ const UserEdit = () => {
       type: 'url',
       icon: Image,
       footer: `.webp / .jpg / .jpeg / .png / .gif [${t('user_edit_donator')}]`,
-      placeholder: userData?.profile?.banner,
+      placeholder: validateUrl(userData?.profile?.banner),
     },
     {
       id: 'background',
@@ -141,7 +177,7 @@ const UserEdit = () => {
       icon: PaintBucket,
       donator: true,
       footer: '.webp / .jpg / .jpeg / .png / .gif / .mp4 / .webm',
-      placeholder: userData?.profile?.background,
+      placeholder: validateUrl(userData?.profile?.background),
     },
     {
       id: 'color',
@@ -244,8 +280,8 @@ const UserEdit = () => {
                       id={input.id}
                       type={input.type}
                       error={errors[input.id] && t(errors[input.id].message)}
-                      className={input.donator && !isDonator && 'pr-20'}
-                      disabled={!isDonator && input.donator}
+                      className={input.donator && !isDonator() && 'pr-20'}
+                      disabled={input.donator && !isDonator()}
                       {...field}
                     >
                       {input.donator && (
