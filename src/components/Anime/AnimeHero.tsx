@@ -162,7 +162,7 @@ function AnimeHero({ anime }: Props) {
         `}
       </style>
 
-      {showTrailer && <Portal.Root className='absolute top-0 left-0 w-screen h-screen flex items-center justify-center bg-primary/90 backdrop-blur-md z-[99]' onClick={()=>{
+      {showTrailer && <Portal.Root className='fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-primary/90 backdrop-blur-md z-[99]' onClick={()=>{
         setShowTrailer(false)
       }}>
         <iframe className='w-4/5 aspect-video max-h-screen rounded-lg overflow-hidden' src={`https://www.youtube.com/embed/${anilistData.trailer.id}`} title={`${anilistData.trailer.id}`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
