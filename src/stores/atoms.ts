@@ -12,7 +12,8 @@ export const playerStreamConfig = atom({
   streamURL: '',
   streamLocale: '',
   subType: 'soft',
-  streamHeight: 1080,
+  streamHeight: 0,
+  streamHeights: [],
 })
 export const playerConfigPage = atom<string>('main')
 export const playerSwitchingStream = atom(false)
@@ -22,5 +23,5 @@ export const userEnabledSubtitles = atomWithStorage('anima.userPref.subtitlesEna
 export const userPreferedSubtitles = atomWithStorage('anima.userPref.subtitles', i18next.language)
 export const userPreferedAudio = atomWithStorage('anima.userPref.audio', '')
 export const userPreferedVolume = atomWithStorage('anima.userPref.volume', '1')
-export const userPreferedPlaybackQuality = atomWithStorage('anima.userPref.playbackQuality', 1080)
+export const userPreferedPlaybackQuality = atomWithStorage('anima.userPref.playbackQuality', 0)
 export const userPreferedPlayerMode = atomWithStorage('anima.userPref.playerMode', 'normal')

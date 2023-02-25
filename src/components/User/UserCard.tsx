@@ -34,7 +34,7 @@ const UserCard = ({ showStatics, user, showEditButton }: Props) => {
   return (
     <div className="relative">
       <div
-        className="relative mb-8 h-72 select-none rounded-md bg-tertiary bg-cover bg-center bg-no-repeat"
+        className="relative mb-8 h-96 select-none rounded-md bg-tertiary bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage: `url(${user?.profile?.banner || '/i/banner.png'})`,
         }}

@@ -31,7 +31,7 @@ const ensureUserToken = async () => {
   try {
     const { getConfigValue, setConfigValue } = await import('@/services/tauri/configValue')
     const userToken = (await getConfigValue('token')) as string
-    if (!userToken || userToken == '') {
+    if (!userToken || userToken.trim() == '') {
       return false
     }
 

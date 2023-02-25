@@ -41,7 +41,7 @@ export default function SeasonBrowser({ season, episode }: Props) {
         <button
           className={`
             pointer-events-auto ml-auto cursor-pointer rounded-md border border-transparent bg-transparent px-3
-            py-3 text-white duration-300 hover:bg-black hover:text-accent
+            py-3 text-white duration-300 hover:bg-black hover:text-accent video-control
           `}
         >
           <FilmStrip weight="fill" size={24} />

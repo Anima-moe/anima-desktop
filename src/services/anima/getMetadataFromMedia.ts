@@ -5,7 +5,12 @@ export type AnimaMediaMetadata = {
 }
 
 export function getLocaleMetadata<T, TM>(media: T): TM {
-  const locale = i18next.language
+  let locale = i18next.language
+
+  if (locale === 'pt-PT') {
+    locale = 'pt-BR'
+  }
+
   if (!media) return {} as TM
   //@ts-expect-error
   if (media?.AnimeMetadata) {

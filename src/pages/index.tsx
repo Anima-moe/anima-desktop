@@ -2,6 +2,8 @@ import { useCallback, useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
 
+import i18next from 'i18next'
+
 import AnimeHero from '@/components/Anime/AnimeHero'
 import AnimeSwiper from '@/components/Anime/AnimeSwiper'
 import SwiperPlayerHead from '@/components/Episode/PlayerHeadSwiper'
@@ -94,7 +96,6 @@ function App() {
 
   return (
     <GeneralLayout fluid>
-
       <AnimeHero anime={heroAnime} />
       {userPlayerHead && userPlayerHead.data.length > 0 && (
         <ContentContainer>

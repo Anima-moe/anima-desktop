@@ -19,7 +19,7 @@ function ControlsContainer({ children, bottom, middle, top }: Props) {
       bottom,
     'media-user-idle:-translate-y-32 media-paused:!translate-y-0 media-user-idle:opacity-0 media-paused:!opacity-100  media-user-idle:opacity-0': top,
     'h-full flex-col overflow-hidden': middle,
-    'flex p-4 w-full z-[1] h-min w-full duration-300 transition-all relative relative': true,
+    'flex p-4 w-full z-[1] h-min w-full duration-300 transition-all relative relative gap-3': true,
     hidden: bottom && duration < 30 && canPlay,
   })
   return <div className={classNames}>{children}</div>

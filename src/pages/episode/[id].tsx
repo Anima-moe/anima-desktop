@@ -79,19 +79,12 @@ function Index() {
     const {setPresence} = usePresence()
     
     useEffect(() => {
-      
-      if (!router.isReady) {
-        return
-      }
-      if (!streamData || !seasonData || !episodeData) {
-        return
-      }
+      if (!router.isReady) { return }
+      if (!streamData || !seasonData || !episodeData) { return }
       
       setPresence(episodeData.data, true)
 
-      if (!mediaPlayer.current) {
-        return
-      }
+      if (!mediaPlayer.current) { return }
 
       defineSourceController(
         new SourceController(mediaPlayer.current, streamData.data, episodeData.data)
@@ -101,30 +94,36 @@ function Index() {
 
   // Listen for stream changes
   useEffect(() => {
-    if (!router.isReady) {
-      return
-    }
-    if (!streamConfig.streamURL) {
-      return
-    }
-    if (!sourceController) {
-      return
-    }
+    if (!router.isReady) { return }
+    if (!streamConfig.streamURL) { return }
+    if (!sourceController) { return }
+
     sourceController.requestAudioChange(streamConfig.streamLocale)
   }, [router.query.id, streamConfig.streamLocale])
 
   // Listen for request to change subtitle locale
   useEffect(() => {
-    if (!router.isReady) {
-      return
-    }
-    
-    if (!subtitleController) {
-      return
-    }
+    if (!router.isReady) { return }
+    if (!subtitleController) { return }
 
     subtitleController.requestSubtitleChange(streamConfig.subtitleLocale)
   }, [router.isReady, subtitleController, streamConfig.subtitleLocale])
+
+  // Listen for request to change quality height
+  useEffect(()=>{
+    if (!mediaPlayer) { return }
+    if (!sourceController) { return }
+    
+    if (sourceController.currentQuality !== streamConfig.streamHeight) {
+      const equivalent = streamConfig.streamHeights.findIndex((quality) => quality.height === streamConfig.streamHeight)
+      console.log('Equivalent', equivalent, streamConfig.streamHeights, streamConfig.streamHeight)
+      if (equivalent === -1) return console.log('Requested quality not found in streamHeights', streamConfig.streamHeights, streamConfig.streamHeight)
+
+      console.log('Current quality is not the same as requested quality, changing quality', streamConfig.streamHeights, equivalent)
+      
+      sourceController.requestQualityChange(streamConfig.streamHeights[equivalent])
+    }
+  }, [sourceController, mediaPlayer, streamConfig.streamHeight])
 
   if (streamLoading || seasonLoading || episodeLoading) {
     return <StreamLoading background={episodeData?.data?.thumbnail} />

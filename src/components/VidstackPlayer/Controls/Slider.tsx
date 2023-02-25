@@ -16,8 +16,8 @@ type Props = {}
 // transform: translateY(-50%) scaleX(calc(var(--media-buffered-amount) / var(--media-duration)));
 function Slider({}: Props) {
   return (
-    <div className="pointer-events-auto relative flex w-full items-center  px-3">
-      <MediaTimeSlider className="group h-5 overflow-hidden rounded-md">
+    <div className="pointer-events-auto relative flex w-full items-center">
+      <MediaTimeSlider className="group h-2 overflow-hidden rounded-sm">
         {/* BACKGROUND */}
         <div
           className="absolute top-1/2 h-5 w-full origin-left -translate-y-1/2 bg-white bg-opacity-10 transition-[height] duration-300 group-hover:h-4"

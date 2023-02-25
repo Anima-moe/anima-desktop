@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { ArrowCounterClockwise, ArrowElbowUpRight, ArrowClockwise } from 'phosphor-react'
+import { SkipBack, ArrowElbowUpRight, SkipForward } from 'phosphor-react'
 
 import { useMediaStore, useMediaRemote } from '@vidstack/react'
 
@@ -11,10 +11,8 @@ function PlayButton({ time }: Props) {
   const remote = useMediaRemote()
   const { currentTime } = useMediaStore()
   const classes = clsx({
-    'flex items-center justify-center cursor-pointer group pointer-events-auto hover:text-accent':
+    'flex items-center justify-center cursor-pointer group pointer-events-auto hover:text-accent hover:bg-primary duration-200 h-full aspcet-square rounded-md aspect-square w-12':
       true,
-    'mr-4': time < 0,
-    'ml-4': time > 0,
   })
   return (
     <div
@@ -24,21 +22,21 @@ function PlayButton({ time }: Props) {
       }}
     >
       {time < 0 && (
-        <ArrowCounterClockwise
+        <SkipBack
           weight="fill"
-          className="order-2 h-5 w-6 opacity-50 duration-300 group-hover:opacity-100 hover:-rotate-90"
+          className="order-2 h-6 w-6 opacity-50 duration-300 group-hover:opacity-100"
         />
       )}
       {time === 0 && (
         <ArrowElbowUpRight
           weight="fill"
-          className="h-5 w-5 opacity-50 duration-300 group-hover:opacity-100"
+          className="h-6 w-6 opacity-50 duration-300 group-hover:opacity-100 "
         />
       )}
       {time > 0 && (
-        <ArrowClockwise
+        <SkipForward
           weight="fill"
-          className="h-5 w-5 opacity-50 duration-300 group-hover:opacity-100  hover:rotate-90"
+          className="h-6 w-6 opacity-50 duration-300 group-hover:opacity-100 "
         />
       )}
       {/* <span className='text-sm mt-1 text-opacity-50 text-white group-hover:text-opacity-100 duration-300'>{time}</span> */}

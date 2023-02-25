@@ -138,7 +138,7 @@ export function SkipChapter({ animeID, episodeNumber }: ISkipOpeningProps) {
   if (played && display)
     return (
       <div
-        className="group pointer-events-auto absolute bottom-20 right-4 ml-auto w-min cursor-pointer select-none overflow-hidden whitespace-nowrap rounded-md bg-secondary px-2 py-2 text-lg"
+        className="group pointer-events-auto absolute bottom-24 right-4 ml-auto w-min cursor-pointer select-none overflow-hidden whitespace-nowrap rounded-md bg-secondary px-2 py-2 text-lg"
         onClick={() => {
           useRemote.seek(
             display.skipType === 'op' ? getOpening().interval.endTime : getEnding().interval.endTime
@@ -155,9 +155,10 @@ export function SkipChapter({ animeID, episodeNumber }: ISkipOpeningProps) {
         <span className="flex items-center text-white mix-blend-difference">
           {display.skipType === 'op'
             ? 'Skip Opening'
-            : display.skipType === 'ep'
-            ? 'Skip Episode'
-            : 'Skip Ending'}
+              : display.skipType === 'ep'
+            ? 'Skip Ending'
+              : 'Skip Ending'
+          }
           <ArrowRight className="ml-3" />
         </span>
       </div>

@@ -91,6 +91,7 @@ export default class SubtitleController {
   }
 
   public async requestSubtitleChange(locale: string) {
+    console.log('Requesting to change to:', locale)
     if (
       this._streamData.subtitles &&
       this._streamData.subtitles[locale] &&
@@ -100,7 +101,7 @@ export default class SubtitleController {
       return
     }
 
-    if ((locale === '' && !this.currentSubtitle) || !locale) {
+    if ((locale === '' && !this.currentSubtitle) || (locale === '') ) {
       this.currentSubtitle = ''
       this.currentSubtitleLocale = ''
       writeAtom(playerStreamConfig, {
@@ -114,7 +115,7 @@ export default class SubtitleController {
         return
       }
 
-      this.destroyRenderer
+      this.destroyRenderer()
 
       return
     }

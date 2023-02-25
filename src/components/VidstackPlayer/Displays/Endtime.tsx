@@ -11,12 +11,16 @@ function Endtime({episodeId}: {episodeId: number}) {
   const { currentTime, duration, paused } = useMediaStore()
   
   useEffect(()=> {
+    if (Math.round(currentTime) < 5) { return }
+
     if (Math.round(currentTime) % 5 === 0 && currentTime > 5) {
       UserService.postEpisodePlayerHead(episodeId, Math.round(duration), Math.round(currentTime))
     }
   }, [Math.round(currentTime)])
 
   useEffect(()=>{
+    if (Math.round(currentTime) < 5) { return }
+    
     if (paused) {
       UserService.postEpisodePlayerHead(episodeId, Math.round(duration), Math.round(currentTime))
     }

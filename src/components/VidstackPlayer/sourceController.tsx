@@ -1,6 +1,7 @@
+import { t } from 'i18next'
 import { readAtom, writeAtom } from 'jotai-nexus'
 import { createStore } from 'jotai/vanilla'
-import type { MediaCanLoadEvent, MediaPlayerElement } from 'vidstack'
+import { isHLSProvider, MediaCanLoadEvent, MediaPlayerElement } from 'vidstack'
 
 import { Stream } from '@/services/anima/stream'
 import { User } from '@/services/anima/user'
@@ -43,6 +44,7 @@ export default class SourceController {
     // RESOLVE STREAM VIDEO Qualities
     //----------------------------------------//
     this.initializeStreamQuality()
+
     //----------------------------------------//
     // RESOLVE STREAM VIDEO SOURCE
     //----------------------------------------//
@@ -85,6 +87,11 @@ export default class SourceController {
 
       this._mediaPlayer.startLoading()
     }
+
+    const getOpiniatedQuality = this.getOpiniatedQuality()
+    if (getOpiniatedQuality) {
+      this.requestQualityChange(getOpiniatedQuality)
+    }
   }
 
   private initializeStreamQuality() {
@@ -101,6 +108,10 @@ export default class SourceController {
           tag: this._qualityTags[mp4.height.toString()],
         }
       })
+      writeAtom(playerStreamConfig, {
+        ...readAtom(playerStreamConfig),
+        streamHeights: this._availableQualities,
+      })
     }
 
     // HLS's have the quality builtin to the M3U8's file.
@@ -114,6 +125,10 @@ export default class SourceController {
             tag: (this._qualityTags[level.height.toString()] as string) || 'AUTO',
           }
         })
+      writeAtom(playerStreamConfig, {
+        ...readAtom(playerStreamConfig),
+        streamHeights: this._availableQualities,
+      })
     })
   }
 
@@ -144,7 +159,8 @@ export default class SourceController {
 
   public getOpiniatedQuality() {
     const userPrefered = readAtom(userPreferedPlaybackQuality)
-    if (!userPrefered) return this._availableQualities[0]
+    if (!userPrefered) return
+    if (!this._availableQualities || !this._availableQualities.length) return
 
     return this._availableQualities.map((quality) => {
       if (quality.height === userPrefered) {
@@ -181,6 +197,7 @@ export default class SourceController {
     this._mediaPlayer.addEventListener(
       'can-play',
       () => {
+
         if (currentTime && currentTime !== 0) {
           this._mediaPlayer.currentTime = currentTime || 0
           return
@@ -188,11 +205,13 @@ export default class SourceController {
 
         User.getMyEpisodePlayerHead(this._episodeID)
         .then((ph) => {
-          if (ph?.data) {
+          if (ph?.data && ph.data.head) {
             this._mediaPlayer.currentTime = ph.data.head
             this._mediaPlayer.addEventListener('seeked', () => {
               this._mediaPlayer.play()
             }, { once: true })
+          } else {
+            // this._mediaPlayer.addEventListener('loaded-data')
           }
         })
 
@@ -211,8 +230,22 @@ export default class SourceController {
   }
 
   public async requestQualityChange(newQuality: { height: number; src: string; tag: string }) {
-    // const currentTime = this._mediaPlayer.currentTime
-    // this._mediaPlayer.currentTime = currentTime
+    if (!this._availableQualities) { return }
+    // this._mediaPlayer.addEventListener('provider-setup', (e) => {
+      const provider = this._mediaPlayer.provider
+      
+      if(isHLSProvider(provider)) {
+        const equivalentIndex =  provider.instance.levels.findIndex(level => level.height === newQuality.height)
+        if (equivalentIndex < 0) return
+        provider.instance.currentLevel = equivalentIndex
+        this.currentQuality = newQuality.height
+        writeAtom(userPreferedPlaybackQuality, newQuality.height)
+        return
+      }
+      // const currentTime = this._mediaPlayer.currentTime
+      // this._mediaPlayer.currentTime = currentTime
+    // })
+
   }
 
   private getLocaleFromStreamExternalID(streamData: Anima.RAW.EpisodeStream, external_id: string) {

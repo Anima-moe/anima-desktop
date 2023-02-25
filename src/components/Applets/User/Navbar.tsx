@@ -25,7 +25,7 @@ function Navbar() {
   const handleLogout = async () => {
     const { setConfigValue } = await import('@/services/tauri/configValue')
     const { relaunch } = await import('@tauri-apps/api/process')
-    await setConfigValue('token', '')
+    await setConfigValue('token', ' ')
     await relaunch()
   }
 

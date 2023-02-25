@@ -28,7 +28,7 @@
 }
 
 body {
-  background-color: #161616;
+  background-color: #000000;
   color: #fff;
   font-family: 'Rubik', sans-serif;
   overflow-x: hidden;
@@ -243,4 +243,8 @@ input[type="color"]::-webkit-color-swatch {
 .swiper {
   margin-left: 0 !important;
   margin-right: 0 !important;
+}
+
+.video-control[data-state="open"] {
+  @apply bg-primary;
 }

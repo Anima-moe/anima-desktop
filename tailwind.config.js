@@ -28,6 +28,9 @@ module.exports = {
     require('@tailwindcss/forms'),
     require('@tailwindcss/line-clamp'),
     require('tailwind-scrollbar'),
-    require('vidstack/tailwind.cjs')
+    require('vidstack/tailwind.cjs')({
+      mediaPrefix: 'media', // paused:... -> media-paused:...
+      sliderPrefix: 'slider', // dragging:... -> slider-dragging:...
+    }),
   ],
 }

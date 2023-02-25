@@ -65,7 +65,7 @@ const User = () => {
 
   return (
     <GeneralLayout fluid>
-      <div className={'cover absolute top-0 left-0 h-full w-full overflow-hidden'} style={{backgroundImage: `url('${userData?.profile?.background}')`}}>
+      <div className={'cover absolute top-0 left-0 h-screen w-screen overflow-hidden'} style={{backgroundImage: `url('${userData?.profile?.background}')`}}>
         {userData?.profile?.background ? (
           (userData?.profile?.background && userData?.profile?.background.endsWith('.mp4') || userData?.profile?.background.endsWith('.webm')) && (
             <video autoPlay loop muted className='h-full w-full object-cover' src={userData?.profile?.background || '/i/splash/mp4'} />
@@ -77,8 +77,9 @@ const User = () => {
       <div className='fixed top-0 left-0 h-screen w-screen bg-primary/70 bg-gradient-to-t from-primary to-transparent' />
       <div className='z-10 mx-8 my-24'>
         <UserCard user={userData} showStatics showEditButton={router.query.id && (router.query.id as string) === 'me'}/>
-        <div className='flex w-full flex-col gap-y-8 rounded-md bg-secondary p-5'>
-          <div className='flex flex-col gap-y-4 overflow-hidden text-center'>
+        <div className='flex w-full flex-col gap-y-4 rounded-md bg-secondary p-5'>
+          <span className='text-xl text-subtle'>{t('user_edit_bio')}</span>
+          <div className='flex flex-col gap-y-4 overflow-hidden'>
             <p dangerouslySetInnerHTML={{__html: userData?.profile?.bio?.replace('\\n', '<br/>') || '🥰 anima.moe'}} />
           </div>
           <div className='flex flex-col gap-y-2 overflow-hidden'>
