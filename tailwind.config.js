@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/**/*.{js,ts,jsx,tsx}",
+    './src/**/*.{js,ts,jsx,tsx}',
   ],
   variants: {
     extend: {
@@ -13,11 +13,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#161616',
-        secondary: '#212121',
-        tertiary: '#2E2E2E',
+        primary: '#000000',
+        secondary: '#0D0D0D',
+        tertiary: '#141414',
         subtle: '#5D5D5D',
-        accent: '#c5eb45'
+        accent: '#27FF7E',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
