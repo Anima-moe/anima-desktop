@@ -47,13 +47,14 @@ const Player = forwardRef<MediaPlayerElement, Props>((props, ref) => {
       onCanLoad={props.onCanLoad}
       load="custom"
       aspectRatio={16 / 9}
-      userIdleDelay={400}
+      userIdleDelay={1000}
+      autoplay
       className="flex items-center justify-center"
     >
       <MediaOutlet />
       <ShortcutCollector />
       <div className="pointer-events-none absolute top-0 left-0 flex h-full w-full flex-col justify-between">
-        <div className="pointer-events-none absolute top-0 left-0 h-full w-full bg-primary bg-opacity-40 transition-all duration-300 media-user-idle:bg-opacity-0 media-paused:bg-opacity-70 media-waiting:bg-black media-waiting:opacity-90" />
+        <div className="pointer-events-auto absolute top-0 left-0 h-full w-full bg-primary bg-opacity-40 transition-all duration-300 media-user-idle:bg-opacity-0 media-paused:bg-opacity-70 media-waiting:bg-black media-waiting:opacity-90 media-user-idle:cursor-none" />
         {streamConfig?.subtitleURL?.endsWith('.vtt') && (
           <div className="pointer-events-none absolute h-full w-full">
             <CaptionList />
@@ -61,7 +62,7 @@ const Player = forwardRef<MediaPlayerElement, Props>((props, ref) => {
         )}
         <img
           src="/i/anima.svg"
-          className="absolute right-4 bottom-20 opacity-80 transition-all duration-300 media-user-idle:bottom-4 media-user-idle:opacity-40 media-waiting:opacity-0"
+          className="absolute right-4 bottom-28 opacity-80 transition-all duration-300 media-user-idle:bottom-4 media-user-idle:opacity-20 media-waiting:opacity-100"
         />
         <SkipChapter animeID={props.seasonData.anime_id} episodeNumber={props.episodeData.number} />
         <ControlsContainer top>
@@ -76,22 +77,22 @@ const Player = forwardRef<MediaPlayerElement, Props>((props, ref) => {
           />
           <Endtime episodeId={props.episodeData.id} />
           <SeasonBrowser episode={props.episodeData} season={props.seasonData} />
-          <Settings audios={props?.streamData?.audios} subtitles={props?.streamData?.subtitles} />
+          <Settings audios={props?.streamData?.audios} subtitles={props?.streamData?.subtitles}/>
         </ControlsContainer>
         <div className="absolute top-1/2 left-1/2 hidden h-32 w-32 -translate-y-1/2 -translate-x-1/2 text-accent media-waiting:block">
           <CircleNotch weight="fill" className="h-full w-full animate-spin" />
         </div>
         <ControlsContainer bottom>
-          <div className="flex w-full flex-row items-center rounded-md bg-primary bg-opacity-30 p-3 backdrop-blur-md">
+          <div className="flex w-full items-center gap-3">
+            <Timestamp type="current" />
+            <Slider />
+            <Timestamp type="duration" />
+          </div>
+          <div className="flex w-full flex-row items-center rounded-md gap-1">
             <SkipButton time={-15} />
             <PlayButton />
             <SkipButton time={15} />
             <VolumeControl />
-            <div className="flex w-full items-center px-4">
-              <Timestamp type="current" />
-              <Slider />
-              <Timestamp type="duration" />
-            </div>
             <FullscreenButton />
           </div>
         </ControlsContainer>
