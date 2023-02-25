@@ -48,7 +48,6 @@ const Player = forwardRef<MediaPlayerElement, Props>((props, ref) => {
       load="custom"
       aspectRatio={16 / 9}
       userIdleDelay={1000}
-      // autoplay
       className="flex items-center justify-center"
     >
       <MediaOutlet />
