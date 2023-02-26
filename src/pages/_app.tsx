@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { initReactI18next } from 'react-i18next'
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
-import { ToastContainer } from 'react-toastify'
+import { Slide, ToastContainer } from 'react-toastify'
 
 import i18n from 'i18next'
 import type { AppProps } from 'next/app'
@@ -14,10 +14,10 @@ import languageTable from '@/services/i18n/languageTable'
 //   import('react-shaka-plyr').then((mod) => mod.ShakaPlayerProvider)
 // )
 
+import 'react-toastify/dist/ReactToastify.min.css'
 import '@/styles/globals.css'
 import '@/styles/tweaks.scss'
 import 'skeleton-elements/css'
-import 'react-toastify/dist/ReactToastify.min.css'
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
@@ -80,7 +80,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       {/* <ShakaPlayerProvider> */}
       <Component {...pageProps} />
-      <ToastContainer />
+      <ToastContainer
+        transition={Slide}
+        draggable={false}
+        theme="dark"
+        position="bottom-right"
+        bodyClassName={() => 'flex-auto py-2 select-none'}
+      />
       {/* </ShakaPlayerProvider> */}
     </QueryClientProvider>
   )
