@@ -3,6 +3,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --toastify-color-dark: #141414 !important;
+}
+
 *:focus-visible {
   outline: none;
 }
