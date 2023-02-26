@@ -18,6 +18,8 @@ export const playerStreamConfig = atom({
 export const playerConfigPage = atom<string>('main')
 export const playerSwitchingStream = atom(false)
 
+export const userToken = atomWithStorage('anima.userToken', '')
+
 // User preferences
 export const userEnabledSubtitles = atomWithStorage('anima.userPref.subtitlesEnabled', true)
 export const userPreferedSubtitles = atomWithStorage('anima.userPref.subtitles', i18next.language)

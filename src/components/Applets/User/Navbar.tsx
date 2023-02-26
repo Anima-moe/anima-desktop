@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
 
 import clsx from 'clsx'
+import { useAtom } from 'jotai'
 import Link from 'next/link'
 import { SignIn, SignOut, User } from 'phosphor-react'
 
@@ -13,9 +14,14 @@ import {
   DropdownMenuTrigger,
 } from '@/components/General/DropdownMenu'
 import { User as UserService } from '@/services/anima/user'
+import { createSplashScreen } from '@/services/tauri/windows'
+import { userToken } from '@/stores/atoms'
 import { DropdownMenuArrow } from '@radix-ui/react-dropdown-menu'
 
+
+
 function Navbar() {
+  const [storedToken, setStoredToken] = useAtom(userToken)
   const {data: user, isLoading: userIsLoading, error: userError} = useQuery('/api/user/me', UserService.me, {
     refetchOnWindowFocus: false
   })
@@ -23,10 +29,8 @@ function Navbar() {
   const { t } = useTranslation()
 
   const handleLogout = async () => {
-    const { setConfigValue } = await import('@/services/tauri/configValue')
-    const { relaunch } = await import('@tauri-apps/api/process')
-    await setConfigValue('token', ' ')
-    await relaunch()
+    await setStoredToken('')
+    await createSplashScreen()
   }
 
   const menuItems = [

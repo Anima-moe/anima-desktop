@@ -4,9 +4,11 @@ import { useTranslation } from 'react-i18next'
 
 import { AxiosError } from 'axios'
 import { motion } from 'framer-motion'
+import { useAtom } from 'jotai'
 import { Shield, SignIn, User, Envelope } from 'phosphor-react'
 
 import { User as AnimaUser } from '@/services/anima/user'
+import { userToken } from '@/stores/atoms'
 
 import Button from '../General/Button'
 import IconInput from '../General/Inputs/IconTextInput'
@@ -18,6 +20,7 @@ type Props = {
 
 function Register({ password: previousPassword, username: previousUsername }: Props) {
   const [loading, setLoading] = useState(false)
+  const [storedToken, setStoredToken] = useAtom(userToken)
   const { t } = useTranslation()
 
   const {
@@ -33,20 +36,19 @@ function Register({ password: previousPassword, username: previousUsername }: Pr
   })
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-    const { setConfigValue } = await import('@/services/tauri/configValue')
     setLoading(true)
 
     try {
       const userInfo = await AnimaUser.login(data.username, data.password)
 
-      await setConfigValue('token', userInfo.token)
+      await setStoredToken(userInfo.token)
       await window.location.reload()
     } catch (e) {
       if (e instanceof AxiosError && e.response.status === 404) {
         try {
           const newUserInfo = await AnimaUser.register(data.username, data.password, data.email)
 
-          await setConfigValue('token', newUserInfo.token)
+          await setStoredToken(newUserInfo.token)
           await window.location.reload()
         } catch (e) {
           setLoading(false)

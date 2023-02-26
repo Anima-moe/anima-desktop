@@ -67,21 +67,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       const { getConfigValue } = await import('@/services/tauri/configValue')
       const userLanguage = await getConfigValue<string>('language')
       i18n.changeLanguage(userLanguage)
-
-      const { appWindow } = await import('@tauri-apps/api/window')
-
-      if (!(await appWindow.isVisible())) {
-        return
-      }
     })()
   }, [router])
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* <ShakaPlayerProvider> */}
       <Component {...pageProps} />
       <ToastContainer />
-      {/* </ShakaPlayerProvider> */}
     </QueryClientProvider>
   )
 }

@@ -13,7 +13,7 @@ import EmojiOptionsInput from '@/components/General/Inputs/EmojiSelectionInput'
 import IconInput from '@/components/General/Inputs/IconTextInput'
 import { User as AnimaUser } from '@/services/anima/user'
 import { createMainWindow } from '@/services/tauri/windows'
-import { splashScreenPageAtom, splashScreenPagePropsAtom } from '@/stores/atoms'
+import { splashScreenPageAtom, splashScreenPagePropsAtom, userToken } from '@/stores/atoms'
 
 const bannerList = ['/i/splash_image_bocchi']
 const randomBannerIndex = Math.floor(Math.random() * bannerList.length)
@@ -24,7 +24,7 @@ function Login() {
   const [loading, setLoading] = useState(false)
   const [currentPage, setCurrentPage] = useAtom(splashScreenPageAtom)
   const [pageProps, setPageProps] = useAtom(splashScreenPagePropsAtom)
-
+  const [storedToken, setStoredToken] = useAtom(userToken)
   const {
     control,
     handleSubmit,
@@ -37,9 +37,7 @@ function Login() {
 
     try {
       const userInfo = await AnimaUser.login(data.username, data.password)
-      const { setConfigValue } = await import('@/services/tauri/configValue')
-
-      await setConfigValue('token', userInfo.token)
+      await setStoredToken(userInfo.token)
       await window.location.reload()
     } catch (e) {
       if (!e.response?.status) {
@@ -274,9 +272,10 @@ function Login() {
             damping: 60,
             mass: 1,
           }}
-          className="absolute top-0 left-0 h-full w-full bg-cover bg-center bg-no-repeat"
+          className="absolute bottom-0 w-full h-full bg-bottom bg-no-repeat"
           style={{
             backgroundImage: `url('${randomBanner}_2.png')`,
+            backgroundSize: '55%'
           }}
         />
       </motion.div>

@@ -2,25 +2,24 @@ import client from '@/services/anima/httpService'
 
 export const User = {
   getUserData: async function () {
-    const { getConfigValue } = await import('@/services/tauri/configValue')
-    const token = (await getConfigValue('token')) as string
-    if (!token) {
+    const storedToken = JSON.parse(localStorage.getItem('anima.userToken'))
+    if (!storedToken) {
       return
     }
 
-    const decodedToken = atob(token.split('.')[1])
+    const decodedToken = atob(storedToken.split('.')[1])
 
-    return { ...JSON.parse(decodedToken), token } as Partial<Anima.RAW.User> & { token: string }
+    return { ...JSON.parse(decodedToken), storedToken } as Partial<Anima.RAW.User> & {
+      token: string
+    }
   },
 
   get: async function (id: number) {
-    const storeapi = await import('tauri-plugin-store-api')
-    const { getConfigValue } = await import('@/services/tauri/configValue')
-    const token = await getConfigValue('token')
+    const storedToken = localStorage.getItem('anima.userToken')
 
     const { data } = await client.get(`/user/${id}`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${storedToken}`,
       },
     })
 
@@ -55,11 +54,11 @@ export const User = {
   },
 
   me: async function () {
-    const { getConfigValue } = await import('@/services/tauri/configValue')
-    const token = await getConfigValue('token')
+    const storedToken = JSON.parse(localStorage.getItem('anima.userToken'))
+
     const { data } = await client.get('/user/me', {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${storedToken}`,
       },
     })
 
@@ -67,12 +66,11 @@ export const User = {
   },
 
   update: async function (data: unknown) {
-    const { getConfigValue } = await import('@/services/tauri/configValue')
-    const token = await getConfigValue('token')
+    const storedToken = JSON.parse(localStorage.getItem('anima.userToken'))
 
     const response = await client.post('/user/update', data, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${storedToken}`,
       },
     })
 
@@ -80,10 +78,9 @@ export const User = {
   },
 
   isLogged: async function () {
-    const { getConfigValue } = await import('@/services/tauri/configValue')
-    const token = (await getConfigValue('token')) as string
+    const storedToken = localStorage.getItem('anima.userToken')
 
-    if (!token || token.trim() === '') return false
+    if (!storedToken || storedToken.trim() === '') return false
     return true
   },
 

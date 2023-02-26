@@ -9,7 +9,7 @@ import Login from '@/components/splashscreen/Login'
 import Register from '@/components/splashscreen/Register'
 import Welcome from '@/components/splashscreen/Welcome'
 import { User } from '@/services/anima/user'
-import { splashScreenPageAtom, splashScreenPagePropsAtom } from '@/stores/atoms'
+import { splashScreenPageAtom, splashScreenPagePropsAtom, userToken } from '@/stores/atoms'
 import { relaunch } from '@tauri-apps/api/process'
 
 const pages = {
@@ -27,26 +27,26 @@ const timedPromise = async (promFac: () => Promise<any>) => {
   }
 }
 
-const ensureUserToken = async () => {
-  try {
-    const { getConfigValue, setConfigValue } = await import('@/services/tauri/configValue')
-    const userToken = (await getConfigValue('token')) as string
-    if (!userToken || userToken.trim() == '') {
-      return false
-    }
-
-    const data = await User.validate(userToken)
-
-    return dayjs().isBefore(dayjs.unix(data.exp).subtract(1, 'day'))
-  } catch (e) {
-    return false
-  }
-}
 
 function SplashScreen() {
   const [pageProps, setPageProps] = useAtom(splashScreenPagePropsAtom)
   const [currentPage, setCurrentPage] = useAtom(splashScreenPageAtom)
+  const [storedToken] = useAtom(userToken)
   const Element = pages[currentPage]
+
+  const ensureUserToken = async () => {
+    try {
+      if (!storedToken || storedToken.trim() == '') {
+        return false
+      }
+  
+      const data = await User.validate(storedToken)
+  
+      return dayjs().isBefore(dayjs.unix(data.exp).subtract(1, 'day'))
+    } catch (e) {
+      return false
+    }
+  }
 
   useEffect(() => {
     ;(async () => {
