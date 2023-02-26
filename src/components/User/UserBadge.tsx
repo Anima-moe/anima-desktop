@@ -36,8 +36,8 @@ const UserBadge: React.FunctionComponent<IUserBadgeProps> = ({badge}) => {
           <Tooltip.Content className="bg-secondary z-50 flex rounded-md px-4 py-2 items-center" sideOffset={5}>
             { badge.icon ? <>
               <div className='relative w-8 h-8 mr-4'>
-                <img src={`/badges/${badge.icon}.svg`} className='h-8 w-8 absolute top-0 left-0' />
-                <img src={`/badges/${badge.icon}.svg`} className='h-8 w-8 blur-md  absolute top-0 left-0' />
+                <img src={`/badges/${badge.icon}.png`} className='h-8 w-8 absolute top-0 left-0' />
+                <img src={`/badges/${badge.icon}.png`} className='h-8 w-8 blur-md  absolute top-0 left-0' />
               </div>
               <div className='flex flex-col'>
                 <span className='text-sm'>{badge.name}</span>
