@@ -116,10 +116,8 @@ function Index() {
     
     if (sourceController.currentQuality !== streamConfig.streamHeight) {
       const equivalent = streamConfig.streamHeights.findIndex((quality) => quality.height === streamConfig.streamHeight)
-      console.log('Equivalent', equivalent, streamConfig.streamHeights, streamConfig.streamHeight)
-      if (equivalent === -1) return console.log('Requested quality not found in streamHeights', streamConfig.streamHeights, streamConfig.streamHeight)
 
-      console.log('Current quality is not the same as requested quality, changing quality', streamConfig.streamHeights, equivalent)
+      if (equivalent === -1) return
       
       sourceController.requestQualityChange(streamConfig.streamHeights[equivalent])
     }
