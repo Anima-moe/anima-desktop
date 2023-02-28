@@ -9,7 +9,15 @@ import clsx from 'clsx'
 import i18next from 'i18next'
 import isAnimated from 'is-animated'
 import { useAtom } from 'jotai'
-import { Activity, CaretDown, CaretUp, CircleNotch, PencilLine, Icon, UserFocus } from 'phosphor-react'
+import {
+  Activity,
+  CaretDown,
+  CaretUp,
+  CircleNotch,
+  PencilLine,
+  Icon,
+  UserFocus,
+} from 'phosphor-react'
 import {
   Shield,
   User,
@@ -109,24 +117,11 @@ const UserEdit = () => {
       }
     }
 
-    toast.promise(
-      AnimaUser.update(data),
-      {
-        pending: t('user_edit_save_pending'),
-        success: t('user_edit_save_success'),
-        error: t('user_edit_save_error'),
-      },
-      {
-        position: 'bottom-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: 'dark',
-      }
-    )
+    await toast.promise(AnimaUser.update(data), {
+      pending: t('user_edit_save_pending'),
+      success: t('user_edit_save_success'),
+      error: t('user_edit_save_error'),
+    })
 
     setLoading(false)
   }
@@ -236,17 +231,27 @@ const UserEdit = () => {
 
   return (
     <GeneralLayout fluid>
-       <div className={'cover absolute top-0 left-0 h-screen w-screen overflow-hidden bg-cover'} style={{backgroundImage: `url('${watch().background}')`}}>
+      <div
+        className={'cover absolute top-0 left-0 h-screen w-screen overflow-hidden bg-cover'}
+        style={{ backgroundImage: `url('${watch().background}')` }}
+      >
         {watch().background ? (
-          (watch().background && watch().background.endsWith('.mp4') || watch().background.endsWith('.webm')) && (
-            <video autoPlay loop muted className='h-full w-full object-cover' src={watch().background || '/i/splash/mp4'} />
+          ((watch().background && watch().background.endsWith('.mp4')) ||
+            watch().background.endsWith('.webm')) && (
+            <video
+              autoPlay
+              loop
+              muted
+              className="h-full w-full object-cover"
+              src={watch().background || '/i/splash/mp4'}
+            />
           )
         ) : (
-          <video autoPlay loop muted className='h-full w-full object-cover' src='/i/splash.mp4' />
+          <video autoPlay loop muted className="h-full w-full object-cover" src="/i/splash.mp4" />
         )}
       </div>
       <div className="absolute top-0 left-0 h-full w-full bg-primary/70 bg-gradient-to-t from-primary to-transparent" />
-      <div className="z-[1] my-24 w-full mx-8">
+      <div className="z-[1] my-24 mx-8 w-full">
         {watch() && (
           <UserCard
             user={{
@@ -261,7 +266,7 @@ const UserEdit = () => {
           />
         )}
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex w-full flex-col space-y-2 rounded-md bg-secondary p-5 max-w-4xl mx-auto">
+          <div className="mx-auto flex w-full max-w-4xl flex-col space-y-2 rounded-md bg-secondary p-5">
             {inputs.map((input, i) => (
               <TitleInput
                 id={input.id}
@@ -328,12 +333,12 @@ const UserEdit = () => {
                 />
               </TitleInput>
             ))}
-          <Button
-            text={t('user_edit_save')}
-            Icon={<PencilLine className="order-first mr-4" weight="fill" size={24} />}
-            className="ml-auto bg-accent text-primary"
-            disabled={loading}
-          />
+            <Button
+              text={t('user_edit_save')}
+              Icon={<PencilLine className="order-first mr-4" weight="fill" size={24} />}
+              className="ml-auto bg-accent text-primary"
+              disabled={loading}
+            />
           </div>
         </form>
       </div>
