@@ -3,6 +3,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --toastify-color-dark: #141414 !important;
+}
+
 *:focus-visible {
   outline: none;
 }
@@ -225,19 +229,19 @@ input[type='color']::-webkit-color-swatch {
   border: none !important;
 }
 
-input[type=color]{
-	width: 100%;
-	height: 50px;
-	border: none;
-	border-radius: 40px;
-	background: none;
+input[type='color'] {
+  width: 100%;
+  height: 50px;
+  border: none;
+  border-radius: 40px;
+  background: none;
 }
-input[type="color"]::-webkit-color-swatch-wrapper {
-	padding: 0;
+input[type='color']::-webkit-color-swatch-wrapper {
+  padding: 0;
 }
-input[type="color"]::-webkit-color-swatch {
-	border: solid 1px #000; /*change color of the swatch border here*/
-	border-radius: .25rem;
+input[type='color']::-webkit-color-swatch {
+  border: solid 1px #000; /*change color of the swatch border here*/
+  border-radius: 0.25rem;
 }
 
 .swiper {
@@ -245,6 +249,6 @@ input[type="color"]::-webkit-color-swatch {
   margin-right: 0 !important;
 }
 
-.video-control[data-state="open"] {
+.video-control[data-state='open'] {
   @apply bg-primary;
 }

@@ -159,7 +159,7 @@ namespace Anima {
   namespace API {
     type DefaultResponse<T> = {
       count: number
-      data: T
+      data: T[]
     }
 
     type Error = {

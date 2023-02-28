@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import { useEffect } from 'react'
+import { ToastContentProps, toast } from 'react-toastify'
 
 import dayjs from 'dayjs'
 import { AnimatePresence } from 'framer-motion'
@@ -10,7 +10,6 @@ import Register from '@/components/splashscreen/Register'
 import Welcome from '@/components/splashscreen/Welcome'
 import { User } from '@/services/anima/user'
 import { splashScreenPageAtom, splashScreenPagePropsAtom, userToken } from '@/stores/atoms'
-import { relaunch } from '@tauri-apps/api/process'
 
 const pages = {
   welcome: Welcome,
@@ -49,15 +48,18 @@ function SplashScreen() {
   }
 
   useEffect(() => {
-    ;(async () => {
+    const start = async () => {
       try {
-        const { checkUpdate, installUpdate } = await import('@tauri-apps/api/updater')
+        const { checkUpdate } = await import('@tauri-apps/api/updater')
         const { shouldUpdate } = await checkUpdate()
         if (shouldUpdate) {
-          await installUpdate()
-          return relaunch()
+          toast(<UpdaterToast />, {
+            autoClose: false,
+            closeOnClick: false,
+            closeButton: false,
+          })
         }
-      } catch (e) {}
+      } catch {}
 
       const { value: userHasToken, elapsed } = await timedPromise(ensureUserToken)
       setTimeout(
@@ -71,8 +73,75 @@ function SplashScreen() {
         },
         elapsed > 2000 ? 0 : 2000 - elapsed
       )
-    })()
+    }
+    start()
   }, [])
+
+  const UpdaterToast = ({ closeToast }: Partial<ToastContentProps>) => {
+    const handleRefuse = () => closeToast()
+
+    const handleDownload = async () => {
+      closeToast()
+
+      const { installUpdate } = await import('@tauri-apps/api/updater')
+
+      await toast.promise(installUpdate(), {
+        pending: 'downloading porra',
+        success: 'download completed',
+        error: 'downaload errorr',
+      })
+
+      toast(<RestartToast />, {
+        autoClose: false,
+        closeOnClick: false,
+        closeButton: false,
+      })
+    }
+
+    return (
+      <div className="flex h-full w-full flex-col items-center justify-center space-y-2">
+        New version available, download
+        <div className="flex w-full justify-evenly">
+          <button className="px-3 py-1" onClick={handleRefuse}>
+            Not now
+          </button>
+          <button
+            className="rounded-lg bg-accent px-3 py-1 text-primary hover:bg-black hover:text-accent"
+            onClick={handleDownload}
+          >
+            Download
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  const RestartToast = ({ closeToast }: Partial<ToastContentProps>) => {
+    const handleRefuse = () => closeToast()
+
+    const handleRestart = async () => {
+      const { relaunch } = await import('@tauri-apps/api/process')
+      await relaunch()
+    }
+
+    return (
+      <div className="flex h-full w-full flex-col items-center justify-center space-y-2">
+        Download completed restart to install
+        <div className="flex w-full justify-evenly">
+          <button className="px-3 py-1" onClick={handleRefuse}>
+            Not now
+          </button>
+          <button
+            className="rounded-lg bg-accent px-3 py-1 text-primary hover:bg-black hover:text-accent"
+            onClick={handleRestart}
+          >
+            Download
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <AnimatePresence initial mode="wait">
       <Element key={currentPage} {...pageProps} />
