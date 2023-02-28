@@ -78,7 +78,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         draggable={false}
         theme="dark"
         position="bottom-right"
-        bodyClassName={() => 'flex-auto py-2 select-none'}
+        bodyClassName={() => 'my-auto flex flex-auto select-none items-center py-2'}
       />
     </QueryClientProvider>
   )
