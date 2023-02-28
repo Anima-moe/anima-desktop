@@ -154,11 +154,11 @@ const languageTable = {
 
       splash_welcome: 'Vamos começar.',
       splash_continueAsGuest: 'Continuar sem uma conta',
-      splash_loginOrRegister: 'Login/Registro',
+      splash_loginOrRegister: 'Entrar/Registrar',
       splash_joinDiscord: 'Junte-se ao nosso servidor do discord!',
       splash_user: 'Usuário',
       splash_password: 'Senha',
-      splash_email: 'Email',
+      splash_email: 'E-mail',
       splash_version: 'Nova versão disponível! Atualizar agora?',
       splash_version_refuse: 'Agora não',
       splash_version_accept: 'Atualizar',
@@ -177,7 +177,7 @@ const languageTable = {
 
       section_continueWatching: 'Continue Assistindo',
       section_popular: 'Popular',
-      section_latest: 'Mais recented',
+      section_latest: 'Mais recente',
       section_categories: 'Categorias',
       section_simulcast: 'Temporada de inverno',
       section_staffPick: 'Escolha da Staff',
@@ -259,7 +259,7 @@ const languageTable = {
       user_minLength: 'Campo deve ter no mínimo {{n}} caracteres',
       user_wrongAuth: 'Usuário ou senha incorretos',
       user_missingField: 'Preencha todos os campos',
-      user_uniqueTaken: 'Username or email already taken',
+      user_uniqueTaken: 'Usuário ou e-mail já cadastrado',
 
       'ar-SA': 'العربية',
       'en-US': 'English',
@@ -272,7 +272,7 @@ const languageTable = {
       'fr-FR': 'Français',
       'it-IT': 'Italiano',
       'ja-JP': '日本語',
-      none: 'Disabled',
+      none: 'Nenhum',
 
       player_endtime: 'Termina às {{time}}',
     },
