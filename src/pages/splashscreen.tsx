@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { ToastContentProps, toast } from 'react-toastify'
 
 import dayjs from 'dayjs'
@@ -26,21 +27,21 @@ const timedPromise = async (promFac: () => Promise<any>) => {
   }
 }
 
-
 function SplashScreen() {
   const [pageProps, setPageProps] = useAtom(splashScreenPagePropsAtom)
   const [currentPage, setCurrentPage] = useAtom(splashScreenPageAtom)
   const [storedToken] = useAtom(userToken)
   const Element = pages[currentPage]
+  const { t } = useTranslation()
 
   const ensureUserToken = async () => {
     try {
       if (!storedToken || storedToken.trim() == '') {
         return false
       }
-  
+
       const data = await User.validate(storedToken)
-  
+
       return dayjs().isBefore(dayjs.unix(data.exp).subtract(1, 'day'))
     } catch (e) {
       return false
@@ -49,6 +50,21 @@ function SplashScreen() {
 
   useEffect(() => {
     const start = async () => {
+      async function init() {
+        const { value: userHasToken, elapsed } = await timedPromise(ensureUserToken)
+        setTimeout(
+          async () => {
+            if (!userHasToken) {
+              setCurrentPage('login')
+            } else {
+              const { createMainWindow } = await import('@/services/tauri/windows')
+              createMainWindow()
+            }
+          },
+          elapsed > 2000 ? 0 : 2000 - elapsed
+        )
+      }
+
       try {
         const { checkUpdate } = await import('@tauri-apps/api/updater')
         const { shouldUpdate } = await checkUpdate()
@@ -57,23 +73,17 @@ function SplashScreen() {
             autoClose: false,
             closeOnClick: false,
             closeButton: false,
+            onClose: () => {
+              init()
+            },
           })
+          return
         }
       } catch {}
 
-      const { value: userHasToken, elapsed } = await timedPromise(ensureUserToken)
-      setTimeout(
-        async () => {
-          if (!userHasToken) {
-            setCurrentPage('login')
-          } else {
-            const { createMainWindow } = await import('@/services/tauri/windows')
-            createMainWindow()
-          }
-        },
-        elapsed > 2000 ? 0 : 2000 - elapsed
-      )
+      init()
     }
+
     start()
   }, [])
 
@@ -86,56 +96,27 @@ function SplashScreen() {
       const { installUpdate } = await import('@tauri-apps/api/updater')
 
       await toast.promise(installUpdate(), {
-        pending: 'downloading porra',
-        success: 'download completed',
-        error: 'downaload errorr',
+        pending: t('splash_downloading_pending'),
+        success: t('splash_downloading_success'),
+        error: t('splash_downloading_error'),
       })
 
-      toast(<RestartToast />, {
-        autoClose: false,
-        closeOnClick: false,
-        closeButton: false,
-      })
-    }
-
-    return (
-      <div className="flex h-full w-full flex-col items-center justify-center space-y-2">
-        New version available, download
-        <div className="flex w-full justify-evenly">
-          <button className="px-3 py-1" onClick={handleRefuse}>
-            Not now
-          </button>
-          <button
-            className="rounded-lg bg-accent px-3 py-1 text-primary hover:bg-black hover:text-accent"
-            onClick={handleDownload}
-          >
-            Download
-          </button>
-        </div>
-      </div>
-    )
-  }
-
-  const RestartToast = ({ closeToast }: Partial<ToastContentProps>) => {
-    const handleRefuse = () => closeToast()
-
-    const handleRestart = async () => {
       const { relaunch } = await import('@tauri-apps/api/process')
       await relaunch()
     }
 
     return (
-      <div className="flex h-full w-full flex-col items-center justify-center space-y-2">
-        Download completed restart to install
+      <div className="flex h-full w-full flex-col items-center justify-center space-y-3">
+        {t('splash_version')}
         <div className="flex w-full justify-evenly">
           <button className="px-3 py-1" onClick={handleRefuse}>
-            Not now
+            {t('splash_version_refuse')}
           </button>
           <button
             className="rounded-lg bg-accent px-3 py-1 text-primary hover:bg-black hover:text-accent"
-            onClick={handleRestart}
+            onClick={handleDownload}
           >
-            Download
+            {t('splash_version_accept')}
           </button>
         </div>
       </div>
