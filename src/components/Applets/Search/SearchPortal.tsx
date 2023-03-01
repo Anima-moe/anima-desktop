@@ -122,7 +122,7 @@ function SearchPortal({ query = '' }: Props) {
             animes={searchResult.data.filter((anime) => {
               if (selectedCategory.length === 0) return true
               return compareArrays(
-                anime.Category.map((c) => c.slug),
+                anime.Category?.map((c) => c.slug),
                 selectedCategory.map((c) => c.slug)
               )
             })}
