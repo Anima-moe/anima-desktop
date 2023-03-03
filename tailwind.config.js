@@ -3,13 +3,7 @@ module.exports = {
   content: [
     './src/**/*.{js,ts,jsx,tsx}',
   ],
-  variants: {
-    extend: {
-      'nth-last-child': '&:not(:last-child)',
-      'nth-first-child': '&:not(:first-child)',
-      'nth-last-of-type': '&:not(:last-of-type)',
-    }
-  },
+  variants: {},
   theme: {
     extend: {
       colors: {
@@ -18,9 +12,6 @@ module.exports = {
         tertiary: '#141414',
         subtle: '#5D5D5D',
         accent: '#27FF7E',
-      },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
       }
     },
   },
