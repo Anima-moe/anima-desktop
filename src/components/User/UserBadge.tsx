@@ -25,7 +25,7 @@ const badgeMapping = {
 const UserBadge: React.FunctionComponent<IUserBadgeProps> = ({badge}) => {
   return <Tooltip.Provider >
       <Tooltip.Root>
-        <Tooltip.Trigger asChild className='cursor-pointer'>
+        <Tooltip.Trigger asChild className='cursor-help'>
           { badge.icon ? (
             <img src={`/badges/${badge.icon}.png`} className='h-6 w-6' />
           )  : (
@@ -33,7 +33,7 @@ const UserBadge: React.FunctionComponent<IUserBadgeProps> = ({badge}) => {
           ) }
         </Tooltip.Trigger>
         <Tooltip.Portal>
-          <Tooltip.Content className="bg-secondary z-50 flex rounded-md px-4 py-2 items-center" sideOffset={5}>
+          <Tooltip.Content className="bg-secondary z-50 flex rounded-md px-4 py-2 items-center shadow-md" sideOffset={5}>
             { badge.icon ? <>
               <div className='relative w-8 h-8 mr-4'>
                 <img src={`/badges/${badge.icon}.png`} className='h-8 w-8 absolute top-0 left-0' />
