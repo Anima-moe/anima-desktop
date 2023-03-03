@@ -46,7 +46,7 @@ function AnimeGrid({
                 width: `calc(calc(100vw - 16px - 8rem) / ${animesPerRow})`,
                 minWidth: `calc(calc(100vw - 16px - 8rem) / ${animesPerRow})`,
               }}
-              itemID={anime.slug || anime.title}
+              itemID={anime.slug || String(anime.id)}
             >
               <AnimeCard anime={anime} noHover={alwaysShowInfo} onClick={onAnimeSelect} />
               {alwaysShowInfo && (
