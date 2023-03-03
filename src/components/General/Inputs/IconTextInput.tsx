@@ -14,7 +14,7 @@ type Props = InputHTMLAttributes<HTMLInputElement> & {
 
 const IconInput = forwardRef<InputHTMLAttributes<HTMLInputElement>, PropsWithChildren<Props>>(
   ({ id, Icon, placeholder, type, error, className, children, ...props }, ref) => (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full">
       <div className="relative my-1.5 flex w-full items-center justify-start">
         <input
           id={id}
@@ -25,6 +25,7 @@ const IconInput = forwardRef<InputHTMLAttributes<HTMLInputElement>, PropsWithChi
           )}
           placeholder={placeholder}
           type={type}
+          autoComplete='off'
           {...props}
         />
         <Icon size={24} className="absolute left-3 top-1/2 -translate-y-1/2 text-subtle" />
