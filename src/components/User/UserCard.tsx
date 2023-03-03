@@ -79,7 +79,7 @@ const UserCard = ({ showStatics, user, showEditButton }: Props) => {
                 className="text-2xl font-semibold"
                 style={{ color: `${user?.profile?.color || '#8D8D8D'}` }}
               >
-                {properCase(user?.username)}
+                {user?.username}
               </span>
               {user?.profile?.Badge?.map((badge, i) => {
                 if (badge.icon) return
