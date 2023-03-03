@@ -39,7 +39,7 @@ const User = () => {
     refetchOnWindowFocus: false
   })
   const { data: userPlayerHead, isLoading: userPlayerHeadIsLoading, error: userPlayerHeadError} = useQuery(`/api/user/${router.query.id}/player-head`, () => { return fetchPlayerHead(router.query.id as string) }, {
-    refetchOnWindowFocus: false
+    refetchOnWindowFocus: true,
   })
 
   useEffect(()=>{

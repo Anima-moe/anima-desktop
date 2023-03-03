@@ -3,13 +3,14 @@ import client from '@/services/anima/httpService'
 export const User = {
   getUserData: async function () {
     const storedToken = JSON.parse(localStorage.getItem('anima.userToken'))
+    console.log('Stored token', storedToken)
     if (!storedToken) {
       return
     }
 
     const decodedToken = atob(storedToken.split('.')[1])
 
-    return { ...JSON.parse(decodedToken), storedToken } as Partial<Anima.RAW.User> & {
+    return { ...JSON.parse(decodedToken), token: storedToken } as Partial<Anima.RAW.User> & {
       token: string
     }
   },
@@ -113,9 +114,15 @@ export const User = {
 
   postEpisodePlayerHead: async function (episodeId: number, duration: number, head: number) {
     const userData = await User.getUserData()
-    if (!userData || !userData.id) return
+    console.log('User Data', userData)
+    if (!userData || !userData.id || !userData.token) return
+    console.log('Sending request (POST) with headers:', {
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
+    })
 
-    const { data } = await client.post(
+    await client.post(
       `/user/${userData.id}/playerhead`,
       {
         duration,
