@@ -6,7 +6,7 @@ type Props = {
 
 function Media({ children }: Props) {
   return (
-    <main className="flex h-screen w-screen overflow-hidden" id="content">
+    <main className="flex h-screen w-screen overflow-auto" id="content">
       {children}
     </main>
   )
