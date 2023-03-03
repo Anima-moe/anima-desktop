@@ -40,11 +40,9 @@ export const Anime = {
   },
 
   search: async function (query: string) {
-    const { data } = await client.get('/anime/search', {
+    const { data } = await client.get('/search', {
       params: {
         q: query,
-        count: 20,
-        start: 0,
       },
     })
     return data as Anima.API.SearchAnimes

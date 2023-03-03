@@ -8,7 +8,7 @@ import Loading from '../General/Loading'
 import AnimeCard from './AnimeCard'
 
 type Props = {
-  animes: Anima.RAW.Anime[]
+  animes: Anima.RAW.Anime[] | Anima.API.SearchAnimes['data']
   alwaysShowInfo?: boolean
   animesPerRow?: number
   onHitBottom?: () => void
@@ -40,13 +40,13 @@ function AnimeGrid({
         <div className="flex h-full w-full flex-wrap">
           {animes.map((anime) => (
             <div
-              key={anime.slug}
+              key={anime.slug || anime.id}
               className="group mx-2 flex aspect-[3/2] select-none flex-col py-2.5"
               style={{
                 width: `calc(calc(100vw - 16px - 8rem) / ${animesPerRow})`,
                 minWidth: `calc(calc(100vw - 16px - 8rem) / ${animesPerRow})`,
               }}
-              itemID={anime.slug}
+              itemID={anime.slug || anime.title}
             >
               <AnimeCard anime={anime} noHover={alwaysShowInfo} onClick={onAnimeSelect} />
               {alwaysShowInfo && (

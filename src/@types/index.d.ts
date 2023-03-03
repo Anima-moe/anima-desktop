@@ -180,10 +180,13 @@ namespace Anima {
       message: string
     }
 
-    type SearchAnimes = {
-      count: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7
-      data: Anima.RAW.Anime[]
-    } // Returns empty array if none found
+    type SearchAnimes = DefaultResponse<{
+      id: number
+      title: string
+      cover: string
+      AnimeMetadata: Anima.RAW.AnimeMetadata[]
+      Category: Anima.RAW.Category[]
+    }> // Returns empty array if none found
 
     type GetAnimeByID = {
       counter: 1
