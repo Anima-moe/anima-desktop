@@ -14,6 +14,18 @@ namespace Anima {
   namespace RAW {
     type Locales = 'en-US' | 'pt-BR' | 'es-419' | 'de-DE' | 'ja-JP' | 'pt-PT'
 
+    type Comment = {
+      id: number
+      user_id: number
+      parent_id?: number
+      episode_id: number
+      comment: string
+      Children?: Anima.RAW.Comment[]
+      created_at: string
+      updated_at: string
+      User: Anima.RAW.User
+    }
+
     type CategoryMetadata = {
       title: string
       description: string
@@ -147,9 +159,10 @@ namespace Anima {
       iat?: number
       exp?: number
       premium: number
-      profile: Anima.RAW.UserProfile
-      UserPlayerHead: Anima.RAW.UserPlayerHead[]
-      _count: {
+      profile?: Anima.RAW.UserProfile // TODO:
+      UserProfile?: Anima.RAW.UserProfile // This needs to bne fixed.
+      UserPlayerHead?: Anima.RAW.UserPlayerHead[]
+      _count?: {
         Comment?: number
         UserPlayerHead?: number
       }
@@ -248,6 +261,11 @@ namespace Anima {
 
     type Register = Anima.RAW.User & {
       token: string
+    }
+
+    type GetComments = {
+      count: number
+      data: Anima.RAW.Comment[]
     }
   }
 }
