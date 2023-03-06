@@ -148,6 +148,8 @@ namespace Anima {
           }
         }
       }
+      created_at: string
+      updated_at: string
       duration: number
     }
 
