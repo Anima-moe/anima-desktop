@@ -87,7 +87,7 @@ function EpisodePlayerHead({ playerHead }: Props) {
               <div className=' w-full h-2 bg-white/20 rounded mt-3 overflow-hidden' >
                 <div 
                   className='h-full bg-accent rounded'
-                  style={{width: `${Math.round((playerHead.head/playerHead.duration)*100)}%`}} 
+                  style={{width: `${~~((playerHead.head/playerHead.duration)*100)}%`}} 
                 />
               </div>
             </motion.div>

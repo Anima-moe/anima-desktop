@@ -42,7 +42,7 @@ const EmojiOptionsInput = forwardRef<SelectHTMLAttributes<HTMLSelectElement>, Pr
                   <Listbox.Option
                     key={optionIdx}
                     className={({ active }) =>
-                      `relative mx-1 cursor-default select-none rounded-md py-2 pl-4 pr-4 text-lg duration-200 ${
+                      `relative mx-1 cursor-pointer select-none rounded-md py-2 pl-4 pr-4 text-lg duration-200 ${
                         active
                           ? 'bg-accent text-primary'
                           : 'text-white text-opacity-60' + activeItem.value === option.value

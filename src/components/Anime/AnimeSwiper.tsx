@@ -23,7 +23,7 @@ function SwiperAnime({ animesPerScreen, animes, loading, alwaysShowInfo }: Props
   return (
     <Swiper
       slidesPerView={animesPerScreen}
-      slidesPerGroup={Math.round(animesPerScreen / 2)}
+      slidesPerGroup={~~(animesPerScreen / 2)}
       // spaceBetween={0}
       navigation
       lazy

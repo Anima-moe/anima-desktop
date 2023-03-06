@@ -8,19 +8,17 @@ import { useRouter } from 'next/router'
 import type { MediaPlayerElement } from 'vidstack'
 
 import StreamError from '@/components/Error/StreamError'
+import Loading from '@/components/General/Loading'
 import General from '@/components/Layout/General'
 import MediaLayout from '@/components/Layout/Media'
+import Player from '@/components/Player'
 import UserCommentBlock from '@/components/User/CommentBlock'
-import Player from '@/components/VidstackPlayer'
-import StreamLoading from '@/components/VidstackPlayer/Displays/StreamLoading'
-import SourceController from '@/components/VidstackPlayer/sourceController'
-import SutbtitleController from '@/components/VidstackPlayer/subtitleController'
 import usePresence from '@/hooks/usePresence'
+import { Anime } from '@/services/anima/anime'
 import { Episode } from '@/services/anima/episode'
-import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
 import { Season } from '@/services/anima/season'
 
-import { playerStreamConfig, userPreferedPlayerMode } from '../../stores/atoms'
+import { userPreferedPlayerMode } from '../../stores/atoms'
 
 function fetchStreams(episodeID?: string) {
   if (!episodeID) return
@@ -37,186 +35,72 @@ function fetchSeason(seasonID?: number) {
   return Season.get(Number(seasonID), i18next.language)
 }
 
+function fetchAnime(animeID?: number) {
+  if (!animeID) return
+  return Anime.get(Number(animeID))
+}
+
+function fetcComments(episodeID: string, skipComments = 0) {
+  if (!episodeID) return
+  return Episode.getComments(Number(episodeID), skipComments, 10)
+}
+
+const queryOptions = {
+  cacheTime: 0,
+  retry: 3,
+  refetchOnWindowFocus: false,
+}
+
 function Index() {
   const router = useRouter()
   const mediaPlayer = createRef<MediaPlayerElement>()
-  const [streamConfig] = useAtom(playerStreamConfig)
-  const [sourceController, defineSourceController] = useState<SourceController>()
-  const [subtitleController, defineSubtitleController] = useState<SutbtitleController>()
   const [commentsPage, setcommentsPage] = useState(0)
   const [playerExpanded] = useAtom(userPreferedPlayerMode)
-  const {
-    data: episodeData,
-    isLoading: episodeLoading,
-    error: episodeError,
-  } = useQuery(`/api/episode/${router.query.id}`, () => fetchEpisode(router.query.id as string), {
-    cacheTime: 0,
-    retry: 3,
-    refetchOnWindowFocus: false,
-  })
-  const {
-    data: seasonData,
-    isLoading: seasonLoading,
-    error: seasonError,
-  } = useQuery(
-    `/api/season/${episodeData?.data?.season_id}`,
-    () => fetchSeason(episodeData?.data?.season_id),
-    {
-      cacheTime: 0,
-      retry: 3,
-      refetchOnWindowFocus: false,
-    }
-  )
-  const {
-    data: streamData,
-    isLoading: streamLoading,
-    error: streamError,
-  } = useQuery(
-    `/api/episode/${router.query.id}/streams`,
-    () => fetchStreams(router.query.id as string),
-    {
-      cacheTime: 0,
-      retry: 3,
-      refetchOnWindowFocus: false,
-    }
-  )
-  
-  const { data: commentsData, isLoading: loadingComments, refetch: refecthComments } = useQuery(`episode/${router.query.id}/comments`, ()=> Episode.getComments(Number(router.query.id) , commentsPage * 10), {
-    refetchInterval: 5 * 60 * 1000,
-    refetchOnWindowFocus: false
-  } )
+  const { data: episodeData, isLoading: episodeLoading, error: episodeError, } = useQuery(`/api/episode/${router.query.id}`, () => fetchEpisode(router.query.id as string), queryOptions)
+  const { data: seasonData, isLoading: seasonLoading, error: seasonError, } = useQuery(`/api/season/${episodeData?.data?.season_id}`, () => fetchSeason(episodeData?.data?.season_id), queryOptions)
+  const { data: animeData, isLoading: animeLoading, error: animeError, } = useQuery(`/api/anime/${seasonData?.data?.[0]?.anime_id}`, () => fetchAnime(seasonData?.data?.[0].anime_id), queryOptions)
+  const { data: streamData, isLoading: streamLoading,error: streamError, } = useQuery(`/api/episode/${router.query.id}/streams`, () => fetchStreams(router.query.id as string), queryOptions)
+  const { data: commentsData, isLoading: loadingComments, refetch: refecthComments, } = useQuery(`episode/${router.query.id}/comments`, () => fetcComments(router.query.id as string, commentsPage * 10), queryOptions)
 
   const { setPresence } = usePresence()
 
-  useEffect(() => {
-    if (!router.isReady) {
-      return
-    }
-    if (!streamData || !seasonData || !episodeData) {
-      return
-    }
-
-    setPresence(episodeData.data, true)
-
-    if (!mediaPlayer.current) {
-      return
-    }
-
-    defineSourceController(
-      new SourceController(mediaPlayer.current, streamData.data, episodeData.data)
-    )
-    defineSubtitleController(new SutbtitleController(mediaPlayer.current, streamData.data))
-  }, [router, episodeLoading, seasonLoading, streamLoading, mediaPlayer.current])
-
-  // Listen for stream changes
-  useEffect(() => {
-    if (!router.isReady) {
-      return
-    }
-    if (!streamConfig.streamURL) {
-      return
-    }
-    if (!sourceController) {
-      return
-    }
-
-    sourceController.requestAudioChange(streamConfig.streamLocale)
-  }, [router.query.id, streamConfig.streamLocale])
-
-  // Listen for request to change subtitle locale
-  useEffect(() => {
-    if (!router.isReady) {
-      return
-    }
-    if (!subtitleController) {
-      return
-    }
-
-    subtitleController.requestSubtitleChange(streamConfig.subtitleLocale)
-  }, [router.isReady, subtitleController, streamConfig.subtitleLocale])
-
-  // Listen for request to change quality height
-  useEffect(() => {
-    if (!mediaPlayer) {
-      return
-    }
-    if (!sourceController) {
-      return
-    }
-
-    if (sourceController.currentQuality !== streamConfig.streamHeight) {
-      const equivalent = streamConfig.streamHeights.findIndex(
-        (quality) => quality.height === streamConfig.streamHeight
-      )
-
-      if (equivalent === -1) return
-
-      sourceController.requestQualityChange(streamConfig.streamHeights[equivalent])
-    }
-  }, [sourceController, mediaPlayer, streamConfig.streamHeight])
-
-  if (streamLoading || seasonLoading || episodeLoading) {
-    return <StreamLoading background={episodeData?.data?.thumbnail} />
-  }
-
-  if (
-    !episodeData ||
-    !seasonData ||
-    !streamData ||
-    episodeError ||
-    seasonError ||
-    streamError ||
-    streamData.count < 1
-  )
-    return (
-      <StreamError
-        error={`.report ${btoa(
-          JSON.stringify({
-            episode: episodeData?.data?.id,
-            season: episodeData?.data?.season_id,
-            anime: seasonData?.data?.[0]?.anime_id,
-            source: episodeData?.data?.source_id,
-            localizedTitle: getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(
-              episodeData?.data
-            )?.title,
-            message: `${episodeError || seasonError || streamError || 'STREAM NOT FOUND'}`,
-          })
-        )}`}
-      />
-    )
-
-  const mediaWrapperClasses = clsx({
-    'aspect-video relative overflow-hidden rounded-md': true,
-    'h-[85vh] mt-4': playerExpanded !== 'expanded',
-    'w-full h-full': playerExpanded === 'expanded',
-  })
-
-  const commentsWrapperClasses = clsx({
-    'duration-200 transition-all': true,
+  const contentWrapper = clsx({
+    'duration-200 transition-all relative rounded-md overflow-hidden': true,
     'w-[calc(85vh*1.77)] flex gap-4': playerExpanded !== 'expanded',
     'w-[calc(100%-2rem)] h-full': playerExpanded === 'expanded',
   })
 
+  if (animeLoading || seasonLoading || episodeLoading || streamLoading) {
+    return <General>
+      <div className='w-screen h-screen flex items-center justify-center'>
+        <Loading lg inline/>
+      </div>
+    </General>
+  }
+
+  if (!animeData || !seasonData || !episodeData || !streamData) {
+    return <General>
+      <div className='w-screen h-screen flex items-center justify-center'>
+        <StreamError error='Stuff gonne wrong'/>
+      </div>
+    </General>
+  }
+
   return (
     <MediaLayout>
-      <div className="flex h-min w-full flex-col items-center gap-4">
-        <div className={mediaWrapperClasses}>
-          {streamData && (
-            <Player
-              episodeData={episodeData.data}
-              seasonData={seasonData?.data[0]}
-              ref={mediaPlayer}
-              streamData={streamData.data}
-              onCanLoad={() => {}}
-              onSourceChange={(source) => {
-                subtitleController.requestSubtitleChange(streamConfig.subtitleLocale)
+      <div className="flex h-min w-full flex-col items-center gap-4 overflow-hidden">
+        <div className={contentWrapper}>
+          <Player animeData={animeData.data} episodeData={episodeData.data} seasonData={seasonData.data[0]} streamData={streamData.data}  />
+        </div>
+          <div className={contentWrapper}>
+            <UserCommentBlock
+              episodeId={episodeData?.data.id}
+              Comments={commentsData.data}
+              onComment={() => {
+                refecthComments()
               }}
             />
-          )}
-        </div>
-        { commentsData && <div className={commentsWrapperClasses}>
-          <UserCommentBlock episodeId={episodeData?.data.id} Comments={commentsData.data} onComment={()=>{refecthComments()}} />
-        </div> }
+          </div>
       </div>
     </MediaLayout>
   )

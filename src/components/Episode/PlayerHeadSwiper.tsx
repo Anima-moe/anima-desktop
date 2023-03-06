@@ -8,6 +8,8 @@ import 'swiper/css/virtual'
 import 'swiper/css/lazy'
 import EpisodePlayerHead from './EpisodePlayerHead'
 
+import dayjs from 'dayjs'
+
 SwiperCore.use([Virtual, Navigation, Lazy])
 
 type Props = {
@@ -27,7 +29,7 @@ function SwiperPlayerHead({ playerHeads, loading }: Props) {
       virtual
     >
       {playerHeads && (
-        playerHeads.sort((a, b) => b.id - a.id ).map((playerHead, index) => (
+        playerHeads.sort((a, b) => dayjs(b.updated_at).unix() - dayjs(a.updated_at).unix() ).map((playerHead, index) => (
           <SwiperSlide key={playerHead.id} virtualIndex={index} className='mt-4'>
             <EpisodePlayerHead playerHead={playerHead} />
           </SwiperSlide>

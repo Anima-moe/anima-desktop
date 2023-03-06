@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { profile } from 'console'
 import { ArrowBendDownRight, ArrowDown, ArrowElbowDownRight, ArrowRight } from 'phosphor-react'
@@ -12,24 +13,25 @@ interface IUserCommentProps {
 
 const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, isChildren }) => {
   const [showChildren, setShowChildren] = React.useState(true)
+  const { t } = useTranslation()
 
   if (isChildren) {
     return (
-      <article className="relative flex w-full items-center gap-2 overflow-hidden bg-secondary bg-cover bg-center p-2 pl-8 group-last-of-type:rounded-b-md ">
+      <article className='relative flex w-full items-center gap-2 overflow-hidden bg-secondary bg-cover bg-center p-2 pl-8 group-last-of-type:rounded-b-md '>
         {(comment.User?.premium > 0 || comment.User?.staff) && (
           <div
-            className="absolute top-0 left-0 z-[0] h-full w-full opacity-5"
+            className='absolute top-0 left-0 z-[0] h-full w-full opacity-5'
             style={{ backgroundColor: comment.User?.UserProfile.color }}
           />
         )}
-        <ArrowElbowDownRight size={24} className="text-subtle mr-4" />
+        <ArrowElbowDownRight size={24} className='text-subtle mr-4' />
         <div
-          className="rounded-full bg-primary bg-cover bg-center px-6 py-6"
+          className='rounded-full bg-primary bg-cover bg-center px-6 py-6'
           style={{ backgroundImage: `url('${comment.User?.UserProfile.avatar}')` }}
         />
-        <div className="flex w-full flex-col items-start gap-1">
+        <div className='flex w-full flex-col items-start gap-1'>
           <div
-            className="text-lg font-semibold flex items-center z-[1]"
+            className='text-lg font-semibold flex items-center z-[1]'
             style={{ color: comment.User?.UserProfile?.color || '#FFFFFF' }}
           >
             <div className='flex flex-row gap-2 items-center'>
@@ -50,23 +52,21 @@ const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, isCh
     {/* {(true) && ( */}
     {(comment.User.premium > 0 || comment.User.staff) && (
         <div
-          className="absolute top-0 left-0 z-[0] h-full w-full opacity-5"
+          className='absolute top-0 left-0 z-[0] h-full w-full opacity-5'
           style={{ backgroundColor: comment.User?.UserProfile.color }}
         />
       )}
-      <div className='absolute px-2 py-1 right-4 top-4 bg-black/30 rounded-md cursor-pointer hover:bg-accent z-[2] hover:text-primary text-subtle' onClick={()=>{setShowChildren(!showChildren)}}>
-        {comment.Children.length > 0 && (showChildren ? (
-          <span className='flex items-center text-xs gap-2'>Collapse <ArrowRight /></span>
+      {comment.Children.length > 0 && <div className='absolute px-2 py-1 right-4 top-4 bg-black/30 rounded-md cursor-pointer hover:bg-accent z-[2] hover:text-primary text-subtle' onClick={()=>{setShowChildren(!showChildren)}}>
+        {showChildren ? (
+          <span className='flex items-center text-xs gap-2'>{t('action_hideComments')}<ArrowRight /></span>
         ): (
-          <span className='flex items-center text-xs gap-2'>Collapse <ArrowDown /></span>
-        ))}
-      </div>
-      <div className="z-[1] flex">
-        <img src={comment.User?.UserProfile?.avatar} className="aspect-square h-16 rounded-full" />
-      </div>
-      <div className="z-[1] flex w-full flex-col gap-1">
+          <span className='flex items-center text-xs gap-2'>{t('action_showComments')} <ArrowDown /></span>
+        )}
+      </div> }
+      <div className='h-16 aspect-square rounded-full z-[1] flex bg-primary bg-cover bg-center' style={{ backgroundImage: `url(${comment.User?.UserProfile?.avatar})` }} />
+      <div className='z-[1] flex w-full flex-col gap-1'>
         <div
-          className="text-lg font-semibold flex gap-4 items-center"
+          className='text-lg font-semibold flex gap-4 items-center'
           style={{ color: comment.User?.UserProfile?.color || '#FFFFFF' }}
         >
           <div className='flex flex-row gap-2 items-center'>
@@ -76,7 +76,7 @@ const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, isCh
               return <UserBadge badge={badge} key={`user.${badge.name}.${i}`} />
             })}
           </div>
-          <div className="mt-1.5 flex gap-2">
+          <div className='flex gap-2'>
             {comment.User?.UserProfile?.Badge?.map((badge, i) => {
               if (!badge.icon) return
               return <UserBadge badge={badge} key={`user.${badge.name}.${i}`} />

@@ -16,19 +16,12 @@ type Props = {
 
 const activeCardVariants = {
   initial: {
-    transition: {
-      duration: 0.3,
-      ease: 'easeOut',
-    },
+    height: '4rem',
   },
   hover: {
+    height: '8rem',
     transition: {
-      duration: 0.3,
-      type: 'spring',
-      stiffness: 500,
-      damping: 60,
-      mass: 1,
-      ease: 'easeInOut',
+      duration: 0.1,
     },
   },
 }
@@ -41,17 +34,17 @@ const contentVariants = {
     opacity: 1,
     transition: {
       duration: 0.3,
-      ease: 'easeOut',
+      ease: 'easeOut'
     },
   },
 }
 
 const shadeVariants = {
   initial: {
-    opacity: 0.6,
+    opacity: 0.9,
   },
   hover: {
-    opacity: 0.9,
+    opacity: 0.6,
     transition: {
       duration: 0.3,
       type: 'tween',
@@ -69,8 +62,8 @@ function EpisodeFatCard({ episode, active, link }: Props) {
   const className = clsx({
     'flex flex-col w-full bg-cover bg-center bg-no-repeat relative rounded-md justify-end p-4 overflow-hidden select-none transition-all duration-300 mt-2':
       true,
-    'cursor-pointer h-16': !active,
-    'border border-accent cursor-not-allowed h-32': active,
+    'cursor-pointer': !active,
+    'border border-accent cursor-not-allowed': active,
   })
   return (
     <Link
@@ -81,14 +74,14 @@ function EpisodeFatCard({ episode, active, link }: Props) {
       <motion.div
         className={className}
         style={{ backgroundImage: `url('${episode.thumbnail}')` }}
-        variants={activeCardVariants}
+        variants={{...activeCardVariants, initial: {...activeCardVariants.hover, height: active? '8rem' : '4rem'}}}
         initial={'initial'}
         whileHover="hover"
         data-episode-id={episode.id}
       >
         <motion.div
           variants={shadeVariants}
-          className="z[-1] absolute top-0 left-0 h-[100%] w-[100%] bg-gradient-to-r from-black to-transparent"
+          className="z[-1] absolute top-0 left-0 h-[100%] w-[100%] bg-primary"
         />
         <motion.div className="z-[0]" variants={contentVariants}>
           <div className="flex flex-row items-center">
@@ -101,7 +94,7 @@ function EpisodeFatCard({ episode, active, link }: Props) {
             </span>
             <h1
               className={`w-full overflow-hidden text-ellipsis text-xs font-semibold line-clamp-1 ${
-                active ? 'opacity-100' : 'opacity-90'
+                active ? 'opacity-90' : 'opacity-100'
               }`}
             >
               {getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(episode)?.title ||
