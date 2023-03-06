@@ -191,11 +191,19 @@ const UserEdit = () => {
     { value: 'es-419', emoji: '🇪🇸' },
     { value: 'pt-PT', emoji: '🇵🇹' },
   ]
-  const locales = [
+
+  const audioLocales = [
     { value: 'pt-BR', emoji: '🇧🇷' },
     { value: 'en-US', emoji: '🇺🇸' },
     { value: 'es-419', emoji: '🇪🇸' },
     { value: 'ja-JP', emoji: '🇯🇵' },
+  ]
+
+  const subtitleLocales = [
+    { value: 'pt-BR', emoji: '🇧🇷' },
+    { value: 'en-US', emoji: '🇺🇸' },
+    { value: 'es-419', emoji: '🇪🇸' },
+    { value: 'Disabled', emoji: '⛔' },
   ]
 
   const selectors = [
@@ -208,10 +216,10 @@ const UserEdit = () => {
     {
       id: 'subtitle',
       title: t('user_edit_subtitle'),
-      options: locales,
-      default: userPreferedSubtitles,
+      options: subtitleLocales,
+      default: userSubtitle,
     },
-    { id: 'audio', title: t('user_edit_audio'), options: locales, default: userPreferedAudio },
+    { id: 'audio', title: t('user_edit_audio'), options: audioLocales, default: userAudio },
     {
       id: 'history',
       title: t('user_edit_history'),
