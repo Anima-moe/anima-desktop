@@ -142,7 +142,7 @@ video {
 }
 
 #nprogress .bar {
-  background: #c5eb45;
+  @apply bg-accent;
 
   position: fixed;
   z-index: 1031;
@@ -253,4 +253,12 @@ input[type='color']::-webkit-color-swatch {
 
 .video-control[data-state='open'] {
   @apply bg-primary;
+}
+
+div[data-radix-popper-content-wrapper] {
+  @apply z-10 !important;
+}
+
+.libassjs-canvas-parent {
+  pointer-events: none;
 }
