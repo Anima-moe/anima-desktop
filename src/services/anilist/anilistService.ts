@@ -172,4 +172,27 @@ export const anilistService = {
 
     return res.data.Media as AnilistMedia
   },
+
+  async getMALIDFromName(name: string) {
+    if (!name) {
+      return
+    }
+    const query = gql`
+      query ($name: String) {
+        Media(search: $name, type: ANIME) {
+          id
+          idMal
+        }
+      }
+    `
+
+    const res = await GqlClient.query({
+      query: query,
+      variables: {
+        name,
+      },
+    })
+
+    return res.data.Media as Partial<AnilistMedia>
+  },
 }
