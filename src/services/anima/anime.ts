@@ -40,7 +40,7 @@ export const Anime = {
   },
 
   search: async function (query: string) {
-    const { data } = await client.get('/search', {
+    const { data } = await client.get('/search/animes', {
       params: {
         q: query,
       },
