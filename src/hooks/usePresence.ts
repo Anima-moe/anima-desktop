@@ -8,7 +8,6 @@ export default function usePresence() {
   const { t } = useTranslation()
 
   async function setPresence(episode: Anima.RAW.Episode, watching: boolean) {
-    console.log('setPresence', episode, watching)
     if (!episode?.id) {
       return
     }
@@ -17,9 +16,7 @@ export default function usePresence() {
 
     await invoke('discord_set_activity', {
       details: t('activity_details_watching', {
-        episode:
-          getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(episode)?.title ||
-          'Episode unknown',
+        episode: getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(episode)?.title || 'Episode unknown',
         episode_number: episode.number,
       }),
       state: watching ? t('activity_watching') : t('activity_browsing'),
