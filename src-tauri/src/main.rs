@@ -3,7 +3,7 @@
     windows_subsystem = "windows"
 )]
 
-use tauri::{ api::process::Command,  Manager };
+use tauri::{ api::process::Command,  Manager, Window };
 use tauri::State;
 use std::io::BufReader;
 use std::process::Command as StdCommand;
@@ -56,37 +56,54 @@ fn discord_clear_activity(client: State<'_, DeclarativeDiscordIpcClient>) -> Res
 }
 
 fn main() {
+    tauri_plugin_deep_link::prepare("com.anima.moe");
+
     tauri::Builder::default()
         .plugin(tauri_plugin_store::Builder::default().build())
         .plugin(tauri_plugin_window_state::Builder::default().build())
-        .invoke_handler(tauri::generate_handler![discord_set_activity, discord_clear_activity])
-        .setup(|app| {
+        .setup(move |app| {
+          // DISCORD RPC
           app.manage(DeclarativeDiscordIpcClient::new("1069047547282325534"));
           let client = app.state::<DeclarativeDiscordIpcClient>();
           client.enable();
 
-            tauri::async_runtime::spawn(async move {
-              let tauri_cmd = Command::new_sidecar("main")
-                .expect("failed to setup sidecar");
-              let mut std_cmd = StdCommand::from(tauri_cmd);
-              let mut child = std_cmd
-                .group_spawn() // !
-                .expect("failed to spawn sidecar");
-              let mut stdout = BufReader::new(child.inner().stdout.take().unwrap());
-              let mut buf = Vec::new();
-              loop {
-                buf.clear();
-                match tauri::utils::io::read_line(&mut stdout, &mut buf) {
-                    Ok(_n) => {
-                        let _line = String::from_utf8_lossy(&buf);
-                    }
-                    Err(_e) => panic!("idk something bad happened"),
-                }
+          // SIDE CAR
+          tauri::async_runtime::spawn(async move {
+            let tauri_cmd = Command::new_sidecar("main")
+              .expect("failed to setup sidecar");
+            let mut std_cmd = StdCommand::from(tauri_cmd);
+            let mut child = std_cmd
+              .group_spawn() // !
+              .expect("failed to spawn sidecar");
+            let mut stdout = BufReader::new(child.inner().stdout.take().unwrap());
+            let mut buf = Vec::new();
+            loop {
+              buf.clear();
+              match tauri::utils::io::read_line(&mut stdout, &mut buf) {
+                  Ok(_n) => {
+                      let _line = String::from_utf8_lossy(&buf);
+                  }
+                  Err(_e) => panic!("idk something bad happened"),
               }
-            });
+            }
+          });
+
+          // DEEP LINK INTEGRATION
+          let handle = app.handle();
+          tauri_plugin_deep_link::register(
+            "anima",
+            move |request| {
+              dbg!(&request);
+              handle
+                .emit_all("scheme-request-received", request)
+                .unwrap();
+            },
+          )
+          .unwrap();
 
           Ok(())
         })
+        .invoke_handler(tauri::generate_handler![discord_set_activity, discord_clear_activity])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
