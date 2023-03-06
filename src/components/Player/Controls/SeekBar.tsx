@@ -108,7 +108,6 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
           })
         }
 
-        console.log(commonChapters.sort((a,b)=> a.startTime - b.startTime))
         setEpisodeChapters(commonChapters)
       } catch (e) {
         // Only try using anime-skip if aniskip fails

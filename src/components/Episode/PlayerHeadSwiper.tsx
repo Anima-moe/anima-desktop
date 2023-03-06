@@ -1,4 +1,4 @@
-import { SkeletonBlock } from 'skeleton-elements/react'
+import dayjs from 'dayjs'
 import SwiperCore, { Virtual, Lazy, Navigation } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
@@ -8,7 +8,6 @@ import 'swiper/css/virtual'
 import 'swiper/css/lazy'
 import EpisodePlayerHead from './EpisodePlayerHead'
 
-import dayjs from 'dayjs'
 
 SwiperCore.use([Virtual, Navigation, Lazy])
 

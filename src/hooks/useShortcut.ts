@@ -17,9 +17,7 @@ export const useGlobalShortcut = (shortcut: string, shortcutHandler: ShortcutHan
       }
     }
 
-    void registerShortcut().catch((err) =>
-      console.error(`Failed to register global shortcut '${shortcut}'`, err)
-    )
+    void registerShortcut().catch((err) => {})
 
     return () => {
       ignore = true
