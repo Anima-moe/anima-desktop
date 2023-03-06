@@ -5,7 +5,7 @@ export async function createMainWindow() {
     height: 900,
     width: 1600,
     minWidth: 1360,
-    minHeight: 720,
+    minHeight: 760,
     resizable: true,
     title: 'Λ ＮＩＭ Λ - [あーにま • Alpha]',
     visible: false,
