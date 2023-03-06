@@ -1,32 +1,31 @@
 import { useEffect } from 'react'
 import { initReactI18next } from 'react-i18next'
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import { Slide, ToastContainer } from 'react-toastify'
 
 import i18n from 'i18next'
 import type { AppProps } from 'next/app'
-import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import NProgress from 'nprogress'
 
-import languageTable from '@/services/i18n/languageTable'
-// const ShakaPlayerProvider = dynamic(() =>
-//   import('react-shaka-plyr').then((mod) => mod.ShakaPlayerProvider)
-// )
-
+import enUS from '@/services/i18n/locale/en-US'
+import ptBR from '@/services/i18n/locale/pt-BR'
+import ptPT from '@/services/i18n/locale/pt-PT'
 import 'react-toastify/dist/ReactToastify.min.css'
 import '@/styles/globals.css'
 import '@/styles/tweaks.scss'
 import 'skeleton-elements/css'
+import { listen } from '@tauri-apps/api/event'
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
-    resources: languageTable,
     lng: 'pt-BR',
-    interpolation: {
-      escapeValue: false,
-    },
+    resources: {
+      'en-US': { translation: enUS },
+      'pt-BR': { translation: ptBR },
+      'pt-PT': { translation: ptPT },
+    }
   })
 
 NProgress.configure({
@@ -69,6 +68,19 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       i18n.changeLanguage(userLanguage)
     })()
   }, [router])
+
+  useEffect(()=>{
+    const unlisten = listen('scheme-request-received', (e) => {
+      const schema = e.payload as string
+      const path = schema.replace('anima://', '')
+      router.push(`/${path}`)
+    })
+
+    return () => {
+      unlisten
+        .then(f => f())
+    }
+  }, [])
 
   return (
     <QueryClientProvider client={queryClient}>
