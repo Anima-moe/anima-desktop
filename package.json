@@ -6,7 +6,8 @@
     "dev": "next dev -p 1420",
     "build": "next build && next export -o dist",
     "tauri": "tauri",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier format"
   },
   "dependencies": {
     "@apollo/client": "^3.7.5",
@@ -20,7 +21,7 @@
     "@radix-ui/react-toast": "^1.1.2",
     "@radix-ui/react-tooltip": "^1.0.3",
     "@tauri-apps/api": "^1.2.0",
-    "@vidstack/react": "^0.2.3",
+    "@vidstack/react": "^0.4.2",
     "@yisheng90/react-loading": "^1.5.0",
     "assjs": "^0.0.11",
     "axios": "^1.2.6",
@@ -33,8 +34,10 @@
     "hls.js": "^1.3.2",
     "i18next": "^22.4.9",
     "is-animated": "^2.0.2",
+    "jdataview": "^2.5.0",
     "jotai": "^1.13.1",
     "jotai-nexus": "^1.0.7",
+    "libass-wasm": "^4.1.0",
     "luxon": "^3.2.1",
     "maverick.js": "^0.32.2",
     "next": "^13.1.5",
@@ -57,7 +60,7 @@
     "swiper": "^8.4.7",
     "tauri-plugin-store-api": "https://github.com/tauri-apps/tauri-plugin-store",
     "ts-debounce": "^4.0.0",
-    "vidstack": "^0.3.1"
+    "vidstack": "^0.4.2"
   },
   "devDependencies": {
     "@swc-jotai/react-refresh": "^0.0.4",
@@ -69,6 +72,7 @@
     "@types/react-dom": "^18.0.6",
     "autoprefixer": "^10.4.13",
     "eslint": "8.34.0",
+    "husky": "^8.0.3",
     "postcss": "^8.4.21",
     "prettier": "^2.8.4",
     "prettier-plugin-tailwindcss": "^0.2.2",
