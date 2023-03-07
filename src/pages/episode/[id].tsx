@@ -67,7 +67,7 @@ function Index() {
   const contentWrapper = clsx({
     'duration-200 transition-all relative rounded-md overflow-hidden': true,
     'w-[calc(85vh*1.77)] flex gap-4': playerExpanded !== 'expanded',
-    'w-[calc(100%-2rem)] h-full': playerExpanded === 'expanded',
+    'w-screen h-full': playerExpanded === 'expanded',
   })
 
   if (animeLoading || seasonLoading || episodeLoading || streamLoading) {
