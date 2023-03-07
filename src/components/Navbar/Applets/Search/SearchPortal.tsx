@@ -7,7 +7,6 @@ import { useAtom } from 'jotai'
 import { useRouter } from 'next/router'
 
 import AnimeGrid from '@/components/Anime/AnimeGrid'
-import AnimeSwiper from '@/components/Anime/AnimeSwiper'
 import CategoryPill from '@/components/Category/CategoryPill'
 import Loading from '@/components/General/Loading'
 import { Anime } from '@/services/anima/anime'

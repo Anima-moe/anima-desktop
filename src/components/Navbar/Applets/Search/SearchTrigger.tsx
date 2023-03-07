@@ -9,7 +9,7 @@ import resolveConfig from 'tailwindcss/resolveConfig'
 import { debounce } from 'ts-debounce'
 
 import tailwindConfig from '@/../tailwind.config.js'
-import SearchPortal from '@/components/Applets/Search/SearchPortal'
+import SearchPortal from '@/components/Navbar/Applets/Search/SearchPortal'
 import { displaySearchPortal } from '@/stores/atoms'
 const twConfig = resolveConfig(tailwindConfig)
 
@@ -125,14 +125,14 @@ function Navbar({}: Props) {
           }
         }}
         className={`absolute flex flex-row items-center rounded-md ${
-          focused ? 'bg-transparent' : '!border-0 bg-secondary bg-opacity-40 backdrop-blur-md'
+          focused ? 'bg-transparent' : '!border-0 bg-tertiary/40 backdrop-blur-md'
         }`}
       >
         <motion.div
           initial="initial"
           animate={focused ? 'animate' : 'initial'}
           variants={searchIconVariants}
-          className="absolute text-subtle"
+          className="absolute text-white/50"
         >
           <MagnifyingGlass size={22} />
         </motion.div>
@@ -150,7 +150,7 @@ function Navbar({}: Props) {
           <X size={32} />
         </motion.div>
         <input
-          className="w-full bg-transparent py-2 text-subtle outline-none placeholder:text-subtle focus:font-medium focus:text-white focus:ring-0 focus:ring-offset-0"
+          className="w-full bg-transparent py-2 text-subtle outline-none placeholder:text-white/50 focus:font-medium focus:text-white focus:ring-0 focus:ring-offset-0"
           placeholder={focused ? t('search_prompt') : t('search_placeholder')}
           onChange={(e) => {
             debouncedSetQuery(e.target.value)
