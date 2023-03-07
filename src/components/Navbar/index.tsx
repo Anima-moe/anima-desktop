@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 
-import NotificationApplet from '@/components/Applets/Notifications/Navbar'
-import SearchApplet from '@/components/Applets/Search/Navbar'
-import UserApplet from '@/components/Applets/User/Navbar'
+import NotificationApplet from '@/components/Navbar/Applets/Notifications/NotificataionsTrigger'
+import SearchApplet from '@/components/Navbar/Applets/Search/SearchTrigger'
+import UserApplet from '@/components/Navbar/Applets/User/UserTrigger'
 import useNavScroll from '@/hooks/useNavScroll'
 
 function Index() {
