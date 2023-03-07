@@ -101,8 +101,9 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
           }) as CommonChapterFormat[]
         }
       }
-      console.log('Common chapters as they came from API', commonChapters)
 
+      if (!commonChapters.length) { return }
+      
       // The opening chapter is always the first chapter, so if the first chapter starts after 1 second, add a new chapter with the identificator 'teaser' to fill the gap.
       if (commonChapters.sort((a,b)=> a.startTime - b.startTime)[0].startTime > 1) {
         commonChapters.unshift({
@@ -133,7 +134,6 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
         }
       })
 
-      console.log('Common chapters after processing', commonChapters)
       setEpisodeChapters(commonChapters)
     })()
   }, [animeData, canPlay])
