@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 
 import Link from 'next/link'
 
-import { useMediaRemote } from '@vidstack/react'
+import { useMediaRemote, useMediaStore } from '@vidstack/react'
 
 import { CommonChapterFormat } from './SeekBar'
 
@@ -21,9 +21,10 @@ const blackList = {
 }
 const SkipBar: React.FunctionComponent<ISkipBarProps> = ({chapter, duration, nextEpisode}) => {
   const mediaRemote = useMediaRemote()
+  const { currentTime } = useMediaStore()
   const { t } = useTranslation()
   
-  // There's a chapter, but it's not in the whitelist, return null
+  // There's a chapter, and it's specifically blacklisted for skipoing
   if (chapter && blackList[chapter.identificator.toLowerCase()]) { 
     return  null
   }
@@ -41,13 +42,17 @@ const SkipBar: React.FunctionComponent<ISkipBarProps> = ({chapter, duration, nex
   // There's no chapter, return generic stuff!
   if (!chapter) { return null }
   
+  // Get percentage between current time and chapter end time
+  const chapterPerc = (currentTime - chapter.startTime) / (chapter.endTime - chapter.startTime) * 100
+
   return <div 
-    className='ml-auto min-w-[150px] p-4 flex items-center justify-center bg-secondary hover:bg-accent duration-200 rounded-md cursor-pointer mb-2 group media-user-idle:-translate-y-[200%]'
+    className='ml-auto min-w-[150px] p-4 flex items-center justify-center bg-secondary duration-200 rounded-md cursor-pointer mb-2 group absolute right-0 bottom-4 media-user-idle:-translate-y-full overflow-hidden group shadow-lg border-2 border-secondary'
     onClick={()=>{
       mediaRemote.seek(chapter.endTime + 0.5)
     }}
   >
-    <span className='mix-blend-difference text-white group-hover:text-secondary group-hover:mix-blend-normal select-none'>{t('skip_'+chapter.identificator)}</span>
+    <div className='h-full absolute inset-0 bg-white transition-[width] duration-100 group-hover:bg-accent' style={{width: `${~~chapterPerc}%`}} />
+    <span className='mix-blend-difference text-white select-none z-[1]'>{t('skip_'+chapter.identificator)}</span>
   </div>
 }
 
