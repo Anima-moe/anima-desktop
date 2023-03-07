@@ -66,7 +66,7 @@ function EpisodePlayerHead({ playerHead }: Props) {
                 {getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(playerHead?.AnimeEpisode?.AnimeSeason?.Anime)?.title ||
                   'Anime title'}
               </h2>
-              <p className="text-sm text-white text-opacity-60 line-clamp-5 group-hover:text-secondary">
+              <p className="text-sm text-white text-opacity-60 line-clamp-5 group-hover:text-secondary w-full overflow-hidden text-ellipsis relative">
                 S{playerHead.AnimeEpisode.AnimeSeason.number}E{playerHead.AnimeEpisode.number} • {getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(playerHead?.AnimeEpisode)?.title ||
                   'Episode title'}
               </p>
@@ -78,7 +78,7 @@ function EpisodePlayerHead({ playerHead }: Props) {
                   />
                 </div>
                 ) : (
-                <div className='absolute top-2.5 right-2.5 bg-white/20 h-8 w-8 rounded-full flex items-center justify-center text-accent'>
+                <div className='absolute top-2.5 right-2.5 bg-primary/80 h-8 w-8 rounded-full flex items-center justify-center text-accent'>
                   <Check size={24} />
                 </div>
               )}
