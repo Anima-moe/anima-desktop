@@ -15,7 +15,7 @@ export const Episode = {
     return data as Anima.API.GetEpisodeMedia
   },
 
-  createComment: async function (id: number, comment: string) {
+  createComment: async function (id: number, comment: string, parent?: number) {
     const userData = await User.getUserData()
     if (!userData.id || !userData.token) {
       return
@@ -25,6 +25,7 @@ export const Episode = {
       `/episode/${id}/comment`,
       {
         comment,
+        parent_id: parent,
       },
       {
         headers: {

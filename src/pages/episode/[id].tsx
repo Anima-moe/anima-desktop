@@ -7,12 +7,12 @@ import { useAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import type { MediaPlayerElement } from 'vidstack'
 
+import UserCommentBlock from '@/components/Comments/CommentBlock'
 import StreamError from '@/components/Error/StreamError'
 import Loading from '@/components/General/Loading'
 import General from '@/components/Layout/General'
 import MediaLayout from '@/components/Layout/Media'
 import Player from '@/components/Player'
-import UserCommentBlock from '@/components/User/CommentBlock'
 import usePresence from '@/hooks/usePresence'
 import { Anime } from '@/services/anima/anime'
 import { Episode } from '@/services/anima/episode'
@@ -94,7 +94,7 @@ function Index() {
         </div>
           <div className={contentWrapper}>
             <UserCommentBlock
-              episodeId={episodeData?.data.id}
+              episodeID={episodeData?.data.id}
               Comments={commentsData.data}
               onComment={() => {
                 refecthComments()

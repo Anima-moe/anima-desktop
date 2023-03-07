@@ -5,26 +5,27 @@ import { useTranslation } from 'react-i18next'
 import dayjs from 'dayjs'
 import { Chat, PaperPlaneRight } from 'phosphor-react'
 
-import UserComment from '@/components/User/UserComment'
+import UserComment from '@/components/Comments/UserComment'
+import Button from '@/components/General/Button'
+import IconInput from '@/components/General/Inputs/IconTextInput'
 import { Episode } from '@/services/anima/episode'
-
-import Button from '../General/Button'
-import IconInput from '../General/Inputs/IconTextInput'
  
 interface IUserCommentProps {
   Comments: Anima.RAW.Comment[]
-  episodeId: number
+  episodeID: number
   onComment: () => void
 }
 
 const UserComments: React.FunctionComponent<IUserCommentProps> = (props) => {
-  const { handleSubmit, control, formState: { errors }, } = useForm<{comment: string}>()
+  const { handleSubmit, control, formState: { errors }, reset } = useForm<{comment: string}>()
   const { t } = useTranslation()
-  
   function handleCommentSend(data: {comment: string}) {
-    Episode.createComment(props.episodeId, data.comment)
+    Episode.createComment(props.episodeID, data.comment)
     .then(()=>{
       props?.onComment?.()
+      reset({
+        comment: ''
+      })
     })
   }
 
@@ -41,7 +42,7 @@ const UserComments: React.FunctionComponent<IUserCommentProps> = (props) => {
             )}
           />
 
-          <Button Icon={<PaperPlaneRight />} text='' secondary className='aspect-square !h-16 items-center justify-center' />
+          <Button Icon={<PaperPlaneRight />} text='' secondary className='bg-tertiary hover:!bg-accent hover:text-primary !absolute aspect-square !h-12 items-center justify-center right-4' />
       </form>
       <div className='comments-wrapper'>
         {props.Comments 
@@ -51,7 +52,7 @@ const UserComments: React.FunctionComponent<IUserCommentProps> = (props) => {
               .sort((a,b) => b.User.premium - a.User.premium)
               .sort((a,b) => Number(b.User.staff) - Number(a.User.staff) )
               .map(comment => {
-          return <UserComment key={`comment.${comment.id}`} comment={comment} />
+          return <UserComment key={`comment.${comment.id}`} comment={comment} episodeID={props.episodeID} onReply={()=> { props.onComment?.() }}/>
         })}
       </div>
     </div>
