@@ -66,11 +66,13 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
       const malID = await (await anilistData).idMal
       if (!malID) { return }
 
+      let commonChapters: CommonChapterFormat[] = []
+
       try {
         const aniskipChapters = await Chapters.get(malID, episodeData.number, duration)
         // if (aniskipChapters.results.length < 2) { throw new Error('Not enough chapters')}
 
-        const commonChapters = aniskipChapters.results.map((chapter) => {
+        commonChapters = aniskipChapters.results.map((chapter) => {
           return {
             identificator: 'chapter_' + chapter.skipType.toLocaleLowerCase().replaceAll(' ', '_'),
             startTime: chapter.interval.startTime,
@@ -78,37 +80,6 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
           }
         }) as CommonChapterFormat[]
 
-          // The opening chapter is always the first chapter, so if the first chapter starts after 1 second, add a new chapter with the identificator 'teaser' to fill the gap.
-          if (commonChapters.sort((a,b)=> a.startTime - b.startTime)[0].startTime > 1) {
-            commonChapters.unshift({
-              identificator: 'chapter_teaser',
-              startTime: 0,
-              endTime: commonChapters.sort((a,b)=> a.startTime - b.startTime)[0].startTime,
-            })
-          }
-
-        // Look for all chapters ordered by time, if the gap between the current and previous episode is 1 second or more, add a new chapter between them with the identificator 'Episode'.
-        commonChapters.sort((a,b)=> a.startTime - b.startTime).forEach((chapter, index)=>{
-          const lastChapter = commonChapters[index - 1]
-          if (lastChapter && ~~(chapter.startTime - lastChapter?.endTime) > 0) {
-            commonChapters.splice(index, 0, {
-              identificator: 'chapter_episode',
-              startTime: lastChapter.endTime + .04,
-              endTime: chapter.startTime - .04,
-            })
-          }
-        })
-
-        // The ending is not until the end of the anime, so we add a new chapter as post-episode.
-        if (commonChapters[commonChapters.length-1].endTime < duration - 1) {
-          commonChapters.splice(commonChapters.length-1, 0, {
-            identificator: 'chapter_post_credits',
-            startTime: commonChapters[commonChapters.length-1].endTime + .04,
-            endTime: duration,
-          })
-        }
-
-        setEpisodeChapters(commonChapters)
       } catch (e) {
         // Only try using anime-skip if aniskip fails
         const animeSkipChapters = await animeSkipService.getAnimeByName(animeData.AnimeMetadata.find(a => a.locale_key === 'en-US')?.title)
@@ -119,7 +90,7 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
         })
 
         if(matchingEpisode) {
-          const commonChapters = matchingEpisode.timestamps.map((chapter, index) => {
+          commonChapters = matchingEpisode.timestamps.map((chapter, index) => {
             const nextChapter = matchingEpisode.timestamps[index + 1]
 
             return {
@@ -128,11 +99,42 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
               endTime: nextChapter ? nextChapter.at : matchingEpisode.baseDuration,
             }
           }) as CommonChapterFormat[]
-
-          setEpisodeChapters(commonChapters)
         }
       }
+      console.log('Common chapters as they came from API', commonChapters)
 
+      // The opening chapter is always the first chapter, so if the first chapter starts after 1 second, add a new chapter with the identificator 'teaser' to fill the gap.
+      if (commonChapters.sort((a,b)=> a.startTime - b.startTime)[0].startTime > 1) {
+        commonChapters.unshift({
+          identificator: 'chapter_teaser',
+          startTime: 0,
+          endTime: commonChapters.sort((a,b)=> a.startTime - b.startTime)[0].startTime,
+        })
+      }
+
+      // The ending is not until the end of the anime, so we add a new chapter as post-episode.
+      if (commonChapters[commonChapters.length-1].endTime < duration - 1) {
+        commonChapters.splice(commonChapters.length-1, 0, {
+          identificator: 'chapter_post_credits',
+          startTime: commonChapters[commonChapters.length-1].endTime + .04,
+          endTime: duration,
+        })
+      }
+
+      // Look for all chapters ordered by time, if the gap between the current and previous episode is 1 second or more, add a new chapter between them with the identificator 'Episode'.
+      commonChapters.sort((a,b)=> a.startTime - b.startTime).forEach((chapter, index)=>{
+        const lastChapter = commonChapters[index - 1]
+        if (lastChapter && ~~(chapter.startTime - lastChapter?.endTime) > 0) {
+          commonChapters.splice(index, 0, {
+            identificator: 'chapter_canon',
+            startTime: lastChapter.endTime + .04,
+            endTime: chapter.startTime - .04,
+          })
+        }
+      })
+
+      console.log('Common chapters after processing', commonChapters)
+      setEpisodeChapters(commonChapters)
     })()
   }, [animeData, canPlay])
 

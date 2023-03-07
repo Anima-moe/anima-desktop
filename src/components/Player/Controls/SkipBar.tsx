@@ -42,7 +42,7 @@ const SkipBar: React.FunctionComponent<ISkipBarProps> = ({chapter, duration, nex
   if (!chapter) { return null }
   
   return <div 
-    className='ml-auto min-w-[150px] p-4 flex items-center justify-center bg-secondary hover:bg-accent duration-200 rounded-md cursor-pointer mb-2 group'
+    className='ml-auto min-w-[150px] p-4 flex items-center justify-center bg-secondary hover:bg-accent duration-200 rounded-md cursor-pointer mb-2 group media-user-idle:-translate-y-[200%]'
     onClick={()=>{
       mediaRemote.seek(chapter.endTime + 0.5)
     }}
