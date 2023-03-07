@@ -1,17 +1,17 @@
 import { useState } from 'react'
 
+import { useAtom } from 'jotai'
 import { useRouter } from 'next/router'
-import { ArrowsOut, ArrowsIn } from 'phosphor-react'
 
+import { userPreferedPlayerMode } from '@/stores/atoms'
 import { MediaToggleButton } from '@vidstack/react'
-import { useMediaRemote } from '@vidstack/react'
 
 type Props = {}
 
 function FullscreenButton({}: Props) {
   const [fullscreen, setFullscreen] = useState(false)
-  const remote = useMediaRemote()
   const router = useRouter()
+  const [playerMode, setPlayerMode] = useAtom(userPreferedPlayerMode)
 
   return (
     <MediaToggleButton
@@ -24,7 +24,7 @@ function FullscreenButton({}: Props) {
             .getCurrent()
             .setFullscreen(!fullscreen)
             .then(()=>{
-              fullscreen ? remote.exitFullscreen() : remote.enterFullscreen()
+              setPlayerMode(!fullscreen ? 'expanded' : 'normal')
             })
 
           router.events.on('routeChangeStart', () => {
