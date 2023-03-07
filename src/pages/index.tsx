@@ -100,10 +100,7 @@ function App() {
       {userPlayerHead && userPlayerHead.data.length > 0 && (
         <ContentContainer>
           <h3>{t('section_continueWatching')}</h3>
-          <SwiperPlayerHead playerHeads={userPlayerHead.data} />
-          {/* {userPlayerHead.data.map(ph => {
-            return <EpisodePlayerHead key={`episode.playerhead.${ph.user_id}.${ph.episode_id}`} playerHead={ph} />
-          })} */}
+          <SwiperPlayerHead playerHeads={userPlayerHead.data} hideCompleted={true}/>
         </ContentContainer> 
       )}
       
