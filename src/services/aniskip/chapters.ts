@@ -6,7 +6,7 @@ export type AniskipInterval = {
 }
 export type AniskipChapter = {
   interval: AniskipInterval
-  skipType: 'op' | 'ed' | 'mixed-op' | 'mixeded' | 'mixedop' | 'recap'
+  skipType: 'op' | 'ed' | 'mixed-op' | 'mixed-ed' | 'mixedop' | 'mixeded' | 'recap'
 }
 
 export type AniskipReturn = {
