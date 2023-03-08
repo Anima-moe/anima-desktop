@@ -35,7 +35,7 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
   const [streamConfig] = useAtom(playerStreamConfig)
   const [currentThumbnailURL, setCurrentThumbnailURL] = useState<string | null>(null)
   const [bif, setBif] = useState<BIFParser>(null)
-  const { duration, canPlay, currentTime, bufferedEnd, bufferedStart } = useMediaStore()
+  const { duration, canPlay, currentTime, bufferedEnd } = useMediaStore()
   const { pointerValue } = useSliderStore(slider)
   const { t } = useTranslation()
 
@@ -114,9 +114,18 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
       }
 
       // The ending is not until the end of the anime, so we add a new chapter as post-episode.
+      // We have to check if it's actually after the ending to call it post credits, otherwise it's just episode.
       if (commonChapters[commonChapters.length-1].endTime < duration - 1) {
+        const previousChapter = commonChapters[commonChapters.length-1]
+
         commonChapters.splice(commonChapters.length-1, 0, {
-          identificator: 'chapter_post_credits',
+          identificator: previousChapter.identificator === 'chapter_ed' 
+            || previousChapter.identificator === 'chapter_credits' 
+            || previousChapter.identificator === 'chapter_mixeded' 
+            || previousChapter.identificator === 'chapter_mixed-ed'
+            || previousChapter.identificator === 'chapter_mixed_credits'
+            || previousChapter.identificator === 'chapter_outro'
+            || previousChapter.identificator === 'chapter_new_credits' ? 'chapter_post_credits' : 'chapter_episode',
           startTime: commonChapters[commonChapters.length-1].endTime + .04,
           endTime: duration,
         })
