@@ -81,7 +81,12 @@ function Index() {
   if (!animeData || !seasonData || !episodeData || !streamData) {
     return <General>
       <div className='w-screen h-screen flex items-center justify-center'>
-        <StreamError error='Stuff gonne wrong'/>
+        <StreamError error={btoa(JSON.stringify({
+          anime:  router?.query?.id,
+          season: seasonData?.data?.[0]?.id,
+          episode: episodeData?.data?.id,
+          source: streamData?.data?.source,
+        }))}/>
       </div>
     </General>
   }
