@@ -101,6 +101,15 @@ const UserCard = ({ showStatics, user, showEditButton }: Props) => {
                 className="text-2xl font-semibold"
                 style={{ color: `${user?.profile?.color || '#8D8D8D'}` }}
               >
+                {user?.profile?.Badge?.length || 0}
+              </span>
+              <span className="">Badges</span>
+            </div>
+            <div className="flex flex-col items-center ">
+              <span
+                className="text-2xl font-semibold"
+                style={{ color: `${user?.profile?.color || '#8D8D8D'}` }}
+              >
                 {user?._count?.Comment || 0}
               </span>
               <span className="">Coments</span>
@@ -119,7 +128,8 @@ const UserCard = ({ showStatics, user, showEditButton }: Props) => {
                 className="text-2xl font-semibold"
                 style={{ color: `${user?.profile?.color || '#8D8D8D'}` }}
               >
-                {parseFloat(dayjs.duration({ seconds: user?.UserPlayerHead?.reduce((acc, curr) => { return acc + curr.duration }, 0) }).asHours().toString()).toFixed(1)}
+                {dayjs.duration({ seconds: user?.UserPlayerHead?.reduce((acc, curr) => { return acc + curr.head }, 0) }).asHours().toFixed(1)}
+                
               </span>
               <span className="">Hours</span>
             </div>
