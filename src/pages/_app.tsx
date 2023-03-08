@@ -62,6 +62,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   }, [router])
 
   useEffect(() => {
+    document.addEventListener('contextmenu', (e) => {
+      e.preventDefault()
+    })
+    
     ;(async () => {
       const { getConfigValue } = await import('@/services/tauri/configValue')
       const userLanguage = await getConfigValue<string>('language')
