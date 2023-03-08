@@ -2,6 +2,7 @@ import * as Tooltip from '@radix-ui/react-tooltip'
 
 interface IUserBadgeProps {
   badge: Anima.RAW.Badge
+  className?: string
 }
 
 const badgeMapping = {
@@ -22,12 +23,12 @@ const badgeMapping = {
   'Hero': ' /badges/evemt.svg'
 }
 
-const UserBadge: React.FunctionComponent<IUserBadgeProps> = ({badge}) => {
+const UserBadge: React.FunctionComponent<IUserBadgeProps> = ({badge, className}) => {
   return <Tooltip.Provider >
       <Tooltip.Root>
         <Tooltip.Trigger asChild className='cursor-help'>
           { badge.icon ? (
-            <img src={`/badges/${badge.icon}.png`} className='h-6 w-6' />
+            <img src={`/badges/${badge.icon}.png`} className={`h-6 w-6 ${className}`} />
           )  : (
             <span className='rounded-md bg-tertiary px-2 py-1 text-xs select-none'>{badge.name}</span>
           ) }
