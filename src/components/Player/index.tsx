@@ -51,8 +51,8 @@ const Player = React.forwardRef<MediaPlayerElement, IPlayerProps>(({animeData, s
         <BackButton target={`/anime/${animeData.id}`}/>
         <PlayerMediaInfo 
           episodeNumber={episodeData.number} 
-          localizedAnimeTitle={getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(animeData).title}
-          localizedEpisodeTitle={getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(episodeData).title}
+          localizedAnimeTitle={getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(animeData)?.title || 'Unknown title'}
+          localizedEpisodeTitle={getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(episodeData)?.title || 'Unknown title'}
           seasonNumber={seasonData.number}
         />
         <SeasonBrowser episode={episodeData} season={seasonData} />
