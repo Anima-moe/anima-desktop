@@ -210,7 +210,10 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
           >
             <div className='text-xs order-1 h-min flex flex-col items-center'>
               {/* PREVIEW */}
-              { bif && <img className='w-48 min-w-[12rem] aspect-video pointer-events-none rounded-md shadow-lg border border-tertiary' src={bif.getImageDataAtSecond(~~(pointerValue / 100 * duration))} /> }
+              { bif && <div 
+                className='w-48 min-w-[12rem] aspect-video pointer-events-none rounded-md shadow-lg border border-tertiary bg-secondary' 
+                style={{ backgroundImage: `url(${bif.getImageDataAtSecond(~~(pointerValue / 100 * duration))})` }}
+              /> }
               <MediaSliderValue type='pointer' format='time' className='opacity-80 rounded pointer-events-none order-2 h-min font-semibold absolute bottom-5 px-2 py-1 bg-secondary'/>
               <span className=''>{t(getHoverChapterName())}</span>
             </div>
