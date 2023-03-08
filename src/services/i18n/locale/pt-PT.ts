@@ -1,4 +1,6 @@
-// eslint-disable-next-line import/no-anonymous-default-export
+/* eslint-disable quotes */
+/* eslint-disable import/no-anonymous-default-export */
+
 export default {
   activity_details_watching: 'EP{{episode_number}}・{{episode}}',
   activity_details_browsing: '{{path}}',
@@ -47,6 +49,8 @@ export default {
   action_writeComment: 'Faça um novo comentário',
   action_visitProfile: 'Visitar perfil',
   action_favorite: 'Favoritar',
+  action_reply: 'Rsponder',
+  action_writeReply: 'Escreva uma resposta',
 
   anime_heading_characters: 'Personagens',
   anime_heading_casting: 'Elenco',
@@ -113,6 +117,7 @@ export default {
   user_edit_color_footer: 'Set color of your name and profile highlights.',
   user_edit_language: 'Language',
   user_edit_save_animated: 'Somente doadores podem usar imagens animadas',
+  user_edit_bio: 'Bio',
 
   api_fetchError: 'Oops! Algo deu errado ao obter os dados do servidor. Tenta novamente mais tarde.',
   api_streamError: 'Eita... Algo deu errado ao tentar obter uma stream para este anime. Tenta novamente mais tarde.',

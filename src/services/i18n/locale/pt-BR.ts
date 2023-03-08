@@ -1,4 +1,6 @@
-// eslint-disable-next-line import/no-anonymous-default-export
+/* eslint-disable quotes */
+/* eslint-disable import/no-anonymous-default-export */
+
 export default {
   activity_details_watching: 'EP{{episode_number}}・{{episode}}',
   activity_details_browsing: '{{path}}',
@@ -47,6 +49,8 @@ export default {
   action_writeComment: 'Faça um novo comentário',
   action_visitProfile: 'Visitar perfil',
   action_favorite: 'Favoritar',
+  action_reply: 'Responder',
+  action_writeReply: 'Escreva uma resposta',
 
   anime_heading_characters: 'Personagens',
   anime_heading_casting: 'Elenco',

@@ -1,4 +1,6 @@
-// eslint-disable-next-line import/no-anonymous-default-export
+/* eslint-disable quotes */
+/* eslint-disable import/no-anonymous-default-export */
+
 export default {
   activity_details_watching: 'EP{{spisode_number}}・{{episode}}',
   activity_details_browsing: '{{path}}',
@@ -10,8 +12,6 @@ export default {
   anima_report_metadata: 'Missing metadata',
   anima_report_episodes: 'Missing episodes',
   anima_report_error: 'Error',
-
-  // eslint-disable-next-line quotes
   splash_welcome: "Let's get started!",
   splash_continueAsGuest: 'Continue without an account',
   splash_loginOrRegister: 'Login/Register',
@@ -25,6 +25,10 @@ export default {
   splash_downloading_pending: 'Downloading update...',
   splash_downloading_success: 'Update downloaded. Restarting...',
   splash_downloading_error: 'Error downloading update. Try again later.',
+
+  nav_link_home: 'Home',
+  nav_link_categories: 'Categories',
+  nav_link_donate: 'Donate',
 
   cta_watchTrailer: 'Trailer',
   cta_watchNow: 'Watch',
@@ -44,6 +48,8 @@ export default {
   action_writeComment: 'Make a new comment',
   action_visitProfile: 'Visit profile',
   action_favorite: 'Add to favorites',
+  action_reply: 'Reply',
+  action_writeReply: 'Write a reply',
 
   anime_heading_characters: 'Characters',
   anime_heading_casting: 'Casting',
@@ -91,27 +97,31 @@ export default {
   user_menu_signout: 'Sign out',
   user_menu_login: 'Sign in',
 
-  user_edit_banner: 'Capa',
-  user_edit_background: 'Fundo',
-  user_edit_color: 'Cor',
-  user_edit_subtitle: 'Legendas',
-  user_edit_audio: 'Áudio',
-  user_edit_history: 'Histórico',
-  user_edit_history_public: 'Público',
-  user_edit_history_private: 'Privado',
-  user_edit_donator: 'Doador',
-  user_edit_save: 'Salvar',
-  user_edit_save_pending: 'Salvando dados',
-  user_edit_save_success: 'Dados salvos com sucesso',
-  user_edit_save_error: 'Erro ao salvar dados',
+  user_edit_email: 'E-mail',
+  user_edit_password: 'Password',
+  user_edit_avatar: 'Avatar',
+  user_edit_banner: 'Cover',
+  user_edit_background: 'Background',
+  user_edit_color: 'Color',
+  user_edit_subtitle: 'Subtitles',
+  user_edit_audio: 'Audio',
+  user_edit_history: 'History',
+  user_edit_history_public: 'Public',
+  user_edit_history_private: 'Private',
+  user_edit_donator: 'Donator',
+  user_edit_save: 'Save',
+  user_edit_save_pending: 'Saving data',
+  user_edit_save_success: 'Data saved successfully',
+  user_edit_save_error: 'Error when saving data',
+  user_edit_save_animated: 'Only donators can use animated images',
   user_edit_color_footer: 'Set your profile accent color',
-  user_edit_language: 'Idioma',
+  user_edit_language: 'Language',
   user_edit_bio: 'Bio',
 
   api_fetchError: 'Oops... Something went wrong while trying to get data from our servers. Please try again later.',
+  api_streamError: 'Oops... Something went wrong while trying to get a stream for this anime. Please try again later.',
   api_streamError_instructions:
     'You can help us solve this problem by reporting the error on our discord server, copy the information below and send it on the support channel on discord',
-  api_streamError: 'Oops... Something went wrong while trying to get a stream for this anime. Please try again later.',
   api_streamLoading: 'Loading stream...',
 
   loading_moreData: 'Loading more ...',
