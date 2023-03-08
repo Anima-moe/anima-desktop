@@ -2,14 +2,19 @@ import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
+import clsx from 'clsx'
+import { useAtom } from 'jotai'
+import Link from 'next/link'
 import { ArrowBendDownRight, ArrowDown, ArrowElbowDownRight, ArrowRight, Chat, Chats, Eye, EyeClosed, PaperPlaneRight } from 'phosphor-react'
 
 import Button from '@/components/General/Button'
 import IconInput from '@/components/General/Inputs/IconTextInput'
 import UserBadge from '@/components/User/UserBadge'
 import { Episode } from '@/services/anima/episode'
+import { userPreferedPlayerMode } from '@/stores/atoms'
+import * as Tooltip from '@radix-ui/react-tooltip'
 
-
+import FloatingProfile from '../User/FloatingProfile'
 
 interface IUserCommentProps {
   comment: Anima.RAW.Comment
@@ -22,6 +27,7 @@ const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, nest
   const { handleSubmit, control, formState: { errors }, reset } = useForm<{comment: string}>()
   const [showChildren, setShowChildren] = useState(true)
   const [showReply, setShowReply] = useState(false)
+  const [playerMode] = useAtom(userPreferedPlayerMode)
   const { t } = useTranslation()
 
   function handleReplySend(data: {comment: string}) {
@@ -33,87 +39,117 @@ const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, nest
       })
     })
   }
+
+
+  const containerClassNames = clsx({
+    'relative flex w-full gap-4 overflow-hidden bg-secondary p-4': true,
+    'mb-0 rounded-t-md': !comment.parent_id && comment?.Children?.length > 0 && (showChildren || showReply),
+    'rounded-md': !comment.parent_id && comment?.Children?.length === 0 || comment?.Children?.length > 0 && !showChildren,
+    'mt-2': !comment.parent_id,
+  })
   
-  if (nestLevel > 0) {
-    return (
-      <article className='relative flex w-full items-center gap-2 overflow-hidden bg-secondary bg-cover bg-center p-2 pl-8 group-last-of-type:rounded-b-md '>
-        {(comment.User?.premium > 0 || comment.User?.staff) && (
-          <div
-            className='absolute top-0 left-0 z-[0] h-full w-full opacity-5'
-            style={{ backgroundColor: comment.User?.UserProfile.color }}
-          />
-        )}
-        <ArrowElbowDownRight size={24} className='text-subtle mr-4' />
-        <div
-          className='rounded-full bg-primary bg-cover bg-center px-6 py-6'
-          style={{ backgroundImage: `url('${comment.User?.UserProfile.avatar}')` }}
-        />
-        <div className='flex w-full flex-col items-start gap-1'>
-          <div
-            className='text-lg font-semibold flex items-center z-[1]'
-            style={{ color: comment.User?.UserProfile?.color || '#FFFFFF' }}
-          >
-            <div className='flex flex-row gap-2 items-center'>
-            {comment.User?.username || 'User'}
-            {comment.User?.UserProfile?.Badge?.map((badge, i) => {
-              if (badge.icon) return
-              return <UserBadge badge={badge} key={`user.${badge.name}.${i}`} />
-            })}
-          </div>
-          </div>
-          {comment.comment}
-        </div>
-      </article>
-    )
-  }
+  const commentContainerClassNames = clsx({
+    'z-[1] flex w-full flex-col gap-1': true,
+    '': (nestLevel > 0),
+  })
+  
+  const avatarClassNames = clsx({
+    'aspect-square rounded-full z-[1] flex bg-primary bg-cover bg-center cursor-pointer': true,
+    'h-12': (nestLevel > 0),
+    'h-14': (nestLevel < 1)
+  })
+
+  const userNameClassNames = clsx({
+    'text-lg font-semibold flex gap-2 items-center': true,
+    'text-sm': (nestLevel > 0),
+  })
+
+  const commentClassNames = clsx({
+    'text-md': true,
+    'text-sm': (nestLevel > 0),
+  })
+
   return <>
-    <div className={'relative flex w-full gap-4 overflow-hidden bg-secondary p-4 ' + ((comment.Children.length > 0 && showChildren || showReply) ? 'mb-0 rounded-t-md mt-2' : 'mt-2 rounded-md')} >
+    <div className={containerClassNames} >
     {/* {(true) && ( */}
-    {(comment.User.premium > 0 || comment.User.staff) && (
+      {/* ACCENT */}
+      {(comment.User.premium > 0 || comment.User.staff) && (
         <div
           className='absolute top-0 left-0 z-[0] h-full w-full opacity-5'
           style={{ backgroundColor: comment.User?.UserProfile.color }}
         />
       )}
+      
+      {/* COLLAPSE */}
       {comment.Children.length > 0 && <div className='absolute px-2 py-1 right-4 top-4 bg-black/30 rounded-md cursor-pointer hover:bg-accent z-[2] hover:text-primary text-subtle' onClick={()=>{setShowChildren(!showChildren)}}>
-        {showChildren ? (
-          <span className='flex items-center text-xs gap-2'>{t('action_hideComments')}<Eye /></span>
-        ): (
-          <span className='flex items-center text-xs gap-2'>{t('action_showComments')} <EyeClosed /></span>
-        )}
+        <span className='flex items-center text-xs gap-2'>{t(showChildren ? 'action_hideComments' : 'action_showComments')}{ showChildren ? <Eye /> : <EyeClosed /> }</span>  
       </div> }
-      <div className='h-16 aspect-square rounded-full z-[1] flex bg-primary bg-cover bg-center' style={{ backgroundImage: `url(${comment.User?.UserProfile?.avatar})` }} />
-      <div className='z-[1] flex w-full flex-col gap-1'>
+
+      {/* NEST INDICATOR */}
+      {(nestLevel > 0) && (
+        <ArrowElbowDownRight size={24} className='text-subtle mx-4 my-auto' />
+      )}
+
+      {/* AVATAR */}
+      <Tooltip.Provider delayDuration={500}> 
+        <Tooltip.Root>
+          <Tooltip.Trigger asChild >
+            <Link href={`/user/${comment.User.id}`} className={avatarClassNames} style={{ backgroundImage: `url(${comment.User?.UserProfile?.avatar})` }} />
+          </Tooltip.Trigger>
+          <FloatingProfile user={comment.User} />
+        </Tooltip.Root>
+      </Tooltip.Provider>
+      
+      {/* COMMENT CONTAINER */}
+      <div className={commentContainerClassNames}>
+        {/* USERNAME & BADGES */}
         <div
-          className='text-lg font-semibold flex gap-4 items-center'
+          className={userNameClassNames}
           style={{ color: comment.User?.UserProfile?.color || '#FFFFFF' }}
         >
           <div className='flex flex-row gap-2 items-center'>
-            {comment.User.username || 'User'}
+            <Tooltip.Provider delayDuration={500}> 
+              <Tooltip.Root>
+                <Tooltip.Trigger asChild >
+                  <Link href={`/user/${comment.User.id}`} className='cursor-pointer'>{comment.User.username || 'User'}</Link>
+                </Tooltip.Trigger>
+                <FloatingProfile user={comment.User} />
+              </Tooltip.Root>
+            </Tooltip.Provider>
             {comment.User?.UserProfile?.Badge?.map((badge, i) => {
               if (badge.icon) return
               return <UserBadge badge={badge} key={`user.${badge.name}.${i}`} />
             })}
           </div>
-          <div className='flex gap-2'>
-            {comment.User?.UserProfile?.Badge?.map((badge, i) => {
-              if (!badge.icon) return
-              return <UserBadge badge={badge} key={`user.${badge.name}.${i}`} />
-            })}
+          {(nestLevel < 1) && (
+            <div className='flex gap-2'>
+              {comment.User?.UserProfile?.Badge?.map((badge, i) => {
+                if (!badge.icon) return
+                return <UserBadge badge={badge} key={`user.${badge.name}.${i}`}  className='!w-5 !h-5' />
+              })}
+            </div>
+          )}
+        </div>
+        
+        {/* COMMENT */}
+        <div className={commentClassNames}>
+         {comment.comment}
+        </div>
+
+        {/* REPLY BUTTON */}
+        {(nestLevel < 1) && (
+          <div className='w-min h-4 text-xs flex'>
+            <button 
+              className='px-2 py-3 rounded-md bg-tertiary flex items-center hover:bg-accent hover:text-primary duration-300 '
+              onClick={()=>{
+                setShowReply(!showReply)
+              }}
+            >
+              <ArrowBendDownRight  className='mr-2' /> 
+              {t('action_reply')}
+            </button>
           </div>
-        </div>
-        {comment.comment}
-        <div className='w-min h-4 text-xs flex'>
-          <button 
-            className='px-2 py-3 rounded-md bg-tertiary flex items-center hover:bg-accent hover:text-primary duration-300 '
-            onClick={()=>{
-              setShowReply(!showReply)
-            }}
-          >
-            <ArrowBendDownRight  className='mr-2' /> 
-            {t('action_reply')}
-          </button>
-        </div>
+        )}
       </div>
     </div>
     <div className='group'>
