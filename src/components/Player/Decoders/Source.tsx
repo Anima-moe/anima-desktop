@@ -44,7 +44,7 @@ const SourceDecoder: React.FunctionComponent<ISourceDecoderProps> = ({streamData
           ...streamConfig,
           streamURL: streamURL,
           streamFormat: streamFormat,
-          streamThumbnail: streamData.bif,
+          streamThumbnail: streamData?.bif,
           streamLocale
         })
         setAvailableHeights(streamQualities || availableHeights)
