@@ -7,19 +7,16 @@ import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
 export default function usePresence() {
   const { t } = useTranslation()
 
-  async function setPresence(episode: Anima.RAW.Episode, watching: boolean) {
-    if (!episode?.id) {
+  async function setPresence({ watching, image, title, description }: { watching: boolean; image: string; title: string; description: string }) {
+    if (!title || !image || !description) {
       return
     }
 
     const { invoke } = await import('@tauri-apps/api')
 
     await invoke('discord_set_activity', {
-      details: t('activity_details_watching', {
-        episode: getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(episode)?.title || 'Episode unknown',
-        episode_number: episode.number,
-      }),
-      state: watching ? t('activity_watching') : t('activity_browsing'),
+      details: `${watching ? t('activity_watching') : t('activity_browsing')} • ${title}`,
+      state: `${description}`,
       timestamp: Date.now(),
       image: 'logo_play',
     })
