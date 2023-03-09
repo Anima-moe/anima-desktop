@@ -65,9 +65,9 @@ function Index() {
   const { setPresence } = usePresence()
 
   const contentWrapper = clsx({
-    'duration-200 transition-all relative rounded-md overflow-hidden': true,
+    'duration-200 transition-all relative rounded-md overflow-hidden flex items-center justify-center': true,
     'w-[calc(85vh*1.77)] flex gap-4': playerExpanded !== 'expanded',
-    'w-screen h-full': playerExpanded === 'expanded',
+    'w-screen h-screen': playerExpanded === 'expanded',
   })
 
   if (animeLoading || seasonLoading || episodeLoading || streamLoading) {

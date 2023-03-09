@@ -13,8 +13,8 @@ function Media({ children }: Props) {
   
   const playerModeClasses = clsx({
     'flex h-screen w-screen overflow-auto': true,
-    'mt-0': playerMode === 'expanded',
-    'mt-16': playerMode === 'normal',
+    'pt-0': playerMode === 'expanded',
+    'pt-16': playerMode === 'normal',
   })
   
   return (
