@@ -3,7 +3,7 @@
     windows_subsystem = "windows"
 )]
 
-use tauri::{ api::process::Command,  Manager, Window };
+use tauri::{ api::process::Command,  Manager };
 use tauri::State;
 use std::io::BufReader;
 use std::process::Command as StdCommand;
@@ -25,11 +25,14 @@ fn discord_set_activity(
   state: &str,
   timestamp: i64,
   image: &str,
+  deep_link: &str,
+  button: &str,
   client: State<'_, DeclarativeDiscordIpcClient>
 ) -> Result<(), ()> {
   
   let buttons = vec![
-    Button::new("Assistir".into(), "https://discord.anima.moe".into())
+    Button::new(button.into(), deep_link.into()),
+    Button::new("Download".into(), "https://anima.moe".into())
   ];
 
   client.set_activity(Activity::new()
