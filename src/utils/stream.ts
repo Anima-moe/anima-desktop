@@ -3,6 +3,10 @@
 
 import { Stream } from '@/services/anima/stream'
 
+export function getStreamFormat(streamData) {
+  return streamData?.mp4?.length > 0 ? 'mp4' : 'm3u8'
+}
+
 export async function getUserPrefedStream(
   episodeID: number,
   stream: Anima.RAW.EpisodeStream,
@@ -11,24 +15,25 @@ export async function getUserPrefedStream(
   userAudioLocale: string
 ) {
   const { streamData, streamLocale } = await getUserPreferedStream(episodeID, stream, userAudioLocale)
-  // We need to attempt loading the user Prefered quality on MP4's when possible.
+
   return {
     streamURL:
-      // Quality = auto
-      userQuality > 0
-        ? // If the mp4 object is present, we can attempt to load the user prefered quality.
-          streamData?.mp4.length > 0
-          ? // If the user prefered quality is present & the quality is not auto, we load it.
+      getStreamFormat(streamData) === 'mp4'
+        ? // Stream is MP4
+          userQuality > 0
+          ? // User has prefered quality
             streamData.mp4.find((s) => s.height === userQuality)?.src
-          : // If the user prefered quality is not present or the quality is auto, we load the highest quality.
+          : // User has no prefered quality, get the better one
             streamData.mp4.sort((a, b) => b.height - a.height)[0]?.src
-        : // If the stream is not MP4 we can decide between softsub and hardsub
-        userSubtitleMode === 'soft'
-        ? streamData.hls
-        : streamData.hls_subtitled,
-    streamFormat: streamData.mp4 ? 'mp4' : 'm3u8',
+        : // Stream is not MP4
+        userSubtitleMode === 'soft' && streamData?.hls
+        ? // User preference is for soft subbed animes and we have an hls stream
+          streamData?.hls
+        : // User prefers hard sub or we don't have an softsubbed hls stream
+          streamData?.hls_subtitled,
+    streamFormat: streamData?.mp4?.length > 0 ? 'mp4' : 'm3u8',
     streamLocale,
-    streamQualities: streamData.mp4,
+    streamQualities: streamData?.mp4,
   }
 }
 
@@ -63,21 +68,22 @@ export async function getOpiniatedStream(
 
   return {
     streamURL:
-      // Quality = auto
-      userQuality > 0
-        ? // If the mp4 object is present, we can attempt to load the user prefered quality.
-          streamData?.mp4.length > 0
-          ? // If the user prefered quality is present & the quality is not auto, we load it.
+      getStreamFormat(streamData) === 'mp4'
+        ? // Stream is MP4
+          userQuality > 0
+          ? // User has prefered quality
             streamData.mp4.find((s) => s.height === userQuality)?.src
-          : // If the user prefered quality is not present or the quality is auto, we load the highest quality.
+          : // User has no prefered quality, get the better one
             streamData.mp4.sort((a, b) => b.height - a.height)[0]?.src
-        : // If the stream is not MP4 we can decide between softsub and hardsub
-        subtitleMode === 'soft'
-        ? streamData.hls
-        : streamData.hls_subtitled,
-    streamFormat: streamData.mp4 ? 'mp4' : 'm3u8',
+        : // Stream is not MP4
+        subtitleMode === 'soft' && streamData?.hls
+        ? // User preference is for soft subbed animes and we have an hls stream
+          streamData?.hls
+        : // User prefers hard sub or we don't have an softsubbed hls stream
+          streamData?.hls_subtitled,
+    streamFormat: streamData?.mp4?.length > 0 ? 'mp4' : 'm3u8',
     streamLocale,
-    streamQualities: streamData.mp4,
+    streamQualities: streamData?.mp4,
   }
 }
 // Get's fixed stream while keeping other user preferences
@@ -94,7 +100,7 @@ export async function getUserOpiniatedStream(episodeID: number, stream: Anima.RA
 }
 
 export function getUserPreferedSubtitle(streamData: Anima.RAW.EpisodeStream, userPreferedLocale: string) {
-  const subtitles = streamData.subtitles
+  const subtitles = streamData?.subtitles
 
   // The user prefers no subtitle at all.
   if (userPreferedLocale === '' || userPreferedLocale === 'Disabled') {
