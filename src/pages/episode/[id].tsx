@@ -86,6 +86,7 @@ function Index() {
           season: seasonData?.data?.[0]?.id,
           episode: episodeData?.data?.id,
           source: streamData?.data?.source,
+          error: `${episodeError || seasonError || animeError || streamError}`
         }))}/>
       </div>
     </General>
