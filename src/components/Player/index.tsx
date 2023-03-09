@@ -1,4 +1,5 @@
-import * as React from 'react'
+import { useEffect } from 'react'
+import React from 'react'
 
 import { useAtom } from 'jotai'
 import { MediaPlayerElement } from 'vidstack'
@@ -9,6 +10,7 @@ import FullscreenButton from '@/components/Player/Controls/FullscreenButton'
 import SourceDecoder from '@/components/Player/Decoders/Source'
 import SubtitleDecoder from '@/components/Player/Decoders/Subtitle'
 import PlayerMediaInfo from '@/components/Player/Overlays/MediaState'
+import usePresence from '@/hooks/usePresence'
 import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
 import { playerStreamConfig, userPreferedAutoplay } from '@/stores/atoms'
 import { MediaOutlet, MediaPlayer } from '@vidstack/react'
@@ -33,7 +35,17 @@ interface IPlayerProps {
 const Player = React.forwardRef<MediaPlayerElement, IPlayerProps>(({animeData, seasonData, episodeData, streamData}, ref) => {
   const [streamConfig] = useAtom(playerStreamConfig)
   const [userAutoplay] = useAtom(userPreferedAutoplay)
-  
+  const presence = usePresence()
+
+  useEffect(()=>{
+    presence.setPresence({
+      title: getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(animeData)?.title || 'Unknown title',
+      description: getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(episodeData)?.title || 'Unknown title',
+      watching: true,
+      image: 'logo_play'
+    })
+  }, [])
+
   return <MediaPlayer 
     ref={ref}
     poster={episodeData.thumbnail}
@@ -56,10 +68,10 @@ const Player = React.forwardRef<MediaPlayerElement, IPlayerProps>(({animeData, s
           seasonNumber={seasonData.number}
         />
         <SeasonBrowser episode={episodeData} season={seasonData} />
-        <Settings audios={streamData.audios} subtitles={streamData.subtitles} />
+        <Settings audios={streamData?.audios || {}} subtitles={streamData?.subtitles || {}} />
       </PlayerControlsRow>
       {/* LOAD / BUFFER */}
-      <div className='media-buffering:flex media-can-play:hidden media-playing:hidden hidden w-full h-full absolute top-0 left-0'>
+      <div className='media-buffering:flex media-can-play:hidden media-playing:hidden hidden w-full h-full absolute top-0 left-0 pointer-events-none'>
         <Loading />
       </div>
       <PlayerControlsRow bottom>
