@@ -130,7 +130,7 @@ function AnimePage() {
         )}
         <div className="absolute top-0 left-0 h-full w-full" style={{background: 'linear-gradient(180deg, #16161688 0%, #161616 90%)'}} />
       </div>
-      <div className="relative -mt-[40vh] z-[2] flex w-full flex-row px-8 bg-primary/60 backdrop-blur-sm">
+      <div className="relative -mt-[40vh] z-[2] flex w-full flex-row px-8 bg-primary/30 backdrop-blur-sm">
         <div className="mr-4 w-1/5 -mt-[20vh]">
           {animeData ? (
             <AnimeCard disabled noHover anime={animeData} />
