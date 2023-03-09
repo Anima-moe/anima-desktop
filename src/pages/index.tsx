@@ -75,7 +75,7 @@ function App() {
   const {session, loading: loadingSession} = useSession()
 
   const decideHeroAnime = useCallback(() => {
-    clearPresence('Home')
+    clearPresence('/', 'Home')
     if (simulcastAnimes)
       setHeroAnime(simulcastAnimes.data[Math.floor(Math.random() * simulcastAnimes.data.length)])
     else if (popularAnimes)

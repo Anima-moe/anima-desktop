@@ -44,7 +44,7 @@ const User = () => {
 
   useEffect(()=>{
     if (!userData) { return }
-    clearPresence('@' + userData.username)
+    clearPresence('/user/' + userData.id, `@${userData.username}`)
   }, [userData])
 
   if (userIsLoading || !router.isReady) return (

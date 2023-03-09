@@ -35,6 +35,8 @@ export default {
   cta_watchNow: 'Assistir',
   cta_seeMore: 'Ver mais',
   cta_seeLess: 'Ver menos',
+  activity_button_access: 'Acessar',
+  activity_button_watch: 'Assistir',
 
   section_continueWatching: 'Continuar a assistir',
   section_popular: 'Popular',

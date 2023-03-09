@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { useAtom } from 'jotai'
 import { MediaPlayerElement } from 'vidstack'
@@ -35,14 +36,17 @@ interface IPlayerProps {
 const Player = React.forwardRef<MediaPlayerElement, IPlayerProps>(({animeData, seasonData, episodeData, streamData}, ref) => {
   const [streamConfig] = useAtom(playerStreamConfig)
   const [userAutoplay] = useAtom(userPreferedAutoplay)
+  const { t } = useTranslation()
   const presence = usePresence()
 
   useEffect(()=>{
     presence.setPresence({
       title: getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(animeData)?.title || 'Unknown title',
-      description: getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(episodeData)?.title || 'Unknown title',
+      description: `S${seasonData.number}E${episodeData.number}・${getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(episodeData)?.title || 'Unknown episode title'}`,
       watching: true,
-      image: 'logo_play'
+      image: 'logo_play',
+      deeplink: `/episode/${episodeData.id}`,
+      button: t('activity_button_watch')
     })
   }, [])
 

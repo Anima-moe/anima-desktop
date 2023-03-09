@@ -6,6 +6,8 @@ export default {
   activity_details_browsing: '{{path}}',
   activity_browsing: 'Navegando',
   activity_watching: 'Assistindo',
+  activity_button_access: 'Acessar',
+  activity_button_watch: 'Assistir',
 
   anima_alpha_reminder:
     'Olá! Anima está em alpha e ainda estamos trabalhando nele.<br /> Se você encontrar animes com metadados ou episódios faltando, por favor, pressione o botão de reportar e cole o código resultante em nosso discord.',

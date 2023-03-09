@@ -75,9 +75,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
   useEffect(()=>{
     const unlisten = listen('scheme-request-received', (e) => {
-      const schema = e.payload as string
-      const path = schema.replace('anima://', '')
-      router.push(`/${path}`)
+      import('@tauri-apps/api/window')
+      .then(mod=>{
+        mod.appWindow.setFocus()
+        const schema = e.payload as string
+        const path = schema.replace('anima://', '')
+        router.push(`/${path}`)
+      })
     })
 
     return () => {
