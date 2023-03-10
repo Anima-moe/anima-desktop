@@ -32,7 +32,7 @@
 }
 
 body {
-  background-color: #000000;
+  @apply bg-primary;
   color: #fff;
   font-family: 'Rubik', sans-serif;
   overflow-x: hidden;
