@@ -40,7 +40,7 @@ const FloatingProfile: React.FunctionComponent<IFloatingProfileProps> = ({user})
       >
         {/* BACKGROUND */}
         <div 
-          className='bg-cover bg-center w-full h-full inset-0 absolute rounded-md overflow-hidden'
+          className='bg-cover bg-center w-full h-full inset-0 absolute rounded-md overflow-hidden bg-secondary'
           style={{ backgroundImage: `url('${data?.profile?.background})` }} 
         >
           {data?.profile?.background ? (
@@ -61,7 +61,7 @@ const FloatingProfile: React.FunctionComponent<IFloatingProfileProps> = ({user})
           {/* USER INFORMATION */}
           <div className='w-full h-full flex items-center gap-2 px-2'>
             <div
-              className='h-16 w-16 rounded-full bg-cover bg-center bg-no-repeat z-[1]'
+              className='h-16 w-16 rounded-full bg-cover bg-center bg-no-repeat z-[1] bg-primary'
               style={{
                 backgroundImage: `url('${
                   data?.profile?.avatar ?? 'https://i.imgur.com/CBdQGA3.png'
