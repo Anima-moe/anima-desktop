@@ -65,7 +65,7 @@ function Index() {
   const { setPresence } = usePresence()
 
   const contentWrapper = clsx({
-    'duration-200 transition-all relative rounded-md overflow-hidden flex items-center justify-center': true,
+    'duration-200 transition-all relative rounded-md overflow-hidden flex justify-center': true,
     'w-[calc(85vh*1.77)] flex gap-4': playerExpanded !== 'expanded',
     'w-screen h-screen': playerExpanded === 'expanded',
   })
@@ -82,11 +82,12 @@ function Index() {
     return <General>
       <div className='w-screen h-screen flex items-center justify-center'>
         <StreamError error={btoa(JSON.stringify({
-          anime:  router?.query?.id,
-          season: seasonData?.data?.[0]?.id,
-          episode: episodeData?.data?.id,
-          source: streamData?.data?.source,
-          error: `${episodeError || seasonError || animeError || streamError}`
+          animeId:  router?.query?.id,
+          seasonId: seasonData?.data?.[0]?.id,
+          episodeId: episodeData?.data?.id,
+          sourceId: streamData?.data?.source,
+          message: `${episodeError || seasonError || animeError || streamError}`,
+          error_type: 'stream'
         }))}/>
       </div>
     </General>

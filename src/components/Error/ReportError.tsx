@@ -55,10 +55,9 @@ export function ReportError({ anime }: IReportErrorProps) {
                 {btoa(
                   JSON.stringify({
                     animeId: anime?.id,
-                    animeTitle: getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(anime)?.title || 'Unknown anime title',
                     locale: i18next.language,
                     requestedAt: new Date().toISOString(),
-                    report_type: 'metadata',
+                    error_type: 'metadata',
                   })
                 )}
               </div>
@@ -69,6 +68,11 @@ export function ReportError({ anime }: IReportErrorProps) {
               title={t('anima_report_episodes')}
               description={t('api_streamError_instructions')}
               triggerClassName="cursor-pointer rounded-md bg-secondary px-2 py-2 transition-all duration-200 hover:bg-red-400 hover:text-primary flex text-left"
+              acceptText={t('gerenic_copy')}
+              accept={() => {
+                const content = outputRef.current.textContent
+                navigator.clipboard.writeText(content)
+              }}
             >
               <div
                 className="scroll-y-auto whitespace-wrap mt-2 max-h-[13rem] w-full overflow-y-auto break-words rounded bg-tertiary px-4 py-2"
@@ -78,10 +82,9 @@ export function ReportError({ anime }: IReportErrorProps) {
                 {btoa(
                   JSON.stringify({
                     animeId: anime?.id,
-                    animeTitle: getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(anime)?.title || 'Unknown anime title',
                     locale: i18next.language,
                     requestedAt: new Date().toISOString(),
-                    report_type: 'media',
+                    error_type: 'media',
                   })
                 )}
               </div>
@@ -92,6 +95,11 @@ export function ReportError({ anime }: IReportErrorProps) {
               title={t('anima_report_error')}
               description={t('api_streamError_instructions')}
               triggerClassName="cursor-pointer rounded-md bg-secondary px-2 py-2 transition-all duration-200 hover:bg-red-400 hover:text-primary flex text-left"
+              acceptText={t('gerenic_copy')}
+              accept={() => {
+                const content = outputRef.current.textContent
+                navigator.clipboard.writeText(content)
+              }}
             >
               <div
                 className="scroll-y-auto whitespace-wrap mt-2 max-h-[13rem] w-full overflow-y-auto break-words rounded bg-tertiary px-4 py-2"
@@ -101,10 +109,9 @@ export function ReportError({ anime }: IReportErrorProps) {
                 {btoa(
                   JSON.stringify({
                     animeId: anime?.id,
-                    animeTitle: getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(anime)?.title || 'Unknown anime title',
                     locale: i18next.language,
                     requestedAt: new Date().toISOString(),
-                    report_type: 'stream',
+                    error_type: 'stream',
                   })
                 )}
               </div>
