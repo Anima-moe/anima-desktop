@@ -29,7 +29,7 @@ const UserComments: React.FunctionComponent<IUserCommentProps> = (props) => {
     })
   }
 
-  return <div className='w-full'>
+  return <div className='w-full mb-8 !max-w-[98vw]'>
     <h1 className='text-subtle'>{t('section_comments')}</h1>
     <div className='flex w-full flex-col'>
       <form className='flex items-center w-full gap-4 relative' onSubmit={handleSubmit(handleCommentSend)}>

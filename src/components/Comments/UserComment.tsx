@@ -33,6 +33,7 @@ const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, nest
   function handleReplySend(data: {comment: string}) {
     Episode.createComment(episodeID, data.comment, comment.id)
     .then(()=>{
+      setShowReply(false)
       onReply?.(data.comment)
       reset({
         comment: ''
@@ -87,7 +88,7 @@ const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, nest
 
       {/* NEST INDICATOR */}
       {(nestLevel > 0) && (
-        <ArrowElbowDownRight size={24} className='text-subtle mx-4 my-auto' />
+        <ArrowElbowDownRight size={24} className='text-subtle mr-4 my-auto' style={{ marginLeft: `calc(${nestLevel > 1 ? '2rem' : '1rem'}*${nestLevel})`}} />
       )}
 
       {/* AVATAR */}
@@ -137,7 +138,7 @@ const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, nest
         </div>
 
         {/* REPLY BUTTON */}
-        {(nestLevel < 1) && (
+        {(nestLevel < 2) && (
           <div className='w-min h-4 text-xs flex'>
             <button 
               className='px-2 py-3 rounded-md bg-tertiary flex items-center hover:bg-accent hover:text-primary duration-300 '
