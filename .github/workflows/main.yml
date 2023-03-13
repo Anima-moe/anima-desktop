@@ -43,7 +43,7 @@ jobs:
 
       - name: Build the app
         # uses: tauri-apps/tauri-action@v0
-        run: node scripts/build.js
+        run: node scripts/build.mjs
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
