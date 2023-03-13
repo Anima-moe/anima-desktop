@@ -42,7 +42,8 @@ jobs:
         run: yarn && yarn build # Change this to npm, yarn or pnpm.
 
       - name: Build the app
-        uses: tauri-apps/tauri-action@v0
+        # uses: tauri-apps/tauri-action@v0
+        run: node scripts/build.js
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
