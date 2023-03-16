@@ -92,7 +92,7 @@ function AnimePage() {
         }
         setAnimeData(anime.data)
 
-        const anilist = await anilistService.getAnimeByName(anime.data.AnimeMetadata[0].title)
+        const anilist = await anilistService.getAnimeByName(anime.data.AnimeMetadata[0]?.title || 'Title unknown')
         if (!anilist) {
           return
         }
@@ -107,7 +107,7 @@ function AnimePage() {
 
   const {clearPresence} = usePresence()
  
-  useEffect(()=> {  clearPresence(getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(animeData).title) }, [animeData])
+  useEffect(()=> {  clearPresence(getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(animeData)?.title  || 'Title unknown') }, [animeData])
 
   return (
     <GeneralLayout fluid>
