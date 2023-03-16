@@ -16,6 +16,12 @@ export const Anime = {
     return data as Anima.API.GetAnimes
   },
 
+  getLatest: async function () {
+    const { data } = await client.get('/anime/latest')
+
+    return data as Anima.API.GetCategoryAnimes
+  },
+
   getByCategory: async function (categoryID: number) {
     const { data } = await client.get(`/category/${categoryID}/animes`)
 

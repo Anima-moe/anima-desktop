@@ -15,11 +15,14 @@ import useSession from '@/hooks/useSession'
 import { Anime } from '@/services/anima/anime'
 import { User as UserService } from '@/services/anima/user'
 
-const fetchPopularAnimes = () => {
-  return Anime.getByCategory(30)
+const fetchLatestAnimes = () => {
+  return Anime.getLatest()
 }
 const fetchSimulcastAnimes = () => {
   return Anime.getByCategory(33)
+}
+const fetchPopularAnimes = () => {
+  return Anime.getByCategory(30)
 }
 const fetchStaffPickAnimes = () => {
   return Anime.getByCategory(34)
@@ -31,6 +34,16 @@ function App() {
     error: simulcastError,
     isLoading: loadingSimulcast,
   } = useQuery<Anima.API.GetAnimes>('/api/getSimulcast', fetchSimulcastAnimes, {
+    retry: 3,
+    staleTime: Infinity,
+    cacheTime: 30 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  })
+  const {
+    data: latestAnimes,
+    error: latestError,
+    isLoading: loadingLatest,
+  } = useQuery<Anima.API.GetAnimes>('/api/getLatest', fetchLatestAnimes, {
     retry: 3,
     staleTime: Infinity,
     cacheTime: 30 * 60 * 1000,
@@ -115,6 +128,15 @@ function App() {
         <AnimeSwiper
           loading={loadingSimulcast}
           animes={simulcastAnimes?.data}
+          animesPerScreen={6}
+        />
+      </ContentContainer>
+
+      <ContentContainer>
+        <h3>{t('section_latest')}</h3>
+        <AnimeSwiper
+          loading={loadingLatest}
+          animes={latestAnimes?.data}
           animesPerScreen={6}
         />
       </ContentContainer>
