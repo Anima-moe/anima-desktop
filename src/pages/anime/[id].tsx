@@ -128,7 +128,7 @@ function AnimePage() {
         ) : (
           <video autoPlay loop muted className="h-full w-full object-cover" src="/i/splash.mp4" />
         )}
-        <div className="absolute top-0 left-0 h-full w-full" style={{background: 'linear-gradient(180deg, #16161688 0%, #161616 90%)'}} />
+        <div className="absolute top-0 left-0 h-screen w-screen" style={{background: 'linear-gradient(180deg, #04040488 0%, #040404 90%)'}} />
       </div>
       <div className="relative -mt-[40vh] z-[2] flex w-full flex-row px-8 bg-primary/30 backdrop-blur-sm">
         <div className="mr-4 w-1/5 -mt-[20vh]">
