@@ -28,7 +28,7 @@ const UserBadge: React.FunctionComponent<IUserBadgeProps> = ({badge, className})
       <Tooltip.Root>
         <Tooltip.Trigger asChild className='cursor-help'>
           { badge.icon ? (
-            <img src={`/badges/${badge.icon}.png`} className={`h-6 w-6 ${className}`} />
+            <img src={`/badges/${badge.icon}.png`} className={`h-6 w-6 p-0.5 ${className}`} />
           )  : (
             <span className='rounded-md bg-tertiary px-2 py-1 text-xs select-none'>{badge.name}</span>
           ) }

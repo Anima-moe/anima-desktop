@@ -86,7 +86,7 @@ const UserCard = ({ showStatics, user, showEditButton }: Props) => {
                 return <UserBadge badge={badge} key={`user.${badge.name}.${i}`} />
               })}
             </div>
-            <div className="mt-1.5 flex gap-2">
+            <div className="mt-1.5 flex gap-1">
               {user?.profile?.Badge?.map((badge, i) => {
                 if (!badge.icon) return
                 return <UserBadge badge={badge} key={`user.${badge.name}.${i}`} />
