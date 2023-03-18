@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion'
 
 type Props = {}
+const splashes = [2, 3, 4]
+const splashBackground = '/i/splash_' + splashes[Math.floor(Math.random() * splashes.length)] + '.mp4'
 
 function Welcome({}: Props) {
   return (
@@ -64,7 +66,7 @@ function Welcome({}: Props) {
         <video
           autoPlay
           muted
-          src="/i/splash.mp4"
+          src={splashBackground}
           className="h-full w-full overflow-hidden rounded-md object-fill"
           loop
         />
