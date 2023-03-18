@@ -156,7 +156,7 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
       setBif(await fetchBifFromURL(streamConfig.streamThumbnail))
       setCurrentThumbnailURL(streamConfig.streamThumbnail)
     })()
-  },[streamConfig.streamThumbnail, slider])
+  },[streamConfig.streamThumbnail, slider, streamConfig.streamURL])
 
   return <div className='pointer-events-auto relative flex w-full justify-center overflow-visible flex-col'>
     { currentTime > 0 && <SkipBar chapter={getcurrentChapter()} duration={duration} nextEpisode={seasonData.AnimeEpisode.find(e => e.number > episodeData.number)?.id}/> }
