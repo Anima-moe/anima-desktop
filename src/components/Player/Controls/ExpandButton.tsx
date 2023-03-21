@@ -1,20 +1,27 @@
+import { useEffect } from 'react'
+
 import { useAtom } from 'jotai'
 import { useRouter } from 'next/router'
 
 import { userPreferedPlayerMode } from '@/stores/atoms'
 import { MediaToggleButton } from '@vidstack/react'
-import { useMediaRemote } from '@vidstack/react'
 
 type Props = {}
 
 function ExpandButton({}: Props) {
   const [playerMode, setPlayerMode] = useAtom(userPreferedPlayerMode)
-  const remote = useMediaRemote()
   const router = useRouter()
+
+  useEffect(()=>{
+    router.events.on('routeChangeStart', ()=> { setPlayerMode('normal') })
+    return () => {
+      router.events.off('routeChangeStart', ()=> { setPlayerMode('normal') })
+    }
+  }, [])
 
   return (
     <MediaToggleButton
-      className='group pointer-events-auto ml-auto flex cursor-pointer items-center justify-center px-2 py-2 hover:bg-primary rounded-md duration-200'
+      className='flex items-center justify-center px-2 py-2 ml-auto duration-200 rounded-md cursor-pointer pointer-events-auto group hover:bg-primary'
       onClick={() => {
         setPlayerMode(playerMode === 'normal' ? 'expanded' : 'normal')
       }}
