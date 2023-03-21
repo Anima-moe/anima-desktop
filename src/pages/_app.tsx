@@ -93,7 +93,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Titlebar />
+      {router.asPath !== '/splashscreen' && <Titlebar /> }
       <Component {...pageProps} />
       <ToastContainer
         transition={Slide}
