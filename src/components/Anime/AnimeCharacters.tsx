@@ -27,7 +27,7 @@ function AnimeCharactersCard({ character }: { character: AnilistCharacter }) {
       <AnimatePresence initial={false}>
         {persona === 'character' ? (
           <motion.div
-            className="absolute top-0 left-0 h-full w-full cursor-help overflow-hidden rounded-md"
+            className="absolute top-0 left-0 w-full h-full overflow-hidden rounded-md cursor-help"
             initial={{ rotateY: 180, backfaceVisibility: 'hidden' }}
             animate={{ rotateY: 0, backfaceVisibility: 'hidden' }}
             exit={{ rotateY: -180, backfaceVisibility: 'hidden' }}
@@ -43,12 +43,12 @@ function AnimeCharactersCard({ character }: { character: AnilistCharacter }) {
             {character.node.image && (
               <img
                 src={persona === 'character' ? character.node.image.large : japaneseVA.image.large}
-                className="h-full w-full object-cover"
+                className="object-cover w-full h-full"
               />
             )}
-            <p className="absolute bottom-0 left-0 flex w-full flex-col overflow-hidden whitespace-nowrap bg-gradient-to-t from-primary">
-              <span className="text-ellipsis px-2 pt-4 text-sm">{character.node.name.full}</span>
-              <span className="overflow-hidden text-ellipsis px-2 pb-2 text-xs text-white text-opacity-50">
+            <p className="absolute bottom-0 left-0 flex flex-col w-full overflow-hidden whitespace-nowrap bg-gradient-to-t from-primary">
+              <span className="px-2 pt-4 text-sm text-ellipsis">{character.node.name.full}</span>
+              <span className="px-2 pb-2 overflow-hidden text-xs text-white text-opacity-50 text-ellipsis">
                 {' '}
                 {character.node.name.native}{' '}
               </span>
@@ -63,9 +63,9 @@ function AnimeCharactersCard({ character }: { character: AnilistCharacter }) {
             transition={{ duration: 0.3 }}
           >
             {japaneseVA.image && <img src={japaneseVA.image.large} className="object-cover" />}
-            <p className="absolute bottom-0 left-0 flex w-full flex-col overflow-hidden whitespace-nowrap bg-gradient-to-t from-secondary">
-              <span className="text-ellipsis px-2 pt-4 text-sm">{japaneseVA.name.full}</span>
-              <span className="overflow-hidden text-ellipsis px-2 pb-2 text-xs text-white text-opacity-50">
+            <p className="absolute bottom-0 left-0 flex flex-col w-full overflow-hidden whitespace-nowrap bg-gradient-to-t from-secondary">
+              <span className="px-2 pt-4 text-sm text-ellipsis">{japaneseVA.name.full}</span>
+              <span className="px-2 pb-2 overflow-hidden text-xs text-white text-opacity-50 text-ellipsis">
                 {japaneseVA.name.native}
               </span>
             </p>
@@ -82,7 +82,7 @@ function AnimeCharacters({ characters }: Props) {
 
   return (
     <div className="mt-8">
-      <h3 className="mt-4 mb-2 font-bold">{t('anime_heading_characters')}</h3>
+      <h3 className="mt-4 mb-2 font-bold">{t('anime.property.characters')}</h3>
       <div
         className={`w-full ${
           expanded ? 'h-full' : 'h-64'
@@ -94,24 +94,24 @@ function AnimeCharacters({ characters }: Props) {
           })}
         </div>
         {!expanded ? (
-          <div className="absolute bottom-0 h-full w-full bg-gradient-to-t from-primary px-2 pb-2">
+          <div className="absolute bottom-0 w-full h-full px-2 pb-2 bg-gradient-to-t from-primary">
             <span
-              className="absolute bottom-2 cursor-pointer select-none font-semibold"
+              className="absolute font-semibold cursor-pointer select-none bottom-2"
               onClick={() => {
                 setExpanded(true)
               }}
             >
-              {t('cta_seeMore')}
+              {t('generic.cta.seeMore')}
             </span>
           </div>
         ) : (
           <span
-            className="cursor-pointer select-none font-semibold"
+            className="font-semibold cursor-pointer select-none"
             onClick={() => {
               setExpanded(false)
             }}
           >
-            {t('cta_seeLess')}
+            {t('generic.cta.seeLess')}
           </span>
         )}
       </div>

@@ -58,7 +58,7 @@ function Index({ audios, subtitles }: Props) {
         </button>
       </Popover.Trigger>
       <Popover.Portal>
-        <Popover.Content sideOffset={2} align="end" className="select-none overflow-hidden">
+        <Popover.Content sideOffset={2} align="end" className="overflow-hidden select-none">
           <div className="'overflow-hidden relative h-max w-max min-w-[16rem] rounded-md border border-tertiary bg-secondary px-2 pt-2 transition-[height]">
             <AnimatePresence mode="wait" initial={false}>
               {configPage === 'audio' && <Audios audios={audios} />}
@@ -67,7 +67,7 @@ function Index({ audios, subtitles }: Props) {
               {configPage === 'subType' && <SubtitleTypes />}
               {configPage === 'main' && (
                 <motion.div
-                  className="flex w-full cursor-pointer flex-col pb-2"
+                  className="flex flex-col w-full pb-2 cursor-pointer"
                   initial={{ x: -50 }}
                   animate={{ x: 0 }}
                   exit={{ x: -50 }}
@@ -75,26 +75,20 @@ function Index({ audios, subtitles }: Props) {
                   <SettingEntry
                     LeftIcon={Sliders}
                     page="quality"
-                    text="Quality"
-                    value={(streamConfig.streamHeight > 0) ? streamConfig.streamHeight.toString() : 'Auto'}
+                    text={t('anime.settings.quality')}
+                    value={(streamConfig.streamHeight > 0) ? streamConfig.streamHeight.toString() + 'p' : 'Auto'}
                   />
                   <SettingEntry
                     LeftIcon={MusicNote}
                     page="audio"
-                    text="Audio"
+                    text={t('anime.settings.audio')}
                     value={streamConfig.streamLocale || 'ja-JP'}
                   />
                   <SettingEntry
                     LeftIcon={Chat}
                     page="subtitle"
-                    text="Subtitle"
+                    text={t('anime.settings.subtitle')}
                     value={streamConfig.subtitleLocale || 'N/a'}
-                  />
-                  <SettingEntry
-                    LeftIcon={ChatsCircle}
-                    page="subType"
-                    text="Subtitle mode"
-                    value={streamConfig.subtitleMode || 'Soft'}
                   />
                 </motion.div>
               )}

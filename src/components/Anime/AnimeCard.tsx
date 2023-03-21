@@ -107,7 +107,7 @@ function AnimeCard({ anime, disabled, noHover, onClick }: Props) {
             </motion.h6>
             <motion.span className="flex w-full text-xs text-white/50" variants={contentVariants}>
               {`${t(
-                anime.AnimeSeason.length > 1 ? 'anime_generic_seasons' : 'anime_generic_season',
+                anime.AnimeSeason.length > 1 ? 'anime.generic.seasons' : 'anime.generic.season',
                 { n: anime.AnimeSeason.length }
               )}`}
             </motion.span>

@@ -83,12 +83,12 @@ const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, nest
       
       {/* COLLAPSE */}
       {comment.Children.length > 0 && <div className='absolute px-2 py-1 right-4 top-4 bg-black/30 rounded-md cursor-pointer hover:bg-accent z-[2] hover:text-primary text-subtle' onClick={()=>{setShowChildren(!showChildren)}}>
-        <span className='flex items-center text-xs gap-2'>{t(showChildren ? 'action_hideComments' : 'action_showComments')}{ showChildren ? <Eye /> : <EyeClosed /> }</span>  
+        <span className='flex items-center gap-2 text-xs'>{t(showChildren ? 'generic.action.hideComments' : 'generic.action.showComments')}{ showChildren ? <Eye /> : <EyeClosed /> }</span>  
       </div> }
 
       {/* NEST INDICATOR */}
       {(nestLevel > 0) && (
-        <ArrowElbowDownRight size={24} className='text-subtle mr-4 my-auto' style={{ marginLeft: `calc(${nestLevel > 1 ? '2rem' : '1rem'}*${nestLevel})`}} />
+        <ArrowElbowDownRight size={24} className='my-auto mr-4 text-subtle' style={{ marginLeft: `calc(${nestLevel > 1 ? '2rem' : '1rem'}*${nestLevel})`}} />
       )}
 
       {/* AVATAR */}
@@ -108,7 +108,7 @@ const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, nest
           className={userNameClassNames}
           style={{ color: comment.User?.UserProfile?.color || '#FFFFFF' }}
         >
-          <div className='flex flex-row gap-2 items-center'>
+          <div className='flex flex-row items-center gap-2'>
             <Tooltip.Provider delayDuration={500}> 
               <Tooltip.Root>
                 <Tooltip.Trigger asChild >
@@ -139,15 +139,15 @@ const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, nest
 
         {/* REPLY BUTTON */}
         {(nestLevel < 2) && (
-          <div className='w-min h-4 text-xs flex'>
+          <div className='flex h-4 text-xs w-min'>
             <button 
-              className='px-2 py-3 rounded-md bg-tertiary flex items-center hover:bg-accent hover:text-primary duration-300 '
+              className='flex items-center px-2 py-3 duration-300 rounded-md bg-tertiary hover:bg-accent hover:text-primary '
               onClick={()=>{
                 setShowReply(!showReply)
               }}
             >
               <ArrowBendDownRight  className='mr-2' /> 
-              {t('action_reply')}
+              {t('generic.action.reply')}
             </button>
           </div>
         )}
@@ -155,13 +155,13 @@ const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, nest
     </div>
     <div className='group'>
       {showReply && (
-        <form className='flex items-center w-full gap-4 relative pl-5 bg-secondary border border-tertiary' onSubmit={handleSubmit(handleReplySend)}>
+        <form className='relative flex items-center w-full gap-4 pl-5 border bg-secondary border-tertiary' onSubmit={handleSubmit(handleReplySend)}>
           <Controller
               name='comment'
               control={control}
               rules={{ required: false }}
               render={({ field }) => (
-                <IconInput Icon={Chats} placeholder={t('action_writeReply')} className='h-16 -my-1.5 !rounded-none !border-none !pl-16' type="text" error={errors['comment'] && errors['comment'].message} {...field}/>
+                <IconInput Icon={Chats} placeholder={t('generic.action.writeReply')} className='h-16 -my-1.5 !rounded-none !border-none !pl-16' type="text" error={errors['comment'] && errors['comment'].message} {...field}/>
               )}
             />
 

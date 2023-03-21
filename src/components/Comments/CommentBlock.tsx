@@ -30,15 +30,15 @@ const UserComments: React.FunctionComponent<IUserCommentProps> = (props) => {
   }
 
   return <div className='w-full mb-8 !max-w-[98vw]'>
-    <h1 className='text-subtle'>{t('section_comments')}</h1>
-    <div className='flex w-full flex-col'>
-      <form className='flex items-center w-full gap-4 relative' onSubmit={handleSubmit(handleCommentSend)}>
+    <h1 className='text-subtle'>{t('generic.section.comments')}</h1>
+    <div className='flex flex-col w-full'>
+      <form className='relative flex items-center w-full gap-4' onSubmit={handleSubmit(handleCommentSend)}>
         <Controller
             name='comment'
             control={control}
             rules={{ required: false }}
             render={({ field }) => (
-              <IconInput Icon={Chat} placeholder={t('action_writeComment')} className='h-16' type="text" error={errors['comment'] && errors['comment'].message} {...field}/>
+              <IconInput Icon={Chat} placeholder={t('generic.action.writeComment')} className='h-16' type="text" error={errors['comment'] && errors['comment'].message} {...field}/>
             )}
           />
 

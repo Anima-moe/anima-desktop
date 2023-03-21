@@ -22,17 +22,17 @@ function Audios({ audios }: Props) {
       initial={{ x: 50 }}
       animate={{ x: 0 }}
       exit={{ x: 50 }}
-      className="relative h-full w-full overflow-hidden"
+      className="relative w-full h-full overflow-hidden"
     >
       <div
-        className="group pointer-events-auto flex cursor-pointer flex-row items-center justify-between rounded-md p-2 hover:bg-tertiary hover:text-white"
+        className="flex flex-row items-center justify-between p-2 rounded-md cursor-pointer pointer-events-auto group hover:bg-tertiary hover:text-white"
         onClick={() => {
           setConfigPage('main')
         }}
       >
         <ArrowLeft />
         <span className="flex flex-row items-center text-sm text-subtle">
-          Audios : {streamConfig.streamLocale}
+          {t('anime.settings.audios')}
           <MusicNote className="ml-1.5" weight="fill" />
         </span>
       </div>

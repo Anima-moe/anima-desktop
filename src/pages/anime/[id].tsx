@@ -157,8 +157,8 @@ function AnimePage() {
           <div className="w-full mt-4">
             {anilistData ? (
               <AnimeProperty
-                heading="anime_heading_status"
-                value={t('anilist_status_' + anilistData.status)}
+                heading="anime.property.status"
+                value={t('anilist.status.' + anilistData.status)}
                 Icon={FilmSlate}
               />
             ) : (
@@ -166,8 +166,8 @@ function AnimePage() {
             )}
             {anilistData && anilistData.endDate ? (
               <AnimeProperty
-                heading="anime_heading_endDate"
-                value={t('generic_date', {
+                heading="anime.property.endDate"
+                value={t('generic.date.format', {
                   year: anilistData.endDate.year,
                   month: anilistData.endDate.month,
                   day: anilistData.endDate.day,
@@ -179,7 +179,7 @@ function AnimePage() {
             )}
             {anilistData ? (
               <AnimeProperty
-                heading="anime_heading_averageScore"
+                heading="anime.property.averageScore"
                 value={anilistData.averageScore || '🛠️'}
                 Icon={Graph}
               />
@@ -187,12 +187,12 @@ function AnimePage() {
               <AnimePropertySkeleton />
             )}
             {anilistData ? (
-              <AnimeProperty heading="anime_heading_synonyms" value={anilistData.synonyms} />
+              <AnimeProperty heading="anime.property.synonyms" value={anilistData.synonyms} />
             ) : (
               <AnimePropertySkeleton />
             )}
             {anilistData?.studios ? (
-              <AnimeProperty heading="anime_heading_studios" value={anilistData.studios.nodes.map(s=>s.name)} Icon={PlayCircle}/>
+              <AnimeProperty heading="anime.property.studio" value={anilistData.studios.nodes.map(s=>s.name)} Icon={PlayCircle}/>
             ) : (
               <AnimePropertySkeleton />
             )}

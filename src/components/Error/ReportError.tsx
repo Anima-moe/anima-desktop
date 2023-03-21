@@ -24,7 +24,7 @@ export function ReportError({ anime }: IReportErrorProps) {
     <>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
-          <button className="flex items-center rounded bg-red-400 px-4 py-2 font-semibold text-primary duration-300 hover:bg-secondary hover:text-red-400">
+          <button className="flex items-center px-4 py-2 font-semibold duration-300 bg-red-400 rounded text-primary hover:bg-secondary hover:text-red-400">
             <Warning size={24} className="mr-4" /> Report
           </button>
         </DropdownMenu.Trigger>
@@ -37,8 +37,8 @@ export function ReportError({ anime }: IReportErrorProps) {
             align="end"
           >
             <ErrorDialog
-              triggerText={t('anima_report_metadata')}
-              title={t('anima_report_metadata')}
+              triggerText={t('anime.report.missingMetadata')}
+              title={t('anime.report.missingMetadata')}
               description={t('api_streamError_instructions')}
               triggerClassName="cursor-pointer rounded-md bg-secondary px-2 py-2 transition-all duration-200 hover:bg-red-400 hover:text-primary flex text-left"
               acceptText={t('gerenic_copy')}
@@ -57,15 +57,15 @@ export function ReportError({ anime }: IReportErrorProps) {
                     animeId: anime?.id,
                     locale: i18next.language,
                     requestedAt: new Date().toISOString(),
-                    error_type: 'metadata',
+                    error_type: 'missingMetadata',
                   })
                 )}
               </div>
             </ErrorDialog>
 
             <ErrorDialog
-              triggerText={t('anima_report_episodes')}
-              title={t('anima_report_episodes')}
+              triggerText={t('anime.report.missingEpisodes')}
+              title={t('anime.report.missingEpisodes')}
               description={t('api_streamError_instructions')}
               triggerClassName="cursor-pointer rounded-md bg-secondary px-2 py-2 transition-all duration-200 hover:bg-red-400 hover:text-primary flex text-left"
               acceptText={t('gerenic_copy')}
@@ -91,8 +91,8 @@ export function ReportError({ anime }: IReportErrorProps) {
             </ErrorDialog>
 
             <ErrorDialog
-              triggerText={t('anima_report_error')}
-              title={t('anima_report_error')}
+              triggerText={t('anime.report.error')}
+              title={t('anime.report.error')}
               description={t('api_streamError_instructions')}
               triggerClassName="cursor-pointer rounded-md bg-secondary px-2 py-2 transition-all duration-200 hover:bg-red-400 hover:text-primary flex text-left"
               acceptText={t('gerenic_copy')}

@@ -96,15 +96,13 @@ function App() {
   const [heroAnime, setHeroAnime] = useState<Anima.RAW.Anime>({} as Anima.RAW.Anime)
   const { t } = useTranslation()
   const { clearPresence } = usePresence()
-  const {session, loading: loadingSession} = useSession()
+  const { session, loading: loadingSession } = useSession()
   const { width, height } = useWindowSize()
-  
+
   const decideHeroAnime = useCallback(() => {
     clearPresence('/', 'Home')
-    if (simulcastAnimes)
-      setHeroAnime(simulcastAnimes.data[Math.floor(Math.random() * simulcastAnimes.data.length)])
-    else if (popularAnimes)
-      setHeroAnime(popularAnimes.data[Math.floor(Math.random() * popularAnimes.data.length)])
+    if (simulcastAnimes) setHeroAnime(simulcastAnimes.data[Math.floor(Math.random() * simulcastAnimes.data.length)])
+    else if (popularAnimes) setHeroAnime(popularAnimes.data[Math.floor(Math.random() * popularAnimes.data.length)])
     else return
   }, [simulcastAnimes])
 
@@ -120,46 +118,39 @@ function App() {
     )
 
   return (
-    <GeneralLayout fluid >
+    <GeneralLayout fluid>
       <AnimeHero anime={heroAnime} />
       {userPlayerHead && userPlayerHead.data.length > 0 && (
-        <ContentContainer className='z-[1]'>
-          <SectionTitle Icon={Play} name={t('section_continueWatching')} className='mb-2' />
+        <ContentContainer className="z-[1]">
+          <SectionTitle Icon={Play} name={t('anime.section.continueWatching')} className="mb-2" />
           <SwiperPlayerHead playerHeads={userPlayerHead.data} hideCompleted={true} slidesPerView={calculateItemsPerRow(width)} />
-        </ContentContainer> 
-      )}
-      
-      {(!loadingSession && session && session.premium < 1) || (!loadingSession && !session) && (
-      <ContentContainer>
-        <DonationReminder />
-      </ContentContainer>
+        </ContentContainer>
       )}
 
+      {(!loadingSession && session && session.premium < 1) ||
+        (!loadingSession && !session && (
+          <ContentContainer>
+            <DonationReminder />
+          </ContentContainer>
+        ))}
+
       <ContentContainer>
-        <SectionTitle Icon={TelevisionSimple} name={t('section_simulcast')} className='mb-2' />
-        <AnimeSwiper
-          loading={loadingSimulcast}
-          animes={simulcastAnimes?.data}
-          animesPerScreen={calculateItemsPerRow(width)}
-        />
+        <SectionTitle Icon={TelevisionSimple} name={t('anime.section.simulcast')} className="mb-2" />
+        <AnimeSwiper loading={loadingSimulcast} animes={simulcastAnimes?.data} animesPerScreen={calculateItemsPerRow(width)} />
       </ContentContainer>
 
       <ContentContainer>
-        <SectionTitle Icon={CalendarX} name={t('section_latest')} className='mb-2' />
-        <AnimeSwiper
-          loading={loadingLatest}
-          animes={latestAnimes?.data}
-          animesPerScreen={calculateItemsPerRow(width)}
-        />
+        <SectionTitle Icon={CalendarX} name={t('anime.section.latest')} className="mb-2" />
+        <AnimeSwiper loading={loadingLatest} animes={latestAnimes?.data} animesPerScreen={calculateItemsPerRow(width)} />
       </ContentContainer>
 
       <ContentContainer>
-        <SectionTitle Icon={ChartLineUp} name={t('section_popular')} className='mb-2' />
+        <SectionTitle Icon={ChartLineUp} name={t('anime.section.popular')} className="mb-2" />
         <AnimeSwiper loading={loadingSimulcast} animes={popularAnimes?.data} animesPerScreen={calculateItemsPerRow(width)} />
       </ContentContainer>
 
       <ContentContainer>
-        <SectionTitle Icon={Crown} name={t('section_staffPick')} className='mb-2' />
+        <SectionTitle Icon={Crown} name={t('anime.section.staffPick')} className="mb-2" />
         <AnimeSwiper loading={loadingStaffPick} animes={staffAnimes?.data} animesPerScreen={calculateItemsPerRow(width)} />
       </ContentContainer>
     </GeneralLayout>

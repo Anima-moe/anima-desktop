@@ -10,14 +10,14 @@ type Props = {
 function StaffCard({ person }: { person: AnilistStaff }) {
   return (
     <div className="relative aspect-[2/3] w-full">
-      <div className="absolute top-0 left-0 h-full w-full overflow-hidden rounded-md">
-        <img src={person.image.large} className="h-full w-full object-cover" />
-        <p className="absolute bottom-0 left-0 flex w-full flex-col overflow-hidden whitespace-nowrap bg-gradient-to-t from-primary">
-          <span className="text-ellipsis px-2 pt-4 text-sm">{person.name.full}</span>
-          <span className="text-epersonllipsis overflow-hidden px-2 text-xs text-white text-opacity-60">
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden rounded-md">
+        <img src={person.image.large} className="object-cover w-full h-full" />
+        <p className="absolute bottom-0 left-0 flex flex-col w-full overflow-hidden whitespace-nowrap bg-gradient-to-t from-primary">
+          <span className="px-2 pt-4 text-sm text-ellipsis">{person.name.full}</span>
+          <span className="px-2 overflow-hidden text-xs text-white text-epersonllipsis text-opacity-60">
             {person.name.native}
           </span>
-          <span className="overflow-hidden px-2 pb-2 text-xs text-gray-400">
+          <span className="px-2 pb-2 overflow-hidden text-xs text-gray-400">
             {' '}
             {person.primaryOccupations}{' '}
           </span>
@@ -34,7 +34,7 @@ function AnimeCharacters({ staff }: Props) {
 
   return (
     <div className="mt-12">
-      <h3 className="mb-2 font-bold">{t('anime_heading_staff')}</h3>
+      <h3 className="mb-2 font-bold">{t('anime.property.staff')}</h3>
       <div
         className={`w-full ${
           expanded ? 'h-full' : 'h-64'
@@ -46,24 +46,24 @@ function AnimeCharacters({ staff }: Props) {
           })}
         </div>
         {!expanded ? (
-          <div className="absolute bottom-0 h-full w-full bg-gradient-to-t from-primary px-2 pb-2">
+          <div className="absolute bottom-0 w-full h-full px-2 pb-2 bg-gradient-to-t from-primary">
             <span
-              className="absolute bottom-2 cursor-pointer select-none font-semibold"
+              className="absolute font-semibold cursor-pointer select-none bottom-2"
               onClick={() => {
                 setExpanded(true)
               }}
             >
-              {t('cta_seeMore')}
+              {t('generic.cta.seeMore')}
             </span>
           </div>
         ) : (
           <span
-            className="cursor-pointer select-none font-semibold"
+            className="font-semibold cursor-pointer select-none"
             onClick={() => {
               setExpanded(false)
             }}
           >
-            {t('cta_seeLess')}
+            {t('generic.cta.seeLess')}
           </span>
         )}
       </div>

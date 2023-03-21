@@ -35,7 +35,7 @@ function Season({ season }: Props) {
         tabIndex={0}
       >
         <span className="w-full">
-          {t('anime_generic_season', { n: season.number })} - {season.title}
+          {t('anime.generic.cardinalSeason', { n: season.number })} - {season.title}
         </span>
         {expanded ? <CaretDown size={24} /> : <CaretUp size={24} />}
       </div>
@@ -46,7 +46,7 @@ function Season({ season }: Props) {
         {season.AnimeEpisode.sort((a, b) => a.number - b.number).map((episode, index) => {
           return (
             <div
-              className="group flex w-full cursor-pointer flex-row bg-secondary px-2 py-4 duration-300 last-of-type:rounded-b-md hover:bg-accent hover:text-secondary"
+              className="flex flex-row w-full px-2 py-4 duration-300 cursor-pointer group bg-secondary last-of-type:rounded-b-md hover:bg-accent hover:text-secondary"
               key={`season.episode.${episode.id}`}
             >
               <Link href={`/episode/${episode.id}?seasonid=${season.id}`}>

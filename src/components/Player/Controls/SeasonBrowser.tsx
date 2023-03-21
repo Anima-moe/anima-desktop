@@ -58,7 +58,7 @@ export default function SeasonBrowser({ season, episode }: Props) {
         >
           <div className="flex w-[250px] items-center overflow-hidden text-ellipsis px-2 pb-4">
             <BookOpen weight="fill" size={16} className="mr-1.5 " />{' '}
-            <span className='w-full overflow-hidden text-ellipsis'>{t('anime_generic_season', { n: season.title })}</span>
+            <span className='w-full overflow-hidden text-ellipsis'>{t('anime.generic.season', { n: season.title })}</span>
           </div>
           <div
             className="-mt-2 flex max-h-[calc(100vh-32rem)] w-[250px] flex-col overflow-scroll pt-2 text-white"
