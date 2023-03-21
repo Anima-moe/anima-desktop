@@ -33,9 +33,10 @@
 
 body {
   @apply bg-primary;
+  overflow: hidden;
   color: #fff;
   font-family: 'Rubik', sans-serif;
-  overflow-x: hidden;
+  @apply rounded-b-md;
 }
 
 .font-noto {
@@ -146,7 +147,7 @@ video {
 
   position: fixed;
   z-index: 1031;
-  top: 0;
+  top: 2.5rem;
   left: 0;
 
   width: 100%;
