@@ -15,13 +15,14 @@ type Props = {
   playerHeads?: Anima.RAW.UserPlayerHead[]
   loading?: boolean
   hideCompleted?: boolean
+  slidesPerView?: number
 }
 
-function SwiperPlayerHead({ playerHeads, loading, hideCompleted }: Props) {
+function SwiperPlayerHead({ playerHeads, loading, hideCompleted, slidesPerView }: Props) {
   return (
     <Swiper
       modules={[Navigation, Virtual, Lazy]}
-      slidesPerView={5}
+      slidesPerView={slidesPerView || 5}
       spaceBetween={12}
       navigation
       lazy
