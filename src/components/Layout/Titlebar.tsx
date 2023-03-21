@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import clsx from 'clsx'
 import { useAtom } from 'jotai'
@@ -26,7 +26,9 @@ const Titlebar: React.FunctionComponent<ITitlebarProps> = (props) => {
   }
 
   useOnClickOutside(titleBar, handleClickOutside)
-
+  useEffect(()=>{
+    document.body.style.backgroundColor = 'transparent'
+  }, [])
   return <div 
     className={classes}
     onMouseEnter={()=>{
@@ -55,6 +57,17 @@ const Titlebar: React.FunctionComponent<ITitlebarProps> = (props) => {
       <span className="px-2 py-1 text-xs rounded-md cursor-default bg-tertiary text-accent">Beta</span>
     </div>
     <div className='flex items-center gap-4'>
+      <div 
+        className="duration-300 cursor-pointer pointer-events-auto text-subtle hover:text-accent"
+        onMouseUp={()=>{
+          import('@tauri-apps/api/window')
+          .then( async mod => {
+            mod.appWindow.minimize()
+          })
+        }}
+      >
+        <Minus className='pointer-events-none' size={20} />
+      </div>
       <div 
         className="duration-300 cursor-pointer pointer-events-auto text-subtle hover:text-accent"
         onMouseUp={()=>{
