@@ -36,5 +36,11 @@ export function getLocaleMetadata<T, TM>(media: T): TM {
     return media.categoryMetadata.find((metadata) => metadata.locale === locale) as TM
   }
 
+  //@ts-expect-error
+  if (media?.CategoryMetadata) {
+    //@ts-expect-error
+    return media.CategoryMetadata.find((metadata) => metadata.locale_key === locale) as TM
+  }
+
   return {} as TM
 }

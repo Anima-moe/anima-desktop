@@ -51,22 +51,39 @@ function Navbar() {
   ]
 
   return (
-    <div className="z-50">
+    <div className="z-50 h-full">
       <DropdownMenu>
         {user ? (
           <DropdownMenuTrigger asChild>
-            <button
-              className="h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-secondary bg-cover bg-center"
-              style={{
-                backgroundImage: `url('${
-                  user?.profile?.avatar || 'https://i.imgur.com/CBdQGA3.png'
-                }')`,
-              }}
-            />
+            <div className='flex items-center h-full gap-2 px-2 py-1 duration-200 rounded-md cursor-pointer hover:bg-primary group'>
+              <div 
+                className='relative flex items-center px-4 text-xl font-semibold rounded-md h-11 bg-secondary overflow-hiden'
+                style={{
+                  color: user?.profile?.color
+                }}
+              >
+                <div 
+                  className='absolute inset-0 w-full h-full rounded-md opacity-10' 
+                  style={{
+                    backgroundColor: user?.profile?.color,
+                    textShadow: `0 0 32px ${user?.profile?.color}`
+                  }} 
+                />
+                <span className='z-[1]'>{user?.username}</span>
+              </div>
+              <div
+                className="items-center justify-center bg-center bg-cover rounded-md w-11 h-11 bg-secondary"
+                style={{
+                  backgroundImage: `url('${
+                    user?.profile?.avatar || 'https://i.imgur.com/CBdQGA3.png'
+                  }')`,
+                }}
+              />
+            </div>
           </DropdownMenuTrigger>
         ) : (
           <DropdownMenuTrigger asChild>
-            <button className="flex aspect-square h-12 cursor-pointer items-center justify-center rounded-md  border-opacity-50  bg-opacity-60 p-2 backdrop-blur-sm duration-300 hover:border-tertiary hover:bg-black hover:text-white active:border-accent active:bg-accent active:text-primary">
+            <button className="flex items-center justify-center h-12 p-2 duration-300 border-opacity-50 rounded-md cursor-pointer aspect-square bg-opacity-60 backdrop-blur-sm hover:border-tertiary hover:bg-black hover:text-white active:border-accent active:bg-accent active:text-primary">
               <User size={22} />
             </button>
           </DropdownMenuTrigger>

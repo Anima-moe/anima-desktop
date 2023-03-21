@@ -1,17 +1,17 @@
-import { Bell } from 'phosphor-react'
+import { GearSix } from 'phosphor-react'
 
 import NavIcon from '@/components/Navbar/NavbarIcon'
 
-function NavNotifications() {
+function NavSettings() {
   // TODO: Fetch notifications
   return (
     <>
       <NavIcon 
       title="No notifications"
-      Icon={<Bell size={24} />}
+      Icon={<GearSix size={24} />}
       onClick={() => {}} />
     </>
   )
 }
 
-export default NavNotifications
+export default NavSettings
