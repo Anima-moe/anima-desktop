@@ -75,13 +75,13 @@ const Player = React.forwardRef<MediaPlayerElement, IPlayerProps>(({animeData, s
         <Settings audios={streamData?.audios || {}} subtitles={streamData?.subtitles || {}} />
       </PlayerControlsRow>
       {/* LOAD / BUFFER */}
-      <div className='media-buffering:flex media-can-play:hidden media-playing:hidden hidden w-full h-full absolute top-0 left-0 pointer-events-none'>
+      <div className='absolute top-0 left-0 hidden w-full h-full pointer-events-none media-buffering:flex media-can-play:hidden media-playing:hidden'>
         <Loading />
       </div>
       <PlayerControlsRow bottom>
         <div className='flex flex-col w-full gap-2'>
           <SeekBar animeData={animeData} episodeData={episodeData} seasonData={seasonData}/>
-          <div className='flex gap-2 w-full'>
+          <div className='flex w-full gap-2'>
             <SkipButton time={-15} />
             <PlayButton />
             <SkipButton time={15} />
