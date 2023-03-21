@@ -14,23 +14,23 @@ import SettingsTrigger from './Applets/Settings/SettingsTrigger'
 const navLinks = [
   {
     name: 'nav.link.animes',
-    href: '/',
-    routes: ['/', '/episode', '/anime', '/w2g', '/animesearch']
+    href: '\/',
+    routes: ['\/$', '\/episode', '\/anime', '\/w2g', '\/animesearch']
   },
   {
-    name: 'nav.link.manga',
+    name: 'nav.link.mangas',
     href: '/manga',
-    routes: ['/manga', '/chapter', '/volume', '/scanlate']
+    routes: ['\/manga*.+', '\/chapter*.+', '\/volume*.+', '\/scanlate*.+']
   },
   {
     name: 'nav.link.donate',
     href: '/donate',
-    routes: ['/donate']
+    routes: ['\/donate*.+']
   },
   {
     name: 'nav.link.about',
     href: '/about',
-    routes: ['/about']
+    routes: ['\/about*.+']
   }
 ]
 
@@ -42,9 +42,9 @@ function Index() {
 
   const matchRoute = (routes: string[]) => {
     const currentRoute = router.asPath
-    if (currentRoute === '/' && routes.includes('/')) return true
-    const matchedRoute = routes.includes(currentRoute)
-    if (matchedRoute) return true
+    return routes.some( route => {
+      return new RegExp(route).test(currentRoute)
+    })
   }
 
   return (
@@ -68,7 +68,7 @@ function Index() {
       <div className="flex items-center justify-center w-6/12 h-full gap-3 focus-within:text-white z-[1]">
         {navLinks.map( item => {
           return <Link href={item.href} key={`nav.link.${item.href}`}> 
-            <div className={`rounded ${matchRoute(item.routes) ? 'bg-primary text:accent' : 'bg-transparent'} px-3 py-1.5 hover:bg-accent hover:text-primary duration-300`}>
+            <div className={`rounded ${matchRoute(item.routes) ? 'bg-primary text-accent' : 'bg-transparent'} px-3 py-1.5 hover:bg-accent hover:text-primary duration-300 font-semibold`}>
               {t(item.name)}
             </div>
           </Link>
