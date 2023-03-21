@@ -15,7 +15,7 @@ function FullscreenButton({}: Props) {
 
   return (
     <MediaToggleButton
-      className='group pointer-events-auto flex cursor-pointer items-center justify-center px-2 py-2 hover:bg-primary rounded-md duration-200'
+      className='flex items-center justify-center px-2 py-2 duration-200 rounded-md cursor-pointer pointer-events-auto group hover:bg-primary'
       onClick={() => {
         import('@tauri-apps/api/window').then((mod) => {
           setFullscreen(!fullscreen)
