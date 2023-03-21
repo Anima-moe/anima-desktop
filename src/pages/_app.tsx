@@ -18,6 +18,8 @@ import 'skeleton-elements/css'
 import { listen } from '@tauri-apps/api/event'
 import Titlebar from '@/components/Layout/Titlebar'
 
+import Script from 'next/script'
+
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
@@ -26,7 +28,7 @@ i18n
       'en-US': { translation: enUS },
       'pt-BR': { translation: ptBR },
       'pt-PT': { translation: ptPT },
-    }
+    },
   })
 
 NProgress.configure({
@@ -66,7 +68,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     document.addEventListener('contextmenu', (e) => {
       e.preventDefault()
     })
-    
     ;(async () => {
       const { getConfigValue } = await import('@/services/tauri/configValue')
       const userLanguage = await getConfigValue<string>('language')
@@ -74,10 +75,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     })()
   }, [router])
 
-  useEffect(()=>{
+  useEffect(() => {
     const unlisten = listen('scheme-request-received', (e) => {
-      import('@tauri-apps/api/window')
-      .then(mod=>{
+      import('@tauri-apps/api/window').then((mod) => {
         mod.appWindow.setFocus()
         const schema = e.payload as string
         const path = schema.replace('anima://', '')
@@ -86,14 +86,15 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     })
 
     return () => {
-      unlisten
-        .then(f => f())
+      unlisten.then((f) => f())
     }
   }, [])
 
   return (
     <QueryClientProvider client={queryClient}>
-      {router.asPath !== '/splashscreen' && <Titlebar /> }
+      {/* // eslint-disable-next-line @next/next/no-before-interactive-script-outside-document */}
+      <Script src="/theme.js" strategy="beforeInteractive" />
+      {router.asPath !== '/splashscreen' && <Titlebar />}
       <Component {...pageProps} />
       <ToastContainer
         transition={Slide}
