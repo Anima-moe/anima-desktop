@@ -4,193 +4,131 @@ import { useQuery } from 'react-query'
 import { AnimatePresence, motion } from 'framer-motion'
 import i18next, { t } from 'i18next'
 import { useAtom } from 'jotai'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { FilmStrip, UserFocus } from 'phosphor-react'
+import { debounce } from 'ts-debounce'
 
 import AnimeGrid from '@/components/Anime/AnimeGrid'
 import CategoryPill from '@/components/Category/CategoryPill'
 import Loading from '@/components/General/Loading'
+import SectionTitle from '@/components/General/SectionTitle'
+import FloatingProfile from '@/components/User/FloatingProfile'
+import UserBadge from '@/components/User/UserBadge'
 import { Anime } from '@/services/anima/anime'
 import { Category } from '@/services/anima/category'
+import { User } from '@/services/anima/user'
 import { displaySearchPortal } from '@/stores/atoms'
+import * as Tooltip from '@radix-ui/react-tooltip'
 
-// With those functions we avoid re-fetching the data when the requires inputs are either invalid or doesn't meet the criteria.
-async function getCategoryAnimes(categories: Anima.RAW.Category[], start: number = 0) {
-  if (categories.length === 0) return { data: [], count: 0 } as Anima.API.GetAnimes
-  return await Anime.getByCategories(
-    categories.map((c) => c.slug),
-    start
-  )
+async function searchUsers(query: string) {
+  if (!query || query.length < 3) return
+  return await User.search(query)
 }
 
-async function getSearchResult(query: string) {
-  if (!query || query.length < 3) return { data: [], count: 0 } as Anima.API.SearchAnimes
+async function searchAnimes(query: string) {
+  if (!query || query.length < 3) return
+
   return await Anime.search(query)
 }
 
-type Props = {
-  query?: string
-}
-
-function SearchPortal({ query = '' }: Props) {
-  const [categoryAnimes, setCategoryAnimes] = useState<Anima.API.GetAnimes>({ data: [], count: 0 })
-  const [selectedCategory, setSelectedCategory] = useState<Anima.RAW.Category[]>([])
-  const {
-    data: searchResult,
-    error: searchError,
-    isLoading: searchLoading,
-  } = useQuery<Anima.API.SearchAnimes>(`/api/search/${query}`, () => {
-    return getSearchResult(query)
-  })
-  const {
-    data: categories,
-    error: categoriesError,
-    isLoading: categoriesLoading,
-  } = useQuery<Anima.API.GetCategories>('/api/categories', () => {
-    return Category.getAll(i18next.language)
-  })
-  const [displaySearchbar, setDisplaySearchbar] = useAtom(displaySearchPortal)
+function SearchPortal() {
+  const [focused, setFocused] = useAtom(displaySearchPortal)
+  const [query, setQuery] = useState('')
   const router = useRouter()
+  const { data: animeSearchResult, isLoading: animeSearchLoading, error: animeSearchError, refetch: refetchAnimeSearch } = useQuery(`anime/search/${query}`, () => searchAnimes(query), { refetchOnWindowFocus: false  })
+  const { data: userSearchResult, isLoading: userSearchLoading, error: userSearchError, refetch: refetchUserSearch } = useQuery(`user/search/${query}`, () => searchUsers(query), { refetchOnWindowFocus: false  })
 
-  const fetchCategoryAnimes = useCallback(() => {
-    if (query.length > 1) {
-      return
-    }
-
-    setCategoryAnimes({ data: [], count: 0 })
-    getCategoryAnimes(selectedCategory).then((data) => setCategoryAnimes(data))
-  }, [selectedCategory.join(',')])
-  useEffect(fetchCategoryAnimes, [fetchCategoryAnimes])
-
-  const appendCategoryAnimes = () => {
-    getCategoryAnimes(selectedCategory, categoryAnimes.data.length).then((data) => {
-      setCategoryAnimes({
-        data: [...categoryAnimes.data, ...data.data],
-        count: data.count,
-      })
-    })
+  const handleStart = () => {
+    setFocused(false)
   }
 
+  useEffect(()=>{
+    router.events.on('routeChangeStart', handleStart)
+    return () => {
+      router.events.off('routeChangeStart', handleStart)
+    }
+  }, [])
+
+  if (animeSearchError || userSearchError) {
+    return <div className="fixed left-0 top-0 z-[10] pt-[5rem] flex h-full w-full flex-col bg-primary bg-opacity-95 px-4 backdrop-blur-md">
+        Error
+    </div>
+  }
+
+  const debouncedQuery = debounce(setQuery, 300)
+
+  const beautyNumber = (number: number) => {
+    if (number < 10) return `00${number}`
+    if (number < 100) return `0${number}`
+    return number
+  }
+
+
   return (
-    <div className="fixed left-0 top-0 z-[10] flex h-full w-full flex-col bg-primary bg-opacity-95 px-4 pt-[11rem] backdrop-blur-md">
-      <div className="relative mx-auto flex h-full w-full max-w-[85rem] flex-col">
-        {/* DISPLAY AVAILABLE CATEGORIES FOR THIS LOCALE */}
-        {categories?.data.length > 0 && (
-          <AnimatePresence>
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: 0.2,
-                duration: 0.1,
-                type: 'spring',
-                stiffness: 500,
-                damping: 60,
-                mass: 1,
-              }}
-              className="flex flex-row flex-wrap "
-            >
-              {categories?.data.map((category, index) => (
-                <CategoryPill
-                  category={category}
-                  key={`category.${i18next.language}.${category.slug}`}
-                  selected={selectedCategory.some((c) => c.slug === category.slug)}
-                  onClick={() => {
-                    if (
-                      selectedCategory.length === 1 &&
-                      selectedCategory[0].slug === category.slug
-                    ) {
-                      setSelectedCategory([])
-                      return
-                    }
+    <div className="fixed inset-0 pt-[10rem] flex h-screen max-h-[100vh] z-[10] w-full bg-primary/95 flex-col px-8 backdrop-blur-md overflow-scroll justify-center items-center">
+      <input 
+        type="text"
+        className="w-[45%] px-4 py-2 text-white rounded-md bg-primary z-[60]"
+        onChange={(e) => {
+          debouncedQuery(e.target.value)
+        }}
+      />
+      {(!query || query.length < 3) ? (
+        <div className="flex">
+          Tiny query
+        </div>
+      ) : (
+        (animeSearchLoading && !userSearchResult) || (userSearchLoading && !animeSearchResult) ? (
+          <div className="flex">
+            <Loading />
+          </div>
+        ) : (
+          <div className='flex flex-col w-full gap-8 mt-4'>
+            {userSearchResult && userSearchResult.data.length > 0 && <div className='flex flex-col gap-4'>
+              <SectionTitle name='Users' Icon={UserFocus} />
+              <div className='flex w-full gap-4'>
+                {userSearchResult.data.map((user) => (
+                  <Tooltip.Provider delayDuration={300} key={`user.link.${user.id}`}>
+                    <Tooltip.Root>
+                      <Tooltip.Trigger>
+                        <Link href={`/user/${user.id}`} >
+                          <div 
+                            className='flex flex-col w-[250px] gap-2 p-2 rounded-md bg-secondary relative overflow-hidden'
+                            key={`user.results.${user.id}`}
+                          >
+                            <div className='absolute inset-0 w-full h-full opacity-5'  style={{background: user?.profile?.color}} /> 
+                            <div className='relative flex flex-col w-full' >
+                              <div className='flex items-center w-full gap-2 overflow-hidden font-semibold text-ellipsis whitespace-nowrap'>
+                                <span className='p-1 px-2 mr-2 text-xs rounded-md h-min text-secondary' style={{background: user?.profile?.color}}>#{beautyNumber(user.id)}</span>
+                                <h2 className='w-full py-1 overflow-hidden text-lg font-semibol text-ellipsis text-start' style={{color: user?.profile?.color}}>{user.username}</h2>
+                              </div>
+                            </div>
+                          </div>
+                        </Link>
+                        </Tooltip.Trigger>
+                        <FloatingProfile user={user} side='bottom' />
+                      </Tooltip.Root>
+                    </Tooltip.Provider>
+                  ))}
+              </div>              
+            </div>}
 
-                    if (selectedCategory.some((c) => c.slug === category.slug)) {
-                      setSelectedCategory(selectedCategory.filter((c) => c.slug !== category.slug))
-                    } else {
-                      setSelectedCategory([...selectedCategory, category])
-                    }
-                  }}
-                />
-              ))}
-            </motion.div>
-          </AnimatePresence>
-        )}
+            {animeSearchResult && animeSearchResult.data.length > 0 && <>
+              <SectionTitle name='Animes' Icon={FilmStrip} />
+              <AnimeGrid 
+                animes={animeSearchResult.data} 
+                alwaysShowInfo 
+                animesPerRow={8} 
+                onHitBottom={()=>{
 
-        {/* DISPLAY SEARCH RESULTS */}
-        {searchResult?.data?.length > 0 && (
-          <AnimeGrid
-            animes={searchResult.data.filter((anime) => {
-              if (selectedCategory.length === 0) return true
-              return compareArrays(
-                anime.Category?.map((c) => c.slug),
-                selectedCategory.map((c) => c.slug)
-              )
-            })}
-            alwaysShowInfo
-            animesPerRow={7}
-            key={`category.${i18next.language}.${selectedCategory
-              .map((c) => c.slug)
-              .join(',')}.${query}`}
-            onAnimeSelect={(anime) => {
-              setDisplaySearchbar(false)
-              router.push(`/anime/${anime.id}`)
-              router.events.on('routeChangeComplete', () => {
-                setDisplaySearchbar(false)
-              })
-            }}
-          />
-        )}
-
-        {/* DISPLAY CATEGORY ANIMES */}
-        {selectedCategory.length > 0 && categoryAnimes?.data?.length > 0 && query.length < 1 && (
-          <AnimeGrid
-            animes={categoryAnimes.data}
-            onHitBottom={appendCategoryAnimes}
-            hasMore={categoryAnimes.count === 20}
-            alwaysShowInfo
-            animesPerRow={7}
-            key={`category.${i18next.language}.${selectedCategory
-              .map((c) => c.slug)
-              .join(',')}.${query}`}
-            onAnimeSelect={(anime) => {
-              setDisplaySearchbar(false)
-              router.push(`/anime/${anime.id}`)
-              router.events.on('routeChangeComplete', () => {
-                setDisplaySearchbar(false)
-              })
-            }}
-          />
-        )}
-
-        {/* LOADING ANIMES */}
-        {searchLoading ||
-          (categoriesLoading && (
-            <div className="mt-32 flex w-full items-center justify-center">
-              <Loading md />
-            </div>
-          ))}
-
-        {/* DISPLAY NO RESULTS */}
-        {((query && searchResult?.count < 1) ||
-          (selectedCategory.length > 0 && categoryAnimes.count < 1)) && (
-          <span className="mt-32 flex w-full items-center justify-center text-xs text-subtle">
-            {t('search_noresult')}
-          </span>
-        )}
-
-        {/* DISPLAY NO QUERY */}
-        {!query && selectedCategory.length < 1 && (
-          <span className="mt-32 flex w-full items-center justify-center text-xs text-subtle">
-            {t('search_moredata')}
-          </span>
-        )}
-
-        {/* DISPLAY ERROR */}
-        {(categoriesError || searchError) && (
-          <span className="mt-32 flex w-full items-center justify-center text-xs font-semibold text-red-400">
-            {t('api_fetchError')}
-          </span>
-        )}
-      </div>
+                }} 
+                hasMore={animeSearchResult.count === animeSearchResult.data.length}
+              />
+            </>}
+          </div>
+        )
+      )}
     </div>
   )
 }
