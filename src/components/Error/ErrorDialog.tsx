@@ -34,21 +34,21 @@ export function ErrorDialog ({triggerClassName, title, description, accept, canc
             {description}
           </Dialog.Description>
             {children}
-          <div className='w-full flex items-center justify-end mt-12'>
+          <div className='flex items-center justify-end w-full mt-12'>
             <Dialog.Close asChild>
                 <button 
-                  className="text-subtle hover:bg-red-400 hover:text-primary duration-300 rounded px-4 py-1" 
+                  className="px-4 py-1 duration-300 rounded text-subtle hover:bg-red-400 hover:text-primary" 
                   onClick={cancel}
                 >
-                  {cancelText || t('generic_cancel')}
+                  {cancelText || t('generic.action.cancel')}
                 </button>
             </Dialog.Close>
             <Dialog.Close asChild>
               <button 
-                className='px-4 py-1 rounded-md bg-accent text-primary font-semibold ml-4 hover:bg-tertiary hover:text-white duration-300'
+                className='px-4 py-1 ml-4 font-semibold duration-300 rounded-md bg-accent text-primary hover:bg-tertiary hover:text-white'
                 onClick={accept}
               >
-                {acceptText || t('generic_accept')}
+                {acceptText || t('generic.action.accept')}
               </button>
             </Dialog.Close>
           </div>

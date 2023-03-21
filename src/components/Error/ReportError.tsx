@@ -39,9 +39,9 @@ export function ReportError({ anime }: IReportErrorProps) {
             <ErrorDialog
               triggerText={t('anime.report.missingMetadata')}
               title={t('anime.report.missingMetadata')}
-              description={t('api_streamError_instructions')}
+              description={t('anime.error.instructions')}
               triggerClassName="cursor-pointer rounded-md bg-secondary px-2 py-2 transition-all duration-200 hover:bg-red-400 hover:text-primary flex text-left"
-              acceptText={t('gerenic_copy')}
+              acceptText={t('generic.action.copy')}
               accept={() => {
                 const content = outputRef.current.textContent
                 navigator.clipboard.writeText(content)
@@ -66,9 +66,9 @@ export function ReportError({ anime }: IReportErrorProps) {
             <ErrorDialog
               triggerText={t('anime.report.missingEpisodes')}
               title={t('anime.report.missingEpisodes')}
-              description={t('api_streamError_instructions')}
+              description={t('anime.report.instructions')}
               triggerClassName="cursor-pointer rounded-md bg-secondary px-2 py-2 transition-all duration-200 hover:bg-red-400 hover:text-primary flex text-left"
-              acceptText={t('gerenic_copy')}
+              acceptText={t('generic.action.copy')}
               accept={() => {
                 const content = outputRef.current.textContent
                 navigator.clipboard.writeText(content)
@@ -93,9 +93,9 @@ export function ReportError({ anime }: IReportErrorProps) {
             <ErrorDialog
               triggerText={t('anime.report.error')}
               title={t('anime.report.error')}
-              description={t('api_streamError_instructions')}
+              description={t('anime.error.instructions')}
               triggerClassName="cursor-pointer rounded-md bg-secondary px-2 py-2 transition-all duration-200 hover:bg-red-400 hover:text-primary flex text-left"
-              acceptText={t('gerenic_copy')}
+              acceptText={t('generic.action.copy')}
               accept={() => {
                 const content = outputRef.current.textContent
                 navigator.clipboard.writeText(content)
