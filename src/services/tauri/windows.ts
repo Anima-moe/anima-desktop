@@ -8,7 +8,7 @@ export async function createMainWindow() {
     minHeight: 760,
     resizable: true,
     title: 'Λ ＮＩＭ Λ - App',
-    visible: false,
+    visible: true,
     transparent: true,
     decorations: false,
   })

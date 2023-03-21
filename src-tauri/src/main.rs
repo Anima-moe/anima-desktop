@@ -63,7 +63,7 @@ fn main() {
 
     tauri::Builder::default()
         .plugin(tauri_plugin_store::Builder::default().build())
-        .plugin(tauri_plugin_window_state::Builder::default().build())
+        // .plugin(tauri_plugin_window_state::Builder::default().build())
         .setup(move |app| {
           // DISCORD RPC
           app.manage(DeclarativeDiscordIpcClient::new("1069047547282325534"));
