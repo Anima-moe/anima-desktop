@@ -134,6 +134,7 @@ namespace Anima {
       color?: string
       border?: string
       Badge?: Anima.RAW.Badge[]
+      badge?: Anima.RAW.Badge[]
     }
 
     type UserPlayerHead = {
@@ -183,21 +184,16 @@ namespace Anima {
     }
 
     type SearchAnimes = DefaultResponse<RAW.Anime> // Returns empty array if none found
+    type SearchUser = DefaultResponse<RAW.User> // Returns empty array if none found
 
     type GetAnimeByID = {
       counter: 1
       data: Anima.RAW.Anime
     } // Returns Error if anime not found
 
-    type GetAnimes = {
-      count: number
-      data: Anima.RAW.Anime[]
-    } // Returns empty array if not found
+    type GetAnimes = DefaultResponse<Anima.RAW.Anime> // Returns empty array if not found
 
-    type GetAnimeSeasons = {
-      count: number
-      data: Anima.RAW.Season[]
-    } // Returns empty array if no season | Returns Error if anime not found
+    type GetAnimeSeasons = DefaultResponse<Anima.RAW.Season> // Returns empty array if no season | Returns Error if anime not found
 
     type GetEpisodeByID = {
       count: 1
@@ -209,10 +205,7 @@ namespace Anima {
       data: [Anima.RAW.Season]
     } // Returns Error if season not found
 
-    type GetSeasonEpisodes = {
-      count: number
-      data: Anima.RAW.Episode[]
-    } // Returns empty array if no episode | Returns Error if season not found
+    type GetSeasonEpisodes = DefaultResponse<Anima.RAW.Episode> // Returns empty array if no episode | Returns Error if season not found
 
     type GetUserByID = {
       count: 1

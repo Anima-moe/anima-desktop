@@ -9,11 +9,11 @@ type Props = {
 }
 
 function Media({ children }: Props) {
-  const [playerMode, setPlayerMode] = useAtom(userPreferedPlayerMode)
+  const [playerMode] = useAtom(userPreferedPlayerMode)
   
   const playerModeClasses = clsx({
-    'flex h-screen w-screen overflow-auto': true,
-    'pt-0': playerMode === 'expanded',
+    'flex bg-primary w-screen h-[calc(100vh-32px)] overflow-y-scroll max-h-[100vh]': true,
+    'absolute top-0 h-screen': playerMode === 'expanded',
     'pt-16': playerMode === 'normal',
   })
   

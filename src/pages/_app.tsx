@@ -16,6 +16,7 @@ import '@/styles/globals.css'
 import '@/styles/tweaks.scss'
 import 'skeleton-elements/css'
 import { listen } from '@tauri-apps/api/event'
+import Titlebar from '@/components/Layout/Titlebar'
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
@@ -92,6 +93,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <Titlebar />
       <Component {...pageProps} />
       <ToastContainer
         transition={Slide}
