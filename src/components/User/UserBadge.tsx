@@ -24,28 +24,28 @@ const badgeMapping = {
 }
 
 const UserBadge: React.FunctionComponent<IUserBadgeProps> = ({badge, className}) => {
-  return <Tooltip.Provider >
+  return <Tooltip.Provider key={`badge.${badge.name}`} >
       <Tooltip.Root>
         <Tooltip.Trigger asChild className='cursor-help'>
           { badge.icon ? (
             <img src={`/badges/${badge.icon}.png`} className={`h-6 w-6 p-0.5 ${className}`} />
           )  : (
-            <span className='rounded-md bg-tertiary px-2 py-1 text-xs select-none'>{badge.name}</span>
+            <span className='px-2 py-1 text-xs rounded-md select-none bg-tertiary'>{badge.name}</span>
           ) }
         </Tooltip.Trigger>
         <Tooltip.Portal>
-          <Tooltip.Content className="bg-secondary z-50 flex rounded-md px-4 py-2 items-center shadow-md" sideOffset={5}>
+          <Tooltip.Content className="z-50 flex items-center px-4 py-2 rounded-md shadow-md bg-secondary" sideOffset={5}>
             { badge.icon ? <>
-              <div className='relative w-8 h-8 aspect-square mr-4'>
+              <div className='relative w-8 h-8 mr-4 aspect-square'>
                 <img src={`/badges/${badge.icon}.png`} className='w-full h-full absolute top-0 left-0 z-[1]' />
-                <img src={`/badges/${badge.icon}.png`} className='w-full h-full blur-md absolute top-0 left-0' />
+                <img src={`/badges/${badge.icon}.png`} className='absolute top-0 left-0 w-full h-full blur-md' />
               </div>
               <div className='flex flex-col'>
                 <span className='text-sm'>{badge.name}</span>
                 <span className='text-xs text-subtle'>{badge.description}</span>
               </div>
             </> : <>
-              <span className='rounded-md bg-tertiary px-2 py-1 text-xs select-none mr-4'>{badge.name}</span>
+              <span className='px-2 py-1 mr-4 text-xs rounded-md select-none bg-tertiary'>{badge.name}</span>
               <div className='flex flex-col'>
                 <span className='text-xs text-subtle'>{badge.description}</span>
               </div>
