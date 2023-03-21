@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useRouter } from 'next/router'
-import { Calendar, CaretRight, FilmSlate, Graph, IconProps, PlayCircle, Tag } from 'phosphor-react'
+import { Calendar, CaretRight, FilmSlate, Graph, IconProps, Package, PlayCircle, Tag } from 'phosphor-react'
 import { SkeletonBlock, SkeletonText } from 'skeleton-elements/react'
 
 import AnimeCard from '@/components/Anime/AnimeCard'
@@ -31,7 +31,7 @@ function AnimeProperty({ heading, value, Icon }: props) {
       <div className=" mt-4 w-full bg-secondary rounded-t-md min-h-[3rem] flex items-center px-2 text-subtle">
         { Icon ? <Icon size={24}/> : <Tag size={24}/> }
         <div className='flex flex-col'>
-          <span className='text-xs ml-3'>{t(heading)}</span>
+          <span className='ml-3 text-xs'>{t(heading)}</span>
           {!Array.isArray(value) ? (
             <p className='ml-3 text-white'>{value}</p>
           ) : (
@@ -39,11 +39,11 @@ function AnimeProperty({ heading, value, Icon }: props) {
           )}
         </div>
       </div>
-          { Array.isArray(value) && <div className='bg-tertiary py-2 rounded-b-md'>
+          { Array.isArray(value) && <div className='py-2 bg-tertiary rounded-b-md'>
             {value.map((value) => {
             return (
               <p key={`property.item.${value}`} className='ml-3 text-white my-1.5 flex items-center'>
-                <CaretRight className='text-subtle mr-1' size={12}/>
+                <CaretRight className='mr-1 text-subtle' size={12}/>
                 {value}
               </p>
             )
@@ -112,7 +112,7 @@ function AnimePage() {
   return (
     <GeneralLayout fluid>
       <div
-        className="aboslute z-0 -mt-16 h-[100vh] w-full overflow-hidden bg-cover bg-center bg-no-repeat"
+        className="aboslute z-0  min-h-[100vh] h-screen w-full overflow-hidden bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url('${animeData?.background || anilistData?.bannerImage}')` }}
       >
         {animeData?.background ? (
@@ -121,14 +121,14 @@ function AnimePage() {
               autoPlay
               loop
               muted
-              className="h-full w-full object-cover"
+              className="object-cover w-full h-full"
               src={animeData.background}
             />
           )
         ) : (
-          <video autoPlay loop muted className="h-full w-full object-cover" src="/i/splash.mp4" />
+          <video autoPlay loop muted className="object-cover w-full h-full" src="/i/splash.mp4" />
         )}
-        <div className="absolute top-0 left-0 h-screen w-screen" style={{background: 'linear-gradient(180deg, #04040488 0%, #040404 90%)'}} />
+        <div className="absolute top-0 left-0 w-screen h-screen" style={{background: 'linear-gradient(180deg, #04040488 0%, #040404 90%)'}} />
       </div>
       <div className="relative -mt-[40vh] z-[2] flex w-full flex-row px-8 bg-primary/30 backdrop-blur-sm">
         <div className="mr-4 w-1/5 -mt-[20vh]">
@@ -145,8 +145,16 @@ function AnimePage() {
               />
             </div>
           )}
-
-          <div className="mt-4 w-full">
+          <div className='grid grid-cols-2 gap-1 mt-2'>
+            {animeData && (
+              animeData.Category.map((category)=>{
+                return <div className='flex items-center gap-2 px-3 py-2 text-xs duration-200 rounded-md bg-secondary text-subtle hover:text-secondary hover:bg-accent' key={`anime.category.${category.slug}`}>
+                  <Package size={18}/> {getLocaleMetadata<Anima.RAW.Category, Anima.RAW.CategoryMetadata>(category)?.title || category.slug}
+                </div> 
+              })
+            )}
+          </div>
+          <div className="w-full mt-4">
             {anilistData ? (
               <AnimeProperty
                 heading="anime_heading_status"
@@ -236,7 +244,7 @@ function AnimePage() {
                 )}
               </h3>
             </div>
-            <div className='ml-auto flex flex-col items-start justify-end pb-6'>
+            <div className='flex flex-col items-start justify-end pb-6 ml-auto'>
               <ReportError anime={animeData} />
             </div>
           </div>
@@ -244,7 +252,7 @@ function AnimePage() {
             <AlphaRemminder />
           </div>
           {/* SYNOPSIS */}
-          <div className="mt-4 w-3/4">
+          <div className="w-3/4 mt-4">
             <p className="text-sm text-white text-opacity-70">
               {animeData ? (
                 getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(animeData)?.synopsis ||
@@ -259,7 +267,7 @@ function AnimePage() {
             </p>
           </div>
           {/* SEASONS */}
-          <div className="mt-4 w-full">
+          <div className="w-full mt-4">
             {animeData ? (
               animeData.AnimeSeason?.sort((a, b) => a.number - b.number).map((season) => {
                 return (
