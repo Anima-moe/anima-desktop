@@ -9,6 +9,7 @@ type Props = {
 }
 
 function CategoryPill({ selected, category, onClick }: Props) {
+  console.log(category)
   return (
     <div
       className={clsx(
@@ -19,7 +20,7 @@ function CategoryPill({ selected, category, onClick }: Props) {
       )}
       onClick={onClick}
     >
-      {getLocaleMetadata<Anima.RAW.Category, Anima.RAW.CategoryMetadata>(category).title}
+      {getLocaleMetadata<Anima.RAW.Category, Anima.RAW.CategoryMetadata>(category)?.title || category.slug}
     </div>
   )
 }
