@@ -12,6 +12,8 @@ import { AnilistMedia, anilistService } from '@/services/anilist/anilistService'
 import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
 import * as Portal from '@radix-ui/react-portal'
 
+import AnimeCard from './AnimeCard'
+
 type Props = {
   anime?: Anima.RAW.Anime
 }
@@ -36,32 +38,38 @@ function AnimeHero({ anime }: Props) {
   }, [title])
   
   return (
-    <div className="relative -my-32 mb-24 flex h-[80vh] w-full items-center px-8 pt-16">
-      <div className={'cover absolute top-0 left-0 z-[-1] h-full w-full overflow-hidden'}>
+    <div className="flex relative min-h-[90vh] px-8 z-[0]">
+      {/* BACKGROUND */}
+      <div className={'cover absolute top-0 left-0 z-[0] h-full w-full overflow-hidden'}>
         {background ? (
           (background.endsWith('.mp4') || background.endsWith('.webm')) && (
-            <video autoPlay loop muted className="h-full w-full object-cover" src={background} />
+            <video autoPlay loop muted className="object-cover w-full h-full" src={background} />
           )
         ) : (
-          <video autoPlay loop muted className="h-full w-full object-cover" src="/i/splash.mp4" />
+          <video autoPlay loop muted className="object-cover w-full h-full" src="/i/splash.mp4" />
         )}
       </div>
-      <div
-        className={'absolute top-0 left-0 z-[-1] h-full w-full bg-gradient-to-t from-primary to-primary/70 '}
-      />
-      <div className="absolute -bottom-9 z-0 flex w-full flex-col">
-        <div className="w-3/5">
-          <h1 className="text-5xl font-bold">
-            {title ? (
-              title
-            ) : (
-              <SkeletonText effect="wave" tag="span" className="rounded-md">
-                Anima rocks and no one can take that from us
-              </SkeletonText>
-            )}
-          </h1>
+      {/* SHADE */}
+      <div className={'absolute inset-0 z-[0] h-full w-full bg-gradient-to-t from-primary to-primary/70  backdrop-blur-sm'}/>
+      {/* ANIME DATA */}
+      <div className="relative z-0 flex items-center w-full h-full mt-8">
+        <div className='flex h-2/3 aspect-[2/3]'>
+          <AnimeCard anime={anime} disabled noHover/>
         </div>
-        <div className="mt-4 mb-12 flex flex-row">
+        <div className='flex flex-col w-full ml-10'>
+          <div className="w-2/3">
+            {anilistData?.title?.native && <h2 className='opacity-70'>{anilistData?.title?.native}</h2> }
+            <h1 className="text-5xl font-bold">
+              {title ? (
+                title
+              ) : (
+                <SkeletonText effect="wave" tag="span" className="rounded-md">
+                  Anima rocks and no one can take that from us
+                </SkeletonText>
+              )}
+            </h1>
+          </div>
+        <div className="flex flex-row gap-3 mt-4">
           {anilistData?.averageScore && (
             <Pill Icon={Star} color="#FF922D">
               {anilistData.averageScore / 10}
@@ -96,8 +104,8 @@ function AnimeHero({ anime }: Props) {
             <SkeletonBlock effect="wave" tag="span" className="mr-4 rounded-md" width='120px' height='29px' borderRadius='1rem' />
           )}
         </div>
-        <div className="relative flex w-1/2 flex-col items-start text-subtle">
-          <p className="text-sm line-clamp-5">
+        <div className="relative flex flex-col items-start w-2/3 gap-9 text-white/60 pt-9">
+          <p className="text-sm line-clamp-6">
             {synopsis ? (
               synopsis
             ) : (
@@ -108,16 +116,16 @@ function AnimeHero({ anime }: Props) {
               </SkeletonText>
             )}
           </p>
-          <div className="mt-9 flex w-full">
+          <div className="flex w-full">
             {anime_id ? (
               <Button
                 text="Watch"
-                Icon={<Play className="order-first mr-4" weight="fill" size={32} />}
+                Icon={<Play className="order-first mr-4" weight="fill" size={24} />}
                 accent
                 semibold
                 iconLeft
                 lg
-                className="mr-4 py-5 px-6"
+                className="px-6 py-2 mr-4"
                 onClick={() => {
                   router.push(`/anime/${anime_id || 3750}`)
                 }}
@@ -135,20 +143,20 @@ function AnimeHero({ anime }: Props) {
             {anilistData?.trailer?.site && (
               <Button
                 text="Trailer"
-                Icon={<FilmStrip className="order-first mr-4" weight="fill" size={32} />}
-                secondary
+                Icon={<FilmStrip className="order-first mr-4" weight="fill" size={24} />}
                 subtle
                 semibold
                 iconLeft
                 lg
-                className="py-5 px-6"
+                className="px-6 py-2 hover:bg-accent hover:!text-secondary !duration-100"
                 onClick={() => {
                   setShowTrailer(true)
                 }}
               />
             )}
           </div>
-        </div>
+          </div>
+          </div>
       </div>
       <style jsx>
         {`
@@ -165,7 +173,7 @@ function AnimeHero({ anime }: Props) {
       {showTrailer && <Portal.Root className='fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-primary/90 backdrop-blur-md z-[99]' onClick={()=>{
         setShowTrailer(false)
       }}>
-        <iframe className='w-4/5 aspect-video max-h-screen rounded-lg overflow-hidden' src={`https://www.youtube.com/embed/${anilistData.trailer.id}`} title={`${anilistData.trailer.id}`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+        <iframe className='w-4/5 max-h-screen overflow-hidden rounded-lg aspect-video' src={`https://www.youtube.com/embed/${anilistData.trailer.id}`} title={`${anilistData.trailer.id}`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
       </Portal.Root> }
       {/* {anilistData?.trailer && <ModalVideo channel={anilistData.trailer.site} autoplay isOpen={showTrailer} videoId={anilistData.trailer.id} onClose={() => setShowTrailer(false)} controls={0} /> } */}
     </div>

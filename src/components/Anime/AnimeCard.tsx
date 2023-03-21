@@ -71,7 +71,7 @@ function AnimeWrapper({
   children?: React.ReactNode
   url?: string
 }) {
-  return <>{disabled || !url ? <div>{children}</div> : <Link href={url}>{children}</Link>}</>
+  return <>{disabled || !url ? children : <Link href={url}>{children}</Link>}</>
 }
 
 function AnimeCard({ anime, disabled, noHover, onClick }: Props) {
@@ -80,7 +80,7 @@ function AnimeCard({ anime, disabled, noHover, onClick }: Props) {
   return (
     <AnimeWrapper url={`/anime/${anime.id}`} disabled={onClick !== undefined || disabled}>
       <motion.div
-        className="aspect-[2/3] select-none overflow-hidden rounded-md bg-cover bg-center"
+        className="relative w-full aspect-[2/3] overflow-hidden bg-center bg-cover rounded-md select-none "
         style={{
           backgroundColor: '#212121',
           backgroundImage: `url('${anime.cover}')`,
@@ -95,17 +95,17 @@ function AnimeCard({ anime, disabled, noHover, onClick }: Props) {
       >
         {noHover ?? (
           <motion.div
-            className="pointer-events-none absolute left-0 bottom-0 flex h-full w-full flex-col items-start justify-end overflow-hidden whitespace-nowrap bg-gradient-to-t from-[rgba(16,16,16,.9)] to-transparent p-4 text-left opacity-0"
+            className="pointer-events-none absolute bottom-0 flex w-full flex-col items-start justify-end overflow-hidden whitespace-nowrap bg-gradient-to-t from-[rgba(16,16,16,.9)] to-transparent p-4 text-left opacity-0"
             variants={shadeVariants}
           >
             <motion.h6
-              className="w-full translate-y-10 overflow-hidden text-ellipsis text-sm font-semibold"
+              className="w-full overflow-hidden text-sm font-semibold translate-y-10 text-ellipsis"
               variants={contentVariants}
             >
               {getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(anime)?.title ||
                 'Unknown title'}
             </motion.h6>
-            <motion.span className="flex w-full text-xs text-subtle" variants={contentVariants}>
+            <motion.span className="flex w-full text-xs text-white/50" variants={contentVariants}>
               {`${t(
                 anime.AnimeSeason.length > 1 ? 'anime_generic_seasons' : 'anime_generic_season',
                 { n: anime.AnimeSeason.length }

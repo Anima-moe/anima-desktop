@@ -11,7 +11,7 @@ type Props = {
 function Pill({ Icon, children, color }: Props) {
   return (
     <div
-      className="mr-3 flex items-center rounded-full border border-tertiary bg-secondary px-3 py-1 text-sm duration-300 select-none"
+      className="flex items-center px-3 py-1 text-xs duration-300 border rounded-full select-none border-tertiary bg-secondary"
       style={{ color }}
     >
       <Icon className="mr-2" weight="fill" /> {children}
