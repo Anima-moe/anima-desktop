@@ -24,12 +24,12 @@ function SwiperAnime({ animesPerScreen, animes, loading, alwaysShowInfo }: Props
     <Swiper
       slidesPerView={animesPerScreen}
       slidesPerGroup={~~(animesPerScreen / 2)}
-      // spaceBetween={0}
+      spaceBetween={12}
       navigation
       lazy
       grabCursor
       virtual
-      className="noselect w-full rounded-lg text-white"
+      className="w-full text-white rounded-lg noselect"
     >
       {animes ? (
         animes.map((anime, index) => (
@@ -54,7 +54,7 @@ function SwiperAnime({ animesPerScreen, animes, loading, alwaysShowInfo }: Props
           </SwiperSlide>
         ))
       ) : (
-        <div className="mt-4 flex select-none flex-row">
+        <div className="flex flex-row mt-4 select-none">
           {Array.from({ length: 7 }, (_, index) => index + 1).map((_, index) => {
             return (
               <div
