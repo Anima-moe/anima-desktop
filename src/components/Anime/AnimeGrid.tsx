@@ -1,5 +1,4 @@
 import React from 'react'
-import { Scrollbars } from 'react-custom-scrollbars'
 import { useTranslation } from 'react-i18next'
 
 import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
@@ -34,17 +33,16 @@ function AnimeGrid({
   }
 
   return (
-    <div className="flex h-full w-full">
+    <div className="flex w-full">
       {/* {JSON.stringify(animes)} */}
-      <Scrollbars autoHide hideTracksWhenNotNeeded universal onScroll={handleScroll}>
-        <div className="flex h-full w-full flex-wrap">
+        <div className="flex flex-wrap w-full gap-x-6">
           {animes.map((anime) => (
             <div
               key={anime.slug || anime.id}
-              className="group mx-2 flex aspect-[3/2] select-none flex-col py-2.5"
+              className="group flex aspect-[3/2] select-none flex-col py-2.5"
               style={{
-                width: `calc(calc(100vw - 16px - 8rem) / ${animesPerRow})`,
-                minWidth: `calc(calc(100vw - 16px - 8rem) / ${animesPerRow})`,
+                width: `calc(calc(100vw - 10px) / ${animesPerRow})`,
+                minWidth: `calc(calc(100vw - 10px) / ${animesPerRow})`,
               }}
               itemID={anime.slug || String(anime.id)}
             >
@@ -59,15 +57,14 @@ function AnimeGrid({
           ))}
           {/* // TODO: SWAP TEXT FOR SKELETON */}
           {hasMore && (
-            <div className="flex w-full flex-row items-center justify-center">
+            <div className="flex flex-row items-center justify-center w-full">
               <Loading xs />
-              <div className="ml-2 flex h-8 items-center justify-center font-semibold text-subtle">
+              <div className="flex items-center justify-center h-8 ml-2 font-semibold text-subtle">
                 {t('loading_moreData')}
               </div>
             </div>
           )}
         </div>
-      </Scrollbars>
     </div>
   )
 }
