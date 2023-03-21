@@ -8,9 +8,10 @@ import UserBadge from './UserBadge'
 
 interface IFloatingProfileProps {
   user: Partial<Anima.RAW.User>
+  side?: 'top' | 'left' | 'right' | 'bottom'
 }
 
-const FloatingProfile: React.FunctionComponent<IFloatingProfileProps> = ({user}) => {
+const FloatingProfile: React.FunctionComponent<IFloatingProfileProps> = ({user, side}) => {
   const { data, isLoading, error } = useQuery(`user/${user.id}/profile`, () => User.get(user.id), {
     cacheTime: 1000 * 60,
     staleTime: 1000 * 60,
@@ -18,12 +19,13 @@ const FloatingProfile: React.FunctionComponent<IFloatingProfileProps> = ({user})
     refetchOnMount: false,
   })
 
-  if (isLoading) return <div className='w-full h-full flex'>
+  if (isLoading) return <div className='flex w-full h-full'>
     <Tooltip.Portal >
       <Tooltip.Content 
         className='bg-secondary shadow-lg rounded-md w-[450px] h-[200px] border border-tertiary overflow-hidden flex gap-1.5 flex-col p-1' 
         collisionPadding={10}
         sideOffset={5}
+        side={side || 'top'}
       >
         <Loading />
       </Tooltip.Content>
@@ -37,31 +39,32 @@ const FloatingProfile: React.FunctionComponent<IFloatingProfileProps> = ({user})
         className='bg-secondary shadow-lg rounded-md w-[450px] h-[200px] border border-tertiary overflow-hidden flex gap-1.5 flex-col p-1' 
         collisionPadding={10}
         sideOffset={5}
+        side={side || 'top'}
       >
         {/* BACKGROUND */}
         <div 
-          className='bg-cover bg-center w-full h-full inset-0 absolute rounded-md overflow-hidden bg-secondary'
+          className='absolute inset-0 w-full h-full overflow-hidden bg-center bg-cover rounded-md bg-secondary'
           style={{ backgroundImage: `url('${data?.profile?.background})` }} 
         >
           {data?.profile?.background ? (
             (data?.profile?.background && data?.profile?.background.endsWith('.mp4') || data?.profile?.background.endsWith('.webm')) && (
-              <video autoPlay loop muted className='h-full w-full object-cover' src={data?.profile?.background || '/i/splash/mp4'} />
+              <video autoPlay loop muted className='object-cover w-full h-full' src={data?.profile?.background || '/i/splash/mp4'} />
             )
           ) : (
             // <></>
-            <video autoPlay loop muted className='h-full w-full object-cover' src='/i/splash.mp4' />
-            // <div className='w-full h-full inset-0 absolute rounded-md' style={{backgroundImage: `url('${data.profile.banner})`}} />
+            <video autoPlay loop muted className='object-cover w-full h-full' src='/i/splash.mp4' />
+            // <div className='absolute inset-0 w-full h-full rounded-md' style={{backgroundImage: `url('${data.profile.banner})`}} />
           )}
         </div>
         <div className='w-full h-full inset-0 rounded-md z-[4] bg-secondary bg-cover bg-center' style={{backgroundImage: `url(${data?.profile?.banner || '/i/banner.png'})`}} />
         {/* SHADE CONTAINER */}
-        <div className='bg-secondary/90 left-0 bottom-0 w-full py-6 overflow-hidden rounded-md backdrop-blur-sm'>
+        <div className='bottom-0 left-0 w-full py-6 overflow-hidden rounded-md bg-secondary/90 backdrop-blur-sm'>
           {/* ACCENT */}
-          <div className='inset-0 w-full h-full absolute opacity-20' style={{ backgroundColor: data.profile?.color }} />
+          <div className='absolute inset-0 w-full h-full opacity-20' style={{ backgroundColor: data.profile?.color }} />
           {/* USER INFORMATION */}
-          <div className='w-full h-full flex items-center gap-2 px-2'>
+          <div className='flex items-center w-full h-full gap-2 px-2'>
             <div
-              className='h-16 w-16 rounded-full bg-cover bg-center bg-no-repeat z-[1] bg-primary'
+              className='h-16 w-16 rounded-md bg-cover bg-center bg-no-repeat z-[1] bg-primary'
               style={{
                 backgroundImage: `url('${
                   data?.profile?.avatar ?? 'https://i.imgur.com/CBdQGA3.png'
