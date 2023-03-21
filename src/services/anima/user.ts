@@ -132,4 +132,14 @@ export const User = {
 
     return
   },
+
+  search: async function (query: string) {
+    const { data } = await client.get('/search/users/', {
+      params: {
+        q: query,
+      },
+    })
+
+    return data as Anima.API.SearchUser
+  },
 }
