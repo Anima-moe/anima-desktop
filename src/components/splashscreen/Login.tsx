@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 
 import axios from 'axios'
 import { motion } from 'framer-motion'
@@ -47,13 +48,16 @@ function Login() {
       }
       if (axios.isAxiosError(e)) {
         if (e.response.status === 401) {
-          setError('password', { message: t('user_wrongAuth') })
+          setError('password', { message: t('error.auth.credentials') })
           setLoading(false)
           return
         }
-        if (e.response?.status) {
+        if (e.response.status === 404) {
           setPageProps({ username: data.username, password: data.password })
           setCurrentPage('register')
+          toast.error(t('error.auth.notFound'), {
+            autoClose: 5000,
+          })
           return
         }
       }
@@ -65,12 +69,12 @@ function Login() {
   }
 
   const inputs = [
-    { id: 'username', icon: User, title: t('splash_user'), type: 'text' },
-    { id: 'password', icon: Shield, title: t('splash_password'), type: 'password' },
+    { id: 'username', icon: User, title: t('input.auth.username'), type: 'text' },
+    { id: 'password', icon: Shield, title: t('input.auth.password'), type: 'password' },
   ] as const
 
   return (
-    <motion.main className="flex h-screen w-full items-center overflow-hidden rounded-lg bg-primary">
+    <motion.main className="flex items-center w-full h-screen overflow-hidden rounded-lg bg-primary">
       <motion.img
         initial={{
           opacity: 0,
@@ -107,11 +111,11 @@ function Login() {
           damping: 60,
           mass: 1,
         }}
-        className="border-md relative flex h-screen w-1/2 flex-col items-center justify-center px-4 py-4"
+        className="relative flex flex-col items-center justify-center w-1/2 h-screen px-4 py-4 border-md"
       >
-        <div className="mt-auto flex h-min w-full flex-col">
+        <div className="flex flex-col w-full mt-auto h-min">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <h1 className="mb-1.5 w-full text-subtle">{t('splash_welcome')}</h1>
+            <h6 className="mb-1.5 w-full text-subtle">{t('generic.auth.welcome')}</h6>
             <EmojiOptionsInput
               options={[
                 { value: 'pt-BR', label: 'Português', emoji: '🇧🇷' },
@@ -136,11 +140,11 @@ function Login() {
                 rules={{
                   minLength: {
                     value: 3,
-                    message: t('user_minLength', { n: 3 }),
+                    message: t('generic.auth.tooShort', { n: 3 }),
                   },
                   required: {
                     value: true,
-                    message: t('user_missingField'),
+                    message: t('error.auth.notFound'),
                   },
                 }}
                 render={({ field }) => (
@@ -155,11 +159,11 @@ function Login() {
                 )}
               />
             ))}
-            <div className="flex w-full flex-row">
+            <div className="flex flex-row w-full">
               <Button
                 Icon={<ArrowRight />}
                 iconSubtle
-                text={t('splash_continueAsGuest')}
+                text={t('generic.auth.joinAsGuest')}
                 tertiary
                 border
                 md
@@ -175,7 +179,7 @@ function Login() {
               />
               <Button
                 Icon={<ArrowRight weight="fill" />}
-                text={t('splash_loginOrRegister')}
+                text={t('button.auth.loginRegister')}
                 accent
                 iconRight
                 md
@@ -188,7 +192,7 @@ function Login() {
           </form>
         </div>
         <Button
-          text={t('splash_joinDiscord')}
+          text={t('generic.auth.joinDiscord')}
           iconRight
           sm
           secondary
@@ -247,7 +251,7 @@ function Login() {
               ease: 'linear',
             },
           }}
-          className="slider-animation absolute top-0 left-0 h-screen w-screen bg-cover bg-center"
+          className="absolute top-0 left-0 w-screen h-screen bg-center bg-cover slider-animation"
           style={{
             backgroundSize: '45%',
             backgroundImage: `url('${randomBanner}_1.png')`,
@@ -270,7 +274,7 @@ function Login() {
             damping: 60,
             mass: 1,
           }}
-          className="absolute bottom-0 h-full w-full bg-bottom bg-no-repeat"
+          className="absolute bottom-0 w-full h-full bg-bottom bg-no-repeat"
           style={{
             backgroundImage: `url('${randomBanner}_2.png')`,
             backgroundSize: '55%',
