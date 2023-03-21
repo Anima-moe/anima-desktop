@@ -65,13 +65,13 @@ const User = () => {
 
   return (
     <GeneralLayout fluid>
-      <div className={'cover absolute top-0 left-0 h-screen w-screen overflow-hidden'} style={{backgroundImage: `url('${userData?.profile?.background}')`}}>
+      <div className={'cover absolute top-0 left-0 h-screen w-screen overflow-hidden z-0'} style={{backgroundImage: `url('${userData?.profile?.background}')`}}>
         {userData?.profile?.background ? (
           (userData?.profile?.background && userData?.profile?.background.endsWith('.mp4') || userData?.profile?.background.endsWith('.webm')) && (
-            <video autoPlay loop muted className='h-full w-full object-cover' src={userData?.profile?.background || '/i/splash/mp4'} />
+            <video autoPlay loop muted className='h-full w-full object-cover z-0' src={userData?.profile?.background || '/i/splash/mp4'} />
           )
         ) : (
-          <video autoPlay loop muted className='h-full w-full object-cover' src='/i/splash.mp4' />
+          <video autoPlay loop muted className='h-full w-full object-cover z-0' src='/i/splash.mp4' />
         )}
       </div>
       <div className='fixed top-0 left-0 h-screen w-screen bg-primary/70 bg-gradient-to-t from-primary to-transparent' />
