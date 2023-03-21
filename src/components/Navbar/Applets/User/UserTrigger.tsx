@@ -34,16 +34,16 @@ function Navbar() {
   }
 
   const menuItems = [
-    { name: t('user_menu_profile'), Icon: User, href: '/user/me', requireAuth: true },
+    { name: t('nav.user.action.profile'), Icon: User, href: '/user/me', requireAuth: true },
     {
-      name: t('user_menu_signout'),
+      name: t('nav.user.action.signout'),
       Icon: SignOut,
       click: handleLogout,
       class: 'hover:bg-red-400',
       requireAuth: true,
     },
     {
-      name: t('user_menu_login'),
+      name: t('nav.user.action.signin'),
       Icon: SignIn,
       click: handleLogout,
       requireAuth: false,
@@ -57,7 +57,7 @@ function Navbar() {
           <DropdownMenuTrigger asChild>
             <div className='flex items-center h-full gap-2 px-2 py-1 duration-200 rounded-md cursor-pointer hover:bg-primary group'>
               <div 
-                className='relative flex items-center px-4 text-xl font-semibold rounded-md h-11 bg-secondary overflow-hiden'
+                className='relative flex items-center px-4 py-1.5 text-xl font-semibold rounded-md bg-secondary overflow-hiden'
                 style={{
                   color: user?.profile?.color
                 }}
