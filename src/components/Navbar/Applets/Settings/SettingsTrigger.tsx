@@ -7,7 +7,7 @@ function NavSettings() {
   return (
     <>
       <NavIcon 
-      title="No notifications"
+      title="Settings"
       Icon={<GearSix size={24} />}
       onClick={() => {}} />
     </>

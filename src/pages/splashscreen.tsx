@@ -112,10 +112,7 @@ function SplashScreen() {
           <button className="px-3 py-1" onClick={handleRefuse}>
             {t('splash_version_refuse')}
           </button>
-          <button
-            className="rounded-lg bg-accent px-3 py-1 text-primary hover:bg-black hover:text-accent"
-            onClick={handleDownload}
-          >
+          <button className="rounded-lg bg-accent px-3 py-1 text-primary hover:bg-black hover:text-accent" onClick={handleDownload}>
             {t('splash_version_accept')}
           </button>
         </div>

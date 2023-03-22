@@ -83,7 +83,7 @@ const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, nest
       
       {/* COLLAPSE */}
       {comment.Children.length > 0 && <div className='absolute px-2 py-1 right-4 top-4 bg-black/30 rounded-md cursor-pointer hover:bg-accent z-[2] hover:text-primary text-subtle' onClick={()=>{setShowChildren(!showChildren)}}>
-        <span className='flex items-center gap-2 text-xs'>{t(showChildren ? 'generic.action.hideComments' : 'generic.action.showComments')}{ showChildren ? <Eye /> : <EyeClosed /> }</span>  
+        <span className='flex items-center gap-2 text-xs'>{t(showChildren ? 'generic.action.hide' : 'generic.action.show')}{ showChildren ?  <EyeClosed /> : <Eye /> }</span>  
       </div> }
 
       {/* NEST INDICATOR */}

@@ -57,7 +57,7 @@ function Navbar() {
           <DropdownMenuTrigger asChild>
             <div className='flex items-center h-full gap-2 px-2 py-1 duration-200 rounded-md cursor-pointer hover:bg-primary group'>
               <div 
-                className='relative flex items-center px-4 py-1.5 text-xl font-semibold rounded-md bg-secondary overflow-hiden'
+                className='relative flex items-center px-4 text-xl font-semibold rounded-md h-11 bg-secondary overflow-hiden'
                 style={{
                   color: user?.profile?.color
                 }}
@@ -91,7 +91,7 @@ function Navbar() {
 
         <DropdownMenuContent
           className="z-[50] min-w-[13rem] rounded-md border border-tertiary bg-secondary px-2 py-2"
-          sideOffset={16}
+          sideOffset={0}
           align="end"
         >
           {menuItems.map((item, i, arr) => {
