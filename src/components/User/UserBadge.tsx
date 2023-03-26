@@ -30,7 +30,7 @@ const UserBadge: React.FunctionComponent<IUserBadgeProps> = ({badge, className})
           { badge.icon ? (
             <img src={`/badges/${badge.icon}.png`} className={`h-6 w-6 p-0.5 ${className}`} />
           )  : (
-            <span className='px-2 py-1 text-xs rounded-md select-none bg-tertiary'>{badge.name}</span>
+            <span className={`px-2 py-1 text-xs rounded-md select-none bg-tertiary ${className}`}>{badge.name}</span>
           ) }
         </Tooltip.Trigger>
         <Tooltip.Portal>
