@@ -116,9 +116,9 @@ function Button({
       <span className="flex items-center">
         <span className={contentClassName}>{children}</span>
         {loading && (
-          <div className="absolute top-0 left-0 flex h-full w-full items-center justify-center bg-primary bg-opacity-40">
+          <div className="absolute top-0 left-0 flex items-center justify-center w-full h-full bg-primary bg-opacity-40">
             <svg
-              className="-ml-1 mr-3 h-5 w-5 animate-spin text-white"
+              className="w-5 h-5 mr-3 -ml-1 text-white animate-spin"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -141,7 +141,9 @@ function Button({
         )}
         {text}
       </span>
-      {Icon && Icon}
+      <span className={iconClasses}>
+        {Icon && Icon}
+      </span>
     </button>
   )
 }
