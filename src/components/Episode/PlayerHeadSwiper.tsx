@@ -31,8 +31,8 @@ function SwiperPlayerHead({ playerHeads, loading, hideCompleted, slidesPerView }
     >
       {playerHeads && (
         playerHeads.sort((a, b) => dayjs(b.updated_at).unix() - dayjs(a.updated_at).unix() ).map((playerHead, index) => {
-          if (hideCompleted && (playerHead.duration - playerHead.head) < 90) { return null }
-          return <SwiperSlide key={playerHead.id} virtualIndex={index} className='mt-4'>
+          if (hideCompleted && (playerHead.duration - playerHead.head) < 180) { return null }
+          return <SwiperSlide key={playerHead.id} virtualIndex={index} className='my-4'>
             <EpisodePlayerHead playerHead={playerHead} />
           </SwiperSlide>
         }
