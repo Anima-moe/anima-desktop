@@ -66,7 +66,7 @@ export const User = {
     return data as Anima.API.GetUser
   },
 
-  update: async function (data: unknown) {
+  update: async function (data: Partial<Anima.RAW.User & Anima.RAW.UserProfile>) {
     const storedToken = JSON.parse(localStorage.getItem('anima.userToken'))
 
     const response = await client.post('/user/update', data, {
@@ -133,7 +133,7 @@ export const User = {
     return
   },
 
-  search: async function (query: string) {
+  search: async function (query: string | number) {
     const { data } = await client.get('/search/users/', {
       params: {
         q: query,
@@ -141,5 +141,17 @@ export const User = {
     })
 
     return data as Anima.API.SearchUser
+  },
+
+  getComments: async function (userId: number | number) {
+    const { data } = await client.get(`/user/${userId}/comment`, {})
+
+    return data as Anima.API.GetUserComments
+  },
+
+  getLatestComments: async function (userId: number | number) {
+    const { data } = await client.get(`/user/${userId}/comment/latest`, {})
+
+    return data as Anima.API.GetUserComments
   },
 }

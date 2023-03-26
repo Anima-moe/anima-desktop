@@ -1,6 +1,8 @@
 import { forwardRef, PropsWithChildren, useEffect, useRef, useState } from 'react'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import ReactMarkdown from 'react-markdown'
+import MdEditor from 'react-markdown-editor-lite'
 import { useQuery } from 'react-query'
 import { toast } from 'react-toastify'
 
@@ -17,27 +19,28 @@ import {
   PencilLine,
   Icon,
   UserFocus,
+  FloppyDisk,
 } from 'phosphor-react'
 import {
-  Shield,
-  User,
-  ArrowRight,
-  ArrowSquareOut,
-  DiscordLogo,
   Palette,
   PaintBucket,
   Image,
   UserCircle,
-  EnvelopeSimple,
 } from 'phosphor-react'
+import remarkEmoji from 'remark-emoji'
+import remarkGfm from 'remark-gfm'
 
 import Button from '@/components/General/Button'
 import EmojiOptionsInput from '@/components/General/Inputs/EmojiSelectionInput'
 import IconInput from '@/components/General/Inputs/IconTextInput'
 import GeneralLayout from '@/components/Layout/General'
+import UserProfileSection from '@/components/User/ProfileSection'
 import UserCard from '@/components/User/UserCard'
 import { User as AnimaUser } from '@/services/anima/user'
 import { userPreferedAudio, userPreferedSubtitles } from '@/stores/atoms'
+import remarkEmbed from '@flowershow/remark-embed'
+
+import 'react-markdown-editor-lite/lib/index.css'
 
 const validateUrl = (url: string) => {
   try {
@@ -47,6 +50,7 @@ const validateUrl = (url: string) => {
     return ''
   }
 }
+
 
 const UserEdit = () => {
   const [loading, setLoading] = useState(false)
@@ -59,8 +63,11 @@ const UserEdit = () => {
   } = useQuery('/api/user/me', () => AnimaUser.me(), {
     refetchOnWindowFocus: false,
   })
+  
   const [currentUserData, setCurrentUserData] = useState<Anima.RAW.User | null>(null)
+
   const { t } = useTranslation()
+
   const {
     control,
     handleSubmit,
@@ -69,6 +76,9 @@ const UserEdit = () => {
     setError,
   } = useForm<FormInputs>()
 
+  const [editorContent, setEditorContent] = useState('')
+  const markdownEditor = useRef(null)
+
   useEffect(() => {
     if (!userData) {
       return
@@ -76,6 +86,12 @@ const UserEdit = () => {
 
     setCurrentUserData(userData)
   }, [userData])
+
+  const DonatorBadge = () => (
+    <span className="px-2 py-1 text-sm rounded bg-primary text-accent">
+      {t('user.edit.donator')}
+    </span>
+  )
 
   function isDonator() {
     if (!userData) return false
@@ -105,7 +121,7 @@ const UserEdit = () => {
       const validation = await Promise.all(
         imageInputs.map(async (input) => {
           if (isAnimated(await imageBuffer(data[input]))) {
-            setError(input, { type: 'manual', message: t('user_edit_save_animated') })
+            setError(input, { type: 'manual', message: t('generic.action.save_animated') })
             return true
           }
           return false
@@ -117,10 +133,13 @@ const UserEdit = () => {
       }
     }
 
-    await toast.promise(AnimaUser.update(data), {
-      pending: t('user_edit_save_pending'),
-      success: t('user_edit_save_success'),
-      error: t('user_edit_save_error'),
+    await toast.promise(AnimaUser.update({
+      ...data,
+      bio: editorContent,
+    }), {
+      pending: t('generic.action.save_pending'),
+      success: t('generic.action.save_success'),
+      error: t('generic.action.save_error'),
     })
 
     setLoading(false)
@@ -142,32 +161,24 @@ const UserEdit = () => {
 
   const inputs: InputProps = [
     {
-      id: 'bio',
-      title: t('user_edit_bio'),
-      type: 'text',
-      icon: UserFocus,
-      placeholder: userData?.profile?.bio || 'No bio',
-    },
-    // { id: 'password', title: t('user_edit_password'), type: 'password', icon: Shield },
-    {
       id: 'avatar',
-      title: t('user_edit_avatar'),
+      title: t('user.edit.avatar'),
       type: 'url',
       icon: UserCircle,
-      footer: `.webp / .jpg / .jpeg / .png / .gif [${t('user_edit_donator')}]`,
+      footer: `.webp / .jpg / .jpeg / .png / .gif [${t('user.edit.donator')}]`,
       placeholder: validateUrl(userData?.profile?.avatar),
     },
     {
       id: 'banner',
-      title: t('user_edit_banner'),
+      title: t('user.edit.banner'),
       type: 'url',
       icon: Image,
-      footer: `.webp / .jpg / .jpeg / .png / .gif [${t('user_edit_donator')}]`,
+      footer: `.webp / .jpg / .jpeg / .png / .gif [${t('user.edit.donator')}]`,
       placeholder: validateUrl(userData?.profile?.banner),
     },
     {
       id: 'background',
-      title: t('user_edit_background'),
+      title: t('user.edit.background'),
       type: 'url',
       icon: PaintBucket,
       donator: true,
@@ -176,69 +187,31 @@ const UserEdit = () => {
     },
     {
       id: 'color',
-      title: t('user_edit_color'),
+      title: t('user.edit.color'),
       type: 'color',
       icon: Palette,
       donator: true,
-      footer: t('user_edit_color_footer'),
+      footer: t('user.edit.color_footer'),
       placeholder: userData?.profile?.color || '#000000',
     },
   ] as const
 
-  const i18languages = [
-    { value: 'pt-BR', emoji: '🇧🇷' },
-    { value: 'en-US', emoji: '🇺🇸' },
-    { value: 'es-419', emoji: '🇪🇸' },
-    { value: 'pt-PT', emoji: '🇵🇹' },
-  ]
-
-  const audioLocales = [
-    { value: 'pt-BR', emoji: '🇧🇷' },
-    { value: 'en-US', emoji: '🇺🇸' },
-    { value: 'es-419', emoji: '🇪🇸' },
-    { value: 'ja-JP', emoji: '🇯🇵' },
-  ]
-
-  const subtitleLocales = [
-    { value: 'pt-BR', emoji: '🇧🇷' },
-    { value: 'en-US', emoji: '🇺🇸' },
-    { value: 'es-419', emoji: '🇪🇸' },
-    { value: 'Disabled', emoji: '⛔' },
-  ]
-
   const selectors = [
     {
-      id: 'language',
-      title: t('user_edit_language'),
-      options: i18languages,
-      default: i18next.language,
-    },
-    {
-      id: 'subtitle',
-      title: t('user_edit_subtitle'),
-      options: subtitleLocales,
-      default: userSubtitle,
-    },
-    { id: 'audio', title: t('user_edit_audio'), options: audioLocales, default: userAudio },
-    {
       id: 'history',
-      title: t('user_edit_history'),
+      title: t('user.edit.history'),
       options: [
-        { value: t('user_edit_history_public') },
-        { value: t('user_edit_history_private') },
+        { value: t('user.edit.history_public') },
+        { value: t('user.edit.history_private') },
       ],
-      default: t('user_edit_history_public'),
+      default: t('user.edit.history_public'),
     },
   ] as const
 
-  const DonatorBadge = () => (
-    <span className="rounded bg-primary px-2 py-1 text-sm text-accent">
-      {t('user_edit_donator')}
-    </span>
-  )
 
   return (
     <GeneralLayout fluid>
+      {/* BACKGROUND */}
       <div
         className={'cover absolute top-0 left-0 h-screen w-screen overflow-hidden bg-cover'}
         style={{ backgroundImage: `url('${watch().background}')` }}
@@ -250,16 +223,17 @@ const UserEdit = () => {
               autoPlay
               loop
               muted
-              className="h-full w-full object-cover"
+              className="object-cover w-screen h-screen"
               src={watch().background || '/i/splash/mp4'}
             />
           )
         ) : (
-          <video autoPlay loop muted className="h-full w-full object-cover" src="/i/splash.mp4" />
+          <video autoPlay loop muted className="object-cover w-full h-full" src="/i/splash.mp4" />
         )}
       </div>
-      <div className="absolute top-0 left-0 h-full w-full bg-primary/70 bg-gradient-to-t from-primary to-transparent" />
-      <div className="z-[1] my-24 mx-8 w-full">
+      {/* SHADE */}
+      <div className="absolute top-0 left-0 w-screen h-screen bg-primary/70 bg-gradient-to-t from-primary to-transparent" />
+      <div className="z-[1] mt-28 w-full">
         {watch() && (
           <UserCard
             user={{
@@ -271,84 +245,136 @@ const UserEdit = () => {
                 ...watch(),
               },
             }}
+            showStatics
+            showAddConnectionButton
           />
         )}
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="mx-auto flex w-full max-w-4xl flex-col space-y-2 rounded-md bg-secondary p-5">
-            {inputs.map((input, i) => (
-              <TitleInput
-                id={input.id}
-                title={input.title}
-                footer={input.footer}
-                key={input.id + i}
-              >
-                <Controller
-                  name={input.id}
-                  control={control}
-                  rules={{ required: false }}
-                  defaultValue={input.placeholder}
-                  render={({ field }) => (
-                    <IconInput
-                      Icon={input.icon}
-                      id={input.id}
-                      type={input.type}
-                      error={errors[input.id] && t(errors[input.id].message)}
-                      className={input.donator && !isDonator() && 'pr-20'}
-                      disabled={input.donator && !isDonator()}
-                      {...field}
-                    >
-                      {input.donator && (
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                          <DonatorBadge />
-                        </div>
-                      )}
-                    </IconInput>
-                  )}
-                />
-              </TitleInput>
-            ))}
-            {selectors.map((select, i) => (
-              <TitleInput title={select.title} key={select.id + i}>
-                <Controller
-                  name={select.id}
-                  control={control}
-                  render={({ field }) => (
-                    <EmojiOptionsInput
-                      options={select.options.map((o) => ({ ...o, label: t(o.value) }))}
-                      {...field}
-                      defaultValue={select.default as string}
-                      onSelect={async (value) => {
-                        switch (select.id) {
-                          case 'language':
-                            const { setConfigValue } = await import('@/services/tauri/configValue')
-
-                            setConfigValue('language', value).then(() => {
-                              i18next.changeLanguage(value)
-                            })
-                            break
-                          case 'audio':
-                            setUserAudio(value)
-                            break
-                          case 'subtitle':
-                            setUserSubtitle(value)
-                            break
-                          default:
-                            break
-                        }
-                      }}
-                    />
-                  )}
-                />
-              </TitleInput>
-            ))}
-            <Button
-              text={t('user_edit_save')}
-              Icon={<PencilLine className="order-first mr-4" weight="fill" size={24} />}
-              className="ml-auto bg-accent text-primary"
-              disabled={loading}
+        {/* USER CREDENTIALS */}
+        <div className='flex flex-row gap-4 px-8 mt-8 z-[1] w-full'>
+          <UserProfileSection title='Credentials' overlayColor={userData.profile.color}>
+          </UserProfileSection> 
+        </div>
+        {/* BIO */}
+        <div className='flex gap-4 px-8 mt-8 z-[1] w-full'>
+          <UserProfileSection title='Bio' overlayColor={userData.profile.color} contentClassName='flex !flex-col'>
+            <MdEditor 
+              renderHTML={async text => <ReactMarkdown className='anima-markdown' remarkPlugins={[remarkEmbed, remarkGfm, remarkEmoji]}>{text}</ReactMarkdown>}
+              table={{
+                maxRow: 6,
+                maxCol: 6
+              }}
+              ref={markdownEditor}
+              imageAccept='.jpeg,.jpg,.png,.gif,.jpe'
+              defaultValue={userData.profile.bio}
+              className='w-full rounded-md min-h-[500px] h-[500px]'
+              htmlClass='anima-markdown'
+              plugins={[
+                'header',
+                'font-bold',
+                'font-italic',
+                'font-underline',
+                'font-strikethrough',
+                'divider',
+                'list-unordered',
+                'list-ordered',
+                'divider',
+                'block-quote',
+                'block-wrap',
+                'block-code-inline',
+                'block-code-block',
+                'divider',
+                'table',
+                'image',
+                'youtube',
+                'blockEmbed',
+                'link',
+                'divider',
+                'clear',
+                'logger',
+                'mode-toggle',
+                'tab-insert',
+              ]}
+              
+              onChange={(e)=>{
+                if (!markdownEditor?.current?.nodeMdText?.current) { return }
+                if (e.text.length > 700) { markdownEditor.current.nodeMdText.current.value =  e.text.slice(0, 700)}
+                setEditorContent(e.text.slice(0, 700))
+              }}
             />
-          </div>
-        </form>
+            <span className={`mt-1 ml-auto ${editorContent.length > 650 ? 'text-red-400' : 'text-subtle'}`}>
+              {editorContent.length}/700
+            </span>
+            <Button
+              text={t('generic.action.save')}
+              Icon={<FloppyDisk className="order-first ml-4" weight="duotone" size={24} />}
+              className="mt-4 ml-auto bg-accent text-primary hover:bg-tertiary hover:text-accent"
+              disabled={loading}
+              onClick={handleSubmit(onSubmit)}
+            />
+          </UserProfileSection>
+        </div>
+        {/* PROFILE CUSTOMIZATION */}
+        <div className='flex flex-row gap-4 px-8 my-8 z-[1] w-full'>
+          <UserProfileSection title='Profile customization' overlayColor={userData.profile.color}>
+            <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
+              <div className="flex flex-col w-full mx-auto space-y-2">
+                {inputs.map((input, i) => (
+                  <TitleInput
+                    id={input.id}
+                    title={input.title}
+                    footer={input.footer}
+                    key={input.id + i}
+                  >
+                    <Controller
+                      name={input.id}
+                      control={control}
+                      rules={{ required: false }}
+                      defaultValue={input.placeholder}
+                      render={({ field }) => (
+                        <IconInput
+                          Icon={input.icon}
+                          id={input.id}
+                          type={input.type}
+                          error={errors[input.id] && t(errors[input.id].message)}
+                          className={input.donator && !isDonator() && 'pr-20'}
+                          disabled={input.donator && !isDonator()}
+                          {...field}
+                        >
+                          {input.donator && (
+                            <div className="absolute -translate-y-1/2 right-3 top-1/2">
+                              <DonatorBadge />
+                            </div>
+                          )}
+                        </IconInput>
+                      )}
+                    />
+                  </TitleInput>
+                ))}
+                {selectors.map((select, i) => (
+                  <TitleInput title={select.title} key={select.id + i}>
+                    <Controller
+                      name={select.id}
+                      control={control}
+                      render={({ field }) => (
+                        <EmojiOptionsInput
+                          options={select.options.map((o) => ({ ...o, label: t(o.value) }))}
+                          {...field}
+                          defaultValue={select.default as string}
+                        />
+                      )}
+                    />
+                  </TitleInput>
+                ))}
+                <Button
+                  text={t('generic.action.save')}
+                  Icon={<FloppyDisk className="order-first ml-4" weight="duotone" size={24} />}
+                  className="mt-4 ml-auto bg-accent text-primary hover:bg-tertiary hover:text-accent"
+                  disabled={loading}
+                />
+              </div>
+            </form>
+          </UserProfileSection> 
+        </div>
       </div>
     </GeneralLayout>
   )
@@ -361,12 +387,12 @@ type TitleInputProps = {
 }
 
 const TitleInput = ({ id, title, footer, children }: PropsWithChildren<TitleInputProps>) => (
-  <div className="-mt-4 flex flex-col">
+  <div className="flex flex-col -mt-4">
     <label htmlFor={id} className="-mb-0.5 mt-3 text-lg text-white/50">
       {title}
     </label>
     {children}
-    {footer && <span className="-mt-1 flex text-xs text-subtle">{footer}</span>}
+    {footer && <span className="flex -mt-1 text-xs text-subtle">{footer}</span>}
   </div>
 )
 
