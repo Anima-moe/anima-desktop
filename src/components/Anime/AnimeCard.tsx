@@ -80,7 +80,7 @@ function AnimeCard({ anime, disabled, noHover, onClick }: Props) {
   return (
     <AnimeWrapper url={`/anime/${anime.id}`} disabled={onClick !== undefined || disabled}>
       <motion.div
-        className="relative w-full aspect-[2/3] overflow-hidden bg-center bg-cover rounded-md select-none "
+        className="relative w-full aspect-[2/3] overflow-hidden bg-center bg-cover rounded-sm select-none "
         style={{
           backgroundColor: '#212121',
           backgroundImage: `url('${anime.cover}')`,
