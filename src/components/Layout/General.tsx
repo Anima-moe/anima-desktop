@@ -11,7 +11,7 @@ function General({ children, fluid }: Props) {
   return (
     <>
       <Navbar />
-      <main className={`flex flex-col bg-primary h-[calc(100vh-32px)] overflow-y-scroll relative ${fluid ? 'w-full px-0' : 'px-8'} select-none`} id="animacontent">
+      <main className={`mt-10 max-h-[calc(100vh-41px)] rounded-b-lg flex flex-col bg-primary h-[calc(100vh-32px)] relative ${fluid ? 'w-full px-0' : 'px-8'} select-none`} id="animacontent">
         {children}
       </main>
     </>

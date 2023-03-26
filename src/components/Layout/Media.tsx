@@ -14,7 +14,7 @@ function Media({ children }: Props) {
   const playerModeClasses = clsx({
     'flex bg-primary w-screen h-[calc(100vh-32px)] overflow-y-scroll max-h-[100vh]': true,
     'absolute top-0 h-screen': playerMode === 'expanded',
-    'pt-10': playerMode === 'normal',
+    'mt-20': playerMode === 'normal',
   })
   
   return (
