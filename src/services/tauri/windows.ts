@@ -32,7 +32,7 @@ export async function createSplashScreen() {
     resizable: false,
     url: '/splashscreen',
     title: 'Λ ＮＩＭ Λ',
-    visible: false,
+    visible: true,
     transparent: true,
   })
   splashWindow.once('tauri://created', () => {
