@@ -4,18 +4,22 @@ export default function useNavScroll() {
   const [blackHeader, setBlackHeader] = useState(false)
 
   useEffect(() => {
+    const generalContainer = document.getElementById('animacontent') as HTMLDivElement
+
+    if (!generalContainer) return
+
     const scrollListener = () => {
-      if (window.scrollY > 60) {
+      if (generalContainer.scrollTop > 60) {
         setBlackHeader(true)
       } else {
         setBlackHeader(false)
       }
     }
 
-    window.addEventListener('scroll', scrollListener)
+    generalContainer.addEventListener('scroll', scrollListener)
 
     return () => {
-      window.removeEventListener('scroll', scrollListener)
+      generalContainer.removeEventListener('scroll', scrollListener)
     }
   }, [])
 
