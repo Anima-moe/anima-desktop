@@ -20,10 +20,11 @@ interface IUserCommentProps {
   comment: Anima.RAW.Comment
   nestLevel?: number
   episodeID: number
+  disabled?: boolean
   onReply?: (text: string) => void
 }
 
-const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, nestLevel = 0, onReply, episodeID }) => {
+const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, nestLevel = 0, onReply, episodeID, disabled }) => {
   const { handleSubmit, control, formState: { errors }, reset } = useForm<{comment: string}>()
   const [showChildren, setShowChildren] = useState(true)
   const [showReply, setShowReply] = useState(false)
@@ -74,7 +75,7 @@ const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, nest
     <div className={containerClassNames} >
     {/* {(true) && ( */}
       {/* ACCENT */}
-      {(comment.User.premium > 0 || comment.User.staff) && (
+      {((comment.User.premium > 0 || comment.User.staff) && nestLevel === 0) && (
         <div
           className='absolute top-0 left-0 z-[0] h-full w-full opacity-5'
           style={{ backgroundColor: comment.User?.UserProfile.color }}
@@ -138,7 +139,7 @@ const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, nest
         </div>
 
         {/* REPLY BUTTON */}
-        {(nestLevel < 2) && (
+        {(nestLevel < 2 && !disabled) && (
           <div className='flex h-4 text-xs w-min'>
             <button 
               className='flex items-center px-2 py-3 duration-300 rounded-md bg-tertiary hover:bg-accent hover:text-primary '
