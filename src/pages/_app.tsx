@@ -92,8 +92,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* // eslint-disable-next-line @next/next/no-before-interactive-script-outside-document */}
-      <Script src="/theme.js" strategy="beforeInteractive" />
       {router.asPath !== '/splashscreen' && <Titlebar />}
       <Component {...pageProps} />
       <ToastContainer
