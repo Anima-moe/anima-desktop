@@ -9,7 +9,7 @@ type Props = {
 }
 
 function CategoryPill({ selected, category, onClick }: Props) {
-  console.log(category)
+
   return (
     <div
       className={clsx(
