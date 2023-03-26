@@ -73,7 +73,7 @@ function EpisodePlayerHead({ playerHead }: Props) {
                 S{playerHead.AnimeEpisode.AnimeSeason.number}E{playerHead.AnimeEpisode.number} • {getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(playerHead?.AnimeEpisode)?.title ||
                   'Episode title'}
               </p>
-              {playerHead.duration - playerHead.head > 90 ? (
+              {playerHead.duration - playerHead.head > 180 ? (
                 <div className='w-full h-2 mt-3 overflow-hidden rounded-sm bg-white/20' >
                   <div 
                     className='h-full bg-accent'
