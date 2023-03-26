@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 
 import Link from 'next/link'
 
+import { User } from '@/services/anima/user'
 import { useMediaRemote, useMediaStore } from '@vidstack/react'
 
 import { CommonChapterFormat } from './SeekBar'
@@ -34,8 +35,11 @@ const SkipBar: React.FunctionComponent<ISkipBarProps> = ({chapter, duration, nex
     <Link 
       href={`/episode/${nextEpisode}`} 
       className='ml-auto min-w-[150px] p-4 flex items-center justify-center bg-secondary hover:bg-accent duration-200 rounded-md cursor-pointer mb-2 group select-none'
+      onClick={()=>{
+        User.postEpisodePlayerHead(nextEpisode, Math.round(duration), Math.round(duration))
+      }}
     >
-        <span className='mix-blend-difference text-white group-hover:text-secondary group-hover:mix-blend-normal'>{t('next_episode')}</span>
+        <span className='text-white mix-blend-difference group-hover:text-secondary group-hover:mix-blend-normal'>{t('anime.chapter.nextEpisode')}</span>
     </Link>
   ) }
 
