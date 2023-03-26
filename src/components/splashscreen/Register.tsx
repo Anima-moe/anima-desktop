@@ -55,13 +55,13 @@ function Register({ password: previousPassword, username: previousUsername }: Pr
               setSplashPage('login')
             } catch {
               setLoading(false)
-              return setError('password', { message: t('error.auth.credentials') })
+              return setError('password', { message: t('user.auth.error.invalidCredentials') })
             }
             break
           }
           case 400: {
             setLoading(false)
-            setError('password', { message: t('error.auth.weakPassword') })
+            setError('password', { message: t('user.auth.error.weakPassword') })
             break
           }
           case 404: {
@@ -81,9 +81,9 @@ function Register({ password: previousPassword, username: previousUsername }: Pr
   }
 
   const inputs = [
-    { id: 'username', icon: User, title: t('input.auth.username'), type: 'text' },
-    { id: 'email', icon: Envelope, title: t('input.auth.email'), type: 'email' },
-    { id: 'password', icon: Shield, title: t('input.auth.password'), type: 'password' },
+    { id: 'username', icon: User, title: t('user.auth.username'), type: 'text' },
+    { id: 'email', icon: Envelope, title: t('user.auth.email'), type: 'email' },
+    { id: 'password', icon: Shield, title: t('user.auth.password'), type: 'password' },
   ] as const
 
   return (
@@ -122,11 +122,11 @@ function Register({ password: previousPassword, username: previousUsername }: Pr
               rules={{
                 minLength: {
                   value: 3,
-                  message: t('error.auth.tooShort', { n: 3 }),
+                  message: t('user.auth.error.tooShort', { n: 3 }),
                 },
                 required: {
                   value: true,
-                  message: t('error.auth.missingField'),
+                  message: t('user.auth.error.missingField'),
                 },
               }}
               render={({ field }) => (
@@ -148,7 +148,7 @@ function Register({ password: previousPassword, username: previousUsername }: Pr
             border
             iconRight
             loading={loading}
-            text={t('splash_loginOrRegister')}
+            text={t('user.auth.loginRegister')}
             Icon={<SignIn weight="fill" size={24} />}
             className="mt-4"
           />

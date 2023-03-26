@@ -69,8 +69,8 @@ function Login() {
   }
 
   const inputs = [
-    { id: 'username', icon: User, title: t('input.auth.username'), type: 'text' },
-    { id: 'password', icon: Shield, title: t('input.auth.password'), type: 'password' },
+    { id: 'username', icon: User, title: t('user.auth.username'), type: 'text' },
+    { id: 'password', icon: Shield, title: t('user.auth.password'), type: 'password' },
   ] as const
 
   return (
@@ -115,7 +115,7 @@ function Login() {
       >
         <div className="flex flex-col w-full mt-auto h-min">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <h6 className="mb-1.5 w-full text-subtle">{t('generic.auth.welcome')}</h6>
+            <h6 className="mb-1.5 w-full text-subtle">{t('user.auth.welcome')}</h6>
             <EmojiOptionsInput
               options={[
                 { value: 'pt-BR', label: 'Português', emoji: '🇧🇷' },
@@ -140,11 +140,11 @@ function Login() {
                 rules={{
                   minLength: {
                     value: 3,
-                    message: t('generic.auth.tooShort', { n: 3 }),
+                    message: t('user.auth.error.tooShort', { n: 3 }),
                   },
                   required: {
                     value: true,
-                    message: t('error.auth.notFound'),
+                    message: t('user.auth.error.notFound'),
                   },
                 }}
                 render={({ field }) => (
@@ -163,7 +163,7 @@ function Login() {
               <Button
                 Icon={<ArrowRight />}
                 iconSubtle
-                text={t('generic.auth.joinAsGuest')}
+                text={t('user.auth.joinAsGuest')}
                 tertiary
                 border
                 md
@@ -179,7 +179,7 @@ function Login() {
               />
               <Button
                 Icon={<ArrowRight weight="fill" />}
-                text={t('button.auth.loginRegister')}
+                text={t('user.auth.loginRegister')}
                 accent
                 iconRight
                 md
@@ -192,7 +192,7 @@ function Login() {
           </form>
         </div>
         <Button
-          text={t('generic.auth.joinDiscord')}
+          text={t('user.auth.joinDiscord')}
           iconRight
           sm
           secondary
