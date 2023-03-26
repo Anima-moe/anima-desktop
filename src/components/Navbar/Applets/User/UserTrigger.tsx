@@ -18,6 +18,8 @@ import { createSplashScreen } from '@/services/tauri/windows'
 import { userToken } from '@/stores/atoms'
 import { DropdownMenuArrow } from '@radix-ui/react-dropdown-menu'
 
+import NavbarIcon from '../../NavbarIcon'
+
 
 
 function Navbar() {
@@ -51,7 +53,7 @@ function Navbar() {
   ]
 
   return (
-    <div className="z-50 h-full">
+    <div className="z-50 flex items-center h-full">
       <DropdownMenu>
         {user ? (
           <DropdownMenuTrigger asChild>
@@ -82,10 +84,8 @@ function Navbar() {
             </div>
           </DropdownMenuTrigger>
         ) : (
-          <DropdownMenuTrigger asChild>
-            <button className="flex items-center justify-center h-12 p-2 duration-300 border-opacity-50 rounded-md cursor-pointer aspect-square bg-opacity-60 backdrop-blur-sm hover:border-tertiary hover:bg-black hover:text-white active:border-accent active:bg-accent active:text-primary">
-              <User size={22} />
-            </button>
+          <DropdownMenuTrigger>
+            <NavbarIcon Icon={<User size={24} />} title='User' />
           </DropdownMenuTrigger>
         )}
 
