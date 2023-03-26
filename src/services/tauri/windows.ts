@@ -25,15 +25,14 @@ export async function createSplashScreen() {
   const { WebviewWindow, appWindow } = await import('@tauri-apps/api/window')
   const splashWindow = new WebviewWindow('main', {
     fullscreen: false,
-    maxWidth: 1200,
-    maxHeight: 650,
-    minWidth: 920,
+    minWidth: 1100,
     minHeight: 500,
-    resizable: false,
+    resizable: true,
     url: '/splashscreen',
     title: 'Λ ＮＩＭ Λ',
     visible: true,
     transparent: true,
+    decorations: false,
   })
   splashWindow.once('tauri://created', () => {
     // invoke('close_splashscreen')
