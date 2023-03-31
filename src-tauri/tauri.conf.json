@@ -37,7 +37,10 @@
         "setMaxSize": true,
         "setFocus": true,
         "startDragging": true,
-        "setFullscreen": true
+        "setFullscreen": true,
+        "maximize": true,
+        "unmaximize": true,
+        "minimize": true
       },
       "process": {
         "all": false,
