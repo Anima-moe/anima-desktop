@@ -7,11 +7,12 @@ import { Listbox, Transition } from '@headlessui/react'
 type Props = {
   options: { value: string; label: string; emoji?: string }[]
   defaultValue?: string
+  className?: string
   onSelect?: (value: string) => void
 }
 
 const EmojiOptionsInput = forwardRef<SelectHTMLAttributes<HTMLSelectElement>, Props>(
-  ({ onSelect, options, defaultValue, ...props }, ref) => {
+  ({ onSelect, className, options, defaultValue, ...props }, ref) => {
     const [activeItem, setActiveItem] = useState<(typeof options)[0]>(options?.filter(v => v.value === defaultValue )?.[0] || options[0])
 
     return (
@@ -23,21 +24,21 @@ const EmojiOptionsInput = forwardRef<SelectHTMLAttributes<HTMLSelectElement>, Pr
             onSelect?.(options[options.findIndex((o) => o.value === d)].value || options[0].value)
           }}
         >
-          <div className="relative my-1.5 flex w-full items-center justify-start">
-            <Listbox.Button className="relative flex w-full flex-row items-center justify-between rounded-md border border-tertiary bg-secondary px-3 py-2.5 text-lg text-white placeholder-shown:text-subtle active:text-white">
-              <p className="flex flex-row">
-                <span className="font-noto mr-4">{activeItem.emoji || '📌'}</span>
+          <div className='relative my-1.5 flex w-full items-center justify-start'>
+            <Listbox.Button className={'relative flex w-full flex-row items-center justify-between rounded-md border border-tertiary bg-secondary px-3 py-2.5 text-lg text-white placeholder-shown:text-subtle active:text-white ' + className}>
+              <p className='flex flex-row'>
+                <span className='mr-4 font-noto'>{activeItem.emoji || '📌'}</span>
                 {activeItem.label}
               </p>
-              <CaretDown className="text-subtle" size={24} />
+              <CaretDown className='ml-4 text-subtle' size={24} />
             </Listbox.Button>
             <Transition
               as={Fragment}
-              leave="transition ease-in duration-100"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
+              leave='transition ease-in duration-100'
+              leaveFrom='opacity-100'
+              leaveTo='opacity-0'
             >
-              <Listbox.Options className="absolute z-10 translate-y-1/2 mt-14 max-h-60 w-full overflow-auto rounded-md bg-tertiary py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+              <Listbox.Options className='absolute z-10 w-full py-1 overflow-auto text-base translate-y-1/2 rounded-md shadow-lg mt-14 max-h-60 bg-tertiary ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
                 {options.map((option, optionIdx) => (
                   <Listbox.Option
                     key={optionIdx}
@@ -48,7 +49,7 @@ const EmojiOptionsInput = forwardRef<SelectHTMLAttributes<HTMLSelectElement>, Pr
                           : 'text-white text-opacity-60' + activeItem.value === option.value
                           ? ' bg-accent'
                           : ''
-                      }`
+                      } ${className}`
                     }
                     value={option.value}
                   >
@@ -57,7 +58,7 @@ const EmojiOptionsInput = forwardRef<SelectHTMLAttributes<HTMLSelectElement>, Pr
                         <span
                           className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}
                         >
-                          <span className="font-noto mr-4">{option.emoji || '📌'}</span> 
+                          <span className='mr-4 font-noto'>{option.emoji || '📌'}</span> 
                           {option.label}
                         </span>
                       </>
@@ -78,7 +79,7 @@ const EmojiOptionsInput = forwardRef<SelectHTMLAttributes<HTMLSelectElement>, Pr
     //   >
     //     {options.map(option => <option value={option.value} key={option.value}>{option.label}</option>)}
     //   </select>
-    //   <div className='absolute left-3 text-xl top-1/2 -translate-y-1/2'>
+    //   <div className='absolute text-xl -translate-y-1/2 left-3 top-1/2'>
     //     {selectedOption ? selectedOption.emoji : placeholder.emoji}
     //   </div>
     // </div>
