@@ -58,7 +58,7 @@ function EpisodePlayerHead({ playerHead }: Props) {
         <Link href={`/episode/${playerHead?.AnimeEpisode?.id}?seasonid=${playerHead?.AnimeEpisode?.season_id}`}>
           
         <motion.div
-          className="relative w-full overflow-hidden bg-center bg-cover rounded-md episde-card aspect-video bg-tertiary"
+          className="relative w-full overflow-hidden bg-center bg-cover rounded-sm episde-card aspect-video bg-tertiary"
           style={{ backgroundImage: `url('${playerHead?.AnimeEpisode?.thumbnail}')` }}
         >
           <motion.div 
@@ -69,7 +69,7 @@ function EpisodePlayerHead({ playerHead }: Props) {
                 {getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(playerHead?.AnimeEpisode?.AnimeSeason?.Anime)?.title ||
                   'Anime title'}
               </h2>
-              <p className="relative w-full overflow-hidden text-sm text-white text-opacity-60 line-clamp-5 group-hover:text-secondary text-ellipsis">
+              <p className="relative w-full overflow-hidden text-sm text-white text-opacity-60 group-hover:text-secondary text-ellipsis">
                 S{playerHead.AnimeEpisode.AnimeSeason.number}E{playerHead.AnimeEpisode.number} • {getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(playerHead?.AnimeEpisode)?.title ||
                   'Episode title'}
               </p>
