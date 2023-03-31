@@ -3,6 +3,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 import clsx from 'clsx'
+import dayjs from 'dayjs'
 import { useAtom } from 'jotai'
 import Link from 'next/link'
 import { ArrowBendDownRight, ArrowDown, ArrowElbowDownRight, ArrowRight, Chat, Chats, Eye, EyeClosed, PaperPlaneRight } from 'phosphor-react'
@@ -44,10 +45,11 @@ const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, nest
 
 
   const containerClassNames = clsx({
-    'relative flex w-full gap-4 overflow-hidden bg-secondary p-4': true,
-    'mb-0 rounded-t-md': !comment.parent_id && comment?.Children?.length > 0 && (showChildren || showReply),
-    'rounded-md': !comment.parent_id && comment?.Children?.length === 0 || comment?.Children?.length > 0 && !showChildren,
+    'relative flex w-full gap-4 overflow-hidden bg-secondary p-4 select-none': true,
+    'mb-0 rounded-t-md': (!comment.parent_id && comment?.Children?.length > 0),
+    'rounded-md': (!comment.parent_id && comment?.Children?.length === 0 && showChildren) && !showReply,
     'mt-2': !comment.parent_id,
+    '!rounded-b-md': (comment.parent_id && comment?.Children?.length === 0) && (!showReply)
   })
   
   const commentContainerClassNames = clsx({
@@ -56,9 +58,9 @@ const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, nest
   })
   
   const avatarClassNames = clsx({
-    'aspect-square rounded-full z-[1] flex bg-primary bg-cover bg-center cursor-pointer': true,
-    'h-12': (nestLevel > 0),
-    'h-14': (nestLevel < 1)
+    'aspect-square rounded-sm z-[1] flex bg-primary bg-cover bg-center cursor-pointer relative': true,
+    'h-12 w-12': (nestLevel > 0),
+    'w-16 h-16': (nestLevel < 1)
   })
 
   const userNameClassNames = clsx({
@@ -93,15 +95,16 @@ const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, nest
       )}
 
       {/* AVATAR */}
-      <Tooltip.Provider delayDuration={500}> 
+      <Tooltip.Provider delayDuration={500}>  
         <Tooltip.Root>
-          <Tooltip.Trigger asChild >
+          <Tooltip.Trigger asChild> 
             <Link href={`/user/${comment.User.id}`} className={avatarClassNames} style={{ backgroundImage: `url(${comment.User?.UserProfile?.avatar})` }} />
+            
           </Tooltip.Trigger>
           <FloatingProfile user={comment.User} />
         </Tooltip.Root>
       </Tooltip.Provider>
-      
+           
       {/* COMMENT CONTAINER */}
       <div className={commentContainerClassNames}>
         {/* USERNAME & BADGES */}
@@ -137,21 +140,22 @@ const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, nest
         <div className={commentClassNames}>
          {comment.comment}
         </div>
-
-        {/* REPLY BUTTON */}
-        {(nestLevel < 2 && !disabled) && (
-          <div className='flex h-4 text-xs w-min'>
-            <button 
-              className='flex items-center px-2 py-3 duration-300 rounded-md bg-tertiary hover:bg-accent hover:text-primary '
-              onClick={()=>{
-                setShowReply(!showReply)
-              }}
-            >
-              <ArrowBendDownRight  className='mr-2' /> 
-              {t('generic.action.reply')}
-            </button>
-          </div>
-        )}
+        <div className='flex flex-col gap-2'>
+          {/* REPLY BUTTON */}
+          {(nestLevel < 2 && !disabled) && (
+            <div className='flex h-4 text-xs w-min'>
+              <button 
+                className='flex items-center px-2 py-3 duration-300 rounded-md bg-primary/60 hover:bg-accent hover:text-primary '
+                onClick={()=>{
+                  setShowReply(!showReply)
+                }}
+              >
+                <ArrowBendDownRight  className='mr-2' /> 
+                {t('generic.action.reply')}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
     <div className='group'>
@@ -162,7 +166,11 @@ const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, nest
               control={control}
               rules={{ required: false }}
               render={({ field }) => (
-                <IconInput Icon={Chats} placeholder={t('generic.action.writeReply')} className='h-16 -my-1.5 !rounded-none !border-none !pl-16' type="text" error={errors['comment'] && errors['comment'].message} {...field}/>
+                <IconInput 
+                  Icon={Chats} placeholder={t('generic.action.writeReply')} className='h-16 -my-1.5 !rounded-none !border-none !pl-16' 
+                  type="textarea" 
+                  error={errors['comment'] && errors['comment'].message} {...field}
+                />
               )}
             />
 
@@ -176,6 +184,7 @@ const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, nest
             comment={c}
             nestLevel={nestLevel + 1}
             episodeID={episodeID}
+            disabled={disabled}
           />
         )
       })}
