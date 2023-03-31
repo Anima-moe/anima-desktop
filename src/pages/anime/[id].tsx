@@ -28,7 +28,7 @@ function AnimeProperty({ heading, value, Icon }: props) {
 
   return (
     <div className='flex flex-col'>
-      <div className=" mt-4 w-full bg-secondary rounded-t-md min-h-[3rem] flex items-center px-2 text-subtle">
+      <div className={`mt-4 w-full bg-secondary min-h-[3rem] flex items-center px-2 text-subtle  ${Array.isArray(value) ? 'rounded-t-md' : 'rounded-md'}`}>
         { Icon ? <Icon size={24}/> : <Tag size={24}/> }
         <div className='flex flex-col'>
           <span className='ml-3 text-xs'>{t(heading)}</span>
@@ -269,11 +269,11 @@ function AnimePage() {
           {/* SEASONS */}
           <div className="w-full mt-4">
             {animeData ? (
-              animeData.AnimeSeason?.sort((a, b) => a.number - b.number).map((season) => {
-                return (
-                  <SeasonDisplay season={season} key={`season.${season.number}.${season.title}`} />
-                )
-              })
+              // animeData.AnimeSeason?.sort((a, b) => a.number - b.number).map((season) => {
+                // return (
+                  <SeasonDisplay seasons={animeData.AnimeSeason} />
+                // )
+              // })
             ) : (
               <>
                 <SkeletonBlock

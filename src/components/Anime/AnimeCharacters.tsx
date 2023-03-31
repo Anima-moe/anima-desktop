@@ -14,7 +14,7 @@ function AnimeCharactersCard({ character }: { character: AnilistCharacter }) {
   const japaneseVA = character.voiceActors.filter((va) => va.languageV2 === 'Japanese')[0]
   return (
     <div
-      className="relative aspect-[2/3] w-full"
+      className="relative w-full"
       onMouseEnter={() => {
         if (!japaneseVA) return
 
@@ -25,9 +25,9 @@ function AnimeCharactersCard({ character }: { character: AnilistCharacter }) {
       }}
     >
       <AnimatePresence initial={false}>
-        {persona === 'character' ? (
+        {/* {persona === 'character' ? (+ */}
           <motion.div
-            className="absolute top-0 left-0 w-full h-full overflow-hidden rounded-md cursor-help"
+            className="flex w-full h-full p-1 overflow-hidden"
             initial={{ rotateY: 180, backfaceVisibility: 'hidden' }}
             animate={{ rotateY: 0, backfaceVisibility: 'hidden' }}
             exit={{ rotateY: -180, backfaceVisibility: 'hidden' }}
@@ -40,21 +40,36 @@ function AnimeCharactersCard({ character }: { character: AnilistCharacter }) {
             }}
             key={character.node.id}
           >
-            {character.node.image && (
-              <img
-                src={persona === 'character' ? character.node.image.large : japaneseVA.image.large}
-                className="object-cover w-full h-full"
-              />
-            )}
-            <p className="absolute bottom-0 left-0 flex flex-col w-full overflow-hidden whitespace-nowrap bg-gradient-to-t from-primary">
-              <span className="px-2 pt-4 text-sm text-ellipsis">{character.node.name.full}</span>
-              <span className="px-2 pb-2 overflow-hidden text-xs text-white text-opacity-50 text-ellipsis">
-                {' '}
-                {character.node.name.native}{' '}
-              </span>
-            </p>
+            <div className='flex w-1/2 gap-2 bg-secondary'>
+              {character.node.image && (
+                <div
+                  className="object-cover w-16 aspect-[2/3] bg-center bg-cover rounded-l-sm bg-secondary"
+                  style={{backgroundImage: `url('${character.node.image.large}')`}}
+                />
+              )}
+              <p className="flex flex-col justify-center overflow-hidden whitespace-nowrap">
+                <span className="px-2 pt-4 text-sm text-ellipsis">{character?.node?.name?.full || ''}</span>
+                <span className="px-2 pb-2 overflow-hidden text-xs text-white text-opacity-50 text-ellipsis">
+                  {character?.node?.name?.native || '??'}
+                </span>
+              </p>
+            </div>
+            <div className='flex items-center justify-end w-1/2 gap-2 border-l border-dashed bg-secondary border-subtle/20'>
+              <p className="flex flex-col overflow-hidden whitespace-nowrap">
+                <span className="px-2 pt-4 text-sm text-ellipsis">{japaneseVA?.name?.full || '??'}</span>
+                <span className="px-2 pb-2 overflow-hidden text-xs text-white text-opacity-50 text-ellipsis">
+                  {japaneseVA?.name?.native || '??'}
+                </span>
+              </p>
+              {japaneseVA?.image && (
+                <div
+                className="object-cover w-16 aspect-[2/3] bg-center bg-cover rounded-r-sm bg-secondary"
+                  style={{backgroundImage: `url('${japaneseVA.image.large}')`}}
+                />
+              )}
+            </div>
           </motion.div>
-        ) : (
+        {/* ) : (
           <motion.div
             className="[backface-visibility: hidden] absolute top-0 left-0 h-full w-full cursor-help overflow-hidden  rounded-md"
             initial={{ rotateY: 180, backfaceVisibility: 'hidden' }}
@@ -70,7 +85,7 @@ function AnimeCharactersCard({ character }: { character: AnilistCharacter }) {
               </span>
             </p>
           </motion.div>
-        )}
+        )} */}
       </AnimatePresence>
     </div>
   )
@@ -88,7 +103,7 @@ function AnimeCharacters({ characters }: Props) {
           expanded ? 'h-full' : 'h-64'
         } relative mb-4 overflow-hidden transition-all duration-300`}
       >
-        <div className="mt-1.5 mb-2 grid w-full grid-cols-8 gap-4">
+        <div className="mt-1.5 mb-2 grid w-full grid-cols-2 2xl:grid-cols-3 gap-4">
           {characters.map((character, index) => {
             return <AnimeCharactersCard character={character} key={`character.${index}`} />
           })}
