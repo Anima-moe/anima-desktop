@@ -28,7 +28,7 @@ const IconInput = forwardRef<InputHTMLAttributes<HTMLInputElement>, PropsWithChi
           autoComplete='off'
           {...props}
         />
-        <Icon size={24} className="absolute left-3 top-1/2 -translate-y-1/2 text-subtle" />
+        <Icon size={24} className="absolute -translate-y-1/2 left-3 top-1/2 text-subtle" />
         {children}
       </div>
       {error && (
