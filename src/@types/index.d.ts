@@ -89,6 +89,8 @@ namespace Anima {
       thumbnail?: string
       EpisodeMetadata: EpisodeMetadata[]
       source: EpisodeSource[]
+      updated_at: string
+      created_at: string
     }
 
     type StreamObject = {
@@ -222,6 +224,10 @@ namespace Anima {
       data: Anima.RAW.UserPlayerHead[]
     } // Returns Error if user not found or episode not found
 
+    type GetUserComments = DefaultResponse<
+      Anima.RAW.Comment & { AnimeEpisode: Anima.RAW.Episode & { AnimeSeason: Anima.RAW.Season & { Anime: Anima.RAW.Anime } } }
+    >
+
     type GetEpisodeMedia = {
       count: number
       data: Anima.RAW.EpisodeStream
@@ -258,6 +264,11 @@ namespace Anima {
     type GetComments = {
       count: number
       data: Anima.RAW.Comment[]
+    }
+
+    type GetLatestEpisodes = {
+      count: number
+      data: Anima.RAW.Episode[]
     }
   }
 }
