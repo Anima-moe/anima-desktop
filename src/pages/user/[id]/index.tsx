@@ -5,12 +5,15 @@ import { useQuery } from 'react-query'
 
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { Play } from 'phosphor-react'
 import remarkEmoji from 'remark-emoji'
 import remarkGfm from 'remark-gfm'
 
 import UserComment from '@/components/Comments/UserComment'
 import SwiperPlayerHead from '@/components/Episode/PlayerHeadSwiper'
+import Button from '@/components/General/Button'
 import Loading from '@/components/General/Loading'
 import ContentContainer from '@/components/Layout/ContentContainer'
 import GeneralLayout from '@/components/Layout/General'
@@ -18,6 +21,7 @@ import UserProfileSection from '@/components/User/ProfileSection'
 import UserBadge from '@/components/User/UserBadge'
 import UserCard from '@/components/User/UserCard'
 import usePresence from '@/hooks/usePresence'
+import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
 import { User as UserService } from '@/services/anima/user'
 import remarkEmbed from '@flowershow/remark-embed'
 
@@ -36,6 +40,8 @@ async function fetchUser(id: string | number) {
 }
 
 async function fetchPlayerHead(id: string | number) {
+  if (!id) { return }
+  
   if (id === 'me') {
     return await UserService.getMyPlayerHeads()
   } else {
@@ -44,7 +50,11 @@ async function fetchPlayerHead(id: string | number) {
 }
 
 async function fetchLatestComments(id: string | number) {
-  if (!id || !Number(id)) { return }
+  if (!id) { return }
+  if( id === 'me' ) { 
+    const userData = await UserService.getUserData()
+    id = userData.id
+  }
 
   return await UserService.getLatestComments(Number(id))
 }
@@ -127,6 +137,7 @@ const User = () => {
               </div>
             </div>
           </UserProfileSection>
+          <UserProfileSection title='Favorites' overlayColor={userData.profile.color}/>
           <UserProfileSection title='History' overlayColor={userData.profile.color}>
             <div className='relative w-full'>
               {userPlayerHead?.count > 0 &&  <>
@@ -139,11 +150,40 @@ const User = () => {
               </>}
             </div>
           </UserProfileSection>
-          <UserProfileSection title='Favorites' overlayColor={userData.profile.color}/>
           {!userCommentsError && userComments?.count > 0 && (
-            <UserProfileSection title='Last comments'overlayColor={userData.profile.color}>
+            <UserProfileSection title='Last comments' overlayColor={userData.profile.color} contentClassName='!flex-col gap-4'>
               {userComments?.data?.map((comment, i) => {
-                return <UserComment disabled episodeID={comment.episode_id} comment={comment} key={`user.${comment.id}.${i}`} />
+                return <div className='flex flex-col p-2 border border-dashed rounded-md border-subtle/30 bg-tertiary m' key={`user.${comment.id}.${i}`}>
+                    <div className='flex w-full h-full px-4 pt-3 pb-4 -mb-3 bg-secondary'>
+                      <div 
+                        className='w-32 mr-3 bg-center bg-cover rounded-sm bg-tertiary aspect-video' 
+                        style={{
+                          backgroundImage: `url('${comment.AnimeEpisode.thumbnail}')`
+                        }} 
+                      />
+                      <div className='flex flex-col h-full my-auto'>
+                        <Link href={`/anime/${comment.AnimeEpisode.AnimeSeason.Anime.id}`}>
+                          <h2 className='font-semibold cursor-pointer font-xl hover:text-accent'>
+                            {getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(comment.AnimeEpisode.AnimeSeason.Anime)?.title || 'Missing Anime Title'}
+                          </h2>
+                        </Link>
+                        <h3 className='text-sm text-white/80'>
+                          S{comment.AnimeEpisode.AnimeSeason.number}E{comment.AnimeEpisode.number} • {getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(comment.AnimeEpisode)?.title || 'Missing Episode Title'}
+                        </h3>
+                      </div>
+                      <Button 
+                        Icon={<Play size={24} />}
+                        text={t('anime.hero.button.watch')}
+                        tertiary
+                        xs
+                        className='!py-2 !w-min mt-2 hover:!bg-primary hover:!text-accent ml-auto flex gap-2 !my-auto'
+                        onClick={() => {
+                          router.push(`/episode/${comment.AnimeEpisode.id}`)
+                        }}
+                      />
+                    </div>
+                   <UserComment disabled episodeID={comment.AnimeEpisode.id} comment={comment}  />
+                </div>
               })}
             </UserProfileSection>
           )}

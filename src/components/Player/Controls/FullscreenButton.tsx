@@ -17,15 +17,18 @@ function FullscreenButton({}: Props) {
     <MediaToggleButton
       className='flex items-center justify-center px-2 py-2 duration-200 rounded-md cursor-pointer pointer-events-auto group hover:bg-primary'
       onClick={() => {
-        import('@tauri-apps/api/window').then((mod) => {
+        import('@tauri-apps/api/window').then(async (mod) => {
           setFullscreen(!fullscreen)
           
-          mod
+          await mod
+            .getCurrent()
+            .unmaximize()
+
+          await mod
             .getCurrent()
             .setFullscreen(!fullscreen)
-            .then(()=>{
-              setPlayerMode(!fullscreen ? 'expanded' : 'normal')
-            })
+
+          setPlayerMode(!fullscreen ? 'expanded' : 'normal')
 
           router.events.on('routeChangeStart', () => {
             mod.getCurrent().setFullscreen(false)

@@ -35,7 +35,10 @@ body {
   border-radius: 1rem;
   color: #fff;
   font-family: 'Rubik', sans-serif;
-  @apply rounded-b-md;
+  @apply rounded-t-md bg-primary !important;
+  font-smooth: always;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .font-noto {

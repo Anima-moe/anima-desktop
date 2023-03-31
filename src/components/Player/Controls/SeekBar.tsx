@@ -40,11 +40,11 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
   const { t } = useTranslation()
 
   function getHoverChapterName() {
-    if (!episodeChapters) { return 'chapter_episode'}
+    if (!episodeChapters) { return 'chapter.episode'}
     const currentChapter = episodeChapters.find((chapter) => {
       return (duration * (pointerValue/ 100)) >= chapter.startTime && (duration * (pointerValue/ 100)) <= chapter.endTime
     })
-    if (!currentChapter) { return 'chapter_episode' }
+    if (!currentChapter) { return 'chapter.episode' }
     return currentChapter.identificator
   }
 
@@ -74,7 +74,7 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
 
         commonChapters = aniskipChapters.results.map((chapter) => {
           return {
-            identificator: 'chapter_' + chapter.skipType.toLocaleLowerCase().replaceAll(' ', '_'),
+            identificator: 'chapter.' + chapter.skipType.toLocaleLowerCase().replaceAll(' ', '_'),
             startTime: chapter.interval.startTime,
             endTime: chapter.interval.endTime,
           }
@@ -94,7 +94,7 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
             const nextChapter = matchingEpisode.timestamps[index + 1]
 
             return {
-              identificator: 'chapter_' + chapter.type.name.toLocaleLowerCase().replaceAll(' ', '_'),
+              identificator: 'chapter.' + chapter.type.name.toLocaleLowerCase().replaceAll(' ', '_'),
               startTime: chapter.at,
               endTime: nextChapter ? nextChapter.at : matchingEpisode.baseDuration,
             }
@@ -107,7 +107,7 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
       // The opening chapter is always the first chapter, so if the first chapter starts after 1 second, add a new chapter with the identificator 'teaser' to fill the gap.
       if (commonChapters.sort((a,b)=> a.startTime - b.startTime)[0].startTime > 1) {
         commonChapters.unshift({
-          identificator: 'chapter_teaser',
+          identificator: 'chapter.teaser',
           startTime: 0,
           endTime: commonChapters.sort((a,b)=> a.startTime - b.startTime)[0].startTime,
         })
@@ -119,13 +119,13 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
         const previousChapter = commonChapters[commonChapters.length-1]
 
         commonChapters.splice(commonChapters.length-1, 0, {
-          identificator: previousChapter.identificator === 'chapter_ed' 
-            || previousChapter.identificator === 'chapter_credits' 
-            || previousChapter.identificator === 'chapter_mixeded' 
-            || previousChapter.identificator === 'chapter_mixed-ed'
-            || previousChapter.identificator === 'chapter_mixed_credits'
-            || previousChapter.identificator === 'chapter_outro'
-            || previousChapter.identificator === 'chapter_new_credits' ? 'chapter_post_credits' : 'chapter_episode',
+          identificator: previousChapter.identificator === 'chapter.ed' 
+            || previousChapter.identificator === 'chapter.credits' 
+            || previousChapter.identificator === 'chapter.mixeded' 
+            || previousChapter.identificator === 'chapter.mixed-ed'
+            || previousChapter.identificator === 'chapter.mixed_credits'
+            || previousChapter.identificator === 'chapter.outro'
+            || previousChapter.identificator === 'chapter.new_credits' ? 'chapter.post_credits' : 'chapter.episode',
           startTime: commonChapters[commonChapters.length-1].endTime + .04,
           endTime: duration,
         })
@@ -136,16 +136,18 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
         const lastChapter = commonChapters[index - 1]
         if (lastChapter && ~~(chapter.startTime - lastChapter?.endTime) > 0) {
           commonChapters.splice(index, 0, {
-            identificator: 'chapter_canon',
+            identificator: 'chapter.canon',
             startTime: lastChapter.endTime + .04,
             endTime: chapter.startTime - .04,
           })
         }
       })
 
+      // If the API mistakenly sets the end time to happen more than 5 minutes before the end of the epiode we clear the whole thing because it's probably borked!
+
       setEpisodeChapters(commonChapters)
     })()
-  }, [animeData, canPlay])
+  }, [animeData, canPlay, duration])
 
   useEffect(()=>{
     if (!slider.current) { return }
@@ -158,8 +160,8 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
     })()
   },[streamConfig.streamThumbnail, slider, streamConfig.streamURL])
 
-  return <div className='pointer-events-auto relative flex w-full justify-center overflow-visible flex-col'>
-    { currentTime > 0 && <SkipBar chapter={getcurrentChapter()} duration={duration} nextEpisode={seasonData.AnimeEpisode.find(e => e.number > episodeData.number)?.id}/> }
+  return <div className='relative flex flex-col justify-center w-full overflow-visible pointer-events-auto'>
+    { currentTime > 0 && <SkipBar chapter={getcurrentChapter()} duration={duration} episodeId={episodeData.id} nextEpisodeId={seasonData.AnimeEpisode.find(e => e.number > episodeData.number)?.id}/> }
     <div className='flex gap-2'>
       <Timestamp type='current'/> 
       <MediaTimeSlider 
@@ -217,13 +219,13 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
           <div 
             className='absolute left-[var(--slider-pointer-percent)] flex-col items-center -translate-y-1/2 mb-6 -translate-x-1/2 h-min flex group-hover:opacity-100 opacity-0 duration-100 transition-opacity pointer-events-none gap-1'
           >
-            <div className='text-xs order-1 h-min flex flex-col items-center'>
+            <div className='flex flex-col items-center order-1 text-xs h-min'>
               {/* PREVIEW */}
               { bif && <div 
                 className='w-48 min-w-[12rem] aspect-video pointer-events-none rounded-md shadow-lg border border-tertiary bg-secondary' 
                 style={{ backgroundImage: `url(${bif.getImageDataAtSecond(~~(pointerValue / 100 * duration))})` }}
               /> }
-              <MediaSliderValue type='pointer' format='time' className='opacity-80 rounded pointer-events-none order-2 h-min font-semibold absolute bottom-5 px-2 py-1 bg-secondary'/>
+              <MediaSliderValue type='pointer' format='time' className='absolute order-2 px-2 py-1 font-semibold rounded pointer-events-none opacity-80 h-min bottom-5 bg-secondary'/>
               <span className=''>{t(getHoverChapterName())}</span>
             </div>
           </div>

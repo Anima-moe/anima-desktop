@@ -9,6 +9,12 @@ export const Episode = {
     return data as Anima.API.GetEpisodeByID
   },
 
+  getLatest: async function () {
+    const { data } = await client.get('/episode/latest')
+
+    return data as Anima.API.GetLatestEpisodes
+  },
+
   getStreams: async function (id: number) {
     const { data } = await client.get(`/episode/${id}/media`)
 

@@ -1,10 +1,20 @@
+import { useEffect, useState } from 'react'
+
 import { motion } from 'framer-motion'
 
 type Props = {}
 const splashes = [2, 3, 4]
-const splashBackground = '/i/splash_' + splashes[Math.floor(Math.random() * splashes.length)] + '.mp4'
 
 function Welcome({}: Props) {
+  const [splash, setSplash] = useState<number>(1)
+
+  const splashBackground = '/i/splash_' + splash + '.mp4'
+
+  useEffect(()=>{
+    setSplash(splashes[Math.floor(Math.random() * splashes.length)])
+    document.body.style.background = 'transparent'
+  }, [])
+  
   return (
     <motion.main
       initial={{
@@ -24,7 +34,7 @@ function Welcome({}: Props) {
         opacity: 1,
       }}
       key={'welcome'}
-      className="relative flex h-screen w-screen overflow-hidden rounded-xl bg-primary"
+      className="relative flex w-screen h-screen overflow-hidden rounded-xl bg-primary"
       onMouseDown={(e) => {
         //@ts-expect-error - this is tauri exclusive shit
         window.__TAURI_INVOKE__('tauri', {
@@ -61,18 +71,18 @@ function Welcome({}: Props) {
           damping: 60,
           mass: 1,
         }}
-        className="h-full w-full"
+        className="w-full h-full"
       >
         <video
           autoPlay
           muted
           src={splashBackground}
-          className="h-full w-full overflow-hidden rounded-md object-fill"
+          className="object-fill w-full h-full overflow-hidden rounded-md"
           loop
         />
       </motion.div>
-      <div className="absolute top-0 left-0 h-full w-full bg-primary opacity-70" />
-      <div className="animation-flash absolute top-1/2 left-1/2 flex -translate-y-1/2 -translate-x-1/2 flex-col items-center justify-center">
+      <div className="absolute top-0 left-0 w-full h-full bg-primary opacity-70" />
+      <div className="absolute flex flex-col items-center justify-center -translate-x-1/2 -translate-y-1/2 animation-flash top-1/2 left-1/2">
         <motion.img
           initial={{
             opacity: 0,
@@ -95,7 +105,7 @@ function Welcome({}: Props) {
             y: -50,
           }}
           src="/i/anima.svg"
-          className="mix w-64"
+          className="w-64 mix"
         />
         <motion.span
           className="mt-4"

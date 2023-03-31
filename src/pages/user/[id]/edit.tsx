@@ -135,7 +135,7 @@ const UserEdit = () => {
 
     await toast.promise(AnimaUser.update({
       ...data,
-      bio: editorContent,
+      bio: editorContent || userData.profile.bio || 'No bio :sad_cat:',
     }), {
       pending: t('generic.action.save_pending'),
       success: t('generic.action.save_success'),

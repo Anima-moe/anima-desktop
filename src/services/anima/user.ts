@@ -150,7 +150,11 @@ export const User = {
   },
 
   getLatestComments: async function (userId: number | number) {
-    const { data } = await client.get(`/user/${userId}/comment/latest`, {})
+    const { data } = await client.get(`/user/${userId}/comments`, {
+      params: {
+        count: 5,
+      },
+    })
 
     return data as Anima.API.GetUserComments
   },

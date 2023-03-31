@@ -31,3 +31,4 @@ export const userPreferedVolume = atomWithStorage('anima.userPref.volume', '1')
 export const userPreferedPlaybackQuality = atomWithStorage('anima.userPref.playbackQuality', 0) // 0 = auto
 export const userPreferedPlayerMode = atomWithStorage('anima.userPref.playerMode', 'normal')
 export const userPreferedAutoplay = atomWithStorage('anima.userPref.autoplay', true)
+export const userPreferedAutoNextEpisode = atomWithStorage('anima.userPref.autoNextEpisode', true)

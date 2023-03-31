@@ -8,7 +8,7 @@ type Props = {
 }
 
 function ContentContainer({ children, className }: Props) {
-  return <div className={'mt-4 flex flex-col px-8 py-4 ' + className}>{children}</div>
+  return <div className={'mt-4 flex flex-col px-8 py-4 z-[1] ' + className}>{children}</div>
 }
 
 export default ContentContainer

@@ -27,14 +27,6 @@ export default function usePresence() {
     }
 
     const { invoke } = await import('@tauri-apps/api')
-    console.table({
-      details: `${watching ? t('activity_watching') : t('activity_browsing')} • ${title}`,
-      state: `${description}`,
-      timestamp: Date.now(),
-      image: 'logo_play',
-      deepLink: `anima://${deeplink}`,
-      button: button || t('activity_button_access'),
-    })
     await invoke('discord_set_activity', {
       details: `${watching ? t('activity_watching') : t('activity_browsing')} • ${title}`,
       state: `${description}`,

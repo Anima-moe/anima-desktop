@@ -8,6 +8,7 @@ import { useWindowSize } from 'usehooks-ts'
 
 import AnimeHero from '@/components/Anime/AnimeHero'
 import AnimeSwiper from '@/components/Anime/AnimeSwiper'
+import SwiperEpisode from '@/components/Episode/EpisodeSwiper'
 import SwiperPlayerHead from '@/components/Episode/PlayerHeadSwiper'
 import DonationReminder from '@/components/General/DonationReminder'
 import SectionTitle from '@/components/General/SectionTitle'
@@ -16,6 +17,7 @@ import GeneralLayout from '@/components/Layout/General'
 import usePresence from '@/hooks/usePresence'
 import useSession from '@/hooks/useSession'
 import { Anime } from '@/services/anima/anime'
+import { Episode as EpisodeService } from '@/services/anima/episode'
 import { User as UserService } from '@/services/anima/user'
 
 const fetchLatestAnimes = () => {
@@ -37,6 +39,12 @@ const calculateItemsPerRow = (width: number) => {
   if (width < 2561) return 8
   if (width < 3841) return 10
   return 6
+}
+const fetchPlayerHeads = () => {
+  return UserService.getMyPlayerHeads()
+}
+const fetchLatestEpisodes = () => {
+  return EpisodeService.getLatest()
 }
 
 function App() {
@@ -74,15 +82,9 @@ function App() {
     data: userPlayerHead,
     isLoading: userPlayerHeadIsLoading,
     error: userPlayerHeadError,
-  } = useQuery(
-    '/api/user/me/player-head',
-    () => {
-      return UserService.getMyPlayerHeads()
-    },
-    {
+  } = useQuery<Anima.API.GetUserPlayerHead>('/api/user/me/player-head', fetchPlayerHeads, {
       refetchOnWindowFocus: false,
-    }
-  )
+  })
   const {
     data: staffAnimes,
     error: staffError,
@@ -93,6 +95,8 @@ function App() {
     cacheTime: 30 * 60 * 1000,
     refetchOnWindowFocus: false,
   })
+  const { data: latestEpisodes, isLoading: loadingLatestEpisodes, error: latestEpisodesError } = useQuery<Anima.API.GetSeasonEpisodes>('/api/episode/latest', fetchLatestEpisodes)
+
   const [heroAnime, setHeroAnime] = useState<Anima.RAW.Anime>({} as Anima.RAW.Anime)
   const { t } = useTranslation()
   const { clearPresence } = usePresence()
@@ -120,13 +124,18 @@ function App() {
   return (
     <GeneralLayout fluid>
       <AnimeHero anime={heroAnime} />
-      {userPlayerHead && userPlayerHead.data.length > 0 && (
+      {userPlayerHead && (userPlayerHead.data.map(ph => ((ph.duration - ph.head) > 180) ? ph.head : 0).reduce((a,b) => a + b) > 1) && (
         <ContentContainer className="z-[1]">
           <SectionTitle Icon={Play} name={t('anime.section.continueWatching')} className="mb-2" />
           <SwiperPlayerHead playerHeads={userPlayerHead.data} hideCompleted={true} slidesPerView={calculateItemsPerRow(width)} />
         </ContentContainer>
       )}
-
+      {latestEpisodes && latestEpisodes.data && (
+        <ContentContainer>
+          <SectionTitle Icon={CalendarX} name={t('anime.section.latestEpisodes')} className="mb-2" />
+          <SwiperEpisode episodes={latestEpisodes.data} slidesPerView={calculateItemsPerRow(width)} />
+        </ContentContainer>
+      )}
       {(!loadingSession && session && session.premium < 1) ||
         (!loadingSession && !session && (
           <ContentContainer>

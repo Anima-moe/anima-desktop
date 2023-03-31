@@ -12,9 +12,9 @@ function Media({ children }: Props) {
   const [playerMode] = useAtom(userPreferedPlayerMode)
   
   const playerModeClasses = clsx({
-    'flex bg-primary w-screen h-[calc(100vh-32px)] overflow-y-scroll max-h-[100vh]': true,
+    'flex bg-primary w-screen h-[calc(100vh-32px)] overflow-y-scroll max-h-[100vh] rounded-b-md': true,
     'absolute top-0 h-screen': playerMode === 'expanded',
-    'mt-20': playerMode === 'normal',
+    'mt-10 pt-10': playerMode === 'normal',
   })
   
   return (

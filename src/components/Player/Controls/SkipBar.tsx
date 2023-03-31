@@ -1,8 +1,14 @@
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
+import { useAtom } from 'jotai'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 import { User } from '@/services/anima/user'
+import { userPreferedAutoNextEpisode } from '@/stores/atoms'
 import { useMediaRemote, useMediaStore } from '@vidstack/react'
 
 import { CommonChapterFormat } from './SeekBar'
@@ -10,36 +16,67 @@ import { CommonChapterFormat } from './SeekBar'
 interface ISkipBarProps {
   chapter?: CommonChapterFormat
   duration: number
-  nextEpisode?: number
+  nextEpisodeId?: number
+  episodeId: number
 }
 
 const blackList = {
-  'chapter_episode': true,
-  'chapter_canon': true,
-  'chapter_teaser': true,
-  'chapter_title card': true,
-  'chapter_transition': true
+  'chapter.episode': true,
+  'chapter.canon': true,
+  'chapter.teaser': true,
+  'chapter.title card': true,
+  'chapter.transition': true
 }
-const SkipBar: React.FunctionComponent<ISkipBarProps> = ({chapter, duration, nextEpisode}) => {
+
+dayjs.extend(duration)
+
+const SkipBar: React.FunctionComponent<ISkipBarProps> = ({chapter, duration, nextEpisodeId, episodeId}) => {
   const mediaRemote = useMediaRemote()
   const { currentTime } = useMediaStore()
+  const router = useRouter()
+  const [automaticNextEpisode] = useAtom(userPreferedAutoNextEpisode)
   const { t } = useTranslation()
+
   
+  useEffect(()=>{
+    if (!router.isReady) { return }
+    if (!duration || duration < 60) { return }
+    if (!nextEpisodeId) { return }
+
+    if ( (currentTime + 0.5 > duration) && automaticNextEpisode) {
+      setTimeout(()=>{
+        User.postEpisodePlayerHead(episodeId, Math.round(duration), Math.round(duration))
+        .then(()=>{
+          router.push(`/episode/${nextEpisodeId}`)
+        })
+        .catch(()=>{
+          router.push(`/episode/${nextEpisodeId}`)
+        })
+      }, 1000)
+    }
+  },[currentTime, router.isReady])
+
   // There's a chapter, and it's specifically blacklisted for skipoing
   if (chapter && blackList[chapter.identificator.toLowerCase()]) { 
     return  null
   }
 
   // This is not on the blacklist, and the episode is basically ended, meaning this is not post_credits
-  if (nextEpisode && chapter && chapter?.endTime + 0.4 >= duration) { return (
+  if (nextEpisodeId && (duration - 31) < currentTime){ return (
     <Link 
-      href={`/episode/${nextEpisode}`} 
-      className='ml-auto min-w-[150px] p-4 flex items-center justify-center bg-secondary hover:bg-accent duration-200 rounded-md cursor-pointer mb-2 group select-none'
+      href={`/episode/${nextEpisodeId}`} 
+      className='ml-auto min-w-[150px] p-4 flex items-center justify-center bg-secondary hover:bg-accent duration-200 rounded-md cursor-pointer mb-2 group select-none relative overflow-hidden'
       onClick={()=>{
-        User.postEpisodePlayerHead(nextEpisode, Math.round(duration), Math.round(duration))
+        User.postEpisodePlayerHead(nextEpisodeId, Math.round(duration), Math.round(duration))
       }}
     >
-        <span className='text-white mix-blend-difference group-hover:text-secondary group-hover:mix-blend-normal'>{t('anime.chapter.nextEpisode')}</span>
+        <div 
+          className='h-full absolute inset-0 bg-white transition-[width] duration-100 group-hover:bg-accent' 
+          style={{width: `${100 - ~~(((duration - currentTime) / 30) * 100)}%`}} 
+        />
+        <span className='text-white mix-blend-difference group-hover:!mix-blend-normal group-hover:!text-secondary z-[1]'>
+          {automaticNextEpisode ? t('anime.chapter.autoNextEpisode', {n: ~~(duration - currentTime)}) : t('anime.chapter.nextEpisode') } 
+        </span>
     </Link>
   ) }
 
@@ -56,7 +93,7 @@ const SkipBar: React.FunctionComponent<ISkipBarProps> = ({chapter, duration, nex
     }}
   >
     <div className='h-full absolute inset-0 bg-white transition-[width] duration-100 group-hover:bg-accent' style={{width: `${~~chapterPerc}%`}} />
-    <span className='mix-blend-difference text-white select-none z-[1]'>{t('skip_'+chapter.identificator)}</span>
+    <span className='mix-blend-difference text-white select-none z-[1]'>{t('anime.' + chapter.identificator + 'Skip')}</span>
   </div>
 }
 
