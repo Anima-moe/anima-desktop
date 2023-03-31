@@ -86,7 +86,7 @@ function Button({
     'font-semibold': semibold,
     'font-bold': bold,
     'cursor-pointer': !disabled,
-    'flex items-center justify-start py-3 px-4 rounded-md duration-300 h-min placeholder:text-subtle relative select-none':
+    'flex items-center justify-start py-3 px-4 rounded-sm duration-300 h-min placeholder:text-subtle relative select-none':
       true,
     [className]: true,
   })
