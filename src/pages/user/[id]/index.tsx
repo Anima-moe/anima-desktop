@@ -59,6 +59,13 @@ async function fetchLatestComments(id: string | number) {
   return await UserService.getLatestComments(Number(id))
 }
 
+async function fetchFriends(id: string | number) {
+  if (!Number(id)) { return }
+
+
+  return await UserService.getFriends(Number(id))
+}
+
 const User = () => {
   const router = useRouter()
   const { t } = useTranslation()
@@ -73,6 +80,7 @@ const User = () => {
   const { data: userComments, isLoading: userCommentsIsLoading, error: userCommentsError} = useQuery(`/api/user/${router.query.id}/comments`, () => { return fetchLatestComments(router.query.id as string) }, {
     refetchOnWindowFocus: false,
   })
+  const {} = useQuery(`/api/user/${router.query.id}/friends`, () => { return fetchFriends(router.query.id as string) }, { refetchOnWindowFocus: false })
 
   useEffect(()=>{
     if (!userData) { return }
