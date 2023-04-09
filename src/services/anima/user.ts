@@ -158,4 +158,10 @@ export const User = {
 
     return data as Anima.API.GetUserComments
   },
+
+  getFriends: async function (userId: number | number) {
+    const { data } = await client.get(`/user/${userId}/likes`, {})
+
+    return data as Anima.API.GetUserLikedUsers
+  },
 }

@@ -11,7 +11,7 @@ type Props = {
   playerHead?: number
   duration?: number
   active?: boolean
-  link: string
+  onClick?: () => void
 }
 
 const activeCardVariants = {
@@ -53,7 +53,7 @@ const shadeVariants = {
   },
 }
 
-function EpisodeFatCard({ episode, active, link }: Props) {
+function EpisodeFatCard({ episode, active, onClick }: Props) {
   const beautyNumber = (number: number) => {
     if (number < 10) return `0${number}`
     return number
@@ -67,9 +67,10 @@ function EpisodeFatCard({ episode, active, link }: Props) {
   })
   return (
     <Link
-      href={active ? '#' : `/episode/${episode.id}?season=${episode.season_id}`}
+      href={(active || typeof onClick !== 'function') ? '#' : `/episode/${episode.id}?season=${episode.season_id}`}
       prefetch={false}
       replace={true}
+      onClick={onClick}
     >
       <motion.div
         className={className}

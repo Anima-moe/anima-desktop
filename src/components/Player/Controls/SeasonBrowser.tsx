@@ -11,9 +11,10 @@ import { useMediaRemote } from '@vidstack/react'
 type Props = {
   season: Anima.RAW.Season
   episode: Anima.RAW.Episode
+  onEpisodeSelect?: (episode: Anima.RAW.Episode) => void
 }
 
-export default function SeasonBrowser({ season, episode }: Props) {
+export default function SeasonBrowser({ season, episode, onEpisodeSelect }: Props) {
   const mediaRemote = useMediaRemote()
   const scrollReference = useRef<HTMLDivElement>()
   const { t } = useTranslation()
@@ -67,10 +68,10 @@ export default function SeasonBrowser({ season, episode }: Props) {
             {season.AnimeEpisode.sort((a, b) => a.number - b.number).map((seasonEpisode, index) => {
               return (
                 <EpisodeFatCard
-                  link={`/episode/${seasonEpisode.id}?seasonid=${season.id}`}
                   episode={seasonEpisode}
                   active={seasonEpisode.id === episode.id}
                   key={`${episode.id}.${episode.number}.${index}`}
+                  onClick={()=>{onEpisodeSelect?.(seasonEpisode)}}
                 />
               )
             })}

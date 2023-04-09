@@ -20,6 +20,8 @@ interface ISeekBarProps {
   animeData: Anima.RAW.Anime
   episodeData: Anima.RAW.Episode
   seasonData: Anima.RAW.Season
+  showSkipBar?: boolean
+  disabled?: boolean
 }
 
 export type CommonChapterFormat = {
@@ -28,7 +30,7 @@ export type CommonChapterFormat = {
   endTime: number,
 }
 
-const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData, seasonData}) => {
+const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData, seasonData, showSkipBar = true, disabled}) => {
   const slider = useRef(null)
   
   const [episodeChapters, setEpisodeChapters] = useState<CommonChapterFormat[] | null>(null)
@@ -161,7 +163,7 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
   },[streamConfig.streamThumbnail, slider, streamConfig.streamURL])
 
   return <div className='relative flex flex-col justify-center w-full overflow-visible pointer-events-auto'>
-    { currentTime > 0 && <SkipBar chapter={getcurrentChapter()} duration={duration} episodeId={episodeData.id} nextEpisodeId={seasonData.AnimeEpisode.find(e => e.number > episodeData.number)?.id}/> }
+    { currentTime > 0 && showSkipBar && <SkipBar chapter={getcurrentChapter()} duration={duration} episodeId={episodeData.id} nextEpisodeId={seasonData.AnimeEpisode.find(e => e.number > episodeData.number)?.id}/> }
     <div className='flex gap-2'>
       <Timestamp type='current'/> 
       <MediaTimeSlider 

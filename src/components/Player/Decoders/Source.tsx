@@ -11,9 +11,10 @@ import { useMediaPlayer, useMediaStore } from '@vidstack/react'
 interface ISourceDecoderProps {
   streamData: Anima.RAW.EpisodeStream,
   episodeID: number
+  disablePlayerHead?: boolean
 }
 
-const SourceDecoder: React.FunctionComponent<ISourceDecoderProps> = ({streamData, episodeID}) => {
+const SourceDecoder: React.FunctionComponent<ISourceDecoderProps> = ({streamData, episodeID, disablePlayerHead}) => {
   const { canPlay, currentTime, duration, paused } = useMediaStore()
   const MediaPlayer = useMediaPlayer()
   const [currentStreamLocale, setCurrentStreamLocale] = useState('ja-JP')
@@ -153,6 +154,7 @@ const SourceDecoder: React.FunctionComponent<ISourceDecoderProps> = ({streamData
   useEffect(()=>{
     if (!MediaPlayer) { return }
     if (!canPlay) { return }
+    if (disablePlayerHead) { return }
     
     if (currentTime > 15) { return }
 

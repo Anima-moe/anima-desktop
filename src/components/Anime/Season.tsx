@@ -11,27 +11,26 @@ import EmojiOptionsInput from '../General/Inputs/EmojiSelectionInput'
 
 type Props = {
   seasons: Anima.RAW.Season[]
+  onEpisodeSelect?: (episode: Anima.RAW.Episode) => void
+  episodesPerRow?: number
 }
 
-const calculateItemsPerRow = (width: number) => {
-  if (width < 1601) return 3
-  // if (width < 1600) return 6
-  if (width < 1921) return 4
-  if (width < 2561) return 5
-  if (width < 3200) return 6
-  if (width < 3841) return 7
-  return 6
-}
 
-function Season({ seasons }: Props) {
-  const [expanded, setExpanded] = useState(false)
+function Season({ seasons, onEpisodeSelect, episodesPerRow }: Props) {
   const [activeSeason, setActiveSeason] = useState(seasons?.sort((a, b) => a.number - b.number)[0])
   const [sortOrder, setSort] = useState<'number' | 'airDate'>('number')
   const { t } = useTranslation()
   const windowSize = useWindowSize()
-  
-  const onToggleExpand = () => {
-    setExpanded(!expanded)
+
+  const calculateItemsPerRow = (width: number) => {
+    if (episodesPerRow) { return episodesPerRow }
+    if (width < 1601) return 3
+    // if (width < 1600) return 6
+    if (width < 1921) return 4
+    if (width < 2561) return 5
+    if (width < 3200) return 6
+    if (width < 3841) return 7
+    return 6
   }
   
   return (
@@ -59,9 +58,12 @@ function Season({ seasons }: Props) {
         <div className='flex flex-wrap gap-y-4'>
             {activeSeason?.AnimeEpisode.sort((a, b) => sortOrder === 'number' ? (a.number - b.number) : (b.number - a.number)).map((episode, index) => {
               return <Link 
-                href={`/episode/${episode.id}`}  
+                href={onEpisodeSelect ? '#' : `/episode/${episode.id}`}  
                 key={`anime.episode.${episode.id}`} 
                 className='flex overflow-hidden aspect-video'
+                onClick={()=>{
+                  onEpisodeSelect?.(episode)
+                }}
                 style={{
                   width: `calc((100% / ${calculateItemsPerRow(windowSize.width)}))`
                 }}

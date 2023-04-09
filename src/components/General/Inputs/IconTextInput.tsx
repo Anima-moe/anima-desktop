@@ -19,7 +19,7 @@ const IconInput = forwardRef<InputHTMLAttributes<HTMLInputElement>, PropsWithChi
         <input
           id={id}
           className={clsx(
-            'w-full rounded-md border px-3 py-2.5 pl-12 text-lg text-white outline-none placeholder-shown:text-subtle focus:ring-0 focus:ring-offset-0 active:text-white',
+            'w-full rounded-md border px-3 py-2.5 pl-12 text-lg text-white outline-none placeholder-shown:text-subtle placeholder:text-subtle focus:ring-0 focus:ring-offset-0 active:text-white',
             error ? 'border-red-500 bg-[#240505]' : 'border-tertiary bg-secondary',
             className
           )}

@@ -270,5 +270,98 @@ namespace Anima {
       count: number
       data: Anima.RAW.Episode[]
     }
+
+    type GetUserLikedUsers = DefaultResponse<Anima.RAW.User>
+  }
+
+  namespace TARDIS {
+    type Participant = {
+      id: number
+      authorized: boolean
+      payload: Pick<Anima.RAW.User, 'avatar' | 'staff' | 'premium' | 'id' | 'profile' | 'username'>
+    }
+
+    type Room = {
+      id: number
+      episodeID: number
+      name: string
+      private: boolean
+      participants: Participant[]
+      leader: number
+      messages?: Message[]
+    }
+
+    type Message = {
+      content: string
+      author: Participant
+    }
+
+    type IN =
+      | {
+          event: 'chatMessage'
+          data: {
+            message: string
+            author: Tardis.RAW.User
+            timestamp: string
+          }
+        }
+      | {
+          event: 'createRoom'
+          data: {
+            episodeID: number
+            name: string
+            private: boolean
+          }
+        }
+      | {
+          event: 'getRooms'
+        }
+      | {
+          event: 'joinRoom'
+          data: {
+            roomID: number
+          }
+        }
+      | {
+          event: 'leaveRoom'
+        }
+      | {
+          event: 'requestPlay'
+          data: {
+            currentTime: number
+          }
+        }
+      | {
+          event: 'requestPause'
+          data: {
+            currentTime: number
+          }
+        }
+      | {
+          event: 'requestSeek'
+          data: {
+            currentTime: number
+          }
+        }
+      | {
+          event: 'requestStop'
+        }
+      | {
+          event: 'requestSourceChange'
+          data: {
+            episodeID: number
+          }
+        }
+      | {
+          event: 'authorize'
+          data: {
+            id: number
+            authorized: boolean
+            payload: Partial<Anima.RAW.User> & {
+              exp: number
+              iat: number
+            }
+          }
+        }
   }
 }

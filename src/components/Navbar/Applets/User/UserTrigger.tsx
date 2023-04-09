@@ -4,7 +4,8 @@ import { useQuery } from 'react-query'
 import clsx from 'clsx'
 import { useAtom } from 'jotai'
 import Link from 'next/link'
-import { SignIn, SignOut, User } from 'phosphor-react'
+import { useRouter } from 'next/router'
+import { SignIn, SignOut, User, Screencast } from 'phosphor-react'
 
 import {
   DropdownMenu,
@@ -27,6 +28,7 @@ function Navbar() {
   const {data: user, isLoading: userIsLoading, error: userError} = useQuery('/api/user/me', UserService.me, {
     refetchOnWindowFocus: false
   })
+  const router = useRouter()
 
   const { t } = useTranslation()
 
@@ -37,6 +39,13 @@ function Navbar() {
 
   const menuItems = [
     { name: t('nav.user.action.profile'), Icon: User, href: '/user/me', requireAuth: true },
+    {
+      name: t('nav.user.action.w2g'), 
+      Icon: Screencast, 
+      requireAuth: true, 
+      requirePremium: false,
+      click: () =>{ router.push('/w2g')}
+    },
     {
       name: t('nav.user.action.signout'),
       Icon: SignOut,
@@ -111,6 +120,8 @@ function Navbar() {
                 </span>
               </DropdownMenuItem>
             </Link>
+
+            if (item.requireAuth && user && item.requirePremium && user.premium < 1) return null
 
             if (item.requireAuth && user) {
               return (
