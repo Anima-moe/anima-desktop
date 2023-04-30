@@ -103,7 +103,7 @@ export function getUserPreferedSubtitle(streamData: Anima.RAW.EpisodeStream, use
   const subtitles = streamData?.subtitles
 
   // The user prefers no subtitle at all.
-  if (userPreferedLocale === '' || userPreferedLocale === 'Disabled') {
+  if (userPreferedLocale === '' || userPreferedLocale === 'Disabled' || !subtitles) {
     return { subtitleURL: '', subtitleLocale: '', format: '' }
   }
 
