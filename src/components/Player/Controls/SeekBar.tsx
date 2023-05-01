@@ -157,7 +157,7 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
     if (currentThumbnailURL === streamConfig.streamThumbnail) { return }
     
     ;(async ()=>{
-      setBif(await fetchBifFromURL(streamConfig.streamThumbnail))
+      setBif(await fetchBifFromURL(`http://127.0.0.1:15411/${btoa(streamConfig.streamThumbnail)}`))
       setCurrentThumbnailURL(streamConfig.streamThumbnail)
     })()
   },[streamConfig.streamThumbnail, slider, streamConfig.streamURL])

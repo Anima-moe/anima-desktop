@@ -36,7 +36,7 @@ const SubstationAlphaDecoder: React.FunctionComponent<ISubstationAlphaProps> = (
         // Renderer doesn't exist, create it
         setSubtitleRenderer(new SubtitleOctopus({
           video: videoElement,
-          subUrl: streamConfig.subtitleURL,
+          subUrl: `http://127.0.0.1:15411/${btoa(streamConfig.subtitleURL)}`,
           workerUrl: '/s/subtitles-octopus-worker.js',
           legacyWorkerUrl: '/s/subtitles-octopus-worker-legacy.js',
           fonts: ['/s/trebuc.woff', '/s/default.woff2']
