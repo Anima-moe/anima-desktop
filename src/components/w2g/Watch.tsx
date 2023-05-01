@@ -28,8 +28,8 @@ const WatchContainer = forwardRef<MediaPlayerElement, IAppProps>(({ room, onLeav
     const [playerMode] = useAtom(userPreferedPlayerMode)
 
     return <Portal.Root className={clsx({
-      'absolute top-0 mt-10 flex h-[calc(100vh-40px)] w-full flex-col gap-4 bg-primary p-8': true,
-      '!mt-0 !p-0 !w-screen !h-screen': playerMode === 'expanded',
+      'absolute top-10 flex h-[calc(100vh-40px)] w-full flex-col gap-4 bg-primary p-8 overflow-x-hidden overflow-y-auto rounded-b-lg': true,
+      '!mt-0 !p-0 !top-0 !w-screen !h-screen': playerMode === 'expanded',
     })}>
         <div className={clsx({
           'flex items-center justify-between w-full gap-2': true,
@@ -87,7 +87,7 @@ const WatchContainer = forwardRef<MediaPlayerElement, IAppProps>(({ room, onLeav
               {room.participants?.map((participant) => {
                 return <div key={participant.id} className='flex items-center w-full gap-2 p-2 rounded-md bg-secondary'>
                   <div 
-                    className='relative w-12 h-12 bg-center bg-cover rounded-sm aspect-square bg-tertiary'
+                    className='relative w-12 h-12 bg-center bg-cover rounded-md aspect-square bg-tertiary'
                     style={{backgroundImage: `url('${participant?.payload?.profile?.avatar}')`}}
                   >
                     {participant.id === room.leader && <div className='bg-center bg-cover w-3 h-3 bg-[url(/badges/owner.png)] absolute -right-1 -top-1' />}

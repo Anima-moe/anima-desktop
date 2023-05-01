@@ -133,7 +133,7 @@ const Player = React.forwardRef<MediaPlayerElement, IPlayerProps>(({episodeID, l
               animeData={animeData.data} 
               episodeData={episodeData.data} 
               seasonData={seasonData.data[0]} 
-              showSkipBar={false}
+              // showSkipBar={false}
             />
               <div className='flex w-full gap-2'>
                 {leaderControls ? <>

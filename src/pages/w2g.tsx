@@ -299,9 +299,11 @@ const W2G: React.FunctionComponent<IW2GProps> = (props) => {
   }, [MediaPlayer.current, currentRoom?.leader])
 
   if (!connected) {
-    return <div className='flex items-center justify-center w-screen h-screen'>
-      <Loading />
-    </div>
+    return <Media fluid>
+      <div className='flex items-center justify-center w-screen h-screen'>
+        <Loading />
+      </div>
+    </Media>
   }
 
   return (

@@ -127,7 +127,7 @@ const CreateRoomDialog: React.FunctionComponent<ICreateRoomDialogProps> = ({ sho
                     }}
                   >
                     <div className='w-8 pointer-events-none'>
-                      <AnimeCard disabled noHover anime={anime} />
+                      <AnimeCard disabled showDetails anime={anime} />
                     </div>
                     {getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(anime)?.title || 'Unknown Title'}
                   </li>
