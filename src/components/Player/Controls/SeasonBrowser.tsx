@@ -2,7 +2,7 @@
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { BookOpen, FilmStrip } from 'phosphor-react'
+import { BookOpen } from 'phosphor-react'
 
 import EpisodeFatCard from '@/components/Episode/EpisodeFatCard'
 import * as Popover from '@radix-ui/react-popover'
@@ -18,6 +18,7 @@ export default function SeasonBrowser({ season, episode, onEpisodeSelect }: Prop
   const mediaRemote = useMediaRemote()
   const scrollReference = useRef<HTMLDivElement>()
   const { t } = useTranslation()
+
   return (
     <Popover.Root
       onOpenChange={(o) => {
@@ -71,7 +72,7 @@ export default function SeasonBrowser({ season, episode, onEpisodeSelect }: Prop
                   episode={seasonEpisode}
                   active={seasonEpisode.id === episode.id}
                   key={`${episode.id}.${episode.number}.${index}`}
-                  onClick={()=>{onEpisodeSelect?.(seasonEpisode)}}
+                  onClick={onEpisodeSelect ? () => { onEpisodeSelect(seasonEpisode) } : undefined}
                 />
               )
             })}

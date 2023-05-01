@@ -67,7 +67,7 @@ function EpisodeFatCard({ episode, active, onClick }: Props) {
   })
   return (
     <Link
-      href={(active || typeof onClick !== 'function') ? '#' : `/episode/${episode.id}?season=${episode.season_id}`}
+      href={(active || typeof onClick !== 'undefined') ? '#' : `/episode/${episode.id}?season=${episode.season_id}`}
       prefetch={false}
       replace={true}
       onClick={onClick}
