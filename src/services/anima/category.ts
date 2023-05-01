@@ -16,4 +16,18 @@ export const Category = {
 
     return data as Anima.API.GetCategories
   },
+
+  getMatchingAnimes: async function (locale: string, page = 0, slugs?: string[]) {
+    const slugString = slugs?.join(',') ?? ''
+
+    const { data } = await client.get('/category/animes', {
+      params: {
+        slugs: slugString,
+        locale: locale,
+        start: page * 20,
+      },
+    })
+
+    return data as Anima.API.GetAnimes
+  },
 }
