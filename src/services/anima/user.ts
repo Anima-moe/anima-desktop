@@ -69,7 +69,7 @@ export const User = {
   update: async function (data: Partial<Anima.RAW.User & Anima.RAW.UserProfile>) {
     const storedToken = JSON.parse(localStorage.getItem('anima.userToken'))
 
-    const response = await client.post('/user/update', data, {
+    const response = await client.put('/user/update', data, {
       headers: {
         Authorization: `Bearer ${storedToken}`,
       },
@@ -143,13 +143,13 @@ export const User = {
     return data as Anima.API.SearchUser
   },
 
-  getComments: async function (userId: number | number) {
+  getComments: async function (userId: number) {
     const { data } = await client.get(`/user/${userId}/comment`, {})
 
     return data as Anima.API.GetUserComments
   },
 
-  getLatestComments: async function (userId: number | number) {
+  getLatestComments: async function (userId: number) {
     const { data } = await client.get(`/user/${userId}/comments`, {
       params: {
         count: 5,
@@ -159,9 +159,19 @@ export const User = {
     return data as Anima.API.GetUserComments
   },
 
-  getFriends: async function (userId: number | number) {
+  getFriends: async function (userId: number) {
     const { data } = await client.get(`/user/${userId}/likes`, {})
 
     return data as Anima.API.GetUserLikedUsers
+  },
+
+  getFavorites: async function (userId: number) {
+    const { data } = await client.get(`/user/${userId}/favorites`, {
+      params: {
+        type: 'anime',
+      },
+    })
+
+    return data as Anima.API.GetUserFavorites
   },
 }
