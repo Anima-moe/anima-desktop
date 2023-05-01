@@ -14,6 +14,9 @@
     "macOSPrivateApi": true,
     "allowlist": {
       "all": false,
+      "app": {
+        "all": true
+      },
       "http": {
         "all": true,
         "request": true,
