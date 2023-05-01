@@ -15,6 +15,7 @@ export default {
         signin: 'Entrar',
         signout: 'Sair',
         profile: 'Perfil',
+        w2g: 'Watch2Gether',
       },
     },
     search: {
@@ -65,6 +66,8 @@ export default {
         number: 'Ordenar por episódio',
         airDate: 'Ordenar por lançamento',
       },
+      progress: 'Progresso',
+      updated_at: 'Atualizado em {{date}}',
     },
     report: {
       missingMetadata: 'Metadados incompletos/incorretos',
@@ -116,6 +119,9 @@ export default {
       autoNextEpisode: 'Próximo episódio em {{n}}s.',
       nextEpisode: 'Próximo episódio',
     },
+    action: {
+      favorite: 'Adicionar aos favoritos',
+    },
   },
   generic: {
     date: {
@@ -124,6 +130,8 @@ export default {
     reminder: {
       alpha:
         '👋 Olá! O Anima está em alpha e ainda estamos trabalhando nele.<br /> Se encontrar animes com metadados ou episódios em falta, por favor, pressiona o botão de reportar e cole o código resultante no nosso discord.',
+      donate: '',
+      w2g: '🥳 Watch2Gether[Alpha] está disponível! Clique no seu ícone de usuário no canto superior direito para acessar.',
     },
     cta: {
       seeMore: 'Ver mais',
