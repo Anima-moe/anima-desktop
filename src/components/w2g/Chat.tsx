@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
@@ -18,6 +18,7 @@ interface IChatProps {
 const Chat: React.FunctionComponent<IChatProps> = (props) => {
   const chatInput = useRef('')
   const scroller = useRef<HTMLDivElement>(null)
+  const [lastMessageUser, setLastMessageUser] = useState<number>(null)
   const {
     control,
     handleSubmit,
@@ -39,10 +40,7 @@ const Chat: React.FunctionComponent<IChatProps> = (props) => {
     setValue('content', '')
   }
 
-  useEffect(()=>{
-    if (!scroller) { return }
-    scroller.current.scrollTop = scroller.current.scrollHeight
-  }, [scroller, props.room])
+
 
   return (
     <div className="flex h-[calc(calc(calc(100vw*.66)/16)*9-23px)] w-full flex-col justify-end gap-2 overflow-y-scroll rounded-md bg-secondary p-2 overflow-x-hidden">
@@ -61,15 +59,24 @@ const Chat: React.FunctionComponent<IChatProps> = (props) => {
                 exit={{ opacity: 0, y: -20 }}
                 key={`message.${index}.${props.room.id}`}
               >
-                <span
-                  className=""
-                  style={{
-                    color: packet.author.payload?.profile?.color,
-                  }}
-                >
-                  {packet.author.payload.username}
-                </span>
-                <div className={bubbleClass}>{packet.content}</div>
+                <div className='flex items-start justify-start w-full gap-2'>
+                  <img src={packet.author.payload?.profile?.avatar as string} className='w-10 h-10 rounded-sm' />
+                  <div className='flex flex-col items-start'>
+                    <span
+                      className="flex flex-row items-center text-lg font-semibold "
+                      style={{
+                        color: packet.author.payload?.profile?.color,
+                      }}
+                    >
+                      {packet.author.payload.username}
+                    </span>
+                    <div className={bubbleClass}>
+                      <span className='whitespace-pre text-white/70'>
+                        {packet.content}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </motion.div>
             )
           })}

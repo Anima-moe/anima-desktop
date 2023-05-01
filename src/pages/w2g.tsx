@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 import { useWebSocket } from 'react-use-websocket/dist/lib/use-websocket'
 
+import i18next from 'i18next'
 import { useRouter } from 'next/router'
 import { ArrowLeft } from 'phosphor-react'
 import { useMap } from 'usehooks-ts'
@@ -15,6 +18,8 @@ import W2GRoom from '@/components/w2g/Room'
 import WatchContainer from '@/components/w2g/Watch'
 import { tardisHandler, tardisMessage } from '@/services/anima/tardis'
 import { User } from '@/services/anima/user'
+
+
 
 interface IW2GProps {}
 
@@ -31,6 +36,8 @@ const W2G: React.FunctionComponent<IW2GProps> = (props) => {
   const removeRoom = (num: number) => roomActions.remove(num)
   const MediaPlayer = useRef<MediaPlayerElement>(null)
   const router = useRouter()
+  const { t } = useTranslation()
+
 
   const { sendMessage, lastJsonMessage, readyState, lastMessage, sendJsonMessage, getWebSocket } = useWebSocket(
     `${process.env.NEXT_PUBLIC_TARDIS_URL || 'ws://localhost:8001'}`,
@@ -52,7 +59,7 @@ const W2G: React.FunctionComponent<IW2GProps> = (props) => {
         switch (tardis.event) {
 
           case 'error': {
-            console.error('[TARDIS] Error >', tardis.data.error)
+            toast.error(t('w2g.error.unknown', { error: tardis.data.error }))
             setCurrentRoom(null)
             break
           }
@@ -67,6 +74,8 @@ const W2G: React.FunctionComponent<IW2GProps> = (props) => {
                 time: Date.now(),
               }))
             }, 1000 * 5.5)
+
+            toast.success(t('w2g.success.authorized'))
             break
           }
 
@@ -77,13 +86,17 @@ const W2G: React.FunctionComponent<IW2GProps> = (props) => {
 
           case 'createRoom': {
             setRoom(tardis.data.room.id, tardis.data.room)
+            toast.success(t('w2g.success.roomCreated', { room: tardis.data.room.name }))
 
             if (tardis.data.room.leader === tardisID) { setCurrentRoom(tardis.data.room) }
             break
           }
 
           case 'deleteRoom': {
-            if (currentRoom?.id === tardis.data.room.id) { setCurrentRoom(null) }
+            if (currentRoom?.id === tardis.data.room.id) {
+              toast.info(t('w2g.info.roomDeleted', { room: currentRoom.name })) 
+              setCurrentRoom(null) 
+            }
 
             removeRoom(tardis.data.room.id)
             break
@@ -92,14 +105,17 @@ const W2G: React.FunctionComponent<IW2GProps> = (props) => {
           case 'joinRoom': {
             const targetRoom = rooms.get(tardis.data.room.id)
 
-            if (!targetRoom) { return console.error('Room doesn\'t exists.') }
-  
+            if (!targetRoom) { return toast.error(t('w2g.error.roomNotFound')) }
+            
+
             setRoom(tardis.data.room.id, {
               ...targetRoom,
               participants: [...targetRoom.participants, tardis.data.user],
             })
   
             if (tardis.data.room.id === currentRoom?.id || tardis.data.user.id === tardisID) {
+              toast.success(t('w2g.success.joinedRoom'))
+              
               setCurrentRoom({
                 ...targetRoom,
                 participants: [...targetRoom.participants, tardis.data.user],
@@ -111,13 +127,14 @@ const W2G: React.FunctionComponent<IW2GProps> = (props) => {
           // This is us. We left the room.
           case 'leaveRoom': {
             setCurrentRoom(null)
+            toast.success(t('w2g.success.leftRoom'))
             break
           }
 
           case 'removeParticipant': {
             const targetRoom = rooms.get(tardis.data.room.id)
 
-            if (!targetRoom) { return console.error(`Room [#${tardis.data.room.id}] doesn\'t exists.`) }
+            if (!targetRoom) { return toast.error(t('w2g.error.roomNotFound')) }
   
             setRoom(tardis.data.room.id, {
               ...targetRoom,
@@ -141,7 +158,7 @@ const W2G: React.FunctionComponent<IW2GProps> = (props) => {
           case 'setRoomLeader': {
             const targetRoom = rooms.get(tardis.data.room.id)
 
-            if (!targetRoom) { return console.error('Room doesn\'t exists.') }
+            if (!targetRoom) { return toast.error(t('w2g.error.roomNotFound')) }
 
             setRoom(tardis.data.room.id, {
               ...targetRoom,
@@ -153,6 +170,10 @@ const W2G: React.FunctionComponent<IW2GProps> = (props) => {
                 ...currentRoom,
                 leader: tardis.data.user.id,
               })
+            }
+
+            if (tardis.data.user.id === tardisID) {
+
             }
 
             break
@@ -225,6 +246,17 @@ const W2G: React.FunctionComponent<IW2GProps> = (props) => {
             if (!content) { return }
             if (room.id !== currentRoom.id) { return }
 
+            if (currentRoom?.messages?.length > 0) {
+              const previousMessage = currentRoom.messages[currentRoom.messages.length - 1]
+              if (previousMessage.author.id === author.id) {
+                previousMessage.content = `${previousMessage.content}\n${content}`
+                return setCurrentRoom({
+                  ...currentRoom,
+                  messages: [...currentRoom?.messages || []]
+                })
+              }
+            }
+
             setCurrentRoom({
               ...currentRoom,
               messages: [...currentRoom?.messages || [], {
@@ -237,12 +269,7 @@ const W2G: React.FunctionComponent<IW2GProps> = (props) => {
           case 'requestChangeEpisode': {
             const { episode, room } = tardis.data
             if (!episode?.id || typeof room?.id !== 'number') { return }
-            console.log('Changing room', {episode, room}, currentRoom)
             if (room.id !== currentRoom?.id) { return } // How the fuck did we get that? probably won't, but still....
-            console.log('It\'s on the current room', {
-              ...currentRoom,
-              episodeID: episode.id
-            })
             setRoom(room.id, {
               ...currentRoom,
               episodeID: episode.id
@@ -251,6 +278,8 @@ const W2G: React.FunctionComponent<IW2GProps> = (props) => {
               ...currentRoom,
               episodeID: episode.id
             })
+
+            toast.info(t('w2g.info.episodeChanged'))
             break
           }
           default: {

@@ -1,4 +1,5 @@
-import { forwardRef, useEffect, useRef } from 'react'
+import { forwardRef, useEffect, useRef, useState } from 'react'
+import { useQuery } from 'react-query'
 
 import clsx from 'clsx'
 import { useAtom } from 'jotai'
@@ -8,10 +9,18 @@ import { MediaPlayerElement } from 'vidstack'
 
 import Button from '@/components/General/Button'
 import Player from '@/components/w2g/Player'
+import { Episode } from '@/services/anima/episode'
 import { userPreferedPlayerMode } from '@/stores/atoms'
 import * as Portal from '@radix-ui/react-portal'
 
+import UserComments from '../Comments/CommentBlock'
 import Chat from './Chat'
+
+
+function fetcComments(episodeID: string, skipComments = 0) {
+  if (!episodeID) return
+  return Episode.getComments(Number(episodeID), skipComments, 10)
+}
 
 interface IAppProps {
   room: Anima.TARDIS.Room
@@ -24,8 +33,17 @@ interface IAppProps {
   onEpisodeChange?: (episodeID: number) => void
 }
 
+const queryOptions = {
+  cacheTime: 0,
+  retry: 3,
+  refetchOnWindowFocus: false,
+}
+
+
 const WatchContainer = forwardRef<MediaPlayerElement, IAppProps>(({ room, onLeaveRoom, onChangeLeader, onSync, onSendChatMessage, selfID, onKickParticipant, onEpisodeChange }, ref) => {
     const [playerMode] = useAtom(userPreferedPlayerMode)
+    const [commentsPage, setcommentsPage] = useState(0)
+    const { data: commentsData, isLoading: loadingComments, refetch: refecthComments, } = useQuery(`episode/${room.episodeID}/comments`, () => fetcComments(String(room.episodeID), commentsPage * 10), queryOptions)
 
     return <Portal.Root className={clsx({
       'absolute top-10 flex h-[calc(100vh-40px)] w-full flex-col gap-4 bg-primary p-8 overflow-x-hidden overflow-y-auto rounded-b-lg': true,
@@ -73,6 +91,15 @@ const WatchContainer = forwardRef<MediaPlayerElement, IAppProps>(({ room, onLeav
                 onEpisodeChange?.(source)
               }}
             />
+            <div className='mt-12'>
+              <UserComments 
+                Comments={commentsData?.data}
+                episodeID={room.episodeID}
+                onComment={() => {
+                  refecthComments()
+                }}
+              />
+            </div>
           </div>
           <div className={clsx({
             'flex flex-col w-1/3 h-full': true,

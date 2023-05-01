@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
 
 import { Cube, MagnifyingGlass, Plus } from 'phosphor-react'
@@ -37,6 +38,7 @@ const CreateRoomDialog: React.FunctionComponent<ICreateRoomDialogProps> = ({ sho
   const [searchQuery, setQuery] = useState('')
   const roomName = useRef('')
   const roomPrivate = useRef(false)
+  const { t } = useTranslation()
 
   const { data: animeSearchResult, isLoading: animeSearchLoading, error: animeSearchError, refetch: refetchAnimeSearch } = useQuery(`anime/search/${searchQuery}`, () => searchAnimes(searchQuery), { refetchOnWindowFocus: false  })
   const { data: animeData, isLoading: animeLoading, error: animeError, refetch: refetchAnime } = useQuery(`anime/${selectedAnime?.id}`, () => getAnime(selectedAnime?.id), { refetchOnWindowFocus: false  })
@@ -70,18 +72,18 @@ const CreateRoomDialog: React.FunctionComponent<ICreateRoomDialogProps> = ({ sho
   <Dialog.Portal>
     <Dialog.Overlay className="bg-primary/80 backdrop-blur-md fixed inset-0 data-[state=open]:animate-overlayShow" />
     <Dialog.Content className="fixed top-1/2 left-1/2 max-h-[85vh] w-[90vw] max-w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-md bg-secondary p-6 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none data-[state=open]:animate-contentShow z-[2] overflow-scroll">
-      <Dialog.Title className="m-0 text-lg font-medium text-white/80">Create new room</Dialog.Title>
+      <Dialog.Title className="m-0 text-lg font-medium text-white/80">{t('w2g.createRoom')}</Dialog.Title>
       <Dialog.Description className="flex flex-col pb-4 mb-6 text-sm leading-normal border-b text-subtle border-b-subtle/10">
-        Creating a new room allows you to watch video with your friends and/or other anima users.
+        {t('w2g.createRoomTip')}
       </Dialog.Description>
       <div className='flex flex-col gap-3'>
         <TitleInput
           id='room-name'
-          title='Room Name'
+          title={t('w2g.roomName')}
         >
           <IconInput 
             Icon={Cube}
-            placeholder="My Cool Room"
+            placeholder={t('w2g.roomPlaceholder')}
             onChange={e=>{
               roomName.current = e.target.value
             }}
@@ -104,12 +106,12 @@ const CreateRoomDialog: React.FunctionComponent<ICreateRoomDialogProps> = ({ sho
         </TitleInput> */}
           <TitleInput
             id='anime-search'
-            title='Media'
-            footer='Search & Select the anime you want to watch.'
+            title={t('w2g.media')}
+            footer={t('w2g.mediaTip')}
           >
             <IconInput 
               Icon={MagnifyingGlass}
-              placeholder="Eg: Bocchi The Rock"
+              placeholder={t('w2g.mediaPlaceholder')}
               onChange={(e) => {
                 debouncedSetQuery(e.target.value)
               }}
@@ -145,7 +147,7 @@ const CreateRoomDialog: React.FunctionComponent<ICreateRoomDialogProps> = ({ sho
             )}
         </div>
       </div>
-      <span className='text-xs text-subtle/60'>Creating rooms is exclusive to Donators & Staff but any registered user can join existing rooms.</span>
+      <span className='text-xs text-subtle/60'>{t('w2g.premiumNotice')}</span>
     </Dialog.Content>
   </Dialog.Portal>
   </Dialog.Root>

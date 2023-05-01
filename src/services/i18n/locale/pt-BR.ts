@@ -156,6 +156,38 @@ export default {
       comments: 'Comentários',
     },
   },
+  w2g: {
+    error: {
+      unknown: 'Um erro desconhecido ocorreu.\n{{error}}',
+      roomNotFound: 'Sala não encontrada.',
+      roomDeleted: 'Sala deletada.',
+      roomFull: 'Sala cheia.',
+      roomPrivate: 'Sala privada.',
+      tooShort: 'Mínimo de 3 caracteres.',
+      episodeChanged: 'Episódio alterado.',
+    },
+    success: {
+      roomCreated: 'Sala criada: {{room}}.',
+      joinedRoom: 'Você entrou na sala.',
+      leftRoom: 'Você saiu da sala.',
+      authorized: 'Conectado ao Tardis (W2G)',
+    },
+    info: {
+      roomDeleted: 'Sala deletada: {{room}}.',
+    },
+    action: {
+      writeMessage: 'Escrever mensagem',
+    },
+    roomName: 'Nome da sala',
+    createRoom: 'Criar sala',
+    createRoomTip: 'Criar uma sala te permite assistir com seus amigos e outros usuários do Anima.',
+    joinRoom: 'Entrar na sala',
+    media: 'Mídia',
+    roomPlaceholder: 'Título da sala',
+    mediaPlaceholder: 'Ex: Bocchi The Rock',
+    mediaTip: 'Busque e selecione o anime que deseja assistir.',
+    premiumNotice: 'Criar quartos é uma funcionalidade para doadores, mas qualquer usuário pode entrar em salas existentes.',
+  },
   anilist: {
     status: {
       NOT_YET_RELEASED: 'Não Lançado',
