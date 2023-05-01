@@ -35,9 +35,6 @@ function SwiperEpisode({ playerHeads, loading, hideCompleted, slidesPerView, epi
       {episodes && (
         episodes.sort((a, b) => dayjs(b.updated_at).unix() - dayjs(a.updated_at).unix() ).map((episode, index) => {
           return <SwiperSlide key={episode.id} virtualIndex={index} className='my-4'>
-            {/* <div className='w-'>
-              <EpisodeCard episode={episode}  />
-            </div> */}
             <EpisodeItem episode={episode} />
           </SwiperSlide>
         }
