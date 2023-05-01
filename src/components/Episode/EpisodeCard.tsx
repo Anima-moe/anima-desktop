@@ -21,7 +21,7 @@ function EpisodeCard({ episode }: Props) {
           className='flex flex-col w-full h-full gap-1 px-2 whitespace-nowrap text-ellipsis'
         >
           <div
-            className={'episode-card aspect-video rounded-sm bg-tertiary bg-cover bg-center whitespace-wrap w-full h-full'}
+            className={'episode-card aspect-video rounded-md bg-tertiary bg-cover bg-center whitespace-wrap w-full h-full'}
             style={{
               backgroundImage: `url('${episode.thumbnail}')`,
               // width: `calc(calc(80vw - 4rem - 2rem - calc(1rem * ${calculateItemsPerRow(windowSize.width) - 1}))/${calculateItemsPerRow(windowSize.width)})`

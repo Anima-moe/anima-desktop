@@ -58,7 +58,7 @@ function EpisodePlayerHead({ playerHead }: Props) {
         <Link href={`/episode/${playerHead?.AnimeEpisode?.id}?seasonid=${playerHead?.AnimeEpisode?.season_id}`}>
           
         <motion.div
-          className="relative w-full overflow-hidden bg-center bg-cover rounded-sm episde-card aspect-video bg-tertiary"
+          className="relative w-full overflow-hidden bg-center bg-cover rounded-md episde-card aspect-video bg-tertiary"
           style={{ backgroundImage: `url('${playerHead?.AnimeEpisode?.thumbnail}')` }}
         >
           <motion.div 
@@ -74,7 +74,7 @@ function EpisodePlayerHead({ playerHead }: Props) {
                   'Episode title'}
               </p>
               {playerHead.duration - playerHead.head > 180 ? (
-                <div className='w-full h-2 mt-3 overflow-hidden rounded-sm bg-white/20' >
+                <div className='w-full h-2 mt-3 overflow-hidden rounded-md bg-white/20' >
                   <div 
                     className='h-full bg-accent'
                     style={{width: `${~~((playerHead.head/playerHead.duration)*100)}%`}} 

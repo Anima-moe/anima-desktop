@@ -58,13 +58,14 @@ function EpisodeItem({ episode }: Props) {
         <Link href={`/episode/${episode?.id}?seasonid=${episode?.season_id}`}>
           
         <motion.div
-          className="relative w-full overflow-hidden bg-center bg-cover rounded-sm episde-card aspect-video bg-tertiary"
+          className="relative w-full overflow-hidden bg-center bg-cover rounded-md episde-card aspect-video bg-tertiary"
           style={{ backgroundImage: `url('${episode?.thumbnail}')` }}
         >
           <motion.div 
           variants={shadeVariants}
           className='pointer-events-none absolute left-0 bottom-0 flex h-full w-full flex-col items-start justify-end overflow-hidden whitespace-nowrap bg-gradient-to-t from-[rgba(16,16,16,.9)] to-transparent px-4 py-2.5 text-left opacity-0'>
             <motion.div className="flex flex-col justify-center w-full overflow-hidden text-ellipsis">
+              <h6>{getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(episode.AnimeSeason.Anime)?.title}</h6>
               <p className="relative w-full overflow-hidden text-sm text-white text-opacity-60 group-hover:text-secondary text-ellipsis">
                 E{episode.number} • {getLocaleMetadata<Anima.RAW.Episode, Anima.RAW.EpisodeMetadata>(episode)?.title ||
                   'Episode title'}

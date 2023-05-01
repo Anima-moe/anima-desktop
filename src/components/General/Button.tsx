@@ -4,7 +4,7 @@ import clsx from 'clsx'
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   Icon?: JSX.Element | ReactNode | JSX.Element[] | ReactNode[]
   fluid?: boolean
-  text: string
+  text?: string
   primary?: boolean
   secondary?: boolean
   tertiary?: boolean
@@ -86,7 +86,7 @@ function Button({
     'font-semibold': semibold,
     'font-bold': bold,
     'cursor-pointer': !disabled,
-    'flex items-center justify-start py-3 px-4 rounded-sm duration-300 h-min placeholder:text-subtle relative select-none':
+    'flex items-center justify-start py-3 px-4 rounded-md duration-300 h-min placeholder:text-subtle relative select-none':
       true,
     [className]: true,
   })

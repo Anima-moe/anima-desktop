@@ -58,7 +58,7 @@ const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, nest
   })
   
   const avatarClassNames = clsx({
-    'aspect-square rounded-sm z-[1] flex bg-primary bg-cover bg-center cursor-pointer relative': true,
+    'aspect-square rounded-md z-[1] flex bg-primary bg-cover bg-center cursor-pointer relative': true,
     'h-12 w-12': (nestLevel > 0),
     'w-16 h-16': (nestLevel < 1)
   })

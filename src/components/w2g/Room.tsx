@@ -34,7 +34,7 @@ const W2GRoom: React.FunctionComponent<IW2GRoomProps> = ({ room, onClick }) => {
   >
     { episodeData ? (
       <div 
-        className='relative w-full bg-center bg-cover rounded-sm aspect-video' 
+        className='relative w-full bg-center bg-cover rounded-md aspect-video' 
         style={{
           backgroundImage: `url('${episodeData.data?.thumbnail}')`
         }} 
@@ -62,7 +62,7 @@ const W2GRoom: React.FunctionComponent<IW2GRoomProps> = ({ room, onClick }) => {
                     backgroundImage: `url('${participant?.payload?.profile?.avatar}')`,
                     marginLeft: index > 0 ? '-0.5rem' : '0'
                   }} 
-                  className='w-12 h-12 bg-center bg-cover rounded-sm shadow-sm bg-tertiary'
+                  className='w-12 h-12 bg-center bg-cover rounded-md shadow-sm bg-tertiary'
                   key={`room.${room.id}.participant.${participant?.id}.${index}`}
                 />
               })
