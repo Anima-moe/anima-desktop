@@ -87,7 +87,7 @@ const CreateRoomDialog: React.FunctionComponent<ICreateRoomDialogProps> = ({ sho
             }}
           />
         </TitleInput>
-        <TitleInput
+        {/* <TitleInput
           id='room-privacy'
           title='Room Privacy'
           footer='Private rooms are only visible to you and your friends.'
@@ -101,7 +101,7 @@ const CreateRoomDialog: React.FunctionComponent<ICreateRoomDialogProps> = ({ sho
               roomPrivate.current = value === 'private'
             }}
           />
-        </TitleInput>
+        </TitleInput> */}
           <TitleInput
             id='anime-search'
             title='Media'
