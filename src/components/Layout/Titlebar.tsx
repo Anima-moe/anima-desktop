@@ -16,7 +16,7 @@ const Titlebar: React.FunctionComponent<ITitlebarProps> = (props) => {
   const [slideTitlebar, setSlideTitlebar] = useState(false)
   const titleBar = useRef<HTMLDivElement>()
   const classes = clsx({
-    'flex w-full h-10 bg-secondary gap-2 z-[999] inset-0 rounded-t-md relative justify-between items-center pointer-events-none px-4 transition-all duration-200 !fixed border-t border-x border-t-sm border-subtle/30': true,
+    'flex w-full h-10 bg-secondary gap-2 z-[999] inset-0 rounded-t-md relative justify-between items-center pointer-events-none px-4 transition-all duration-200 !fixed': true,
     '-translate-y-[calc(100%-8px)] opacity-20': playerMode === 'expanded',
     'translate-y-0 opacity-[1]': slideTitlebar && playerMode === 'expanded' ||  playerMode === 'normal',
   })
@@ -27,7 +27,7 @@ const Titlebar: React.FunctionComponent<ITitlebarProps> = (props) => {
 
   useOnClickOutside(titleBar, handleClickOutside)
   useEffect(()=>{
-    document.body.style.backgroundColor = 'transparent'
+    // document.body.style.backgroundColor = '#0D0D0D'
   }, [])
   return <div 
     className={classes}

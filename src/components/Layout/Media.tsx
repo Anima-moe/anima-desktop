@@ -13,9 +13,9 @@ function Media({ children, fluid }: Props) {
   const [playerMode] = useAtom(userPreferedPlayerMode)
   
   const playerModeClasses = clsx({
-    'flex bg-primary w-screen h-[calc(100vh-32px)] overflow-y-scroll max-h-[100vh] rounded-b-md select-none': true,
+    'flex bg-primary w-screen h-[calc(100vh-40px)] overflow-y-scroll max-h-[100vh] rounded-b-lg select-none overflow-y-auto overflow-x-hidden bg-primary': true,
     '!p-0 !mt-10': fluid,
-    'absolute top-0 h-screen': playerMode === 'expanded',
+    '!-mt-10 h-screen': playerMode === 'expanded',
     'mt-10 pt-10': playerMode === 'normal',
   })
   

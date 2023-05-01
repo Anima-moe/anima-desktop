@@ -19,23 +19,29 @@
 ::-webkit-scrollbar-thumb {
   border-radius: 6px;
   transition: all 0.3s ease;
+  @apply bg-tertiary;
 }
 
 ::-webkit-scrollbar {
   width: 0px;
-  background: transparent; /* make scrollbar transparent */
+  @apply bg-primary
 }
+
 
 @font-face {
   font-family: 'Noto Color Emoji';
   src: url(https://raw.githack.com/googlefonts/noto-emoji/main/fonts/NotoColorEmoji.ttf);
 }
 
+html {
+  overflow-y: overlay;
+}
+
 body {
   border-radius: 1rem;
   color: #fff;
   font-family: 'Rubik', sans-serif;
-  @apply rounded-t-md bg-primary !important;
+  @apply rounded-md overflow-hidden !important;
   font-smooth: always;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
