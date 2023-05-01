@@ -35,15 +35,11 @@ function AnimeGrid({
   return (
     <div className="flex w-full">
       {/* {JSON.stringify(animes)} */}
-        <div className="flex flex-wrap w-full gap-x-4">
+        <div className="grid w-full grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-x-4">
           {animes.map((anime) => (
             <div
               key={anime.slug || anime.id}
               className="group flex aspect-[3/2] select-none flex-col py-2.5"
-              style={{
-                width: `calc(calc(100vw - 10px) / ${animesPerRow})`,
-                minWidth: `calc(calc(100vw - 10px) / ${animesPerRow})`,
-              }}
               itemID={anime.slug || String(anime.id)}
             >
               <AnimeCard anime={anime} showDetails={alwaysShowInfo} onClick={onAnimeSelect} />
