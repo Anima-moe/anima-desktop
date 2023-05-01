@@ -35,7 +35,7 @@ function AnimeGrid({
   return (
     <div className="flex w-full">
       {/* {JSON.stringify(animes)} */}
-        <div className="flex flex-wrap w-full gap-x-6">
+        <div className="flex flex-wrap w-full gap-x-4">
           {animes.map((anime) => (
             <div
               key={anime.slug || anime.id}
@@ -46,7 +46,7 @@ function AnimeGrid({
               }}
               itemID={anime.slug || String(anime.id)}
             >
-              <AnimeCard anime={anime} noHover={alwaysShowInfo} onClick={onAnimeSelect} />
+              <AnimeCard anime={anime} showDetails={alwaysShowInfo} onClick={onAnimeSelect} />
               {alwaysShowInfo && (
                 <span className="pt-1 text-xs font-medium line-clamp-2">
                   {getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(anime)?.title ||

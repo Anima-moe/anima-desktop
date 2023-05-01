@@ -43,7 +43,7 @@ function SwiperAnime({ animesPerScreen, animes, loading, alwaysShowInfo }: Props
               }}
               itemID={anime.id.toString()}
             >
-              <AnimeCard anime={anime} noHover={alwaysShowInfo} />
+              <AnimeCard anime={anime} showDetails={alwaysShowInfo} />
               {alwaysShowInfo && (
                 <span className="pt-1 text-sm font-medium">
                   {getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(anime)?.title ||

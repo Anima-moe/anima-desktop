@@ -2,13 +2,15 @@ import { useTranslation } from 'react-i18next'
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import { Heart } from 'phosphor-react'
 
 import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
 
 type Props = {
   anime: Anima.RAW.Anime
   disabled?: boolean
-  noHover?: boolean
+  showDetails?: boolean
+  showFav?: boolean
   onClick?: (anime: Anima.RAW.Anime) => void
 }
 
@@ -74,15 +76,16 @@ function AnimeWrapper({
   return <>{disabled || !url ? children : <Link href={url}>{children}</Link>}</>
 }
 
-function AnimeCard({ anime, disabled, noHover, onClick }: Props) {
+function AnimeCard({ anime, disabled, showDetails, onClick, showFav }: Props) {
   const { t } = useTranslation()
-
+  if (!anime?.id) { return null }
+  
   return (
     <AnimeWrapper url={`/anime/${anime.id}`} disabled={onClick !== undefined || disabled}>
       <motion.div
-        className="relative w-full aspect-[2/3] overflow-hidden bg-center bg-cover rounded-sm select-none "
+        className="relative w-full aspect-[2/3] overflow-hidden bg-center bg-cover rounded-md select-none "
         style={{
-          backgroundColor: '#212121',
+          backgroundColor: '#0D0D0D',
           backgroundImage: `url('${anime.cover}')`,
           cursor: disabled ? 'initial' : 'pointer',
         }}
@@ -93,9 +96,14 @@ function AnimeCard({ anime, disabled, noHover, onClick }: Props) {
           onClick?.(anime)
         }}
       >
-        {noHover ?? (
+        {showFav && (
+          <div className='absolute flex items-center justify-center w-8 h-8 rounded-md top-2 right-2 mix-blend-difference'>
+            <Heart className='w-full h-full' />
+          </div>
+        )}
+        {showDetails ?? (
           <motion.div
-            className="pointer-events-none absolute bottom-0 flex w-full flex-col items-start justify-end overflow-hidden whitespace-nowrap bg-gradient-to-t from-[rgba(16,16,16,.9)] to-transparent p-4 text-left opacity-0"
+            className="pointer-events-none absolute bottom-0 flex w-full flex-col items-start justify-end overflow-hidden whitespace-nowrap bg-gradient-to-t from-[rgba(13,13,13,.9)] to-transparent p-4 text-left opacity-0"
             variants={shadeVariants}
           >
             <motion.h6

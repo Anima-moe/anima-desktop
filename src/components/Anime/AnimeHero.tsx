@@ -50,11 +50,12 @@ function AnimeHero({ anime }: Props) {
         )}
       </div>
       {/* SHADE */}
-      <div className={'absolute inset-0 z-[0] h-full w-full bg-gradient-to-t from-primary to-primary/70  backdrop-blur-sm'}/>
+      <div className={'absolute inset-0 z-[0] h-full w-full bg-gradient-to-t from-primary to-primary/70'}/>
+      <div className={'absolute inset-0 z-[0] h-full w-full bg-transparent backdrop-blur-sm'}/>
       {/* ANIME DATA */}
       <div className='relative z-0 flex items-center w-full h-full mt-8'>
         <div className='flex h-2/3 aspect-[2/3]'>
-          <AnimeCard anime={anime} disabled noHover/>
+          <AnimeCard anime={anime} disabled showDetails/>
         </div>
         <div className='flex flex-col w-full ml-10'>
           <div className='w-2/3'>
