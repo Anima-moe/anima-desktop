@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useQuery } from 'react-query'
 
 import { useRouter } from 'next/router'
-import { Calendar, CaretRight, FilmSlate, Graph, IconProps, Package, PlayCircle, Tag } from 'phosphor-react'
+import { Calendar, CaretRight, FilmSlate, Graph, Heart, IconProps, Package, PlayCircle, Tag } from 'phosphor-react'
 import { SkeletonBlock, SkeletonText } from 'skeleton-elements/react'
 
 import AnimeCard from '@/components/Anime/AnimeCard'
@@ -11,11 +12,13 @@ import AnimeStaffs from '@/components/Anime/AnimeStaffs'
 import SeasonDisplay from '@/components/Anime/Season'
 import { ReportError } from '@/components/Error/ReportError'
 import AlphaRemminder from '@/components/General/AlphaReminder'
+import Button from '@/components/General/Button'
 import GeneralLayout from '@/components/Layout/General'
 import usePresence from '@/hooks/usePresence'
 import { AnilistMedia, anilistService } from '@/services/anilist/anilistService'
 import { Anime } from '@/services/anima/anime'
 import { getLocaleMetadata } from '@/services/anima/getMetadataFromMedia'
+import { User } from '@/services/anima/user'
 
 interface props {
   heading: string
@@ -76,9 +79,30 @@ function AnimePropertySkeleton() {
 function AnimePage() {
   const [animeData, setAnimeData] = useState<Anima.RAW.Anime | undefined>()
   const [anilistData, setAnilistData] = useState<AnilistMedia | undefined>()
+  const [playerHead, setPlayerHead] = useState<Anima.RAW.UserPlayerHead[] | undefined>()
   const { t } = useTranslation()
   const router = useRouter()
   const { id } = router.query
+
+  const fetchAnimePlayerHead = useCallback(() => {
+    if (!router.isReady) {
+      return
+    }
+    ;(async () => {
+      try {
+        const heads = await User.getPlayerHeadFromAnime(Number(id))
+        if (!heads.data) {
+          return
+        }
+        
+        setPlayerHead(heads.data)
+      } catch (e) {
+
+      } 
+    })()
+  }, [router.isReady])
+
+  useEffect(fetchAnimePlayerHead, [fetchAnimePlayerHead])
 
   const fetchAnimaInfo = useCallback(() => {
     if (!router.isReady) {
@@ -109,6 +133,11 @@ function AnimePage() {
  
   useEffect(()=> {  clearPresence(getLocaleMetadata<Anima.RAW.Anime, Anima.RAW.AnimeMetadata>(animeData)?.title  || 'Title unknown') }, [animeData])
 
+  const { data: animePlayerHead, error: animePlayerHeadError } = useQuery(`anime/${id}/playerHead`, fetchAnimePlayerHead, {
+    refetchOnMount: false,
+    refetchOnWindowFocus: false
+  })
+
   return (
     <GeneralLayout fluid>
       <div
@@ -128,12 +157,12 @@ function AnimePage() {
         ) : (
           <video autoPlay loop muted className="object-cover w-full h-full" src="/i/splash.mp4" />
         )}
-        <div className="absolute top-0 left-0 w-screen h-screen" style={{background: 'linear-gradient(180deg, #04040488 0%, #040404 90%)'}} />
+        <div className="absolute top-0 left-0 w-screen h-screen" style={{background: 'linear-gradient(180deg, #0D0D0D88 0%, #0D0D0D 90%)'}} />
       </div>
-      <div className="relative -mt-[40vh] z-[2] flex w-full flex-row px-8 bg-primary/30 backdrop-blur-sm">
+      <div className="relative -mt-[40vh] z-[2] flex w-full flex-row px-8 bg-primary/30">
         <div className="mr-4 w-1/5 -mt-[20vh]">
           {animeData ? (
-            <AnimeCard disabled noHover anime={animeData} />
+            <AnimeCard disabled showDetails anime={animeData} />
           ) : (
             <div className="aspect-[2/3] select-none overflow-hidden rounded-md">
               <SkeletonBlock
@@ -244,7 +273,17 @@ function AnimePage() {
                 )}
               </h3>
             </div>
-            <div className='flex flex-col items-start justify-end pb-6 ml-auto'>
+            <div className='flex flex-row items-end justify-end gap-3 pb-6 ml-auto'>
+              <Button 
+                Icon={<Heart size={24} />}
+                text={t('anime.action.favorite')}
+                className='whitespace-nowrap hover:!bg-pink-400 hover:!text-primary'
+                secondary
+                iconRight
+                onClick={()=>{
+                  
+                }}
+              />
               <ReportError anime={animeData} />
             </div>
           </div>
@@ -269,11 +308,7 @@ function AnimePage() {
           {/* SEASONS */}
           <div className="w-full mt-4">
             {animeData ? (
-              // animeData.AnimeSeason?.sort((a, b) => a.number - b.number).map((season) => {
-                // return (
-                  <SeasonDisplay seasons={animeData.AnimeSeason} />
-                // )
-              // })
+              <SeasonDisplay seasons={animeData.AnimeSeason} userPlayerHead={playerHead} />
             ) : (
               <>
                 <SkeletonBlock

@@ -13,10 +13,11 @@ type Props = {
   seasons: Anima.RAW.Season[]
   onEpisodeSelect?: (episode: Anima.RAW.Episode) => void
   episodesPerRow?: number
+  userPlayerHead?: Anima.RAW.UserPlayerHead[]
 }
 
 
-function Season({ seasons, onEpisodeSelect, episodesPerRow }: Props) {
+function Season({ seasons, onEpisodeSelect, episodesPerRow, userPlayerHead }: Props) {
   const [activeSeason, setActiveSeason] = useState(seasons?.sort((a, b) => a.number - b.number)[0])
   const [sortOrder, setSort] = useState<'number' | 'airDate'>('number')
   const { t } = useTranslation()
@@ -68,7 +69,7 @@ function Season({ seasons, onEpisodeSelect, episodesPerRow }: Props) {
                   width: `calc((100% / ${calculateItemsPerRow(windowSize.width)}))`
                 }}
               > 
-                <EpisodeCard episode={episode}/>
+                <EpisodeCard episode={episode} playerHead={userPlayerHead ? userPlayerHead.find((head) => head.episode_id === episode.id) : null} />
               </Link>
             })}
         </div>
