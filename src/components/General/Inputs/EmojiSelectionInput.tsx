@@ -18,7 +18,7 @@ const EmojiOptionsInput = forwardRef<SelectHTMLAttributes<HTMLSelectElement>, Pr
     return (
       <>
         <Listbox
-          value={activeItem.value}
+          value={activeItem?.value || ''}
           onChange={(d) => {
             setActiveItem(options[options.findIndex((o) => o.value === d)] || options[0])
             onSelect?.(options[options.findIndex((o) => o.value === d)].value || options[0].value)
@@ -27,8 +27,8 @@ const EmojiOptionsInput = forwardRef<SelectHTMLAttributes<HTMLSelectElement>, Pr
           <div className='relative my-1.5 flex w-full items-center justify-start'>
             <Listbox.Button className={'relative flex w-full flex-row items-center justify-between rounded-md border border-tertiary bg-secondary px-3 py-2.5 text-lg text-white placeholder-shown:text-subtle active:text-white ' + className}>
               <p className='flex flex-row'>
-                <span className='mr-4 font-noto'>{activeItem.emoji || '📌'}</span>
-                {activeItem.label}
+                <span className='mr-4 font-noto'>{activeItem?.emoji || '📌'}</span>
+                {activeItem?.label}
               </p>
               <CaretDown className='ml-4 text-subtle' size={24} />
             </Listbox.Button>
