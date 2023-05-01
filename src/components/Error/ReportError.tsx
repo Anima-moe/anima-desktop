@@ -24,9 +24,14 @@ export function ReportError({ anime }: IReportErrorProps) {
     <>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
-          <button className="flex items-center px-4 py-2 font-semibold duration-300 bg-red-400 rounded text-primary hover:bg-secondary hover:text-red-400">
-            <Warning size={24} className="mr-4" /> Report
-          </button>
+          <div>
+            <Button 
+              Icon={<Warning size={24} />}
+              text='Report'
+              iconRight
+              className='!bg-red-400 text-primary hover:!bg-red-600'
+            />
+          </div>
         </DropdownMenu.Trigger>
 
         <DropdownMenu.Portal className="">
