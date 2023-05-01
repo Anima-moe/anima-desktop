@@ -69,6 +69,7 @@ namespace Anima {
       number: number
       anime_id: number
       AnimeEpisode: Anima.RAW.Episode[]
+      Anime?: Anima.RAW.Anime
     }
 
     type Anime = {
@@ -91,6 +92,7 @@ namespace Anima {
       source: EpisodeSource[]
       updated_at: string
       created_at: string
+      AnimeSeason?: Anima.RAW.Season
     }
 
     type StreamObject = {
@@ -219,17 +221,14 @@ namespace Anima {
       data: Anima.RAW.UserPlayerHead
     }
 
-    type GetUserPlayerHead = {
-      count: number
-      data: Anima.RAW.UserPlayerHead[]
-    } // Returns Error if user not found or episode not found
+    type GetUserPlayerHead = DefaultResponse<Anima.RAW.UserPlayerHead> // Returns Error if user not found or episode not found
 
     type GetUserComments = DefaultResponse<
       Anima.RAW.Comment & { AnimeEpisode: Anima.RAW.Episode & { AnimeSeason: Anima.RAW.Season & { Anime: Anima.RAW.Anime } } }
     >
 
     type GetEpisodeMedia = {
-      count: number
+      count: 1
       data: Anima.RAW.EpisodeStream
     } // Returns Error if unable to get episode media from source crawler
 
@@ -261,17 +260,13 @@ namespace Anima {
       token: string
     }
 
-    type GetComments = {
-      count: number
-      data: Anima.RAW.Comment[]
-    }
+    type GetComments = DefaultResponse<Anima.RAW.Comment>
 
-    type GetLatestEpisodes = {
-      count: number
-      data: Anima.RAW.Episode[]
-    }
+    type GetLatestEpisodes = DefaultResponse<Anima.RAW.Episode>
 
     type GetUserLikedUsers = DefaultResponse<Anima.RAW.User>
+
+    type GetUserFavorites = DefaultResponse<Anima.RAW.Anime>
   }
 
   namespace TARDIS {
