@@ -15,8 +15,8 @@ function CategoryPill({ selected, category, onClick }: Props) {
       className={clsx(
         'group mb-2 mr-2 flex cursor-pointer select-none flex-row items-center justify-between rounded-md px-4 py-2 text-subtle',
         selected
-          ? 'bg-accent font-semibold text-primary hover:bg-black hover:text-accent'
-          : 'bg-secondary hover:bg-accent hover:text-primary'
+          ? 'bg-accent font-semibold !text-primary hover:bg-black hover:!text-accent'
+          : 'bg-tertiary hover:bg-accent hover:text-primary'
       )}
       onClick={onClick}
     >
