@@ -42,11 +42,11 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
   const { t } = useTranslation()
 
   function getHoverChapterName() {
-    if (!episodeChapters) { return 'chapter.episode'}
+    if (!episodeChapters) { return 'anime.chapter.episode'}
     const currentChapter = episodeChapters.find((chapter) => {
       return (duration * (pointerValue/ 100)) >= chapter.startTime && (duration * (pointerValue/ 100)) <= chapter.endTime
     })
-    if (!currentChapter) { return 'chapter.episode' }
+    if (!currentChapter) { return 'anime.chapter.episode' }
     return currentChapter.identificator
   }
 
@@ -76,7 +76,7 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
 
         commonChapters = aniskipChapters.results.map((chapter) => {
           return {
-            identificator: 'chapter.' + chapter.skipType.toLocaleLowerCase().replaceAll(' ', '_'),
+            identificator: 'anime.chapter.' + chapter.skipType.toLocaleLowerCase().replaceAll(' ', '_'),
             startTime: chapter.interval.startTime,
             endTime: chapter.interval.endTime,
           }
@@ -96,7 +96,7 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
             const nextChapter = matchingEpisode.timestamps[index + 1]
 
             return {
-              identificator: 'chapter.' + chapter.type.name.toLocaleLowerCase().replaceAll(' ', '_'),
+              identificator: 'anime.chapter.' + chapter.type.name.toLocaleLowerCase().replaceAll(' ', '_'),
               startTime: chapter.at,
               endTime: nextChapter ? nextChapter.at : matchingEpisode.baseDuration,
             }
@@ -109,7 +109,7 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
       // The opening chapter is always the first chapter, so if the first chapter starts after 1 second, add a new chapter with the identificator 'teaser' to fill the gap.
       if (commonChapters.sort((a,b)=> a.startTime - b.startTime)[0].startTime > 1) {
         commonChapters.unshift({
-          identificator: 'chapter.teaser',
+          identificator: 'anime.chapter.teaser',
           startTime: 0,
           endTime: commonChapters.sort((a,b)=> a.startTime - b.startTime)[0].startTime,
         })
@@ -121,13 +121,13 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
         const previousChapter = commonChapters[commonChapters.length-1]
 
         commonChapters.splice(commonChapters.length-1, 0, {
-          identificator: previousChapter.identificator === 'chapter.ed' 
-            || previousChapter.identificator === 'chapter.credits' 
-            || previousChapter.identificator === 'chapter.mixeded' 
-            || previousChapter.identificator === 'chapter.mixed-ed'
-            || previousChapter.identificator === 'chapter.mixed_credits'
-            || previousChapter.identificator === 'chapter.outro'
-            || previousChapter.identificator === 'chapter.new_credits' ? 'chapter.post_credits' : 'chapter.episode',
+          identificator: previousChapter.identificator === 'anime.chapter.ed' 
+            || previousChapter.identificator === 'anime.chapter.credits' 
+            || previousChapter.identificator === 'anime.chapter.mixeded' 
+            || previousChapter.identificator === 'anime.chapter.mixed-ed'
+            || previousChapter.identificator === 'anime.chapter.mixed_credits'
+            || previousChapter.identificator === 'anime.chapter.outro'
+            || previousChapter.identificator === 'anime.chapter.new_credits' ? 'anime.chapter.post_credits' : 'anime.chapter.episode',
           startTime: commonChapters[commonChapters.length-1].endTime + .04,
           endTime: duration,
         })
@@ -138,7 +138,7 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
         const lastChapter = commonChapters[index - 1]
         if (lastChapter && ~~(chapter.startTime - lastChapter?.endTime) > 0) {
           commonChapters.splice(index, 0, {
-            identificator: 'chapter.canon',
+            identificator: 'anime.chapter.canon',
             startTime: lastChapter.endTime + .04,
             endTime: chapter.startTime - .04,
           })

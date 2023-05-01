@@ -18,19 +18,20 @@ interface ISkipBarProps {
   duration: number
   nextEpisodeId?: number
   episodeId: number
+  showNextEpisode?: boolean
 }
 
 const blackList = {
-  'chapter.episode': true,
-  'chapter.canon': true,
-  'chapter.teaser': true,
-  'chapter.title card': true,
-  'chapter.transition': true
+  'anime.chapter.episode': true,
+  'anime.chapter.canon': true,
+  'anime.chapter.teaser': true,
+  'anime.chapter.title card': true,
+  'anime.chapter.transition': true
 }
 
 dayjs.extend(duration)
 
-const SkipBar: React.FunctionComponent<ISkipBarProps> = ({chapter, duration, nextEpisodeId, episodeId}) => {
+const SkipBar: React.FunctionComponent<ISkipBarProps> = ({chapter, duration, nextEpisodeId, episodeId, showNextEpisode = true}) => {
   const mediaRemote = useMediaRemote()
   const { currentTime } = useMediaStore()
   const router = useRouter()
@@ -43,7 +44,7 @@ const SkipBar: React.FunctionComponent<ISkipBarProps> = ({chapter, duration, nex
     if (!duration || duration < 60) { return }
     if (!nextEpisodeId) { return }
 
-    if ( (currentTime + 0.5 > duration) && automaticNextEpisode) {
+    if ( (currentTime + 0.5 > duration) && automaticNextEpisode && showNextEpisode) {
       setTimeout(()=>{
         User.postEpisodePlayerHead(episodeId, Math.round(duration), Math.round(duration))
         .then(()=>{
@@ -74,9 +75,11 @@ const SkipBar: React.FunctionComponent<ISkipBarProps> = ({chapter, duration, nex
           className='h-full absolute inset-0 bg-white transition-[width] duration-100 group-hover:bg-accent' 
           style={{width: `${100 - ~~(((duration - currentTime) / 30) * 100)}%`}} 
         />
-        <span className='text-white mix-blend-difference group-hover:!mix-blend-normal group-hover:!text-secondary z-[1]'>
-          {automaticNextEpisode ? t('anime.chapter.autoNextEpisode', {n: ~~(duration - currentTime)}) : t('anime.chapter.nextEpisode') } 
-        </span>
+        {showNextEpisode && (
+          <span className='text-white mix-blend-difference group-hover:!mix-blend-normal group-hover:!text-secondary z-[1]'>
+            {automaticNextEpisode ? t('anime.chapter.autoNextEpisode', {n: ~~(duration - currentTime)}) : t('anime.chapter.nextEpisode') } 
+          </span>
+        )}
     </Link>
   ) }
 
@@ -93,7 +96,7 @@ const SkipBar: React.FunctionComponent<ISkipBarProps> = ({chapter, duration, nex
     }}
   >
     <div className='h-full absolute inset-0 bg-white transition-[width] duration-100 group-hover:bg-accent' style={{width: `${~~chapterPerc}%`}} />
-    <span className='mix-blend-difference text-white select-none z-[1]'>{t('anime.' + chapter.identificator + 'Skip')}</span>
+    <span className='mix-blend-difference text-white select-none z-[1]'>{t(chapter.identificator + 'Skip')}</span>
   </div>
 }
 

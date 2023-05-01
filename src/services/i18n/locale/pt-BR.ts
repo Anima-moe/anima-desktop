@@ -17,6 +17,14 @@ export default {
         profile: 'Perfil',
       },
     },
+    search: {
+      placeholder: 'Pesquise por animes, mangás ou usuários.',
+      advanced: 'Pesquisa avançada',
+      error: {
+        empty: 'Por favor, digite algo para pesquisar.',
+        short: 'Por favor, digite pelo menos 3 caracteres.',
+      },
+    },
   },
   anime: {
     hero: {
