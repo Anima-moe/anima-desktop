@@ -124,6 +124,9 @@ function App() {
   return (
     <GeneralLayout fluid>
       <AnimeHero anime={heroAnime} />
+      <ContentContainer className="z-[1]">
+        <DonationReminder content={t('generic.reminder.w2g')} />
+      </ContentContainer>
       {userPlayerHead && userPlayerHead.data.length > 0 && (userPlayerHead.data?.map(ph => ((ph.duration - ph.head) > 180) ? ph.head : 0)?.reduce((a,b) => a + b) > 1) && (
         <ContentContainer className="z-[1]">
           <SectionTitle Icon={Play} name={t('anime.section.continueWatching')} className="mb-2" />
