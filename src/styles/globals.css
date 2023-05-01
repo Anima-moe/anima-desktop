@@ -125,8 +125,8 @@ vds-media[autoplay-error] {
   animation: flash 3s infinite, float 4s infinite;
 }
 
-.slider-animation {
-  animation: patternslide 30s infinite linear;
+.text-slider-animation {
+  animation: textslide 60s infinite linear;
 }
 
 @keyframes patternslide {
@@ -135,6 +135,18 @@ vds-media[autoplay-error] {
   }
   100% {
     background-position: 871px 0; /* The image width */
+  }
+}
+
+@keyframes textslide {
+  0% {
+    transform: translateX(-15%);
+  }
+  50% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-15%);
   }
 }
 
