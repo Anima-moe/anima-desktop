@@ -53,10 +53,4 @@ export const Anime = {
     })
     return data as Anima.API.SearchAnimes
   },
-
-  getPlayerHead: async function (id: number) {
-    const { data } = await client.get(`/anime/${id}/player/head`)
-
-    return data as Anima.API.GetUserPlayerHead
-  },
 }

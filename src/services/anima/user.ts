@@ -174,4 +174,13 @@ export const User = {
 
     return data as Anima.API.GetUserFavorites
   },
+
+  getPlayerHeadFromAnime: async function (id: number) {
+    const userData = await User.getUserData()
+    if (!userData || !userData.id) return
+
+    const { data } = await client.get(`/user/${await userData.id}/playerhead/anime/${id}`)
+
+    return data as Anima.API.GetUserPlayerHead
+  },
 }
