@@ -113,14 +113,16 @@ export default {
       new_introSkip: 'Pular Nova Abertura',
       new_creditsSkip: 'Pular Novos Créditos',
       post_creditsSkip: 'Pular Pós créditos',
-      reaserSkip: 'Pular Teaser',
+      teaserSkip: 'Pular Teaser',
       opSkip: 'Pular Abertura',
       edSkip: 'Pular Encerramento',
       autoNextEpisode: 'Próximo episódio em {{n}}s.',
       nextEpisode: 'Próximo episódio',
     },
     action: {
-      favorite: 'Adicionar aos favoritos',
+      favorite: 'Favoritar',
+      unfavorite: 'Favorito',
+      report: 'Reportar',
     },
   },
   generic: {
@@ -156,6 +158,9 @@ export default {
     },
     section: {
       comments: 'Comentários',
+    },
+    error: {
+      api: 'Backend indisponível para esta operação.',
     },
   },
   w2g: {
@@ -224,6 +229,7 @@ export default {
       preferedQuality: 'Resolução preferida',
       preferedAutoNextEpisode: 'Pular episódio automaticamente',
       settings: 'Configurações do usuário',
+      uiLanguage: 'Idioma da interface',
     },
     auth: {
       username: 'Nome de usuário',
