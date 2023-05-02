@@ -151,6 +151,8 @@ export default {
       cancel: 'Cancelar',
       copy: 'Copiar',
       save: 'Salvar',
+      yes: 'Sim',
+      no: 'Não',
     },
     section: {
       comments: 'Comentários',
@@ -216,6 +218,12 @@ export default {
       donator: 'Doador',
       color: 'Cor de destaque',
       history: 'Visibilidade do histórico',
+      preferedAutoplay: 'Autoplay',
+      preferedSubtitles: 'Legendas preferidas',
+      preferedAudio: 'Áudio preferido',
+      preferedQuality: 'Resolução preferida',
+      preferedAutoNextEpisode: 'Pular episódio automaticamente',
+      settings: 'Configurações do usuário',
     },
     auth: {
       username: 'Nome de usuário',
