@@ -127,7 +127,7 @@ function AnimePage() {
         setAnilistData(anilist)
 
         const animeFavorite = await User.isAnimeFavorite(anime.data.id)
-        if (!animeFavorite[0]?.id) { return }
+        if (animeFavorite && animeFavorite.count < 1) { return }
 
         setUserFavorite(true)
 
@@ -289,8 +289,8 @@ function AnimePage() {
                 text={t(isUserFavorite ? 'anime.action.unfavorite' : 'anime.action.favorite')}
                 className={clsx({
                   'whitespace-nowrap': true,
-                  'bg-pink-400 !text-primary hover:!bg-secondary hover:!text-white': isUserFavorite,
-                  'bg-secondary hover:!text-pink-400': !isUserFavorite,
+                  '!bg-pink-400 !text-primary hover:!bg-secondary hover:!text-white': isUserFavorite,
+                  '!bg-secondary hover:!text-pink-400': !isUserFavorite,
                 })}
                 secondary
                 iconRight
