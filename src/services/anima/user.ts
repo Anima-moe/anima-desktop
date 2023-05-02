@@ -165,7 +165,13 @@ export const User = {
     return data as Anima.API.GetUserLikedUsers
   },
 
-  getFavorites: async function (userId: number) {
+  getFavoriteAnimes: async function (userId: number | string) {
+    if (userId === 'me') {
+      const userData = await User.getUserData()
+      if (!userData || !userData.id) return
+      userId = userData.id
+    }
+
     const { data } = await client.get(`/user/${userId}/favorites`, {
       params: {
         type: 'anime',
