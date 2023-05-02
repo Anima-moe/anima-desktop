@@ -8,6 +8,7 @@ import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import NProgress from 'nprogress'
 
+import Titlebar from '@/components/Layout/Titlebar'
 import enUS from '@/services/i18n/locale/en-US'
 import ptBR from '@/services/i18n/locale/pt-BR'
 import ptPT from '@/services/i18n/locale/pt-PT'
@@ -16,9 +17,7 @@ import '@/styles/globals.css'
 import '@/styles/tweaks.scss'
 import 'skeleton-elements/css'
 import { listen } from '@tauri-apps/api/event'
-import Titlebar from '@/components/Layout/Titlebar'
 
-import Script from 'next/script'
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
