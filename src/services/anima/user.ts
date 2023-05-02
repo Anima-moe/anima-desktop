@@ -183,4 +183,54 @@ export const User = {
 
     return data as Anima.API.GetUserPlayerHead
   },
+
+  isAnimeFavorite: async function (animeId: number) {
+    const userData = await User.getUserData()
+    if (!userData || !userData.id) return false
+
+    const { data } = await client.get(`/user/favorite/${animeId}`, {
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
+      params: {
+        type: 'anime',
+      },
+    })
+
+    return data as Anima.API.GetUserFavorites
+  },
+
+  addFavoriteAnime: async function (animeId: number) {
+    const userData = await User.getUserData()
+    if (!userData || !userData.id || !userData.token) return
+
+    await client.post(
+      `/user/favorite/${animeId}`,
+      {
+        anime_id: animeId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+        params: {
+          type: 'anime',
+        },
+      }
+    )
+  },
+
+  removeFavoriteAnime: async function (animeId: number) {
+    const userData = await User.getUserData()
+    if (!userData || !userData.id || !userData.token) return
+
+    await client.delete(`/user/favorite/${animeId}`, {
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
+      params: {
+        type: 'anime',
+      },
+    })
+  },
 }
