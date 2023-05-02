@@ -11,6 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         platform: [macos-latest, ubuntu-20.04, windows-latest]
+    permissions: write-all
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Checkout repository
