@@ -11,6 +11,7 @@ import { Play } from 'phosphor-react'
 import remarkEmoji from 'remark-emoji'
 import remarkGfm from 'remark-gfm'
 
+import SwiperAnime from '@/components/Anime/AnimeSwiper'
 import UserComment from '@/components/Comments/UserComment'
 import SwiperPlayerHead from '@/components/Episode/PlayerHeadSwiper'
 import Button from '@/components/General/Button'
@@ -72,12 +73,13 @@ async function fetchFriends(id: string | number) {
 }
 
 async function fetchFavorites(id: string | number) {
-  if (!Number(id)) {
+  if (!id) {
     return
   }
 
-  return await UserService.getFavorites(Number(id))
+  return await UserService.getFavoriteAnimes(id)
 }
+
 
 const User = () => {
   const router = useRouter()
@@ -123,28 +125,33 @@ const User = () => {
       refetchOnWindowFocus: false,
     }
   )
-  const {
-    data: userFriends,
-    isLoading: userFirendsIsLoading,
-    error: userFriendsError,
-  } = useQuery(
-    `/api/user/${router.query.id}/friends`,
-    () => {
-      return fetchFriends(router.query.id as string)
-    },
-    { refetchOnWindowFocus: false }
-  )
+
   const {
     data: userFavorites,
-    isLoading: userFavoritesIsLoading,
+    isLoading: userFavoritesLoading,
     error: userFavoritesError,
   } = useQuery(
-    `/api/user/${router.query.id}/favorites`,
+    `/api/user/${router.query.id}/favorites/anime`,
     () => {
+      console.log('We do be running')
       return fetchFavorites(router.query.id as string)
     },
-    { refetchOnWindowFocus: false }
+    {
+      refetchOnWindowFocus: false,
+    }
   )
+
+  // const {
+  //   data: userFriends,
+  //   isLoading: userFirendsIsLoading,
+  //   error: userFriendsError,
+  // } = useQuery(
+  //   `/api/user/${router.query.id}/friends`,
+  //   () => fetchFriends(router.query.id as string)
+  //   ,
+  //   { refetchOnWindowFocus: false }
+  // )
+
 
   useEffect(() => {
     if (!userData) {
@@ -191,7 +198,7 @@ const User = () => {
       </div>
       <div className="z-[1] mt-8 flex w-full max-w-[99%] flex-row gap-4 px-8">
         <div className="flex flex-col w-1/5 h-6 gap-8">
-          <UserProfileSection title="Badges" overlayColor={userData.profile.color}>
+          <UserProfileSection title={t('user.stats.badges')} overlayColor={userData.profile.color}>
             <div className="flex flex-wrap items-center justify-center w-screen gap-3 hnscreem">
               {userData?.profile?.Badge?.map((badge, i) => {
                 if (!badge.icon) return
@@ -199,10 +206,10 @@ const User = () => {
               })}
             </div>
           </UserProfileSection>
-          <UserProfileSection title="Friends" overlayColor={userData.profile.color} />
+          <UserProfileSection title={t('user.stats.friends')} overlayColor={userData.profile.color} />
         </div>
         <div className="flex flex-col w-4/5 gap-8">
-          <UserProfileSection title="Bio" overlayColor={userData.profile.color}>
+          <UserProfileSection title={t('user.stats.bio')} overlayColor={userData.profile.color}>
             <div className="flex flex-col w-full anima-markdown">
               <div className="max-h-[900px] overflow-scroll">
                 <ReactMarkdown remarkPlugins={[remarkEmbed, remarkGfm, remarkEmoji]} components={{}}>
@@ -211,8 +218,15 @@ const User = () => {
               </div>
             </div>
           </UserProfileSection>
-          <UserProfileSection title="Favorites" overlayColor={userData.profile.color} />
-          <UserProfileSection title="History" overlayColor={userData.profile.color}>
+          <UserProfileSection title={t('user.stats.favorites')} overlayColor={userData.profile.color}>
+              <SwiperAnime
+                alwaysShowInfo
+                animes={userFavorites?.data || []}
+                animesPerScreen={5}
+              />
+              {/* {JSON.stringify(userFavorites)} */}
+          </UserProfileSection>
+          <UserProfileSection title={t('user.stats.history')}  overlayColor={userData.profile.color}>
             <div className="relative w-full">
               {userPlayerHead?.count > 0 && (
                 <>
