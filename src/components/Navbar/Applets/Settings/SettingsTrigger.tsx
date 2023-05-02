@@ -76,8 +76,8 @@ function NavSettings() {
       />
     </Dialog.Trigger>
     <Dialog.Portal>
-      <Dialog.Overlay className="fixed inset-0 w-full h-full bg-primary/90 backdrop-blur-md" />
-      <Dialog.Content className="fixed p-8 -translate-x-1/2 -translate-y-1/2 rounded-md top-1/2 left-1/2 bg-secondary w-[60vw]">
+      <Dialog.Overlay className="fixed inset-0 w-full h-full bg-primary/90 backdrop-blur-md z-[98] rounded-md" />
+      <Dialog.Content className="fixed p-8 -translate-x-1/2 -translate-y-1/2 rounded-md top-1/2 left-1/2 bg-secondary w-[60vw] z-[99]">
         <Dialog.Title className="pb-8 m-0 font-medium">
           {t('user.edit.settings')}
         </Dialog.Title>
