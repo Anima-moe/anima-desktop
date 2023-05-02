@@ -214,6 +214,12 @@ export default {
       comments: 'Comentários',
       episodes: 'Episódios',
       hours: 'Horas',
+      favorites: 'Animes Favoritos',
+      mangaFavorites: 'Mangás Favoritos',
+      history: 'Histórico',
+      friends: 'Amigos',
+      badges: 'Conquistas',
+      bio: 'Bio',
     },
     edit: {
       avatar: 'Avatar',
