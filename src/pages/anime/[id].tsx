@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
+import { toast } from 'react-toastify'
 
+import clsx from 'clsx'
 import { useRouter } from 'next/router'
 import { Calendar, CaretRight, FilmSlate, Graph, Heart, IconProps, Package, PlayCircle, Tag } from 'phosphor-react'
 import { SkeletonBlock, SkeletonText } from 'skeleton-elements/react'
@@ -80,6 +82,7 @@ function AnimePage() {
   const [animeData, setAnimeData] = useState<Anima.RAW.Anime | undefined>()
   const [anilistData, setAnilistData] = useState<AnilistMedia | undefined>()
   const [playerHead, setPlayerHead] = useState<Anima.RAW.UserPlayerHead[] | undefined>()
+  const [isUserFavorite, setUserFavorite] = useState<boolean | undefined>()
   const { t } = useTranslation()
   const router = useRouter()
   const { id } = router.query
@@ -120,7 +123,14 @@ function AnimePage() {
         if (!anilist) {
           return
         }
+
         setAnilistData(anilist)
+
+        const animeFavorite = await User.isAnimeFavorite(anime.data.id)
+        if (!animeFavorite[0]?.id) { return }
+
+        setUserFavorite(true)
+
       } catch (e) {
         // console.error(e)
       }
@@ -275,13 +285,33 @@ function AnimePage() {
             </div>
             <div className='flex flex-row items-end justify-end gap-3 pb-6 ml-auto'>
               <Button 
-                Icon={<Heart size={24} />}
-                text={t('anime.action.favorite')}
-                className='whitespace-nowrap hover:!bg-pink-400 hover:!text-primary'
+                Icon={<Heart size={24} weight={isUserFavorite ? 'fill' : 'duotone'} />}
+                text={t(isUserFavorite ? 'anime.action.unfavorite' : 'anime.action.favorite')}
+                className={clsx({
+                  'whitespace-nowrap': true,
+                  'bg-pink-400 !text-primary hover:!bg-secondary hover:!text-white': isUserFavorite,
+                  'bg-secondary hover:!text-pink-400': !isUserFavorite,
+                })}
                 secondary
                 iconRight
                 onClick={()=>{
-                  
+                  if (!isUserFavorite) {
+                    return User.addFavoriteAnime(animeData.id)
+                    .then( () => {
+                      setUserFavorite(true)
+                    })
+                    .catch(() => {
+                      toast.error(t('generic.error.api'))
+                    })
+                  }
+
+                  return User.removeFavoriteAnime(animeData.id)
+                  .then( () => {
+                    setUserFavorite(false)
+                  })
+                  .catch(() => {
+                    toast.error(t('generic.error.api'))
+                  })
                 }}
               />
               <ReportError anime={animeData} />
