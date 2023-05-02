@@ -15,7 +15,7 @@ import Audios from './Audios'
 import Qualities from './Qualities'
 import SettingEntry from './SettingEntry'
 import Subtitles from './Subtitles'
-import SubtitleTypes from './SubtitleTypes'
+// import SubtitleTypes from './SubtitleTypes'
 
 type Props = {
   audios: Anima.RAW.StreamObject
@@ -64,7 +64,7 @@ function Index({ audios, subtitles }: Props) {
               {configPage === 'audio' && <Audios audios={audios} />}
               {configPage === 'subtitle' && <Subtitles subtitles={subtitles} />}
               {configPage === 'quality' && <Qualities />}
-              {configPage === 'subType' && <SubtitleTypes />}
+              {/* {configPage === 'subType' && <SubtitleTypes />} */}
               {configPage === 'main' && (
                 <motion.div
                   className="flex flex-col w-full pb-2 cursor-pointer"
