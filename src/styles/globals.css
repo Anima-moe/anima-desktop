@@ -16,13 +16,13 @@
   --skeleton-color: #212121;
 }
 
-::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb:not(.show-scroll) {
   border-radius: 6px;
   transition: all 0.3s ease;
   @apply bg-tertiary;
 }
 
-::-webkit-scrollbar {
+::-webkit-scrollbar:not(.show-scroll) {
   width: 0px;
   @apply bg-primary
 }

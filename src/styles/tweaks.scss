@@ -17,6 +17,53 @@
 }
 
 
+@mixin scroll-style($size: 10px,
+$thumb: none,
+$thumb-color: white,
+$thumb-radius: 10px,
+$track-color: transparent,
+$track-radius: 10px) {
+
+// Respaldo para Firefox
+scrollbar-color: $thumb-color $track-color;
+scrollbar-width: thin;
+
+// Navegadores basados en webkit
+&::-webkit-scrollbar {
+width: $size;
+height: $size;
+&-track {
+  background-color: $track-color;
+  border-radius: $track-radius;
+}
+&-thumb {
+  background-color: $thumb-color;
+  background-image: $thumb;
+  border-radius: $thumb-radius;
+}
+}
+}
+
+
+.show-scroll {
+@include scroll-style(
+  $size: var(--scroll-size, 10px),
+
+  $thumb:  var(--scroll-thumb, none),
+  $thumb-color: var(--scroll-thumb-color, white),
+  $thumb-radius: var(--scroll-thumb-radius, var(--scroll-radius)),
+
+  $track-color: var(--scroll-track, transparent),
+  $track-radius: var(--scroll-track-radius, var(--scroll-radius)),
+);
+
+--scroll-size: 4px;
+--scroll-radius: 10px;
+--scroll-track: #181818;
+--scroll-thumb-color: rgba(255, 255, 255, 0.253);
+
+}
+
 .rc-md-editor {
   border: 1px solid #1d1d1d !important;
   background: rgb(20 20 20) !important;
@@ -29,10 +76,6 @@
 
   .section {
     @apply border-0 #{!important};
-
-    &.sec-md {
-      // @apply max-h-[250px] #{!important};
-    }
   }
 }
 

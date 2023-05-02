@@ -38,7 +38,7 @@ const EmojiOptionsInput = forwardRef<SelectHTMLAttributes<HTMLSelectElement>, Pr
               leaveFrom='opacity-100'
               leaveTo='opacity-0'
             >
-              <Listbox.Options className='absolute z-10 w-full py-1 overflow-auto text-base translate-y-1/2 rounded-md shadow-lg mt-14 bg-tertiary ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm max-h-[30vh]'>
+              <Listbox.Options className='absolute z-10 w-full py-1 overflow-auto show-scroll text-base translate-y-1/2 rounded-md shadow-lg mt-14 bg-tertiary ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm max-h-[30vh]'>
                 {options.map((option, optionIdx) => (
                   <Listbox.Option
                     key={optionIdx}
