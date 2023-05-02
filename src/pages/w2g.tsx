@@ -367,7 +367,7 @@ const W2G: React.FunctionComponent<IW2GProps> = (props) => {
               }}
             />
           </div>
-          <div>
+          <div className='grid grid-cols-4 gap-4'>
             {Array.from(rooms?.values()).map((room) => {
               return (
                 <W2GRoom
