@@ -27,7 +27,7 @@ export function ReportError({ anime }: IReportErrorProps) {
           <div>
             <Button 
               Icon={<Warning size={24} />}
-              text='Report'
+              text={t('anime.action.report')}
               iconRight
               className='!bg-red-400 text-primary hover:!bg-red-600'
             />
