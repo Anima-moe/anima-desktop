@@ -96,7 +96,7 @@ const UserEdit = () => {
   function isDonator() {
     if (!userData) return false
 
-    return userData?.staff || userData?.premium > 0
+    return userData?.isStaff || userData?.donatedAmount > 25
   }
 
   if (userIsLoading)

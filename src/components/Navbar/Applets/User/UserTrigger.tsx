@@ -121,7 +121,7 @@ function Navbar() {
               </DropdownMenuItem>
             </Link>
 
-            if (item.requireAuth && user && item.requirePremium && user.premium < 1) return null
+            if (item.requireAuth && user && item.requirePremium && user.donatedAmount < 25) return null
 
             if (item.requireAuth && user) {
               return (

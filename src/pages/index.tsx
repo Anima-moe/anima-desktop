@@ -139,7 +139,7 @@ function App() {
           <SwiperEpisode episodes={latestEpisodes.data} slidesPerView={calculateItemsPerRow(width)} />
         </ContentContainer>
       )}
-      {(!loadingSession && session && session.premium < 1) ||
+      {(!loadingSession && session && session.donatedAmount < 25) ||
         (!loadingSession && !session && (
           <ContentContainer>
             <DonationReminder />

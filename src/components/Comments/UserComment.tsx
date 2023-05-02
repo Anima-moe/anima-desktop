@@ -77,7 +77,7 @@ const UserComment: React.FunctionComponent<IUserCommentProps> = ({ comment, nest
     <div className={containerClassNames} >
     {/* {(true) && ( */}
       {/* ACCENT */}
-      {((comment.User.premium > 0 || comment.User.staff) && nestLevel === 0) && (
+      {((comment.User.donatedAmount > 25 || comment.User.isStaff) && nestLevel === 0) && (
         <div
           className='absolute top-0 left-0 z-[0] h-full w-full opacity-5'
           style={{ backgroundColor: comment.User?.UserProfile.color }}

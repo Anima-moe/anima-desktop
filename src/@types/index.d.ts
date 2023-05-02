@@ -1,12 +1,5 @@
 namespace Anima {
   namespace ENUM {
-    enum Premium {
-      FREE = 0,
-      DONATOR = 1,
-      LORD = 2,
-      GOD = 3,
-    }
-
     enum Source {
       CRUNCHYROLL = 1,
     }
@@ -162,10 +155,10 @@ namespace Anima {
       id: number
       username: string
       email?: string
-      staff: boolean
+      isStaff: boolean
       iat?: number
       exp?: number
-      premium: number
+      donatedAmount: number
       profile?: Anima.RAW.UserProfile // TODO:
       UserProfile?: Anima.RAW.UserProfile // This needs to bne fixed.
       UserPlayerHead?: Anima.RAW.UserPlayerHead[]
@@ -273,7 +266,7 @@ namespace Anima {
     type Participant = {
       id: number
       authorized: boolean
-      payload: Pick<Anima.RAW.User, 'avatar' | 'staff' | 'premium' | 'id' | 'profile' | 'username'>
+      payload: Pick<Anima.RAW.User, 'avatar' | 'staff' | 'donatedAmount' | 'id' | 'profile' | 'username'>
     }
 
     type Room = {

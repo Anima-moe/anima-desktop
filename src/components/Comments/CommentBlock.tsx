@@ -49,7 +49,7 @@ const UserComments: React.FunctionComponent<IUserCommentProps> = (props) => {
           && props.Comments.length > 0 
           && props.Comments
               .sort((a,b) => (dayjs(b.created_at).unix()) - (dayjs(a.created_at).unix()) )
-              .sort((a,b) => b.User.premium - a.User.premium)
+              .sort((a,b) => Number(b.User.donatedAmount > 25) -Number(a.User.donatedAmount))
               // .sort((a,b) => Number(b.User.staff) - Number(a.User.staff) )
               .map(comment => {
           return <UserComment key={`comment.${comment.id}`} comment={comment} episodeID={props.episodeID} onReply={()=> { props.onComment?.() }}/>
