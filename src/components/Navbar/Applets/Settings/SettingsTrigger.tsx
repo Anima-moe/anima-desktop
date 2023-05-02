@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 
+import i18next from 'i18next'
 import { useAtom } from 'jotai'
 import { GearSix } from 'phosphor-react'
 
@@ -82,6 +83,25 @@ function NavSettings() {
           {t('user.edit.settings')}
         </Dialog.Title>
         <div className='flex flex-col w-full h-full'>
+          <div className='flex items-center justify-between py-3 border-b border-subtle/5'>
+            <div className='flex items-center gap-4 text-white/70'>
+              <GearSix size={24} />
+              <h3 className=''>{t('user.edit.uiLanguage')}</h3>
+            </div>
+            <div className='w-64'>
+              <EmojiOptionsInput
+                options={[
+                  { label: 'pt-BR', value: 'pt-BR', emoji: '🇧🇷' },
+                  { label: 'en-US', value: 'en-US', emoji: '🇺🇸' },
+                  { label: 'es-ES', value: 'es-ES', emoji: '🇪🇸' },
+                ]}
+                onSelect={value => {
+                  i18next.changeLanguage(value)
+                }}
+                defaultValue='pt-BR'
+              />
+            </div>
+          </div>
           {userOptions.map( option => {
             return <div className='flex items-center justify-between py-3 border-b border-subtle/5' key={option.label}>
               <div className='flex items-center gap-4 text-white/70'>
@@ -109,7 +129,6 @@ function NavSettings() {
                   </span>
                 </label>
               )}
-
               {option.type === 'options' && (
                 <div className='w-64'>
                   <EmojiOptionsInput
