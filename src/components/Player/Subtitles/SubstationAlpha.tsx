@@ -47,7 +47,7 @@ const SubstationAlphaDecoder: React.FunctionComponent<ISubstationAlphaProps> = (
         }, { once: true })
       } else {
         // Renderer exists, swap URL
-        subtitleRenderer.setTrackByUrl(streamConfig.subtitleURL)
+        subtitleRenderer.setTrackByUrl(`http://127.0.0.1:15411/${streamConfig.subtitleURL}`)
       }
     }     
 
