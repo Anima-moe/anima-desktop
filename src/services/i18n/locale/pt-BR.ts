@@ -181,6 +181,7 @@ export default {
     },
     info: {
       roomDeleted: 'Sala deletada: {{room}}.',
+      episodeChanged: 'Episódio alterado.',
     },
     action: {
       writeMessage: 'Escrever mensagem',
