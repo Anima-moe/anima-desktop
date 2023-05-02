@@ -2,27 +2,34 @@ import { useTranslation } from 'react-i18next'
 
 import i18next from 'i18next'
 import { useAtom } from 'jotai'
-import { GearSix } from 'phosphor-react'
+import { ChatCenteredDots, Gauge, GearSix } from 'phosphor-react'
 
 import EmojiOptionsInput from '@/components/General/Inputs/EmojiSelectionInput'
 import NavIcon from '@/components/Navbar/NavbarIcon'
-import { userPreferedAudio, userPreferedAutoNextEpisode, userPreferedAutoplay, userPreferedSubtitles } from '@/stores/atoms'
+import { userPreferedAudio, userPreferedAutoNextEpisode, userPreferedAutoplay, userPreferedPlaybackQuality, userPreferedSubtitles } from '@/stores/atoms'
 import * as Dialog from '@radix-ui/react-dialog'
+import { PlayIcon, FullscreenArrowIcon, SubtitlesIcon, VolumeHighIcon, NextIcon, LanguageIcon } from '@vidstack/react'
 
 function NavSettings() {
   const { t } = useTranslation()
+  const autoplayAtom = useAtom(userPreferedAutoplay)
+  const subtitlesAtom = useAtom(userPreferedSubtitles)
+  const audioAtom = useAtom(userPreferedAudio)
+  const autoNextAtom = useAtom(userPreferedAutoNextEpisode)
+  const qualityAtom = useAtom(userPreferedPlaybackQuality)
+  
  
   const userOptions = [
     {
       label: t('user.edit.preferedAutoplay'),
-      icon: <GearSix size={24} />,
-      atom: useAtom(userPreferedAutoplay),
+      icon: <PlayIcon size={24} />,
+      atom: autoplayAtom,
       type: 'boolean'
     },
     {
       label: t('user.edit.preferedSubtitles'),
-      icon: <GearSix size={24} />,
-      atom: useAtom(userPreferedSubtitles),
+      icon: <SubtitlesIcon size={24} />,
+      atom: subtitlesAtom,
       type: 'options',
       options: [
         { label: 'pt-BR', value: 'pt-BR', emoji: '🇧🇷' },
@@ -34,8 +41,8 @@ function NavSettings() {
     },
     {
       label: t('user.edit.preferedQuality'),
-      icon: <GearSix size={24} />,
-      atom: useAtom(userPreferedAutoplay),
+      icon: <FullscreenArrowIcon size={24}  />,
+      atom: qualityAtom,
       type: 'options',
       options: [
         { label: '1080p', value: '1080p', emoji: '📺' },
@@ -48,19 +55,20 @@ function NavSettings() {
     },
     {
       label: t('user.edit.preferedAudio'),
-      icon: <GearSix size={24} />,
-      atom: useAtom(userPreferedAudio),
+      icon: <VolumeHighIcon size={24} />,
+      atom: audioAtom,
       type: 'options',
       options: [
         { label: 'pt-BR', value: 'pt-BR', emoji: '🇧🇷' },
         { label: 'en-US', value: 'en-US', emoji: '🇺🇸' },
         { label: 'es-ES', value: 'es-ES', emoji: '🇪🇸' },
+        { label: 'ja-JP', value: 'ja-JP', emoji: '🇯🇵' }
       ]
     },
     {
       label: t('user.edit.preferedAutoNextEpisode'),
-      icon: <GearSix size={24} />,
-      atom: useAtom(userPreferedAutoNextEpisode),
+      icon: <NextIcon size={24} />,
+      atom: autoNextAtom,
       type: 'boolean'
     }
   ]
@@ -85,7 +93,7 @@ function NavSettings() {
         <div className='flex flex-col w-full h-full'>
           <div className='flex items-center justify-between py-3 border-b border-subtle/5'>
             <div className='flex items-center gap-4 text-white/70'>
-              <GearSix size={24} />
+              <LanguageIcon size={24} />
               <h3 className=''>{t('user.edit.uiLanguage')}</h3>
             </div>
             <div className='w-64'>
@@ -98,7 +106,7 @@ function NavSettings() {
                 onSelect={value => {
                   i18next.changeLanguage(value)
                 }}
-                defaultValue='pt-BR'
+                defaultValue={i18next.language}
               />
             </div>
           </div>
@@ -120,6 +128,8 @@ function NavSettings() {
                     }} 
                     // @ts-expect-error - We are already filtering the type
                     value={option.atom[0]}
+                    // @ts-expect-error - We are already filtering the type
+                    defaultChecked={option.atom[0]}
                   />
                   <span className="w-1/2 p-1 py-2 text-center bg-accent text-primary peer-checked:text-white peer-checked:bg-transparent rounded-l-md">
                     {t('generic.action.no')}
@@ -133,7 +143,8 @@ function NavSettings() {
                 <div className='w-64'>
                   <EmojiOptionsInput
                     options={option.options}
-                    defaultValue='pt-BR'
+                    // @ts-expect-error - We are already filtering the type
+                    defaultValue={option.atom[0]}
                   />
                 </div>
               )}
