@@ -129,12 +129,16 @@ vds-media[autoplay-error] {
   animation: textslide 60s infinite linear;
 }
 
+.slider-animation {
+  animation: patternslide 2700s infinite linear;
+}
+
 @keyframes patternslide {
   0% {
     background-position: 0px 0px;
   }
   100% {
-    background-position: 871px 0; /* The image width */
+    background-position: -87100px -87100px; /* The image width */
   }
 }
 
