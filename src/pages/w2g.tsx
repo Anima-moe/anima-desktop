@@ -86,9 +86,11 @@ const W2G: React.FunctionComponent<IW2GProps> = (props) => {
 
           case 'createRoom': {
             setRoom(tardis.data.room.id, tardis.data.room)
-            toast.success(t('w2g.success.roomCreated', { room: tardis.data.room.name }))
 
-            if (tardis.data.room.leader === tardisID) { setCurrentRoom(tardis.data.room) }
+            if (tardis.data.room.leader === tardisID) { 
+              toast.success(t('w2g.success.roomCreated', { room: tardis.data.room.name }))
+              setCurrentRoom(tardis.data.room) 
+            }
             break
           }
 
@@ -105,7 +107,7 @@ const W2G: React.FunctionComponent<IW2GProps> = (props) => {
           case 'joinRoom': {
             const targetRoom = rooms.get(tardis.data.room.id)
 
-            if (!targetRoom) { return toast.error(t('w2g.error.roomNotFound')) }
+            if (!targetRoom) { return }
             
 
             setRoom(tardis.data.room.id, {
@@ -117,7 +119,7 @@ const W2G: React.FunctionComponent<IW2GProps> = (props) => {
               toast.success(t('w2g.success.joinedRoom'))
               
               setCurrentRoom({
-                ...targetRoom,
+                ...currentRoom,
                 participants: [...targetRoom.participants, tardis.data.user],
               })
             }
@@ -134,7 +136,7 @@ const W2G: React.FunctionComponent<IW2GProps> = (props) => {
           case 'removeParticipant': {
             const targetRoom = rooms.get(tardis.data.room.id)
 
-            if (!targetRoom) { return toast.error(t('w2g.error.roomNotFound')) }
+            if (!targetRoom) { return }
   
             setRoom(tardis.data.room.id, {
               ...targetRoom,
@@ -146,6 +148,8 @@ const W2G: React.FunctionComponent<IW2GProps> = (props) => {
             }
 
             if (tardis.data.room.id === currentRoom?.id) {
+              toast.info(t('w2g.info.participantLeft', { name: tardis.data.user.name }))
+
               setCurrentRoom({
                 ...currentRoom,
                 participants: [...targetRoom.participants.filter((participant) => (participant.id !== tardis.data.user.id))],
