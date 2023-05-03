@@ -65,7 +65,7 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
 
     ;(async () => {
       const anilistData = await anilistService.getMALIDFromName(animeData.AnimeMetadata.find(a => a.locale_key === 'en-US')?.title)
-      const malID = await (await anilistData).idMal
+      const malID = await (await anilistData)?.idMal
       if (!malID) { return }
 
       let commonChapters: CommonChapterFormat[] = []
