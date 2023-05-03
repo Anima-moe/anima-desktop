@@ -167,7 +167,7 @@ export default {
     error: {
       unknown: 'Um erro desconhecido ocorreu.\n{{error}}',
       roomNotFound: 'Sala não encontrada.',
-      roomDeleted: 'Sala deletada.',
+      roomDeleted: 'Sala desfeita.',
       roomFull: 'Sala cheia.',
       roomPrivate: 'Sala privada.',
       tooShort: 'Mínimo de 3 caracteres.',
