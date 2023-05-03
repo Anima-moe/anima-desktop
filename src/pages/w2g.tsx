@@ -106,11 +106,10 @@ const W2G: React.FunctionComponent<IW2GProps> = (props) => {
         
           case 'joinRoom': {
             const targetRoom = rooms.get(tardis.data.room.id)
-
             if (!targetRoom) { return }
             
 
-            setRoom(tardis.data.room.id, {
+            setRoom(targetRoom.id, {
               ...targetRoom,
               participants: [...targetRoom.participants, tardis.data.user],
             })
@@ -120,7 +119,7 @@ const W2G: React.FunctionComponent<IW2GProps> = (props) => {
               toast.info(t('w2g.info.joinedRoom', { name: tardis.data.user.payload.username }))
               
               setCurrentRoom({
-                ...currentRoom,
+                ...targetRoom,
                 participants: [...targetRoom.participants, tardis.data.user],
               })
             }
@@ -150,7 +149,7 @@ const W2G: React.FunctionComponent<IW2GProps> = (props) => {
 
             if (tardis.data.room.id === currentRoom?.id) {
               if (tardis.data.user.id !== tardisID) {
-                toast.info(t('w2g.info.participantLeft', { name: tardis.data.user.name }))
+                toast.info(t('w2g.info.participantLeft', { name: tardis.data.user.payload.username }))
               }
 
               setCurrentRoom({
@@ -173,6 +172,7 @@ const W2G: React.FunctionComponent<IW2GProps> = (props) => {
             })
 
             if (targetRoom.id === currentRoom?.id) {
+              toast.info(t('w2g.info.newLeader', { name: tardis.data.user.payload.username }))
               setCurrentRoom({
                 ...currentRoom,
                 leader: tardis.data.user.id,
