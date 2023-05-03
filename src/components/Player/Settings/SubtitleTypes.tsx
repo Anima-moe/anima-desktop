@@ -33,10 +33,10 @@ function SubtitleTypes() {
       initial={{ x: 50 }}
       animate={{ x: 0 }}
       exit={{ x: 50 }}
-      className="relative h-full w-full overflow-hidden"
+      className="relative w-full h-full overflow-hidden"
     >
       <div
-        className="group pointer-events-auto flex cursor-pointer flex-row items-center justify-between rounded-md p-2 hover:bg-tertiary hover:text-white"
+        className="flex flex-row items-center justify-between p-2 rounded-md cursor-pointer pointer-events-auto group hover:bg-tertiary hover:text-white"
         onClick={() => {
           setConfigPage('main')
         }}
@@ -48,7 +48,7 @@ function SubtitleTypes() {
         </span>
       </div>
       <hr className="my-2 mb-2 border-tertiary" />
-      <div className="max-h-[calc(100vh-16rem)] overflow-scroll">
+      <div className="max-h-[calc(100vh-16rem)] overflow-y-auto">
         <div
           className={hardClassNames + ' mt-2'}
           onClick={() => {

@@ -211,7 +211,7 @@ const User = () => {
         <div className="flex flex-col w-4/5 gap-8">
           <UserProfileSection title={t('user.stats.bio')} overlayColor={userData.profile.color}>
             <div className="flex flex-col w-full anima-markdown">
-              <div className="max-h-[900px] overflow-scroll">
+              <div className="max-h-[900px] overflow-y-auto">
                 <ReactMarkdown remarkPlugins={[remarkEmbed, remarkGfm, remarkEmoji]} components={{}}>
                   {userData.profile.bio}
                 </ReactMarkdown>
