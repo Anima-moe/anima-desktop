@@ -175,13 +175,14 @@ export default {
     },
     success: {
       roomCreated: 'Sala criada: {{room}}.',
-      joinedRoom: 'Você entrou na sala.',
       leftRoom: 'Você saiu da sala.',
       authorized: 'Conectado ao Tardis (W2G)',
     },
     info: {
       roomDeleted: 'Sala deletada: {{room}}.',
       episodeChanged: 'Episódio alterado.',
+      joinedRoom: '"{{name}}" Entrou.',
+      leftRoom: '"{{name}}" Saiu.',
     },
     action: {
       writeMessage: 'Escrever mensagem',

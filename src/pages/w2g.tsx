@@ -114,9 +114,10 @@ const W2G: React.FunctionComponent<IW2GProps> = (props) => {
               ...targetRoom,
               participants: [...targetRoom.participants, tardis.data.user],
             })
-  
-            if (tardis.data.room.id === currentRoom?.id || tardis.data.user.id === tardisID) {
-              toast.success(t('w2g.success.joinedRoom'))
+            
+
+            if (currentRoom && tardis.data.room.id === currentRoom?.id || tardis.data.user.id === tardisID) {
+              toast.info(t('w2g.info.joinedRoom', { name: tardis.data.user.payload.username }))
               
               setCurrentRoom({
                 ...currentRoom,
@@ -148,7 +149,9 @@ const W2G: React.FunctionComponent<IW2GProps> = (props) => {
             }
 
             if (tardis.data.room.id === currentRoom?.id) {
-              toast.info(t('w2g.info.participantLeft', { name: tardis.data.user.name }))
+              if (tardis.data.user.id !== tardisID) {
+                toast.info(t('w2g.info.participantLeft', { name: tardis.data.user.name }))
+              }
 
               setCurrentRoom({
                 ...currentRoom,
