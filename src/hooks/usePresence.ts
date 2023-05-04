@@ -28,12 +28,12 @@ export default function usePresence() {
 
     const { invoke } = await import('@tauri-apps/api')
     await invoke('discord_set_activity', {
-      details: `${watching ? t('activity_watching') : t('activity_browsing')} • ${title}`,
+      details: `${watching ? t('activity.watching') : t('activity.browsing')} • ${title}`,
       state: `${description}`,
       timestamp: Date.now(),
       image: 'logo_play',
       deepLink: `anima://${deeplink}`,
-      button: button || t('activity_button_access'),
+      button: button || t('activity.button.access'),
     })
   }
 
@@ -46,11 +46,11 @@ export default function usePresence() {
 
     await invoke('discord_set_activity', {
       details: display || path,
-      state: t('activity_browsing'),
+      state: t('activity.browsing'),
       timestamp: Date.now(),
       image: 'logo',
       deepLink: `anima://${path || '/'}`,
-      button: t('activity_button_access'),
+      button: t('activity.button.access'),
     })
   }
 

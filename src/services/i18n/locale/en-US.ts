@@ -209,6 +209,25 @@ export default {
       UPCOMING: 'Upcoming',
     },
   },
+  activity: {
+    browsing: 'Browsing',
+    watching: 'Watching',
+    button: {
+      access: 'Access',
+    },
+  },
+  splash: {
+    version: {
+      info: 'New version available. Update now?',
+      refuse: 'Not now',
+      accept: 'Update',
+    },
+    downloading: {
+      pending: 'Downloading update...',
+      success: 'Update downloaded. Restarting...',
+      error: 'Error downloading update. Try again later.',
+    },
+  },
   user: {
     stats: {
       comments: 'Comments',

@@ -213,6 +213,25 @@ export default {
       UPCOMING: 'Em Breve',
     },
   },
+  activity: {
+    browsing: 'Navegando',
+    watching: 'Assistindo',
+    button: {
+      access: 'Acessar',
+    },
+  },
+  splash: {
+    version: {
+      info: 'Nova versão disponível! Atualizar agora?',
+      refuse: 'Agora não',
+      accept: 'Atualizar',
+    },
+    downloading: {
+      pending: 'Baixando atualização...',
+      success: 'Atualização concluída! Reiniciando...',
+      error: 'Erro ao baixar atualização. Tenta novamente mais tarde.',
+    },
+  },
   user: {
     stats: {
       comments: 'Comentários',

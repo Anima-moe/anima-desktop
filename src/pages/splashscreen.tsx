@@ -96,9 +96,9 @@ function SplashScreen() {
       const { installUpdate } = await import('@tauri-apps/api/updater')
 
       await toast.promise(installUpdate(), {
-        pending: t('splash_downloading_pending'),
-        success: t('splash_downloading_success'),
-        error: t('splash_downloading_error'),
+        pending: t('splash.downloading.pending'),
+        success: t('splash.downloading.success'),
+        error: t('splash.downloading.error'),
       })
 
       const { relaunch } = await import('@tauri-apps/api/process')
@@ -107,13 +107,13 @@ function SplashScreen() {
 
     return (
       <div className="flex h-full w-full flex-col items-center justify-center space-y-3">
-        {t('splash_version')}
+        {t('splash.version.info')}
         <div className="flex w-full justify-evenly">
           <button className="px-3 py-1" onClick={handleRefuse}>
-            {t('splash_version_refuse')}
+            {t('splash.version.refuse')}
           </button>
           <button className="rounded-lg bg-accent px-3 py-1 text-primary hover:bg-black hover:text-accent" onClick={handleDownload}>
-            {t('splash_version_accept')}
+            {t('splash.version.accept')}
           </button>
         </div>
       </div>
