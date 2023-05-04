@@ -29,12 +29,12 @@ const W2GRoom: React.FunctionComponent<IW2GRoomProps> = ({ room, onClick }) => {
   const { data: episodeData, isLoading: episodeLoading, error: episodeError, } = useQuery(`/api/episode/${room.episodeID}`, () => fetchEpisode(String(room.episodeID)))
 
   return <div 
-    className='flex flex-col gap-2 rounded-md bg-secondary w-[calc(calc(100vw-4rem)/3-42px)] 2xl:w-[calc(calc(100vw-4rem)/4-42px)] group cursor-pointer hover:bg-tertiary duration-200'
+    className='flex flex-col w-full gap-2 duration-200 rounded-md cursor-pointer bg-secondary group hover:bg-tertiary'
     onClick={onClick}
   >
     { episodeData ? (
       <div 
-        className='relative w-full bg-center bg-cover rounded-md aspect-video' 
+        className='relative w-full bg-center bg-cover rounded-t-md aspect-video' 
         style={{
           backgroundImage: `url('${episodeData.data?.thumbnail}')`
         }} 

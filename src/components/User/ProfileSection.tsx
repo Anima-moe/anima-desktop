@@ -14,7 +14,7 @@ const UserProfileSection: React.FunctionComponent<IUserProfileSectionProps> = ({
     ' w-full': true 
   })
   const contentClassNames = clsx({
-    ' p-4 bg-secondary rounded-b-md flex gap-2': true,
+    ' p-4 bg-secondary rounded-b-md flex gap-2 ': true,
     [contentClassName || '']: true
   })
 

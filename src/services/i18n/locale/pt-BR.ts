@@ -167,7 +167,7 @@ export default {
     error: {
       unknown: 'Um erro desconhecido ocorreu.\n{{error}}',
       roomNotFound: 'Sala não encontrada.',
-      roomDeleted: 'Sala deletada.',
+      roomDeleted: 'Sala desfeita.',
       roomFull: 'Sala cheia.',
       roomPrivate: 'Sala privada.',
       tooShort: 'Mínimo de 3 caracteres.',
@@ -175,13 +175,16 @@ export default {
     },
     success: {
       roomCreated: 'Sala criada: {{room}}.',
-      joinedRoom: 'Você entrou na sala.',
       leftRoom: 'Você saiu da sala.',
       authorized: 'Conectado ao Tardis (W2G)',
     },
     info: {
       roomDeleted: 'Sala deletada: {{room}}.',
       episodeChanged: 'Episódio alterado.',
+      joinedRoom: '"{{name}}" Entrou.',
+      leftRoom: '"{{name}}" Saiu.',
+      newLeader: '"{{name}}" é o novo líder.',
+      participantLeft: '{{name}} saiu.',
     },
     action: {
       writeMessage: 'Escrever mensagem',
@@ -242,9 +245,11 @@ export default {
       username: 'Nome de usuário',
       email: 'Email',
       password: 'Senha',
-      loginRegister: 'Entrar/Cadastrar',
+      login: 'Entrar',
+      register: 'Registrar',
       joinAsGuest: 'Entrar sem uma conta',
       joinDiscord: 'Entre em nosso servidor do discord',
+      welcome: 'Bem vindo, vamos começar.',
       error: {
         invalidCredentials: 'Credenciais inválidas',
         weakPassword: 'Senha fraca',

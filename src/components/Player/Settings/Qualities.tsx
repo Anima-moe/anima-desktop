@@ -52,7 +52,7 @@ function Qualities() {
         </span>
       </div>
       <hr className="my-2 mb-2 border-tertiary" />
-      <div className="max-h-[calc(100vh-16rem)] overflow-scroll">
+      <div className="max-h-[calc(100vh-16rem)] overflow-y-auto">
         <div
           className={classNames + ' mt-2'}
           onClick={() => {

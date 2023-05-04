@@ -163,7 +163,7 @@ function Login() {
               <Button
                 Icon={<ArrowRight />}
                 iconSubtle
-                text={t('user.auth.joinAsGuest')}
+                text={t('user.auth.register')}
                 tertiary
                 border
                 md
@@ -174,16 +174,16 @@ function Login() {
                 type="button"
                 className="mr-1.5 mt-1.5 whitespace-nowrap"
                 onClick={() => {
-                  createMainWindow()
+                  setCurrentPage('register')
                 }}
               />
               <Button
                 Icon={<ArrowRight weight="fill" />}
-                text={t('user.auth.loginRegister')}
+                text={t('user.auth.login')}
                 accent
                 iconRight
                 md
-                className="ml-1.5 mt-1.5"
+                className="ml-auto mt-1.5 w-"
                 disabled={loading}
                 loading={loading}
                 semibold

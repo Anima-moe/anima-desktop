@@ -65,7 +65,7 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
 
     ;(async () => {
       const anilistData = await anilistService.getMALIDFromName(animeData.AnimeMetadata.find(a => a.locale_key === 'en-US')?.title)
-      const malID = await (await anilistData).idMal
+      const malID = await (await anilistData)?.idMal
       if (!malID) { return }
 
       let commonChapters: CommonChapterFormat[] = []
@@ -157,8 +157,12 @@ const SeekBar: React.FunctionComponent<ISeekBarProps> = ({animeData, episodeData
     if (currentThumbnailURL === streamConfig.streamThumbnail) { return }
     
     ;(async ()=>{
-      setBif(await fetchBifFromURL(`http://127.0.0.1:15411/${btoa(streamConfig.streamThumbnail)}`))
-      setCurrentThumbnailURL(streamConfig.streamThumbnail)
+      try{
+        setBif(await fetchBifFromURL(`http://127.0.0.1:15411/${btoa(streamConfig.streamThumbnail)}`))
+        setCurrentThumbnailURL(streamConfig.streamThumbnail)
+      } catch {
+        console.log('Anime from poor people to poor people')
+      }
     })()
   },[streamConfig.streamThumbnail, slider, streamConfig.streamURL])
 

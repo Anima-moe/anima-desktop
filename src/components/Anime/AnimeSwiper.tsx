@@ -37,10 +37,6 @@ function SwiperAnime({ animesPerScreen, animes, loading, alwaysShowInfo }: Props
             <div
               key={anime.id}
               className="group flex aspect-[3/2] select-none flex-col py-2.5"
-              style={{
-                width: `calc(calc(100vw - calc(1vw + 120px) ) / ${animesPerScreen})`,
-                minWidth: `calc(calc(100vw - calc(1vw + 120px) ) / ${animesPerScreen})`,
-              }}
               itemID={anime.id.toString()}
             >
               <AnimeCard anime={anime} showDetails={alwaysShowInfo} />
@@ -59,10 +55,6 @@ function SwiperAnime({ animesPerScreen, animes, loading, alwaysShowInfo }: Props
             return (
               <div
                 className="group mx-4 flex aspect-[2/3]"
-                style={{
-                  width: 'calc(calc(100vw - calc(1vw + 48px) - 16px) / 7)',
-                  minWidth: 'calc(calc(100vw - calc(1vw + 48px) - 16px) / 7)',
-                }}
                 key={`anime.Skeleton.${index}`}
               >
                 <SkeletonBlock

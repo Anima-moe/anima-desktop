@@ -10,6 +10,7 @@ import { useRouter } from 'next/router'
 import { Play } from 'phosphor-react'
 import remarkEmoji from 'remark-emoji'
 import remarkGfm from 'remark-gfm'
+import { useWindowSize } from 'usehooks-ts'
 
 import SwiperAnime from '@/components/Anime/AnimeSwiper'
 import UserComment from '@/components/Comments/UserComment'
@@ -80,12 +81,21 @@ async function fetchFavorites(id: string | number) {
   return await UserService.getFavoriteAnimes(id)
 }
 
+const calculateItemsPerRow = (width: number) => {
+  if (width < 1601) return 5
+  // if (width < 1600) return 6
+  if (width < 1921) return 6
+  if (width < 2561) return 8
+  if (width < 3841) return 10
+  return 12
+}
 
 const User = () => {
   const router = useRouter()
   const { t } = useTranslation()
   const { clearPresence } = usePresence()
-
+  const { width, height } = useWindowSize()
+  
   const {
     data: userData,
     isLoading: userIsLoading,
@@ -211,18 +221,22 @@ const User = () => {
         <div className="flex flex-col w-4/5 gap-8">
           <UserProfileSection title={t('user.stats.bio')} overlayColor={userData.profile.color}>
             <div className="flex flex-col w-full anima-markdown">
-              <div className="max-h-[900px] overflow-scroll">
+              <div className="max-h-[900px] overflow-y-auto">
                 <ReactMarkdown remarkPlugins={[remarkEmbed, remarkGfm, remarkEmoji]} components={{}}>
                   {userData.profile.bio}
                 </ReactMarkdown>
               </div>
             </div>
           </UserProfileSection>
-          <UserProfileSection title={t('user.stats.favorites')} overlayColor={userData.profile.color}>
+          <UserProfileSection 
+            title={t('user.stats.favorites')} 
+            overlayColor={userData.profile.color}
+            contentClassName='!w-full !flex !flex-col'
+          >
               <SwiperAnime
                 alwaysShowInfo
                 animes={userFavorites?.data || []}
-                animesPerScreen={5}
+                animesPerScreen={calculateItemsPerRow(width)}
               />
               {/* {JSON.stringify(userFavorites)} */}
           </UserProfileSection>
