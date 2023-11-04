@@ -2,6 +2,8 @@ namespace Anima {
   namespace ENUM {
     enum Source {
       CRUNCHYROLL = 1,
+      ZORO = 2,
+      EXTRA = 3
     }
   }
   namespace RAW {
