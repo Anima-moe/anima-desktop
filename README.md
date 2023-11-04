@@ -5,6 +5,10 @@ Spiritual successor to [Puray!](https://github.com/fernandordev/puray.moe).
 Anima is a community & platform centered around japanese animations (Animes) while also providing a way to watch them from different online sources.
 Anima does not (nor pretends to) host any of the video streams used in the application, they are merely scraped from the internet and displayed as is while being paired to the metadata (title, description and preview information of animes, seasons and episodes).
 
+#### Figma file
+Anima was first designed at Figma, the figma project is also public:
+https://www.figma.com/proto/7lM0ZvMQhPj5YOIn24urf4/Anima?page-id=692%3A413&node-id=704-1666&viewport=80%2C1530%2C0.64&scaling=min-zoom&starting-point-node-id=704%3A1666
+
 ### The goal
 > Our goal is to connect users by allowing them to interact with each other via comments, watchrooms and profile lists while also providing top notch UX and a decent UI.
 
