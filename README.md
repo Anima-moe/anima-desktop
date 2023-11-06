@@ -1,10 +1,12 @@
 # Anima (.moe)
+
 <table>
   <tr>
     <td> <img src="anima-home-and-metadata.gif?raw=true" ></td>
     <td><img src="anima-player.gif?raw=true"></td>
   </tr>
 </table>
+
 Spiritual successor to [Puray!](https://github.com/fernandordev/puray.moe).
 
 Anima is a community & platform centered around japanese animations (Animes) while also providing a way to watch them from different online sources.
